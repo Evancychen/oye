@@ -76,6 +76,18 @@ ends (never mid-card). Windows that don't ack within 3s (the v1 shell) are reloa
 page checks for a new `sw.js` on every launch and when the app comes back from the background.
 Progress (`localStorage`) and stored content/audio (`oye-content`) are never touched by an update.
 
+## Results upload (Google Sheet for Gabriel)
+
+`js/results.js`. Every answer in a session is recorded (`answered_at`, `card_id`, `content_version`, `correct`,
+`answer_given` (empty for "I don't know"), `used_hint`, `used_slow` (slow replay tapped before answering), `session_id`).
+When the session reaches the Summary, its rows go into a localStorage queue (`oye.resultsQueue.v1`) and are
+POSTed to the Apps Script web app as `text/plain;charset=utf-8` JSON `{results: [...]}` (no CORS preflight),
+at most 200 rows per request. Rows leave the queue only after a reply with `ok: true`; otherwise they are retried
+on the next app open, on resume and on the `online` event. Rows whose card id isn't in the loaded content (or
+doesn't match `c-NNNN`) are dropped before sending. The Summary shows "Results sent to Gabriel" (green dot) once
+confirmed, "Saved · will send when you're online" (hollow dot) while sending or queued. Sessions closed with ✕
+before the Summary are not uploaded. The e2e tests route the endpoint to a fake and fail if a request ever reaches it.
+
 ## How content works at runtime
 
 - On launch the app fetches `content/version.json` with `cache: no-store`.

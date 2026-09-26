@@ -30,6 +30,12 @@ SHOT_SIZES = {(360, 720), (412, 915)}
 # Cards that match the design previews go first so they are the screenshotted ones.
 SHOWCASE = ['c-0010', 'c-0018', 'c-0023', 'c-0029', 'c-0034']
 RESULTS = []
+# Results upload: the real Apps Script endpoint must NEVER be hit by the tests. Every browser context
+# routes it (and Google's redirect host) to a fake; ENDPOINT_SEEN logs every request the browser made to
+# those hosts, ENDPOINT_ROUTED the ones the fake answered, and a final check compares the two.
+RESULTS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbytS5yN1xLFdh2ucKku3-CvTsSxgbhZ36mb3gfQEVHaYnHQtNUDdIvoFlOe8W_YE52Fog/exec'
+ENDPOINT_HOSTS = re.compile(r'^https://(script\.google\.com|script\.googleusercontent\.com)/')
+ENDPOINT_SEEN, ENDPOINT_ROUTED = [], []
 
 
 def check(name, ok, detail=''):
@@ -59,9 +65,42 @@ def png_size(path):
     return struct.unpack('>II', d[16:24])
 
 
-async def new_page(browser, errors, viewport=None, init_script=None):
+class FakeEndpoint:
+    """Stands in for the Apps Script web app. mode: 'ok' | 'http500' | 'okfalse' | 'abort'."""
+    def __init__(self, mode='ok', delay=0):
+        self.mode, self.delay, self.calls = mode, delay, []   # calls: dicts {method, ctype, body (parsed JSON or raw), mode}
+
+    async def handle(self, route):
+        req = route.request
+        ENDPOINT_ROUTED.append(req.url)
+        raw = req.post_data or ''
+        try: body = json.loads(raw)
+        except Exception: body = raw
+        self.calls.append({'method': req.method, 'ctype': req.headers.get('content-type', ''), 'body': body, 'mode': self.mode, 'url': req.url})
+        cors = {'Access-Control-Allow-Origin': '*'}
+        if self.delay:
+            await asyncio.sleep(self.delay)
+        if self.mode == 'abort':
+            return await route.abort('internetdisconnected')
+        if self.mode == 'http500':
+            return await route.fulfill(status=500, headers=cors, content_type='text/html', body='<html>Error</html>')
+        if self.mode == 'okfalse':
+            return await route.fulfill(status=200, headers=cors, content_type='application/json', body='{"ok":false}')
+        n = len([r for r in (body.get('results') or []) if re.match(r'^c-\d{4}$', str(r.get('card_id')))][:200]) if isinstance(body, dict) else 0
+        return await route.fulfill(status=200, headers=cors, content_type='application/json', body=json.dumps({'ok': True, 'saved': n}))
+
+    def ok_rows(self):
+        """Rows the fake 'saved' (only from requests it answered with ok: true)."""
+        return [r for c in self.calls if c['mode'] == 'ok' and isinstance(c['body'], dict) for r in c['body'].get('results', [])]
+
+
+async def new_page(browser, errors, viewport=None, init_script=None, endpoint=None):
     ctx = await browser.new_context(viewport=viewport or VIEWPORT, device_scale_factor=1, is_mobile=True, has_touch=True,
                                     locale='en-GB', timezone_id='America/Mexico_City')
+    fake = endpoint or FakeEndpoint('ok')
+    ctx.fake_endpoint = fake
+    await ctx.route(ENDPOINT_HOSTS, fake.handle)
+    ctx.on('request', lambda r: ENDPOINT_SEEN.append(r.url) if ENDPOINT_HOSTS.match(r.url) else None)
     if init_script:
         await ctx.add_init_script(init_script)
     page = await ctx.new_page()
@@ -432,6 +471,7 @@ async def main():
         for (w, h) in LAYOUT_SIZES:
             await layout_suite(browser, base4, cards, w, h)
         await keyboard_visual_viewport_test(browser, base4)
+        await results_upload_tests(browser, base4, version)
         server4.terminate(); server4.wait()
 
         # ---------- v1.1: service worker update path ----------
@@ -440,6 +480,7 @@ async def main():
         shutil.rmtree(TMP, ignore_errors=True)
         await browser.close()
 
+    endpoint_guard_check()
     check('no JS errors or console errors during the main run',
           not [e for e in errors if 'ERR_INTERNET_DISCONNECTED' not in e and 'Failed to fetch' not in e and 'net::' not in e], errors[:5])
     if server.poll() is None:
@@ -915,10 +956,280 @@ async def live_check(url):
         await page.wait_for_timeout(300)
         await page.screenshot(path=os.path.join(SHOTS11, 'live-412x915-sheet.png'))
         check('live: no JS errors', not errors, errors[:3])
+        await live_results_check(browser, url)
         await browser.close()
+    endpoint_guard_check()
     passed = sum(1 for r in RESULTS if r[1])
     print(f'\n{passed}/{len(RESULTS)} live checks passed')
     return 0 if passed == len(RESULTS) else 1
+
+
+# ---------------------------------------------------------------- results upload (Google Sheet)
+QUEUE_JS = "JSON.parse(localStorage.getItem('oye.resultsQueue.v1') || '[]')"
+ROW_KEYS = ['answered_at', 'card_id', 'content_version', 'correct', 'answer_given', 'used_hint', 'used_slow', 'session_id']
+STATUS_JS = """() => {
+  const el = document.querySelector('#app [data-testid=results-status]');
+  if (!el) return null;
+  const r = (e) => { const b = e.getBoundingClientRect(); return {top: b.top, bottom: b.bottom, left: b.left, w: b.width, h: b.height}; };
+  const dot = el.querySelector('.rs-dot'), cs = getComputedStyle(el), ds = getComputedStyle(dot);
+  return { state: el.dataset.state, text: el.textContent.trim(), box: r(el), dial: r(document.querySelector('#app .dial')),
+    stats: r(document.querySelector('#app .stats.small')), eyebrow: r(document.querySelector('#app .summary .eyebrow')),
+    font: cs.fontSize + ' ' + cs.fontWeight, color: cs.color,
+    dot: { ...r(dot), bg: ds.backgroundColor, ring: ds.boxShadow } };
+}"""
+GREEN, GRAY400, GRAY600 = 'rgb(76, 195, 138)', 'rgb(107, 107, 115)', 'rgb(155, 155, 163)'
+SENT_TEXT, QUEUED_TEXT = 'Results sent to Gabriel', 'Saved · will send when you’re online'
+
+
+def status_problems(st, state):
+    """Spec: Caption Regular gray-600, directly under the dial, left-aligned, 12px above / 16px below; 8px dot."""
+    if not st: return ['no status line']
+    p = []
+    if st['state'] != state: p.append(f"state {st['state']}")
+    if st['text'] != (SENT_TEXT if state == 'sent' else QUEUED_TEXT): p.append(f"text {st['text']!r}")
+    if st['font'] != '13px 400' or st['color'] != GRAY600: p.append(f"type {st['font']} {st['color']}")
+    if abs(st['box']['top'] - st['dial']['bottom'] - 12) > 0.5: p.append(f"{st['box']['top'] - st['dial']['bottom']}px under the dial, want 12")
+    if abs(st['stats']['top'] - st['box']['bottom'] - 16) > 0.5: p.append(f"{st['stats']['top'] - st['box']['bottom']}px above the stats, want 16")
+    if abs(st['box']['left'] - st['eyebrow']['left']) > 0.5 or abs(st['dot']['left'] - st['box']['left']) > 0.5: p.append('not left-aligned')
+    d = st['dot']
+    if abs(d['w'] - 8) > 0.1 or abs(d['h'] - 8) > 0.1: p.append(f"dot {d['w']}x{d['h']}")
+    if state == 'sent' and (d['bg'] != GREEN or d['ring'] != 'none'): p.append(f"sent dot {d['bg']} {d['ring']}")
+    if state == 'queued' and (d['bg'] != 'rgba(0, 0, 0, 0)' or d['ring'] != f'{GRAY400} 0px 0px 0px 1.5px inset'): p.append(f"queued dot {d['bg']} {d['ring']}")
+    return p
+
+
+async def start_plan(page, ids):
+    await page.evaluate(f"(() => {{ const S = window.__oye; S.plan = {json.dumps(ids)}.map(id => S.playable.find(c => c.id === id)); }})()")
+    await page.click('[data-act=start]')
+
+
+async def dont_know_all(page, n):
+    for _ in range(n):
+        await page.wait_for_selector('[data-state=question]')
+        await page.click('[data-act=dontknow]')
+        await page.wait_for_selector('[data-state=wrong]')
+        await page.click('[data-act=next]')
+    await page.wait_for_selector('[data-screen=summary]')
+
+
+async def status(page):
+    return await page.evaluate(STATUS_JS)
+
+
+async def results_upload_tests(browser, base, version):
+    cv = version['version']
+    # ---- 1. success: one POST with the session's rows, text/plain JSON, green "Results sent to Gabriel" ----
+    errors = []
+    fake = FakeEndpoint('ok', delay=1.2)
+    ctx, page = await new_page(browser, errors, viewport={'width': 360, 'height': 720}, endpoint=fake)
+    await page.goto(base)
+    await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=15000)
+    await page.wait_for_timeout(300)
+    check('results: nothing is sent on open when the queue is empty', not fake.calls, len(fake.calls))
+    await start_plan(page, ['c-0010', 'c-0018', 'c-0029', 'c-0031'])
+    t_start = time.time()
+    await page.wait_for_selector('[data-card=c-0010][data-state=question]')
+    await page.click('[data-play=slow]')                       # used_slow
+    await page.click('[data-opt="0"]')                          # $38: wrong
+    await page.wait_for_selector('[data-state=wrong]'); await page.click('[data-act=next]')
+    await page.wait_for_selector('[data-card=c-0018][data-state=question]')
+    await page.click('[data-act=hint]')                         # used_hint
+    for ch in '8:45': await page.click(f'[data-key="{ch}"]')
+    await page.click('[data-act=check]')
+    await page.wait_for_selector('[data-state=correct]'); await page.click('[data-act=next]')
+    await page.wait_for_selector('[data-card=c-0029][data-state=question]')
+    await page.fill('#fix-input', 'Estuve'); await page.click('[data-act=check]')
+    await page.wait_for_selector('[data-state=correct]'); await page.click('[data-act=next]')
+    await page.wait_for_selector('[data-card=c-0031][data-state=question]')
+    await page.click('[data-act=dontknow]')                     # I don't know
+    await page.wait_for_selector('[data-state=wrong]'); await page.click('[data-act=next]')
+    await page.wait_for_selector('[data-screen=summary]')
+    t_end = time.time()
+    st = await status(page)
+    check('results: while sending, the summary shows the hollow dot + "Saved · will send when you’re online" (spec position/size)',
+          not status_problems(st, 'queued'), status_problems(st, 'queued') or st['text'])
+    await page.screenshot(path=shot_path(360, 720, '07-summary-results-sending.png'))
+    sent = await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 10000)
+    st = await status(page)
+    check('results: after { ok: true } the summary shows the green dot + "Results sent to Gabriel" (spec position/size)',
+          sent and not status_problems(st, 'sent'), status_problems(st, 'sent') or st['text'])
+    await page.screenshot(path=shot_path(360, 720, '07-summary-results-sent.png'))
+    c0 = fake.calls[0] if fake.calls else {}
+    body = c0.get('body')
+    check('results: exactly one POST to the endpoint, Content-Type text/plain;charset=utf-8 (no preflight), body = JSON {results: [...]}',
+          len(fake.calls) == 1 and c0['method'] == 'POST' and c0['url'] == RESULTS_ENDPOINT
+          and c0['ctype'].replace(' ', '').lower() == 'text/plain;charset=utf-8' and isinstance(body, dict) and list(body) == ['results'],
+          [(c['method'], c['ctype']) for c in fake.calls])
+    rows = body.get('results', []) if isinstance(body, dict) else []
+    want = [('c-0010', False, '$38', False, True), ('c-0018', True, '8:45', True, False),
+            ('c-0029', True, 'Estuve', False, False), ('c-0031', False, '', False, False)]
+    got = [(r.get('card_id'), r.get('correct'), r.get('answer_given'), r.get('used_hint'), r.get('used_slow')) for r in rows]
+    check('results: one row per answer: card_id, correct, answer_given, used_hint, used_slow as answered', got == want, got)
+    sids = {r.get('session_id') for r in rows}
+    def iso_ok(v):
+        try:
+            import datetime
+            t = datetime.datetime.fromisoformat(str(v).replace('Z', '+00:00')).timestamp()
+            return t_start - 5 <= t <= t_end + 5 and len(str(v)) <= 30
+        except Exception:
+            return False
+    check(f'results: rows have exactly the 8 fields; content_version {cv}; one session_id (<=40 chars); answered_at ISO time of each answer',
+          all(list(r) == ROW_KEYS for r in rows) and all(r['content_version'] == cv for r in rows)
+          and len(sids) == 1 and all(isinstance(x, str) and 0 < len(x) <= 40 for x in sids)
+          and all(iso_ok(r['answered_at']) for r in rows) and [r['answered_at'] for r in rows] == sorted(r['answered_at'] for r in rows),
+          rows[:1])
+    q = await page.evaluate(QUEUE_JS)
+    check('results: queue empty after the confirmed send', q == [], len(q))
+    # grading untouched: srs history matches the answers
+    hist = await page.evaluate("JSON.parse(localStorage.getItem('oye.progress.v1')).history.map(h => [h.id, h.ok])")
+    check('results: grading unchanged (progress history matches the answers)', hist == [[w[0], 1 if w[1] else 0] for w in want], hist)
+    await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
+    await page.reload(); await page.wait_for_selector('html[data-ready="1"] [data-screen=home]'); await page.wait_for_timeout(800)
+    check('results: reopening the app sends nothing more (no duplicates)', len(fake.calls) == 1, len(fake.calls))
+    check('results (success test): no JS errors', not errors, errors[:3])
+    await ctx.close()
+
+    # ---- 2. failure, then retry on resume / app open / online; never lost, never duplicated ----
+    errors = []
+    fake = FakeEndpoint('http500')
+    ctx, page = await new_page(browser, errors, endpoint=fake)
+    await page.goto(base)
+    await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=15000)
+    await start_plan(page, ['c-0001', 'c-0031'])
+    await dont_know_all(page, 2)
+    got1 = await wait_for_calls(page, fake, 1)
+    await page.wait_for_timeout(300)
+    st = await status(page); q1 = await page.evaluate(QUEUE_JS)
+    check('results: HTTP 500 -> rows stay queued, summary shows the hollow "Saved · will send when you’re online"',
+          got1 and not status_problems(st, 'queued') and len(q1) == 2, {'status': status_problems(st, 'queued'), 'queue': len(q1)})
+    fake.mode = 'okfalse'
+    await page.evaluate("document.dispatchEvent(new Event('visibilitychange'))")   # app resumed
+    got2 = await wait_for_calls(page, fake, 2)
+    await page.wait_for_timeout(300)
+    st = await status(page); q2 = await page.evaluate(QUEUE_JS)
+    check('results: resume retries; a reply with ok: false is not "sent" (rows stay queued)',
+          got2 and st['state'] == 'queued' and [r['_id'] for r in q2] == [r['_id'] for r in q1], {'calls': len(fake.calls), 'queue': len(q2)})
+    fake.mode = 'ok'
+    await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
+    await page.reload()                                                            # next app open
+    await page.wait_for_selector('html[data-ready="1"] [data-screen=home]')
+    got3 = await wait_for_calls(page, fake, 3)
+    await wait_for(page, f"{QUEUE_JS}.length === 0", 5000)
+    q3 = await page.evaluate(QUEUE_JS)
+    check('results: next app open sends the queued rows and empties the queue', got3 and q3 == [], {'calls': len(fake.calls), 'queue': len(q3)})
+    # second session: network error at the summary, then the phone comes back online while the summary is open
+    fake.mode = 'abort'
+    await start_plan(page, ['c-0002', 'c-0019', 'c-0032'])
+    await dont_know_all(page, 3)
+    got4 = await wait_for_calls(page, fake, 4)
+    await page.wait_for_timeout(300)
+    st = await status(page)
+    queued_ok = got4 and st['state'] == 'queued' and len(await page.evaluate(QUEUE_JS)) == 3
+    fake.mode = 'ok'
+    await page.evaluate("window.dispatchEvent(new Event('online'))")
+    sent = await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 8000)
+    st = await status(page)
+    check('results: network error -> queued; the "online" event resends and the open summary turns green',
+          queued_ok and sent and not status_problems(st, 'sent'), status_problems(st, 'sent'))
+    rows = fake.ok_rows()
+    keys = [(r['session_id'], r['card_id']) for r in rows]
+    check('results: after failures + retries every row arrived exactly once (5 rows, 2 sessions)',
+          len(rows) == 5 and len(set(keys)) == 5 and len({r['session_id'] for r in rows}) == 2, keys)
+    await page.reload(); await page.wait_for_selector('html[data-ready="1"] [data-screen=home]'); await page.wait_for_timeout(800)
+    check('results: nothing re-sent afterwards', len([c for c in fake.calls if c['mode'] == 'ok']) == 2, len(fake.calls))
+    check('results (failure/retry test): no JS errors', not [e for e in errors if 'net::' not in e and 'Failed to load resource' not in e], errors[:3])
+    await ctx.close()
+
+    # ---- 3. offline: queued across sessions, invalid card ids dropped, sent in batches of <= 200 when back online ----
+    errors = []
+    fake = FakeEndpoint('ok')
+    ctx, page = await new_page(browser, errors, endpoint=fake)
+    await page.goto(base)
+    await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=15000)
+    await page.evaluate('navigator.serviceWorker.ready')
+    await ctx.set_offline(True)
+    await start_plan(page, ['c-0003', 'c-0020'])
+    await dont_know_all(page, 2)
+    await page.wait_for_timeout(500)
+    st = await status(page)
+    check('results: offline -> summary shows hollow dot + "Saved · will send when you’re online", no request made',
+          not status_problems(st, 'queued') and not fake.calls, status_problems(st, 'queued') or len(fake.calls))
+    await page.screenshot(path=os.path.join(SHOTS11, 'summary-results-offline-412x915.png'))
+    await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
+    await page.reload()                                         # app reopened while offline
+    await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=10000)
+    await start_plan(page, ['c-0033'])
+    await dont_know_all(page, 1)
+    await page.wait_for_timeout(300)
+    q = await page.evaluate(QUEUE_JS)
+    check('results: offline across an app restart + a second session: all 3 rows kept in the queue', len(q) == 3 and not fake.calls, len(q))
+    # queue a big backlog through the app's own enqueue (invalid ids filtered there), plus raw bad rows
+    added = await page.evaluate("""import('./js/results.js').then(m => {
+        const ids = window.__oye.content.cards.map(c => c.id), valid = new Set(ids), rows = [];
+        for (let i = 0; i < 450; i++) rows.push({ answered_at: new Date(Date.UTC(2026, 0, 1, 0, 0, i)).toISOString(), card_id: ids[i % ids.length],
+            content_version: 3, correct: i % 2 === 0, answer_given: 'seed ' + i, used_hint: false, used_slow: false, session_id: 'e2e-seed' });
+        rows.push({ answered_at: 'x', card_id: 'c-9999', content_version: 3, correct: false, answer_given: '', used_hint: false, used_slow: false, session_id: 'e2e-seed' });
+        rows.push({ answered_at: 'x', card_id: 'bad', content_version: 3, correct: false, answer_given: '', used_hint: false, used_slow: false, session_id: 'e2e-seed' });
+        return m.enqueue(rows, valid).length;
+    })""")
+    await page.evaluate(f"""(() => {{ const q = {QUEUE_JS};
+        q.push({{ _id: 'raw1', answered_at: 'x', card_id: 'c-8888', content_version: 3, correct: false, answer_given: '', used_hint: false, used_slow: false, session_id: 'e2e-raw' }});
+        q.push({{ _id: 'raw2', answered_at: 'x', card_id: 'C-0001 ', content_version: 3, correct: false, answer_given: '', used_hint: false, used_slow: false, session_id: 'e2e-raw' }});
+        localStorage.setItem('oye.resultsQueue.v1', JSON.stringify(q)); }})()""")
+    check('results: card ids not in the loaded content are dropped when queued (450 of 452 kept)', added == 450, added)
+    await ctx.set_offline(False)                                # fires "online"
+    sent = await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 15000)
+    sizes = [len(c['body']['results']) for c in fake.calls if isinstance(c['body'], dict)]
+    rows = fake.ok_rows()
+    ids_sent = {r['card_id'] for r in rows}
+    valid = {c['id'] for c in json.load(open(os.path.join(APP, 'content', 'cards.json'), encoding='utf-8'))}
+    keys = [(r['session_id'], r['card_id'], r['answered_at']) for r in rows]
+    check('results: back online -> queue sent in batches of at most 200 (200, 200, 53), summary turns green',
+          sent and sizes == [200, 200, 53], sizes)
+    check('results: every queued row sent exactly once; invalid card ids never sent; queue empty',
+          len(rows) == 453 and len(set(keys)) == 453 and ids_sent <= valid and await page.evaluate(QUEUE_JS) == [],
+          {'rows': len(rows), 'unique': len(set(keys)), 'bad': sorted(ids_sent - valid)})
+    check('results (offline test): no JS errors', not [e for e in errors if 'net::' not in e and 'Failed to load resource' not in e and 'Failed to fetch' not in e], errors[:3])
+    await ctx.close()
+
+
+async def wait_for_calls(page, fake, n, timeout=8000):
+    t0 = time.time()
+    while (time.time() - t0) * 1000 < timeout:
+        if len(fake.calls) >= n:
+            return True
+        await page.wait_for_timeout(100)
+    return False
+
+
+def endpoint_guard_check():
+    check('results: the real endpoint was never contacted (every request to script.google.com was answered by the test fake)',
+          len(ENDPOINT_SEEN) == len(ENDPOINT_ROUTED) and sorted(ENDPOINT_SEEN) == sorted(ENDPOINT_ROUTED),
+          f'{len(ENDPOINT_SEEN)} requests, {len(ENDPOINT_ROUTED)} faked')
+
+
+async def live_results_check(browser, url):
+    """Deployed site, mobile viewport, endpoint faked: the new build records a session and shows the status line."""
+    errors = []
+    fake = FakeEndpoint('ok', delay=0.8)
+    ctx, page = await new_page(browser, errors, viewport={'width': 360, 'height': 720}, endpoint=fake)
+    await page.goto(url)
+    await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=20000)
+    has_mod = await page.evaluate("import('./js/results.js').then(m => m.RESULTS_ENDPOINT === " + json.dumps(RESULTS_ENDPOINT) + ").catch(() => false)")
+    check('live: js/results.js is served and points at the Apps Script endpoint', has_mod)
+    await start_plan(page, ['c-0001', 'c-0031'])
+    await dont_know_all(page, 2)
+    st1 = await status(page)
+    sent = await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 10000)
+    st2 = await status(page)
+    body = fake.calls[0]['body'] if fake.calls else {}
+    rows = body.get('results', []) if isinstance(body, dict) else []
+    check('live [360x720]: summary shows "Saved · will send…" while sending, then green "Results sent to Gabriel"; 1 faked POST with 2 rows',
+          not status_problems(st1, 'queued') and sent and not status_problems(st2, 'sent') and len(fake.calls) == 1 and [r['card_id'] for r in rows] == ['c-0001', 'c-0031'],
+          {'sending': status_problems(st1, 'queued'), 'sent': status_problems(st2, 'sent'), 'calls': len(fake.calls)})
+    await page.screenshot(path=os.path.join(SHOTS11, 'live-360x720-summary-results.png'))
+    check('live results: no JS errors', not errors, errors[:3])
+    await ctx.close()
 
 
 TYPES = ['listen_pick', 'listen_type', 'scene_question', 'fix_it', 'reply']

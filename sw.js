@@ -1,6 +1,6 @@
 // Oye service worker: offline app shell + content + audio.
 // CACHE_VERSION is rewritten by tools/publish_content.py (content version + hash of the shell files).
-const CACHE_VERSION = 'oye-v3-1bce8422';
+const CACHE_VERSION = 'oye-v3-be94bed6';
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const CONTENT_CACHE = 'oye-content'; // filled by js/content.js (JSON + audio); kept across shell updates
 
@@ -14,6 +14,7 @@ const SHELL = [
   'js/audio.js',
   'js/check.js',
   'js/srs.js',
+  'js/results.js',
   'fonts/inter-latin.woff2',
   'icons/icon-192.png',
   'icons/icon-512.png',

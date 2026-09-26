@@ -4,6 +4,7 @@ import { loadContent } from './content.js';
 import { setAudioIndex, hasAudio, play, stop } from './audio.js';
 import { isCorrect } from './check.js';
 import * as srs from './srs.js';
+import * as results from './results.js';
 
 export const SHELL_VERSION = '1.1';
 document.documentElement.dataset.shell = SHELL_VERSION;
@@ -121,6 +122,8 @@ function setupServiceWorker() {
 }
 function maybeApplyUpdate() {
   if (!S.updatePending || S.view === 'session') return false;
+  // Let a results upload finish first (a reload mid-request could make the retry send the rows twice).
+  if (results.isSending()) { results.whenIdle().then(() => maybeApplyUpdate()); return false; }
   S.updatePending = false;
   location.reload();
   return true;
@@ -170,6 +173,32 @@ async function boot() {
   S.content.audioSync.then((r) => { S.audioStatus = { ...S.audioStatus, finished: true, ...r }; const q = document.getElementById('quiet'); if (q) q.textContent = quietLine(); });
   goHome(false);
   document.documentElement.dataset.ready = '1';
+  setupResultsRetry();
+}
+
+// ---------- results upload (Google Sheet via Apps Script; see js/results.js) ----------
+const validCardIds = () => (S.content ? new Set(S.content.cards.map((c) => c.id)) : null);
+const sendResults = () => results.flush(validCardIds());
+function setupResultsRetry() {
+  sendResults(); // anything left from an earlier offline session
+  window.addEventListener('online', sendResults);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') sendResults(); });
+  window.addEventListener('pageshow', (e) => { if (e.persisted) sendResults(); });
+  results.onQueueChange(() => updateResultsStatus());
+}
+function resultsStatusHtml(sent) {
+  return sent
+    ? `<span class="rs-dot sent" aria-hidden="true"></span><span>Results sent to Gabriel</span>`
+    : `<span class="rs-dot" aria-hidden="true"></span><span>Saved · will send when you’re online</span>`;
+}
+function updateResultsStatus() {
+  const el = document.querySelector('#app [data-testid=results-status]');
+  const ids = S.summaryRowIds;
+  if (!el || !ids || !ids.length) return;
+  const sent = !results.isQueued(ids);
+  if (el.dataset.state === (sent ? 'sent' : 'queued')) return;
+  el.dataset.state = sent ? 'sent' : 'queued';
+  el.innerHTML = resultsStatusHtml(sent);
 }
 // ---------- home ----------
 function quietLine() {
@@ -282,7 +311,7 @@ function openLessons() {
 // ---------- session ----------
 function startSession() {
   if (!S.plan.length) return;
-  S.session = { cards: S.plan, i: 0, results: [], start: Date.now() };
+  S.session = { cards: S.plan, i: 0, results: [], start: Date.now(), id: results.newSessionId() };
   S.view = 'session';
   history.pushState({ oye: 'session' }, '');
   showCard();
@@ -291,7 +320,7 @@ function showCard(fb = null) {
   const ses = S.session;
   const card = ses.cards[ses.i];
   stop(); setKeyHandler(null);
-  if (!fb) ses.hintUsed = false;
+  if (!fb) { ses.hintUsed = false; ses.slowUsed = false; }
   let view;
   try { view = TEMPLATES[card.type].render(card, fb); }
   catch (e) { console.warn('[oye] template failed, skipping', card.id, e); return nextCard(true); }
@@ -323,14 +352,21 @@ function showCard(fb = null) {
   }
 }
 function bindAudio(card, root = $app) {
-  $$('[data-play]', root).forEach((b) => { b.onclick = () => play(b.dataset.text || card.audio_text, { slow: b.dataset.play === 'slow', btn: b }); });
+  $$('[data-play]', root).forEach((b) => {
+    b.onclick = () => {
+      const slow = b.dataset.play === 'slow';
+      // Slow replay before answering is recorded with the answer (used_slow in the results upload).
+      if (slow && S.session && S.view === 'session' && S.session.answered !== S.session.i) S.session.slowUsed = true;
+      play(b.dataset.text || card.audio_text, { slow, btn: b });
+    };
+  });
 }
 function answer(card, ok, given, skipped = false) {
   if (!S.session || S.session.answered === S.session.i) return;
   S.session.answered = S.session.i;
   const hint = !!S.session.hintUsed;
   srs.record(S.progress, card, ok, { hint });
-  S.session.results.push({ card, ok, given, skipped, hint });
+  S.session.results.push({ card, ok, given, skipped, hint, slow: !!S.session.slowUsed, at: new Date().toISOString() });
   showCard({ ok, given, skipped });
 }
 function nextCard(skipBroken = false) {
@@ -671,12 +707,22 @@ function showSummary() {
   const mins = Math.max(1, Math.round((Date.now() - ses.start) / 60000));
   const misses = ses.results.filter((r) => !r.ok);
   const today = srs.answeredToday(S.progress);
+  // Queue this session's answers for the results sheet (stored first, so nothing is lost offline), then send.
+  const cv = Number(S.content?.version?.version) || 0;
+  if (!ses.rowIds) ses.rowIds = results.enqueue(ses.results.map((r) => ({
+    answered_at: r.at, card_id: r.card.id, content_version: cv, correct: !!r.ok,
+    answer_given: r.given == null ? '' : String(r.given), used_hint: !!r.hint, used_slow: !!r.slow, session_id: ses.id,
+  })), validCardIds());
+  S.summaryRowIds = ses.rowIds;
+  const statusLine = S.summaryRowIds.length
+    ? `<p class="caption results-status" data-testid="results-status" data-state="queued" role="status">${resultsStatusHtml(false)}</p>` : '';
   render(`
   <div class="screen page summary" data-screen="summary">
     <div class="zone summary-zone"><div class="scroll scroller"><div class="scroll-inner">
       <p class="eyebrow">${esc(fmtDate())}<span class="sub">${mins} min</span></p>
       <h1 class="display">Session done</h1>
       <div class="dial">${dialSvg(ses.results)}<div class="center"><span class="score" data-testid="score">${right}<span class="dim">/${ses.results.length}</span></span><span class="caption">correct</span></div></div>
+      ${statusLine}
       <section class="stats small">
         <div class="col"><div class="value">${srs.streak(S.progress)}</div><p class="caption">day streak</p></div>
         <div class="divider"></div>
@@ -691,6 +737,7 @@ function showSummary() {
   $$('[data-play]').forEach((b) => { b.onclick = () => play(b.dataset.text, { btn: b }); });
   $('[data-act="done"]').onclick = () => goHome(true);
   setupScrollHint($('.summary-zone'));
+  if (S.summaryRowIds.length) sendResults();
 }
 
 boot();

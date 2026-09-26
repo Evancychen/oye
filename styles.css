@@ -265,6 +265,11 @@ hr, .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
 .dial .score { font: 600 32px/40px var(--font); font-variant-numeric: tabular-nums; margin-top: 4px; }
 .dial .caption { margin-top: 2px; }
 .stats.small { margin-top: 24px; padding: 16px 0 20px; }
+/* results status line (Google Sheet upload): under the dial, left-aligned, 12px above / 16px below */
+.results-status { display: flex; align-items: center; gap: 8px; margin: 12px 0 16px; text-align: left; }
+.results-status + .stats.small { margin-top: 0; }
+.rs-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; box-shadow: inset 0 0 0 1.5px var(--gray-400); } /* inset shadow: borders snap to whole pixels */
+.rs-dot.sent { background: var(--correct); box-shadow: none; }
 .stats.small .value { font: 600 24px/32px var(--font); }
 .review-head { display: flex; justify-content: space-between; align-items: baseline; margin-top: 36px; padding-bottom: 12px; border-bottom: 1px solid var(--hairline); flex: none; }
 .review-list { flex: none; }
