@@ -33,7 +33,7 @@ RESULTS = []
 # Results upload: the real Apps Script endpoint must NEVER be hit by the tests. Every browser context
 # routes it (and Google's redirect host) to a fake; ENDPOINT_SEEN logs every request the browser made to
 # those hosts, ENDPOINT_ROUTED the ones the fake answered, and a final check compares the two.
-RESULTS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbytS5yN1xLFdh2ucKku3-CvTsSxgbhZ36mb3gfQEVHaYnHQtNUDdIvoFlOe8W_YE52Fog/exec'
+RESULTS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwD3ECxaglquY6aadvYPN9jxkrtElkiKCdRo7_gD7yY6uZAHZGlbvcY4XKBivJNZ4U98w/exec'
 ENDPOINT_HOSTS = re.compile(r'^https://(script\.google\.com|script\.googleusercontent\.com)/')
 ENDPOINT_SEEN, ENDPOINT_ROUTED = [], []
 

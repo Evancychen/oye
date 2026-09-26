@@ -1,7 +1,7 @@
 // Results upload: each finished session's answers go to the team's Google Sheet (Apps Script web app).
 // Rows are written to a localStorage queue first and removed only after the endpoint answers { ok: true },
 // so nothing is lost offline. The queue is retried on app open, on resume and when the phone comes online.
-export const RESULTS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbytS5yN1xLFdh2ucKku3-CvTsSxgbhZ36mb3gfQEVHaYnHQtNUDdIvoFlOe8W_YE52Fog/exec';
+export const RESULTS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwD3ECxaglquY6aadvYPN9jxkrtElkiKCdRo7_gD7yY6uZAHZGlbvcY4XKBivJNZ4U98w/exec';
 const QUEUE_KEY = 'oye.resultsQueue.v1';
 const BATCH = 200;                       // the Apps Script keeps at most 200 rows per request
 const TIMEOUT_MS = 30000;
