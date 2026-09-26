@@ -23,7 +23,7 @@ app/
 │   ├── publish_content.py  validate -> copy content -> bump version -> build audio -> bump SW cache
 │   ├── build_audio.py      edge-tts, voice es-MX-DaliaNeural, incremental
 │   └── serve.py            local static server with the right MIME types
-├── tests/e2e_test.py       Playwright end-to-end test (412x915 phone viewport)
+├── tests/e2e_test.py       Playwright end-to-end test (412x915 + v1.1 layout at 360x720 / 412x915 / 384x854)
 └── screenshots/            screenshots from the last test run
 ```
 
@@ -46,6 +46,35 @@ python3 -m venv .venv && .venv/bin/pip install edge-tts playwright
 .venv/bin/python -m playwright install chromium
 .venv/bin/python tests/e2e_test.py   # full end-to-end test, writes screenshots/
 ```
+
+## v1.1: one-screen cards and hints
+
+Spec: `../design/v1.1-one-screen-spec.md` (designed at 360 x 720; taller phones only get more empty middle).
+
+- Every card screen is three zones: header (48px), a middle zone (the only thing that may scroll) and a
+  dock pinned to the bottom (16px bottom padding) with the options / input and the main button.
+  Everything is `flex: none`, so nothing is squashed. If the middle still overflows, a 120px fade and a
+  "More below" pill appear (same on the feedback sheet and the summary's review list).
+- Listen and type: replay 48 + slow 48 + "Replay · Slow" + Hint pill in one row; pinned 358px dock
+  (input 56, Check 56, number pad 4 x 48).
+- Fix it: answer field + 88px Check in one 56px row, 16px above the phone keyboard
+  (`interactive-widget=resizes-content`, plus a `visualViewport` fallback that sets `--kb`).
+- After answering: result, "The answer is …", replay + slow, then "What you heard" / "Why" rows that
+  open a bottom sheet. Scene transcripts show speaker labels (first speaker blue, second green), the
+  English line from the scene, and a replay button per line.
+- `hint_en` (fix_it, listen_type) is only shown behind a "Hint" tap; no field / `null` = no Hint tap.
+  Opening it is recorded as `h: 1` on that answer in `oye.progress.v1` history (optional field).
+- `tools/build_audio.py` also makes one normal-speed MP3 per scene dialogue line (index entries with
+  only `normal`) for the per-line replay buttons.
+
+### How an installed app picks up a new version
+
+`sw.js` installs the new shell (fetched with `?v=CACHE_VERSION`, so no HTTP/CDN cache can serve an old
+file), calls `skipWaiting()` + `clients.claim()`, and messages every open window. A v1.1+ page acks
+and reloads itself into the new shell right away on Home/summary, or as soon as the current session
+ends (never mid-card). Windows that don't ack within 3s (the v1 shell) are reloaded by the SW. The
+page checks for a new `sw.js` on every launch and when the app comes back from the background.
+Progress (`localStorage`) and stored content/audio (`oye-content`) are never touched by an update.
 
 ## How content works at runtime
 
@@ -80,12 +109,18 @@ It will:
 
 If the content is unchanged the version is not bumped (`--force` bumps anyway), but audio and
 `sw.js` are still refreshed, so it's also the command to run after editing app code.
-Then deploy (commit + push, below). Installed apps pick up the new version on their next launch.
+Then deploy (commit + push, below). Installed apps pick up the new version on their next launch
+(see "How an installed app picks up a new version").
 
 Audio only: `.venv/bin/python tools/build_audio.py [--prune]` (voice `es-MX-DaliaNeural`,
 normal speed plus a slow file at rate −25% ≈ 0.75×; `--prune` deletes unused files).
 
-## Deploy to GitHub Pages (later, not done)
+## Deploy to GitHub Pages
+
+Live at https://evancychen.github.io/oye/ (repo `Evancychen/oye`, Pages from `main` /root).
+After pushing: `.venv/bin/python tests/e2e_test.py --live https://evancychen.github.io/oye/`.
+
+First-time setup, for reference:
 
 All paths are relative, so the app works from a subpath such as `https://<user>.github.io/<repo>/`.
 

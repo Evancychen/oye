@@ -33,8 +33,8 @@ export function save(s) {
   try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {}
 }
 
-/** Record one answer. ok = first-try correct. */
-export function record(s, card, ok) {
+/** Record one answer. ok = first-try correct. hint = the Hint was opened (v1.1; optional, stats only). */
+export function record(s, card, ok, { hint = false } = {}) {
   const t = todayKey();
   const c = s.cards[card.id] || { box: 0, seen: 0, right: 0, wrong: 0 };
   const isNew = !c.seen;
@@ -46,7 +46,9 @@ export function record(s, card, ok) {
   const d = s.days[t] || { answered: 0, correct: 0, introduced: 0, sessions: 0 };
   d.answered++; if (ok) d.correct++; if (isNew) d.introduced++;
   s.days[t] = d;
-  s.history.push({ d: t, id: card.id, ok: ok ? 1 : 0, p: isPriceByEar(card) ? 1 : 0 });
+  const h = { d: t, id: card.id, ok: ok ? 1 : 0, p: isPriceByEar(card) ? 1 : 0 };
+  if (hint) { h.h = 1; c.hints = (c.hints || 0) + 1; }
+  s.history.push(h);
   save(s);
 }
 export function finishSession(s) {

@@ -1,13 +1,18 @@
 // Oye: app shell, screens and card templates.
+// v1.1: one-screen cards (header / scrolling middle / pinned dock), hints, feedback sheet, SW update flow.
 import { loadContent } from './content.js';
 import { setAudioIndex, hasAudio, play, stop } from './audio.js';
 import { isCorrect } from './check.js';
 import * as srs from './srs.js';
 
+export const SHELL_VERSION = '1.1';
+document.documentElement.dataset.shell = SHELL_VERSION;
+
 const $app = document.getElementById('app');
 const S = {
   content: null, playable: [], scenes: new Map(), progress: srs.load(),
   plan: [], session: null, view: 'boot', audioStatus: null, keyHandler: null,
+  shell: SHELL_VERSION, updatePending: false,
 };
 window.__oye = S; // handy for debugging / tests
 
@@ -21,15 +26,21 @@ const ICON = {
   check: (s = 14) => svg('<path d="M6 12.5L10 16.5L18 7.5" stroke="currentColor" stroke-width="2.6"/>', { size: s }),
   cross: (s = 14) => svg('<path d="M8 8L16 16M16 8L8 16" stroke="currentColor" stroke-width="2.6"/>', { size: s }),
   chevron: svg('<path d="M9.5 6L15.5 12L9.5 18" stroke="currentColor" stroke-width="1.8"/>', { size: 20 }),
+  chevronDown: svg('<path d="M6 9.5L12 15.5L18 9.5" stroke="currentColor" stroke-width="1.8"/>', { size: 18 }),
   backspace: svg('<path d="M9 5.5H19.5A1.5 1.5 0 0 1 21 7V17A1.5 1.5 0 0 1 19.5 18.5H9L2.5 12Z" stroke="currentColor" stroke-width="1.6"/><path d="M11.5 9.5L16.5 14.5M16.5 9.5L11.5 14.5" stroke="currentColor" stroke-width="1.6"/>', { size: 26 }),
 };
 const TYPE_LABEL = { listen_pick: 'Listen', listen_type: 'Listen and type', scene_question: 'Scene', fix_it: 'Fix it', reply: 'Your reply' };
 const TAG_LABEL = { tu_vs_usted: 'tú vs usted', ser_estar: 'ser vs estar', pronoun_pairs: 'pronoun pairs' };
 const tagLabel = (t) => TAG_LABEL[t] || String(t).replace(/_vs_/g, ' vs ').replace(/_/g, ' ');
 const fmtDate = (d = new Date()) => new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }).format(d);
-const render = (html) => { $app.innerHTML = html; $app.scrollTop = 0; };
 const $ = (sel, root = $app) => root.querySelector(sel);
 const $$ = (sel, root = $app) => [...root.querySelectorAll(sel)];
+function render(html) {
+  closeSheet(false);
+  disposeHints($app);
+  $app.innerHTML = html;
+  $app.scrollTop = 0;
+}
 function setKeyHandler(fn) {
   if (S.keyHandler) document.removeEventListener('keydown', S.keyHandler);
   S.keyHandler = fn || null;
@@ -38,9 +49,41 @@ function setKeyHandler(fn) {
 const sceneOf = (card) => (card.scene_id ? S.scenes.get(card.scene_id) : null);
 const cardLessons = (card) => [...new Set([...(card.lesson_tags || []), ...((sceneOf(card)?.lesson_tags) || [])])];
 
+// ---------- "More below": fade + pill on any scrolling zone ----------
+// Markup: <div class="zone"> <div class="scroller"><div class="scroll-inner">…</div></div> ${moreHint()} </div>
+const moreHint = () => `<div class="fade" aria-hidden="true"></div><button type="button" class="more-pill" data-testid="more" tabindex="-1">More below ${ICON.chevronDown}</button>`;
+const hintObservers = new Map(); // zone -> ResizeObserver
+function setupScrollHint(zone) {
+  if (!zone) return;
+  const sc = zone.querySelector('.scroller');
+  const inner = sc && sc.firstElementChild;
+  const pill = zone.querySelector('.more-pill');
+  if (!sc) return;
+  const upd = () => {
+    const overflow = sc.scrollHeight - sc.clientHeight > 2;
+    const atEnd = sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 2;
+    zone.classList.toggle('has-more', overflow && !atEnd);
+    zone.classList.toggle('is-scrollable', overflow);
+  };
+  sc.addEventListener('scroll', upd, { passive: true });
+  if (pill) pill.onclick = () => sc.scrollBy({ top: Math.max(80, sc.clientHeight * 0.75), behavior: 'smooth' });
+  if (typeof ResizeObserver !== 'undefined') {
+    const ro = new ResizeObserver(upd);
+    ro.observe(sc); if (inner) ro.observe(inner);
+    hintObservers.set(zone, ro);
+  }
+  zone.__updHint = upd;
+  upd();
+}
+function disposeHints(root) {
+  for (const [zone, ro] of hintObservers) if (root.contains(zone)) { ro.disconnect(); hintObservers.delete(zone); }
+}
+const refreshHints = () => { for (const zone of hintObservers.keys()) zone.__updHint?.(); };
+
 // ---------- card templates (picked by `type`; unknown types are skipped) ----------
 const hasOptions = (c) => Array.isArray(c.options) && c.options.length >= 2 && c.options.includes(c.answer);
 const hasAnswers = (c) => c.answer != null || (c.accepted_answers || []).length > 0;
+const hasHint = (c) => typeof c.hint_en === 'string' && c.hint_en.trim() !== '';
 const TEMPLATES = {
   listen_pick: { valid: (c) => !!c.audio_text && hasOptions(c), render: renderListenPick },
   listen_type: { valid: (c) => !!c.audio_text && hasAnswers(c), render: renderListenType },
@@ -54,21 +97,61 @@ function isPlayable(c) {
   try { return !!t.valid(c); } catch { return false; }
 }
 
+// ---------- service worker + updates ----------
+// A new sw.js activates right away (skipWaiting + claim) and messages every open window.
+// This page acks and reloads into the new shell as soon as it's safe: immediately on
+// Home/summary, otherwise when the session ends. Pages that don't ack (v1) are reloaded by the SW.
+function setupServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  navigator.serviceWorker.addEventListener('message', (e) => {
+    if (e.data?.type !== 'oye-update') return;
+    try { e.source?.postMessage({ type: 'oye-update-ack' }); } catch {}
+    S.updatePending = true;
+    maybeApplyUpdate();
+  });
+  try { navigator.serviceWorker.startMessages(); } catch {}
+  navigator.serviceWorker.register('sw.js').catch((e) => console.warn('[oye] sw', e));
+  // Resuming the installed app from the background doesn't reload the page, so check for a new sw.js then too.
+  let lastCheck = Date.now();
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible' || Date.now() - lastCheck < 10000) return;
+    lastCheck = Date.now();
+    navigator.serviceWorker.getRegistration().then((r) => r && r.update()).catch(() => {});
+  });
+}
+function maybeApplyUpdate() {
+  if (!S.updatePending || S.view === 'session') return false;
+  S.updatePending = false;
+  location.reload();
+  return true;
+}
+
+// ---------- on-screen keyboard (fallback when interactive-widget=resizes-content isn't honoured) ----------
+function setupKeyboardInset() {
+  if (!window.visualViewport) return;
+  const upd = () => {
+    const vv = window.visualViewport;
+    const kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+    document.documentElement.style.setProperty('--kb', kb > 80 ? `${Math.round(kb)}px` : '0px');
+    document.documentElement.classList.toggle('kb-open', kb > 80);
+    if (kb > 80 && (window.scrollY || document.documentElement.scrollTop)) window.scrollTo(0, 0);
+    refreshHints();
+  };
+  visualViewport.addEventListener('resize', upd);
+  visualViewport.addEventListener('scroll', upd);
+  window.addEventListener('resize', () => refreshHints());
+  S.updateKeyboardInset = upd;
+}
+
 // ---------- boot ----------
 async function boot() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch((e) => console.warn('[oye] sw', e));
-  }
-  if (window.visualViewport) {
-    const upd = () => {
-      const kb = Math.max(0, window.innerHeight - visualViewport.height - visualViewport.offsetTop);
-      document.documentElement.style.setProperty('--kb', kb > 80 ? `${kb}px` : '0px');
-    };
-    visualViewport.addEventListener('resize', upd);
-    visualViewport.addEventListener('scroll', upd);
-  }
+  setupServiceWorker();
+  setupKeyboardInset();
   if (history.state?.oye) history.replaceState(null, '');
-  window.addEventListener('popstate', () => { if (S.view !== 'home') goHome(false); });
+  window.addEventListener('popstate', () => {
+    if (S.sheet) { closeSheet(); if (S.view === 'session') history.pushState({ oye: 'session' }, ''); return; }
+    if (S.view !== 'home') goHome(false);
+  });
   try {
     S.content = await loadContent((p) => {
       S.audioStatus = p;
@@ -88,7 +171,6 @@ async function boot() {
   goHome(false);
   document.documentElement.dataset.ready = '1';
 }
-
 // ---------- home ----------
 function quietLine() {
   const a = S.audioStatus;
@@ -122,6 +204,7 @@ function goHome(pop = true) {
   stop(); setKeyHandler(null);
   if (pop && history.state?.oye) { history.back(); return; } // popstate will call goHome(false)
   S.view = 'home'; S.session = null;
+  if (maybeApplyUpdate()) return; // a new version was installed: reload into it now
   S.progress = srs.load();
   const newIds = new Set(S.content.version?.new_card_ids || []);
   S.plan = srs.planSession(S.progress, lessonPool(), { newIds });
@@ -208,6 +291,7 @@ function showCard(fb = null) {
   const ses = S.session;
   const card = ses.cards[ses.i];
   stop(); setKeyHandler(null);
+  if (!fb) ses.hintUsed = false;
   let view;
   try { view = TEMPLATES[card.type].render(card, fb); }
   catch (e) { console.warn('[oye] template failed, skipping', card.id, e); return nextCard(true); }
@@ -219,28 +303,34 @@ function showCard(fb = null) {
       <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${ses.i + 1}"><i style="width:${((ses.i + 1) / n) * 100}%"></i></div>
       <span class="count">${ses.i + 1} of ${n}</span>
     </header>
-    <div class="card-body">${view.body}</div>
-    ${view.action}
+    <div class="zone card-zone"><div class="card-body scroller" data-testid="card-body"><div class="card-inner">${view.body}</div></div>${moreHint()}</div>
+    <div class="dock ${view.dockClass || ''}" data-testid="dock">${view.dock}</div>
   </div>`);
   $('[data-act="close"]').onclick = () => goHome(true);
-  // audio buttons
-  $$('[data-play]').forEach((b) => { b.onclick = () => play(b.dataset.text || card.audio_text, { slow: b.dataset.play === 'slow', btn: b }); });
+  bindAudio(card);
+  bindHint(card);
+  bindFeedbackRows(card, fb);
   const nextBtn = $('[data-act="next"]');
   if (nextBtn) { nextBtn.onclick = () => nextCard(); nextBtn.focus({ preventScroll: true }); }
   const dk = $('[data-act="dontknow"]');
   if (dk) dk.onclick = () => answer(card, false, null, true);
   view.bind?.();
+  setupScrollHint($('.card-zone'));
   // Autoplay once when a listening card appears (allowed after the tap that started the session).
   if (!fb && card.audio_text && hasAudio(card.audio_text)) {
     const big = $('.replay');
     setTimeout(() => { if (S.session?.cards[S.session.i] === card && $('[data-state="question"]')) play(card.audio_text, { btn: big }); }, 350);
   }
 }
+function bindAudio(card, root = $app) {
+  $$('[data-play]', root).forEach((b) => { b.onclick = () => play(b.dataset.text || card.audio_text, { slow: b.dataset.play === 'slow', btn: b }); });
+}
 function answer(card, ok, given, skipped = false) {
   if (!S.session || S.session.answered === S.session.i) return;
   S.session.answered = S.session.i;
-  srs.record(S.progress, card, ok);
-  S.session.results.push({ card, ok, given, skipped });
+  const hint = !!S.session.hintUsed;
+  srs.record(S.progress, card, ok, { hint });
+  S.session.results.push({ card, ok, given, skipped, hint });
   showCard({ ok, given, skipped });
 }
 function nextCard(skipBroken = false) {
@@ -255,32 +345,167 @@ function nextCard(skipBroken = false) {
 function eyebrow(label, sub) {
   return `<p class="eyebrow">${esc(label)}${sub ? `<span class="sub">${esc(sub)}</span>` : ''}</p>`;
 }
-function audioControls(card, size) {
-  if (!card.audio_text) return '';
-  const lbl = size !== 'sm';
-  const ctl = (inner, label) => lbl ? `<div class="ctl"><div class="ring-wrap">${inner}</div><span class="caption">${label}</span></div>` : inner;
-  return `<div class="audio ${size === 'sm' ? 'compact' : size}">
-    ${ctl(`<button class="replay ${size}" data-play="normal" aria-label="Replay">${ICON.speaker}</button>`, 'Replay')}
-    ${ctl(`<button class="slow ${size}" data-play="slow" aria-label="Replay slowly">0.75×</button>`, 'Slow')}
+const replayBtn = (size, text) => `<button class="replay r${size}" data-play="normal" ${text ? `data-text="${esc(text)}"` : ''} data-testid="replay" aria-label="Replay">${ICON.speaker}</button>`;
+const slowBtn = (size, text) => `<button class="slow s${size}" data-play="slow" ${text ? `data-text="${esc(text)}"` : ''} data-testid="slow" aria-label="Replay slowly">0.75×</button>`;
+/** Big centred replay + slow (listen_pick question). */
+function audioHero(card) {
+  return `<div class="audio-hero" data-testid="audio-row">
+    <div class="ctl"><div class="ring-wrap">${replayBtn(112)}</div><span class="caption">Replay</span></div>
+    <div class="ctl"><div class="ring-wrap">${slowBtn(64)}</div><span class="caption">Slow</span></div>
   </div>`;
+}
+/** One short row: replay, slow, caption, optional thing on the right (Hint pill). Never shrinks. */
+function audioRow(card, { size = 48, slow = 48, caption = 'Replay · Slow', right = '', text = null, cls = '' } = {}) {
+  if (!card.audio_text && !text) return right ? `<div class="audio-row ${cls}">${right}</div>` : '';
+  return `<div class="audio-row ${cls}" data-testid="audio-row">${replayBtn(size, text)}${slowBtn(slow, text)}<span class="caption">${esc(caption)}</span>${right}</div>`;
+}
+function hintPill(card) {
+  return hasHint(card) ? `<button type="button" class="hint-pill" data-act="hint" data-testid="hint-pill" aria-expanded="false" aria-controls="hint-box">Hint</button>` : '';
+}
+function hintBox(card) {
+  if (!hasHint(card)) return '';
+  return `<div class="hint-box" id="hint-box" data-testid="hint-box" hidden>
+    <div class="hint-head"><span class="eyebrow">Hint</span><button type="button" class="hint-hide" data-act="hint-hide">Hide</button></div>
+    <p class="hint-text">${esc(card.hint_en).replace(/\//g, '/<wbr>')}</p></div>`;
+}
+function bindHint(card) {
+  const pill = $('[data-act="hint"]'), box = $('#hint-box'), hide = $('[data-act="hint-hide"]');
+  if (!pill || !box) return;
+  // Keep focus (and the phone keyboard) on the answer field while toggling the hint.
+  [pill, hide].forEach((b) => b && b.addEventListener('mousedown', (e) => e.preventDefault()));
+  pill.onclick = () => {
+    box.hidden = false; pill.hidden = true; pill.setAttribute('aria-expanded', 'true');
+    if (S.session) S.session.hintUsed = true;
+    refreshHints();
+  };
+  if (hide) hide.onclick = () => { box.hidden = true; pill.hidden = false; pill.setAttribute('aria-expanded', 'false'); refreshHints(); };
 }
 function resultRow(ok) {
   return `<div class="result ${ok ? 'ok' : 'bad'}" data-testid="result"><span class="dot">${ok ? ICON.check(19) : ICON.cross(19)}</span><span class="title">${ok ? 'Correct' : 'Not quite'}</span></div>`;
 }
-function heard(card) {
-  const t = card.transcript || card.audio_text;
-  if (!t) return '';
-  return `<div class="heard"><p class="eyebrow">You heard</p><p class="transcript">${esc(t)}</p></div>${audioControls(card, 'sm')}`;
+const isMoney = (card) => [card.answer, ...(card.accepted_answers || [])].some((a) => String(a).includes('$'));
+function answerText(card) {
+  let a = String(card.answer ?? (card.accepted_answers || [])[0] ?? '');
+  if (card.type === 'listen_type' && isMoney(card) && /^\d/.test(a)) a = `$${a}`;
+  const plain = /^[$\d][\d.,:\s]*$/.test(a); // prices, numbers, times
+  return plain ? a : `“${a}”`;
 }
-function explain(card) {
-  return `${card.explanation_en ? `<p class="body-copy explain">${esc(card.explanation_en)}</p>` : ''}${regionNote(card)}`;
+function answerLine(card, fb) {
+  let you = '';
+  if (!fb.ok && !fb.skipped && fb.given != null && card.type !== 'listen_pick' && !hasOptions(card)) {
+    const g = card.type === 'listen_type' ? fmtAnswer(card, fb.given) : fb.given;
+    you = `<p class="caption you-wrote" data-testid="you-wrote">You ${card.type === 'listen_type' ? 'typed' : 'wrote'}: <span class="given">${esc(g)}</span></p>`;
+  }
+  return `<p class="answer-line" data-testid="answer-line">The answer is ${esc(answerText(card))}.</p>${you}`;
 }
-function regionNote(card) {
-  return card.region_note ? `<div class="region"><p class="eyebrow">Mexico vs Spain</p><p class="caption">${esc(card.region_note)}</p></div>` : '';
+function parseTranscript(t) {
+  return String(t || '').split(/\s+\/\s+/).filter(Boolean).map((line) => {
+    const m = /^([^:]{1,24}):\s*(.+)$/.exec(line);
+    return m ? { speaker: m[1].trim(), es: m[2].trim() } : { speaker: '', es: line.trim() };
+  });
 }
+/** Lines for "What you heard": scene cards get speakers (+ English from the scene where it matches). */
+function heardLines(card) {
+  const scene = sceneOf(card);
+  let lines = [];
+  if (card.type === 'scene_question' && !card.audio_text && scene) lines = scene.dialogue.map((d) => ({ ...d }));
+  else lines = parseTranscript(card.transcript || card.audio_text);
+  if (scene) {
+    const en = new Map(scene.dialogue.map((d) => [d.es, d.en]));
+    lines = lines.map((l) => ({ ...l, en: l.en || en.get(l.es) || '' }));
+  }
+  return lines;
+}
+function speakerClasses(lines, scene) {
+  const order = [];
+  for (const l of [...(scene?.dialogue || []), ...lines]) if (l.speaker && !order.includes(l.speaker)) order.push(l.speaker);
+  return (spk) => { const i = order.indexOf(spk); return i === 0 ? 'spk-1' : i === 1 ? 'spk-2' : 'spk-n'; };
+}
+function dialogueHtml(lines, scene, { play = true } = {}) {
+  const cls = speakerClasses(lines, scene);
+  return `<div class="dialogue">${lines.map((l) => `
+    <div class="dline">
+      ${play && hasAudio(l.es) ? `<button class="line-play" data-play="normal" data-text="${esc(l.es)}" data-testid="line-play" aria-label="Play this line">${ICON.speaker}</button>` : '<span class="line-play placeholder" aria-hidden="true"></span>'}
+      <div class="dtext">${l.speaker ? `<p class="eyebrow spk ${cls(l.speaker)}">${esc(l.speaker)}</p>` : ''}<p class="es">${esc(l.es)}</p>${l.en ? `<p class="caption en">${esc(l.en)}</p>` : ''}</div>
+    </div>`).join('')}</div>`;
+}
+/** After answering: "What you heard" and "Why" rows (each opens the sheet). */
+function feedbackRows(card) {
+  const lines = heardLines(card);
+  const heard = lines.length ? lines.map((l) => l.es).join(' ') : '';
+  const why = card.explanation_en || card.region_note || '';
+  if (!heard && !why) return '';
+  return `<div class="info-rows">
+    ${heard ? `<button class="info-row" data-sheet="heard" data-testid="row-heard"><span class="lbl">What you heard</span><span class="pv">${esc(heard)}</span>${ICON.chevron}</button>` : ''}
+    ${why ? `<button class="info-row" data-sheet="why" data-testid="row-why"><span class="lbl">Why</span><span class="pv">${esc(why)}</span>${ICON.chevron}</button>` : ''}
+  </div>`;
+}
+function feedbackBody(card, fb, head) {
+  return `${head}${resultRow(fb.ok)}${answerLine(card, fb)}${card.audio_text ? audioRow(card, { caption: 'Hear it again', cls: 'fb-audio' }) : ''}${feedbackRows(card)}`;
+}
+function bindFeedbackRows(card, fb) {
+  if (!fb) return;
+  $$('[data-sheet]').forEach((b) => { b.onclick = () => openFeedbackSheet(card, b.dataset.sheet); });
+}
+
+// ---------- feedback sheet ----------
+function closeSheet(restoreKeys = true) {
+  const el = S.sheet;
+  if (!el) return;
+  S.sheet = null;
+  disposeHints(el);
+  el.remove();
+  if (restoreKeys) setKeyHandler(S.sheetPrevKey || null);
+  S.sheetPrevKey = null;
+}
+function openFeedbackSheet(card, focus = 'heard') {
+  closeSheet();
+  const scene = sceneOf(card);
+  const lines = heardLines(card);
+  const isScene = !!scene && (card.type === 'scene_question' || lines.some((l) => l.speaker));
+  const secs = [];
+  if (lines.length) {
+    secs.push(`<section class="sheet-sec" data-sec="heard" data-testid="sheet-heard">
+      ${eyebrow('What you heard', isScene ? scene.title_en : '')}
+      ${isScene ? dialogueHtml(lines, scene) : `<p class="heard-text">${esc(lines.map((l) => l.es).join(' '))}</p>`}
+      ${card.audio_text ? audioRow(card, { caption: isScene ? 'Whole clip' : '', cls: 'sheet-audio' }) : ''}
+    </section>`);
+  }
+  if (card.explanation_en || card.region_note) {
+    secs.push(`<section class="sheet-sec" data-sec="why" data-testid="sheet-why">${eyebrow('Why')}
+      ${card.explanation_en ? `<p class="why-text">${esc(card.explanation_en)}</p>` : ''}
+      ${card.region_note ? `<div class="region"><p class="eyebrow">Mexico vs Spain</p><p class="caption">${esc(card.region_note)}</p></div>` : ''}
+    </section>`);
+  }
+  if (isScene && scene.dialogue?.length > lines.length) {
+    secs.push(`<section class="sheet-sec" data-sec="scene" data-testid="sheet-scene">${eyebrow('Whole scene', scene.title_en)}${dialogueHtml(scene.dialogue, scene)}</section>`);
+  }
+  const el = document.createElement('div');
+  el.className = 'sheet-backdrop fb-backdrop';
+  el.innerHTML = `<div class="sheet fb-sheet" role="dialog" aria-modal="true" aria-label="What you heard and why" data-testid="sheet">
+    <span class="grab" aria-hidden="true"></span>
+    <div class="zone sheet-zone"><div class="sheet-scroll scroller"><div class="scroll-inner">${secs.join('')}</div></div>${moreHint()}</div>
+    <button class="btn-text sheet-close" data-act="sheet-close">Close</button>
+  </div>`;
+  el.addEventListener('click', (e) => { if (e.target === el) closeSheet(); });
+  el.querySelector('.grab').addEventListener('click', () => closeSheet());
+  el.querySelector('[data-act="sheet-close"]').onclick = () => closeSheet();
+  document.body.appendChild(el);
+  S.sheet = el;
+  S.sheetPrevKey = S.keyHandler; setKeyHandler((e) => { if (e.key === 'Escape') closeSheet(); });
+  bindAudio(card, el);
+  setupScrollHint(el.querySelector('.sheet-zone'));
+  const target = el.querySelector(`[data-sec="${focus}"]`);
+  if (target && focus !== 'heard') el.querySelector('.sheet-scroll').scrollTop = target.offsetTop - 8;
+  el.querySelector('.sheet-close').focus({ preventScroll: true });
+}
+
+// ---------- options ----------
 function optionsBlock(card, fb, { grid } = {}) {
   const opts = card.options;
-  const useGrid = grid ?? (opts.length === 4 && opts.every((o) => String(o).length <= 7));
+  const priceLike = opts.length === 4 && opts.every((o) => String(o).length <= 7);
+  // Price options always use the 2 x 2 grid of 64px cells (spec rule 4), even on scene cards.
+  const useGrid = (grid ?? priceLike) || (priceLike && opts.every((o) => /^\$?\d[\d.,:]*$/.test(String(o))));
   const items = opts.map((o, i) => {
     let cls = '', dot = '';
     if (fb) {
@@ -290,46 +515,40 @@ function optionsBlock(card, fb, { grid } = {}) {
     }
     return `<button class="opt ${cls}" data-opt="${i}" ${fb ? 'disabled' : ''}>${esc(o)}${dot}</button>`;
   }).join('');
-  return `<div class="options ${useGrid ? 'grid' : ''}">${items}</div>`;
+  return `<div class="options ${useGrid ? 'grid' : ''}" data-testid="options">${items}</div>`;
 }
 function bindOptions(card) {
   $$('[data-opt]').forEach((b) => {
     b.onclick = () => { const o = card.options[Number(b.dataset.opt)]; answer(card, o === card.answer, o); };
   });
 }
-const actionDontKnow = `<div class="action"><button class="btn-text" data-act="dontknow">Don’t know</button></div>`;
-const actionNext = `<div class="action"><button class="btn-primary" data-act="next">Next</button></div>`;
+const btnDontKnow = `<button class="btn-text dontknow" data-act="dontknow">I don’t know</button>`;
+const btnNext = `<button class="btn-primary" data-act="next">Next</button>`;
+const optionsDock = (card, fb, o) => `${optionsBlock(card, fb, o)}${fb ? btnNext : btnDontKnow}`;
 
 // ---------- listen_pick ----------
 function renderListenPick(card, fb) {
   const head = `${eyebrow('Listen')}<h2 class="title prompt">${esc(card.prompt_en || 'What did you hear?')}</h2>`;
-  if (!fb) return { body: `${head}${audioControls(card, 'xl')}<div class="spacer"></div>${optionsBlock(card)}`, action: actionDontKnow, bind: () => bindOptions(card) };
-  return { body: `${head}${resultRow(fb.ok)}${heard(card)}${explain(card)}<div class="spacer"></div>${optionsBlock(card, fb)}`, action: actionNext };
+  if (!fb) return { body: `${head}${audioHero(card)}`, dock: optionsDock(card, null), dockClass: 'opts-dock', bind: () => bindOptions(card) };
+  return { body: feedbackBody(card, fb, head), dock: optionsDock(card, fb), dockClass: 'opts-dock' };
 }
 
 // ---------- listen_type ----------
 function renderListenType(card, fb) {
-  const all = [card.answer, ...(card.accepted_answers || [])].map(String);
-  const money = all.some((a) => a.includes('$'));
+  const money = isMoney(card);
   const head = `${eyebrow('Listen and type')}<h2 class="title prompt">${esc(card.prompt_en || 'Type what you hear.')}</h2>`;
   const show = (v) => `${money && !/[a-z]/i.test(v || '') ? '<span class="prefix">$</span>' : ''}<span class="value ${/[a-z]/i.test(v || '') ? 'words' : ''}">${esc(v || '')}</span>`;
-  if (fb) {
-    const answerDisplay = `${money && !String(card.answer).includes('$') ? '$' : ''}${card.answer}`;
-    const yours = fb.skipped ? '' : `<div class="answer-row ${fb.ok ? 'is-correct' : 'is-wrong'}"><span class="caption">You typed</span><span class="val">${esc((money && /^\d/.test(fb.given) ? '$' : '') + fb.given)}</span><span class="status-dot ${fb.ok ? 'is-correct' : 'is-wrong'}">${fb.ok ? ICON.check(14) : ICON.cross(14)}</span></div>`;
-    const right = fb.ok ? '' : `<div class="answer-row is-correct"><span class="caption">Answer</span><span class="val">${esc(answerDisplay)}</span><span class="status-dot is-correct">${ICON.check(14)}</span></div>`;
-    return { body: `${head}${resultRow(fb.ok)}${heard(card)}${explain(card)}<div class="spacer"></div><div class="answer-rows">${yours}${right}</div>`, action: actionNext };
-  }
+  if (fb) return { body: feedbackBody(card, fb, head), dock: btnNext };
   const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', ':', '0', 'del'];
   const keypad = keys.map((k) => k === 'del'
     ? `<button class="key" data-key="del" aria-label="Delete">${ICON.backspace}</button>`
     : `<button class="key ${k === ':' ? 'colon' : ''}" data-key="${k}">${k}</button>`).join('');
   return {
-    body: `${head}${audioControls(card, 'lg')}<div class="spacer"></div>`,
-    action: `<div class="type-zone">
-      <div class="typed" data-testid="typed" aria-live="polite">${show('')}<span class="caret"></span></div>
+    body: `${head}${audioRow(card, { right: hintPill(card) })}${hintBox(card)}`,
+    dockClass: 'type-dock',
+    dock: `<div class="typed" data-testid="typed" aria-live="polite">${show('')}<span class="caret"></span></div>
       <button class="btn-primary" data-act="check" disabled>Check</button>
-      <div class="keypad">${keypad}</div>
-    </div>`,
+      <div class="keypad" data-testid="keypad">${keypad}</div>`,
     bind: () => {
       let val = '';
       const box = $('.typed'), check = $('[data-act="check"]');
@@ -343,7 +562,7 @@ function renderListenType(card, fb) {
       check.onclick = () => { if (val.trim()) answer(card, isCorrect(card, val), val.trim()); };
       // Hardware keyboard (desktop / testing): digits, letters for number words, Enter to check.
       setKeyHandler((e) => {
-        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        if (e.metaKey || e.ctrlKey || e.altKey || S.sheet) return;
         if (e.key === 'Enter') { e.preventDefault(); check.click(); }
         else if (e.key === 'Backspace') { e.preventDefault(); press('del'); }
         else if (/^[0-9:.$a-zA-Záéíóúñü ]$/.test(e.key)) { e.preventDefault(); press(e.key); }
@@ -353,68 +572,50 @@ function renderListenType(card, fb) {
 }
 
 // ---------- scene_question ----------
-function parseTranscript(t) {
-  return String(t || '').split(/\s+\/\s+/).filter(Boolean).map((line) => {
-    const m = /^([^:]{1,24}):\s*(.+)$/.exec(line);
-    return m ? { speaker: m[1], es: m[2] } : { speaker: '', es: line };
-  });
-}
-function transcriptBox(lines, revealed) {
-  const rows = lines.map((l) => {
-    if (revealed) return `<div class="tline"><span class="spk">${esc(l.speaker)}</span><p class="es">${esc(l.es)}</p></div>`;
-    let remaining = l.es.length * 6.4; const bars = [];
-    while (remaining > 0 && bars.length < 3) { const w = Math.min(remaining, 230); bars.push(Math.max(30, Math.round((w / 230) * 100))); remaining -= 230; }
-    return `<div class="tline"><span class="spk">${esc(l.speaker)}</span><span class="bars-r">${bars.map((w) => `<i style="width:${w}%"></i>`).join('')}</span></div>`;
-  }).join('');
-  return `<div class="tbox ${revealed ? 'revealed' : ''}" data-testid="transcript">
-    <div class="tbox-head"><span class="eyebrow">Transcript</span>${revealed ? '' : '<span class="caption">Shown after you answer</span>'}</div>${rows}</div>`;
-}
 function renderSceneQuestion(card, fb) {
   const scene = sceneOf(card);
   const head = `${eyebrow('Scene', scene?.title_en)}<h2 class="title prompt">${esc(card.prompt_en)}</h2>`;
-  let lines = parseTranscript(card.transcript || card.audio_text);
+  if (fb) return { body: feedbackBody(card, fb, head), dock: optionsDock(card, fb, { grid: false }), dockClass: 'opts-dock' };
   const dialogueMode = !card.audio_text; // no audio: read the scene dialogue instead
-  if (dialogueMode && scene) lines = scene.dialogue.map((d) => ({ speaker: d.speaker, es: d.es }));
-  if (!fb) {
-    return {
-      body: `${head}${audioControls(card, 'lg')}${transcriptBox(lines, dialogueMode)}<div class="spacer"></div>${optionsBlock(card, null, { grid: false })}`,
-      action: actionDontKnow, bind: () => bindOptions(card),
-    };
-  }
+  const transcript = dialogueMode
+    ? `<div class="read-dialogue" data-testid="transcript">${dialogueHtml(heardLines(card), scene, { play: true })}</div>`
+    : `<div class="locked-row" data-testid="transcript"><span class="lbl">Transcript</span><span class="caption">after you answer</span></div>`;
   return {
-    body: `${head}${resultRow(fb.ok)}${transcriptBox(lines, true)}${audioControls(card, 'sm')}${explain(card)}<div class="spacer"></div>${optionsBlock(card, fb, { grid: false })}`,
-    action: actionNext,
+    body: `${head}${audioRow(card, { size: 56 })}${transcript}`,
+    dock: optionsDock(card, null, { grid: false }), dockClass: 'opts-dock', bind: () => bindOptions(card),
   };
 }
 
 // ---------- fix_it ----------
 function sentenceHtml(card, fill, state) {
   const parts = String(card.sentence).split(/_{2,}/);
-  if (parts.length < 2) return `<p class="sentence">${esc(card.sentence)}</p>`;
+  if (parts.length < 2) return `<p class="sentence" data-testid="sentence">${esc(card.sentence)}</p>`;
   const blank = `<span class="blank ${state || ''}" data-testid="blank">${fill ? esc(fill) : '&nbsp;'}</span>`;
-  return `<p class="sentence">${esc(parts[0])}${blank}${parts.slice(1).map(esc).join(blank)}</p>`;
+  return `<p class="sentence" data-testid="sentence">${esc(parts[0])}${blank}${parts.slice(1).map(esc).join(blank)}</p>`;
 }
 function renderFixIt(card, fb) {
   const src = card.source === 'mistake' ? 'from your mistakes' : card.source === 'class_quizlet' ? 'from class' : card.source === 'scene' ? 'from a scene' : '';
   const head = eyebrow('Fix it', src);
   const chosen = hasOptions(card);
+  const instruction = card.prompt_en ? `<p class="body-copy instruction" data-testid="instruction">${esc(card.prompt_en)}</p>` : '';
   if (fb) {
-    const wrote = !fb.ok && !fb.skipped && fb.given ? `<p class="caption you-wrote">You wrote: <span style="color:var(--wrong)">${esc(fb.given)}</span></p>` : '';
-    return { body: `${head}${sentenceHtml(card, card.answer, 'ok')}${resultRow(fb.ok)}${wrote}${explain(card)}<div class="spacer"></div>`, action: actionNext };
+    return { body: feedbackBody(card, fb, `${head}${sentenceHtml(card, card.answer, 'ok')}`), dock: chosen ? optionsDock(card, fb, { grid: false }) : btnNext, dockClass: chosen ? 'opts-dock' : '' };
   }
+  const hint = hasHint(card) ? `<div class="hint-slot">${hintPill(card)}${hintBox(card)}</div>` : '';
   if (chosen) {
-    return { body: `${head}${sentenceHtml(card, '')}<p class="body-copy instruction">${esc(card.prompt_en)}</p><div class="spacer"></div>${optionsBlock(card, null, { grid: false })}`, action: actionDontKnow, bind: () => bindOptions(card) };
+    return { body: `${head}${sentenceHtml(card, '')}${instruction}${hint}`, dock: optionsDock(card, null, { grid: false }), dockClass: 'opts-dock', bind: () => bindOptions(card) };
   }
   return {
-    body: `${head}${sentenceHtml(card, '')}<p class="body-copy instruction">${esc(card.prompt_en)}</p><div class="spacer"></div>
-      <div class="fix-zone"><label class="eyebrow" for="fix-input">Your answer</label>
-      <input id="fix-input" class="text-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" lang="es"></div>`,
-    action: `<div class="action" style="padding-top:24px"><button class="btn-primary" data-act="check" disabled>Check</button></div>`,
+    body: `${head}${sentenceHtml(card, '')}${instruction}${hint}`,
+    dockClass: 'fix-dock',
+    dock: `<div class="fix-row"><input id="fix-input" class="text-input" type="text" aria-label="Your answer" placeholder="Your answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" lang="es">
+      <button class="btn-primary check-compact" data-act="check" disabled>Check</button></div>`,
     bind: () => {
       const inp = $('#fix-input'), check = $('[data-act="check"]'), blank = $('.blank');
+      check.addEventListener('mousedown', (e) => e.preventDefault()); // don't drop the keyboard before the tap lands
       inp.oninput = () => { if (blank) blank.innerHTML = inp.value ? esc(inp.value) : '&nbsp;'; check.disabled = !inp.value.trim(); };
       inp.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); check.click(); } };
-      inp.onfocus = () => setTimeout(() => inp.scrollIntoView({ block: 'nearest' }), 300);
+      inp.onfocus = () => setTimeout(() => { S.updateKeyboardInset?.(); refreshHints(); }, 350);
       setTimeout(() => inp.focus({ preventScroll: true }), 50);
       check.onclick = () => { const v = inp.value.trim(); if (v) { inp.blur(); answer(card, isCorrect(card, v), v); } };
     },
@@ -424,8 +625,8 @@ function renderFixIt(card, fb) {
 // ---------- reply ----------
 function renderReply(card, fb) {
   const head = `${eyebrow('Your reply', sceneOf(card)?.title_en)}<h2 class="title prompt">${esc(card.prompt_en)}</h2>`;
-  if (!fb) return { body: `${head}${audioControls(card, 'lg')}<div class="spacer"></div>${optionsBlock(card, null, { grid: false })}`, action: actionDontKnow, bind: () => bindOptions(card) };
-  return { body: `${head}${resultRow(fb.ok)}${card.audio_text ? heard(card) : ''}${explain(card)}<div class="spacer"></div>${optionsBlock(card, fb, { grid: false })}`, action: actionNext };
+  if (!fb) return { body: `${head}${audioRow(card, { size: 56 })}`, dock: optionsDock(card, null, { grid: false }), dockClass: 'opts-dock', bind: () => bindOptions(card) };
+  return { body: feedbackBody(card, fb, head), dock: optionsDock(card, fb, { grid: false }), dockClass: 'opts-dock' };
 }
 
 // ---------- summary ----------
@@ -472,9 +673,9 @@ function showSummary() {
   const today = srs.answeredToday(S.progress);
   render(`
   <div class="screen page summary" data-screen="summary">
-    <div class="scroll">
+    <div class="zone summary-zone"><div class="scroll scroller"><div class="scroll-inner">
       <p class="eyebrow">${esc(fmtDate())}<span class="sub">${mins} min</span></p>
-      <h1 class="display" style="margin-top:12px">Session done</h1>
+      <h1 class="display">Session done</h1>
       <div class="dial">${dialSvg(ses.results)}<div class="center"><span class="score" data-testid="score">${right}<span class="dim">/${ses.results.length}</span></span><span class="caption">correct</span></div></div>
       <section class="stats small">
         <div class="col"><div class="value">${srs.streak(S.progress)}</div><p class="caption">day streak</p></div>
@@ -484,11 +685,12 @@ function showSummary() {
       ${misses.length ? `<div class="review-head"><span class="eyebrow">Review again</span><span class="caption">back tomorrow</span></div>
         <div class="review-list">${misses.map(reviewRow).join('')}</div>`
         : `<div class="review-head"><span class="eyebrow">Review again</span></div><p class="body-copy empty-note">Nothing to review. ¡Muy bien!</p>`}
-    </div>
+    </div></div>${moreHint()}</div>
     <div class="action"><button class="btn-primary" data-act="done">Done</button></div>
   </div>`);
   $$('[data-play]').forEach((b) => { b.onclick = () => play(b.dataset.text, { btn: b }); });
   $('[data-act="done"]').onclick = () => goHome(true);
+  setupScrollHint($('.summary-zone'));
 }
 
 boot();

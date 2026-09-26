@@ -26,7 +26,8 @@
     "accepted_answers": [],
     "explanation_en": "Ochenta = 80, so ochenta y cinco = 85. Don't mix it up with cincuenta y ocho (58).",
     "transcript": "Son ochenta y cinco pesos.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0002",
@@ -55,7 +56,8 @@
     "accepted_answers": [],
     "explanation_en": "Setenta = 70, sesenta = 60, ochenta = 80. Setenta y cuatro = 74.",
     "transcript": "Son setenta y cuatro pesos.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0003",
@@ -84,7 +86,8 @@
     "accepted_answers": [],
     "explanation_en": "Ciento = one hundred when followed by more (ciento diez = 110). Cien alone is 100; doscientos is 200.",
     "transcript": "Son ciento diez pesos.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0004",
@@ -111,9 +114,10 @@
     ],
     "answer": "$69",
     "accepted_answers": [],
-    "explanation_en": "Sesenta = 60 (s-sound), setenta = 70 (t-sound). You missed this total in the taquería role-play.",
+    "explanation_en": "Sesenta = 60 (s-sound), setenta = 70 (t-sound). These two are easy to mix up by ear.",
     "transcript": "Son sesenta y nueve pesos.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0005",
@@ -142,7 +146,8 @@
     "accepted_answers": [],
     "explanation_en": "Treinta = 30, so treinta y cinco = 35.",
     "transcript": "Un café de olla cuesta treinta y cinco pesos.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0006",
@@ -169,7 +174,8 @@
     "accepted_answers": [],
     "explanation_en": "Dieciséis (16) is one word that starts like diez. Sesenta (60) ends in -enta.",
     "transcript": "Son dieciséis pesos.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0007",
@@ -198,7 +204,8 @@
     "accepted_answers": [],
     "explanation_en": "Veinti- = 20-something. Veintiséis = 26.",
     "transcript": "Veintiséis de cambio.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0008",
@@ -225,7 +232,8 @@
     "accepted_answers": [],
     "explanation_en": "Doscientos = 200, cincuenta = 50. Trescientos would be 300.",
     "transcript": "Son doscientos cincuenta pesos.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0009",
@@ -254,7 +262,8 @@
     "accepted_answers": [],
     "explanation_en": "Dieciocho = 18. Ochenta = 80, veintiocho = 28.",
     "transcript": "Los tacos cuestan dieciocho pesos cada uno.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0010",
@@ -284,7 +293,8 @@
     "accepted_answers": [],
     "explanation_en": "3 x 18 = 54, plus 20 for the drink = 74.",
     "transcript": "Son tres tacos de dieciocho y un agua de veinte.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0011",
@@ -312,7 +322,8 @@
     ],
     "explanation_en": "Noventa = 90. Nueve = 9, nueve + -enta = noventa.",
     "transcript": "Su cambio: noventa pesos.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": "A two-digit price. Type digits only."
   },
   {
     "id": "c-0012",
@@ -338,7 +349,8 @@
     ],
     "explanation_en": "Cuarenta = 40, so cuarenta y cinco = 45.",
     "transcript": "Son cuarenta y cinco pesos.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": "A two-digit price. Catch the tens word (it ends in -enta) first, then the ones."
   },
   {
     "id": "c-0013",
@@ -366,7 +378,8 @@
     ],
     "explanation_en": "Treinta = 30. Trece = 13 sounds similar but is shorter.",
     "transcript": "La concha cuesta treinta pesos.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": "A round number that ends in 0. Type digits only."
   },
   {
     "id": "c-0014",
@@ -392,7 +405,8 @@
     ],
     "explanation_en": "Ciento veinte = 100 + 20.",
     "transcript": "Son ciento veinte pesos.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": "A three-digit price. 'Ciento' means one hundred and something."
   },
   {
     "id": "c-0015",
@@ -418,7 +432,8 @@
     ],
     "explanation_en": "Setenta = 70, siete = 7.",
     "transcript": "Son setenta y siete pesos.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": "A two-digit price. Catch the tens word first, then the ones."
   },
   {
     "id": "c-0016",
@@ -444,7 +459,8 @@
     ],
     "explanation_en": "Ciento (100) + cincuenta (50) + ocho (8).",
     "transcript": "Son ciento cincuenta y ocho pesos.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": "A three-digit price in three parts: hundreds, tens, then ones."
   },
   {
     "id": "c-0017",
@@ -461,7 +477,7 @@
     "source": "class_quizlet",
     "difficulty": 1,
     "audio_text": "Cerramos a las diez y media.",
-    "prompt_en": "What time do they close? (type like 10:30)",
+    "prompt_en": "What time do they close? (type it like 7:15)",
     "sentence": null,
     "options": [],
     "answer": "10:30",
@@ -473,7 +489,8 @@
     ],
     "explanation_en": "Y media = half past. Diez y media = 10:30.",
     "transcript": "Cerramos a las diez y media.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": "A time. Type it like 9:15."
   },
   {
     "id": "c-0018",
@@ -490,7 +507,7 @@
     "source": "class_quizlet",
     "difficulty": 2,
     "audio_text": "Son cuarto para las nueve.",
-    "prompt_en": "What time is it? (type like 8:45)",
+    "prompt_en": "What time is it? (type it like 7:30)",
     "sentence": null,
     "options": [],
     "answer": "8:45",
@@ -501,7 +518,8 @@
     ],
     "explanation_en": "Cuarto para las nueve = a quarter to nine.",
     "transcript": "Son cuarto para las nueve.",
-    "region_note": "Mexico says 'cuarto para las nueve'. Spain says 'las nueve menos cuarto'."
+    "region_note": "Mexico says 'cuarto para las nueve'. Spain says 'las nueve menos cuarto'.",
+    "hint_en": "A time. 'Para las...' means 'to/before' the hour, so count back. Type it like 6:20."
   },
   {
     "id": "c-0019",
@@ -530,7 +548,8 @@
     "accepted_answers": [],
     "explanation_en": "'Para llevar' = to go. 'Para aquí' = for here.",
     "transcript": "Barista: ¿Para aquí o para llevar? / Cliente: Para llevar.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0020",
@@ -560,7 +579,8 @@
     "accepted_answers": [],
     "explanation_en": "'La terminal' is the card machine.",
     "transcript": "Cliente: ¿Puedo pagar con tarjeta? / Barista: Sí, claro. Ahorita le paso la terminal.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0021",
@@ -589,7 +609,8 @@
     "accepted_answers": [],
     "explanation_en": "The bill was 110 and they paid 200, so the change is 90.",
     "transcript": "Cliente: Aquí tiene, doscientos. / Mesero: Muy bien. Su cambio: noventa pesos.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0022",
@@ -616,7 +637,8 @@
     "accepted_answers": [],
     "explanation_en": "'Nomás efectivo' = cash only. 'Nomás' is Mexican for 'solo'.",
     "transcript": "Cliente: ¿Aceptan tarjeta? / Taquero: No, joven, nomás efectivo.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0023",
@@ -643,7 +665,8 @@
     "accepted_answers": [],
     "explanation_en": "At a taquería, 'con todo' means with onion and cilantro. Salsa you usually add yourself.",
     "transcript": "Taquero: ¿Con todo? ¿Cebolla y cilantro? / Cliente: Sí, con todo.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0024",
@@ -668,7 +691,8 @@
     ],
     "explanation_en": "In Mexico 'tomar' is for drinks. For food use 'comer', or just say 'para aquí'.",
     "transcript": null,
-    "region_note": "In Spain 'tomar' is also used for food."
+    "region_note": "In Spain 'tomar' is also used for food.",
+    "hint_en": "Verb 'comer', present, yo."
   },
   {
     "id": "c-0025",
@@ -694,7 +718,8 @@
     ],
     "explanation_en": "'Disculpe' is the usted form, so the verb is 'puede', not 'puedes'.",
     "transcript": null,
-    "region_note": null
+    "region_note": null,
+    "hint_en": "Verb 'poder', present, usted."
   },
   {
     "id": "c-0026",
@@ -720,7 +745,8 @@
     ],
     "explanation_en": "With 'gustar', the thing you like needs an article: me gusta la salsa verde.",
     "transcript": null,
-    "region_note": null
+    "region_note": null,
+    "hint_en": "An article (the), feminine singular."
   },
   {
     "id": "c-0027",
@@ -745,7 +771,8 @@
     ],
     "explanation_en": "It's always 'al pastor' (a + el), never 'a la pastor'.",
     "transcript": null,
-    "region_note": null
+    "region_note": null,
+    "hint_en": "A little word that means 'in the style of'; it's 'a' + 'el' joined."
   },
   {
     "id": "c-0028",
@@ -769,7 +796,8 @@
     ],
     "explanation_en": "'Tomarse' a medicine is reflexive: me la tomo, te la tomas, se la toma. 'Se' is only for he/she/you (usted).",
     "transcript": null,
-    "region_note": null
+    "region_note": null,
+    "hint_en": "A pronoun: 'tomarse' is reflexive, and you're talking about yourself."
   },
   {
     "id": "c-0029",
@@ -795,7 +823,8 @@
     ],
     "explanation_en": "A finished event with a clear time ('ayer') takes the preterite: estuve. 'Estaba' sets a scene or describes something ongoing.",
     "transcript": null,
-    "region_note": null
+    "region_note": null,
+    "hint_en": "Verb 'estar', preterite (one finished moment), yo."
   },
   {
     "id": "c-0030",
@@ -821,7 +850,8 @@
     ],
     "explanation_en": "'Venir' has an irregular tú command: ven. The others to learn are di, haz, ve, pon, sal, sé and ten.",
     "transcript": null,
-    "region_note": null
+    "region_note": null,
+    "hint_en": "Verb 'venir', command, tú. It's irregular and very short."
   },
   {
     "id": "c-0031",
@@ -846,7 +876,8 @@
     "accepted_answers": [],
     "explanation_en": "Mexicans answer the phone with '¿Bueno?'. '¿Dígame?' is used in Spain.",
     "transcript": null,
-    "region_note": "Spain: ¿Dígame? or ¿Sí? Mexico: ¿Bueno?"
+    "region_note": "Spain: ¿Dígame? or ¿Sí? Mexico: ¿Bueno?",
+    "hint_en": null
   },
   {
     "id": "c-0032",
@@ -873,7 +904,8 @@
     "accepted_answers": [],
     "explanation_en": "'Para llevar' = to go.",
     "transcript": "¿Para aquí o para llevar?",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0033",
@@ -900,7 +932,8 @@
     "accepted_answers": [],
     "explanation_en": "Answer with the same words: 'Sí, con todo'. Want no onion? Say 'sin cebolla'.",
     "transcript": "¿Con todo?",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   },
   {
     "id": "c-0034",
@@ -928,6 +961,7 @@
     "accepted_answers": [],
     "explanation_en": "'¿Mande?' is the polite Mexican way to say 'Sorry?'. A bare '¿Qué?' can sound blunt.",
     "transcript": "Son setenta pesos.",
-    "region_note": null
+    "region_note": null,
+    "hint_en": null
   }
 ]

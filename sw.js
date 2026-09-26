@@ -1,6 +1,6 @@
 // Oye service worker: offline app shell + content + audio.
 // CACHE_VERSION is rewritten by tools/publish_content.py (content version + hash of the shell files).
-const CACHE_VERSION = 'oye-v2-76258145';
+const CACHE_VERSION = 'oye-v3-1bce8422';
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const CONTENT_CACHE = 'oye-content'; // filled by js/content.js (JSON + audio); kept across shell updates
 
@@ -24,19 +24,53 @@ const SHELL = [
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(SHELL_CACHE);
-    await cache.addAll(SHELL.map((u) => new Request(u, { cache: 'reload' })));
+    // Fetch each file with a version query so no HTTP/CDN cache can hand back an old copy,
+    // then store it under its plain URL (what the page asks for).
+    await Promise.all(SHELL.map(async (u) => {
+      const res = await fetch(new Request(`${u}${u.includes('?') ? '&' : '?'}v=${CACHE_VERSION}`, { cache: 'reload' }));
+      if (!res.ok) throw new Error(`${u}: HTTP ${res.status}`);
+      await cache.put(u, res);
+    }));
     await self.skipWaiting();
   })());
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil((async () => {
-    for (const key of await caches.keys()) {
+  const ready = (async () => {
+    const keys = await caches.keys();
+    const isUpdate = keys.some((k) => k.startsWith('oye-') && k.endsWith('-shell') && k !== SHELL_CACHE);
+    for (const key of keys) {
       if (key.startsWith('oye-') && key !== SHELL_CACHE && key !== CONTENT_CACHE) await caches.delete(key);
     }
     await self.clients.claim();
-  })());
+    return isUpdate;
+  })();
+  event.waitUntil(ready);
+  // After activation (not inside waitUntil, so navigations aren't held up): move open windows to the new shell.
+  ready.then((isUpdate) => { if (isUpdate) setTimeout(refreshClients, 0); }).catch(() => {});
 });
+
+// Open windows running v1.1+ ack 'oye-update' and reload themselves when it's safe (not mid-session).
+// Windows that don't ack within 3 s (the v1 shell has no handler) are reloaded here.
+const acks = new Map();
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'oye-update-ack' && event.source) {
+    const done = acks.get(event.source.id);
+    if (done) done();
+  }
+});
+async function refreshClients() {
+  const wins = await self.clients.matchAll({ type: 'window' });
+  await Promise.all(wins.map(async (client) => {
+    const acked = new Promise((resolve) => { acks.set(client.id, () => resolve(true)); setTimeout(() => resolve(false), 3000); });
+    try { client.postMessage({ type: 'oye-update', cache: CACHE_VERSION }); } catch (e) {}
+    const ok = await acked;
+    acks.delete(client.id);
+    if (!ok && 'navigate' in client) {
+      try { await client.navigate(client.url); } catch (e) {}
+    }
+  }));
+}
 
 self.addEventListener('fetch', (event) => {
   const req = event.request;

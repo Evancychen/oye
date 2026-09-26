@@ -108,6 +108,90 @@
   "Son setenta pesos.": {
    "normal": "audio/6b79940d3ffd3f7c.mp3",
    "slow": "audio/a95fdecacbc53612.mp3"
+  },
+  "¡Buenas tardes! ¿Qué le sirvo?": {
+   "normal": "audio/718217b86a80ccb9.mp3"
+  },
+  "Buenas tardes. Un café americano grande, por favor.": {
+   "normal": "audio/909e174d83ba9ba9.mp3"
+  },
+  "Para llevar.": {
+   "normal": "audio/6d1524a29f4daaf5.mp3"
+  },
+  "¿Algo más?": {
+   "normal": "audio/23dde4860253251d.mp3"
+  },
+  "Sí, una concha, por favor. ¿Cuánto es?": {
+   "normal": "audio/0cc387762a6757c5.mp3"
+  },
+  "¿Puedo pagar con tarjeta?": {
+   "normal": "audio/2ed0333b917e573c.mp3"
+  },
+  "Sí, claro. Ahorita le paso la terminal.": {
+   "normal": "audio/9860154f1d546744.mp3"
+  },
+  "¿Le traigo la cuenta?": {
+   "normal": "audio/e3588ca97b0282e1.mp3"
+  },
+  "Sí, la cuenta, por favor.": {
+   "normal": "audio/7968d2e1b9155da5.mp3"
+  },
+  "Aquí tiene. Fueron dos cafés de olla y un pan de elote. Son ciento diez pesos.": {
+   "normal": "audio/ceab30826a14c27d.mp3"
+  },
+  "¿Mande? ¿Cuánto?": {
+   "normal": "audio/612f45b56baa634c.mp3"
+  },
+  "Ciento diez.": {
+   "normal": "audio/a4a07be143440f60.mp3"
+  },
+  "Voy a pagar en efectivo. Aquí tiene, doscientos.": {
+   "normal": "audio/30dce37969f335f4.mp3"
+  },
+  "Muy bien. Su cambio: noventa pesos. Gracias, ¡vuelva pronto!": {
+   "normal": "audio/4348e91de30cb0c3.mp3"
+  },
+  "Gracias, todo muy rico.": {
+   "normal": "audio/b95c7747ed520c33.mp3"
+  },
+  "¿Qué va a llevar, joven?": {
+   "normal": "audio/ee91b4b25c2b9bca.mp3"
+  },
+  "Me da dos de pastor y uno de suadero, por favor.": {
+   "normal": "audio/bf905c76e5323678.mp3"
+  },
+  "¿Con todo? ¿Cebolla y cilantro?": {
+   "normal": "audio/fc5758c3a6f1b231.mp3"
+  },
+  "Sí, con todo. Para aquí.": {
+   "normal": "audio/14c1bae898b87966.mp3"
+  },
+  "¿Y de tomar?": {
+   "normal": "audio/5eb1c2061956b11d.mp3"
+  },
+  "Un agua de horchata chica. ¿Cuánto es?": {
+   "normal": "audio/849a2e8586865803.mp3"
+  },
+  "¿Aceptan tarjeta?": {
+   "normal": "audio/37eae9e7edcb7a9c.mp3"
+  },
+  "No, joven, nomás efectivo.": {
+   "normal": "audio/09471dd0d83fdbe3.mp3"
+  },
+  "Ah, bueno. Aquí tiene cien.": {
+   "normal": "audio/29ce8429391a878b.mp3"
+  },
+  "Veintiséis de cambio. ¡Buen provecho!": {
+   "normal": "audio/045b030d81fd1b96.mp3"
+  },
+  "Aquí tiene, doscientos.": {
+   "normal": "audio/0c227828115760d6.mp3"
+  },
+  "Muy bien. Su cambio: noventa pesos.": {
+   "normal": "audio/13eb8baeff4ef71e.mp3"
+  },
+  "Sí, con todo.": {
+   "normal": "audio/38fc197c56836a31.mp3"
   }
  }
 }
