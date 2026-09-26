@@ -1,0 +1,5 @@
+.venv/
+__pycache__/
+*.part
+screenshots/
+tests/last-run.json

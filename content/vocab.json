@@ -1,0 +1,400 @@
+[
+  {
+    "id": "v-que-le-sirvo",
+    "es": "¿Qué le sirvo?",
+    "en": "What can I get you?",
+    "pos": "phrase",
+    "example_es": "¡Buenas tardes! ¿Qué le sirvo?",
+    "example_en": "Good afternoon! What can I get you?",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-cafe-01"
+    ],
+    "register": "neutral",
+    "region_note": null
+  },
+  {
+    "id": "v-cafe-americano",
+    "es": "un café americano",
+    "en": "an americano (black coffee)",
+    "pos": "noun",
+    "example_es": "Un café americano grande, por favor.",
+    "example_en": "A large americano, please.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-cafe-01"
+    ],
+    "register": "neutral",
+    "region_note": null
+  },
+  {
+    "id": "v-para-llevar",
+    "es": "para llevar",
+    "en": "to go",
+    "pos": "phrase",
+    "example_es": "Un café para llevar, por favor.",
+    "example_en": "A coffee to go, please.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-cafe-01",
+      "s-taqueria-01"
+    ],
+    "register": "neutral",
+    "region_note": "Mexico: 'para llevar'. Spain also says 'para llevar'."
+  },
+  {
+    "id": "v-para-aqui",
+    "es": "para aquí",
+    "en": "for here",
+    "pos": "phrase",
+    "example_es": "Para aquí, por favor.",
+    "example_en": "For here, please.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-cafe-01",
+      "s-taqueria-01"
+    ],
+    "register": "neutral",
+    "region_note": "In Mexico say 'para aquí' for eating in, not 'para tomar aquí'."
+  },
+  {
+    "id": "v-algo-mas",
+    "es": "¿Algo más?",
+    "en": "Anything else?",
+    "pos": "phrase",
+    "example_es": "¿Algo más? No, es todo, gracias.",
+    "example_en": "Anything else? No, that's all, thanks.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-cafe-01"
+    ],
+    "register": "neutral",
+    "region_note": null
+  },
+  {
+    "id": "v-concha",
+    "es": "una concha",
+    "en": "a concha (sweet bread roll with a shell-shaped top)",
+    "pos": "noun",
+    "example_es": "Una concha de vainilla, por favor.",
+    "example_en": "A vanilla concha, please.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-cafe-01"
+    ],
+    "register": "neutral",
+    "region_note": null
+  },
+  {
+    "id": "v-cuanto-es",
+    "es": "¿Cuánto es?",
+    "en": "How much is it?",
+    "pos": "phrase",
+    "example_es": "Disculpe, ¿cuánto es?",
+    "example_en": "Excuse me, how much is it?",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-cafe-01",
+      "s-taqueria-01"
+    ],
+    "register": "neutral",
+    "region_note": null
+  },
+  {
+    "id": "v-pagar-con-tarjeta",
+    "es": "pagar con tarjeta",
+    "en": "to pay by card",
+    "pos": "phrase",
+    "example_es": "¿Puedo pagar con tarjeta?",
+    "example_en": "Can I pay by card?",
+    "source": "class_quizlet",
+    "lesson_tag": "A1-L31",
+    "scene_ids": [
+      "s-cafe-01",
+      "s-taqueria-01"
+    ],
+    "register": "neutral",
+    "region_note": null
+  },
+  {
+    "id": "v-terminal",
+    "es": "la terminal",
+    "en": "the card machine",
+    "pos": "noun",
+    "example_es": "Ahorita le paso la terminal.",
+    "example_en": "I'll bring you the card machine right away.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-cafe-01"
+    ],
+    "register": "neutral",
+    "region_note": "Mexico calls the card reader 'la terminal'."
+  },
+  {
+    "id": "v-ahorita",
+    "es": "ahorita",
+    "en": "right away / in a bit",
+    "pos": "other",
+    "example_es": "Ahorita se lo traigo.",
+    "example_en": "I'll bring it to you right away.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-cafe-01"
+    ],
+    "register": "slang_safe",
+    "region_note": "Very Mexican. Can mean 'right now' or 'later', depending on tone."
+  },
+  {
+    "id": "v-la-cuenta",
+    "es": "la cuenta",
+    "en": "the bill / check",
+    "pos": "noun",
+    "example_es": "La cuenta, por favor.",
+    "example_en": "The check, please.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-cafe-02"
+    ],
+    "register": "neutral",
+    "region_note": null
+  },
+  {
+    "id": "v-cafe-de-olla",
+    "es": "un café de olla",
+    "en": "café de olla (coffee brewed with cinnamon and piloncillo)",
+    "pos": "noun",
+    "example_es": "Dos cafés de olla, por favor.",
+    "example_en": "Two cafés de olla, please.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-cafe-02"
+    ],
+    "register": "neutral",
+    "region_note": "Traditional Mexican coffee."
+  },
+  {
+    "id": "v-mande",
+    "es": "¿Mande?",
+    "en": "Sorry? / Pardon? (polite)",
+    "pos": "phrase",
+    "example_es": "¿Mande? ¿Cuánto?",
+    "example_en": "Sorry? How much?",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-cafe-02",
+      "s-taqueria-01"
+    ],
+    "register": "neutral",
+    "region_note": "Mexico's polite way to ask someone to repeat. '¿Qué?' can sound blunt."
+  },
+  {
+    "id": "v-aqui-tiene",
+    "es": "Aquí tiene.",
+    "en": "Here you go (formal).",
+    "pos": "phrase",
+    "example_es": "Aquí tiene, doscientos pesos.",
+    "example_en": "Here you go, two hundred pesos.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-cafe-02",
+      "s-taqueria-01"
+    ],
+    "register": "neutral",
+    "region_note": null
+  },
+  {
+    "id": "v-cambio",
+    "es": "el cambio",
+    "en": "the change (money back)",
+    "pos": "noun",
+    "example_es": "Su cambio: noventa pesos.",
+    "example_en": "Your change: ninety pesos.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-cafe-02",
+      "s-taqueria-01"
+    ],
+    "register": "neutral",
+    "region_note": null
+  },
+  {
+    "id": "v-pagar-en-efectivo",
+    "es": "pagar en efectivo",
+    "en": "to pay in cash",
+    "pos": "phrase",
+    "example_es": "Voy a pagar en efectivo.",
+    "example_en": "I'm going to pay in cash.",
+    "source": "class_quizlet",
+    "lesson_tag": "A1-L31",
+    "scene_ids": [
+      "s-cafe-02",
+      "s-taqueria-01"
+    ],
+    "register": "neutral",
+    "region_note": null
+  },
+  {
+    "id": "v-vuelva-pronto",
+    "es": "¡Vuelva pronto!",
+    "en": "Come back soon!",
+    "pos": "phrase",
+    "example_es": "Gracias, ¡vuelva pronto!",
+    "example_en": "Thanks, come back soon!",
+    "source": "scene",
+    "lesson_tag": "A1-L24",
+    "scene_ids": [
+      "s-cafe-02"
+    ],
+    "register": "neutral",
+    "region_note": null
+  },
+  {
+    "id": "v-me-da",
+    "es": "Me da...",
+    "en": "Can I have... (lit. 'you give me')",
+    "pos": "phrase",
+    "example_es": "Me da dos de pastor, por favor.",
+    "example_en": "Can I have two al pastor, please.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-taqueria-01"
+    ],
+    "register": "neutral",
+    "region_note": "The most common way to order in Mexico."
+  },
+  {
+    "id": "v-al-pastor",
+    "es": "de pastor / al pastor",
+    "en": "al pastor (marinated pork from the spit)",
+    "pos": "noun",
+    "example_es": "Tres tacos al pastor, por favor.",
+    "example_en": "Three al pastor tacos, please.",
+    "source": "mistake",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-taqueria-01"
+    ],
+    "register": "neutral",
+    "region_note": "It's 'al pastor', never 'a la pastor'. Ordering: 'dos de pastor'."
+  },
+  {
+    "id": "v-suadero",
+    "es": "el suadero",
+    "en": "suadero (a soft cut of beef, a Mexico City favorite)",
+    "pos": "noun",
+    "example_es": "Uno de suadero, por favor.",
+    "example_en": "One suadero, please.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-taqueria-01"
+    ],
+    "register": "neutral",
+    "region_note": null
+  },
+  {
+    "id": "v-con-todo",
+    "es": "con todo",
+    "en": "with everything (onion and cilantro)",
+    "pos": "phrase",
+    "example_es": "¿Con todo? Sí, con todo.",
+    "example_en": "With everything? Yes, with everything.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-taqueria-01"
+    ],
+    "register": "neutral",
+    "region_note": null
+  },
+  {
+    "id": "v-de-tomar",
+    "es": "¿Y de tomar?",
+    "en": "And to drink?",
+    "pos": "phrase",
+    "example_es": "¿Y de tomar? Un agua de horchata.",
+    "example_en": "And to drink? An horchata.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-taqueria-01"
+    ],
+    "register": "neutral",
+    "region_note": "In Mexico 'tomar' is for drinks; for food use 'comer'."
+  },
+  {
+    "id": "v-agua-de-horchata",
+    "es": "un agua de horchata",
+    "en": "horchata (sweet rice drink)",
+    "pos": "noun",
+    "example_es": "Un agua de horchata chica, por favor.",
+    "example_en": "A small horchata, please.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-taqueria-01"
+    ],
+    "register": "neutral",
+    "region_note": null
+  },
+  {
+    "id": "v-nomas-efectivo",
+    "es": "Nomás efectivo.",
+    "en": "Cash only.",
+    "pos": "phrase",
+    "example_es": "No aceptamos tarjeta, nomás efectivo.",
+    "example_en": "We don't take cards, cash only.",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-taqueria-01"
+    ],
+    "register": "slang_safe",
+    "region_note": "'Nomás' is Mexican for 'solo' (only)."
+  },
+  {
+    "id": "v-buen-provecho",
+    "es": "¡Buen provecho!",
+    "en": "Enjoy your meal!",
+    "pos": "phrase",
+    "example_es": "Aquí tienen sus tacos. ¡Buen provecho!",
+    "example_en": "Here are your tacos. Enjoy!",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-taqueria-01"
+    ],
+    "register": "neutral",
+    "region_note": null
+  },
+  {
+    "id": "v-joven",
+    "es": "joven",
+    "en": "young man (polite way to address someone)",
+    "pos": "other",
+    "example_es": "¿Qué va a llevar, joven?",
+    "example_en": "What will you have, young man?",
+    "source": "scene",
+    "lesson_tag": null,
+    "scene_ids": [
+      "s-taqueria-01"
+    ],
+    "register": "neutral",
+    "region_note": "In Mexico vendors call customers 'joven' or 'güero/a' regardless of age."
+  }
+]

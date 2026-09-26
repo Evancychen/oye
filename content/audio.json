@@ -1,0 +1,113 @@
+{
+ "voice": "es-MX-DaliaNeural",
+ "rates": {
+  "normal": "+0%",
+  "slow": "-25%"
+ },
+ "items": {
+  "Son ochenta y cinco pesos.": {
+   "normal": "audio/990a6bfc588fe741.mp3",
+   "slow": "audio/8e55b2163a1685b1.mp3"
+  },
+  "Son setenta y cuatro pesos.": {
+   "normal": "audio/1ae4d00cdd59ce94.mp3",
+   "slow": "audio/7b90f6192642b4e5.mp3"
+  },
+  "Son ciento diez pesos.": {
+   "normal": "audio/b3af4c7df388a8d4.mp3",
+   "slow": "audio/27aaa36de57d0b00.mp3"
+  },
+  "Son sesenta y nueve pesos.": {
+   "normal": "audio/0426e458af6b0dd6.mp3",
+   "slow": "audio/9c8c36057f10ce02.mp3"
+  },
+  "Un café de olla cuesta treinta y cinco pesos.": {
+   "normal": "audio/e006320f7aa05f51.mp3",
+   "slow": "audio/a26181cf7adc1019.mp3"
+  },
+  "Son dieciséis pesos.": {
+   "normal": "audio/41035710f884914f.mp3",
+   "slow": "audio/eaec3207ecc1d1f3.mp3"
+  },
+  "Veintiséis de cambio.": {
+   "normal": "audio/741ff0c00a0ed2d4.mp3",
+   "slow": "audio/7440d38ffbb29816.mp3"
+  },
+  "Son doscientos cincuenta pesos.": {
+   "normal": "audio/18ca051ace8b07d5.mp3",
+   "slow": "audio/3cbe892455aa0f0b.mp3"
+  },
+  "Los tacos cuestan dieciocho pesos cada uno.": {
+   "normal": "audio/39d265513e2e1430.mp3",
+   "slow": "audio/0bb45b856441641d.mp3"
+  },
+  "Son tres tacos de dieciocho y un agua de veinte.": {
+   "normal": "audio/f17b4c4507ec6e15.mp3",
+   "slow": "audio/38ca5e0cb2a7408c.mp3"
+  },
+  "Su cambio: noventa pesos.": {
+   "normal": "audio/720baeccd947350b.mp3",
+   "slow": "audio/d096d31e0608d404.mp3"
+  },
+  "Son cuarenta y cinco pesos.": {
+   "normal": "audio/aedc9e769a9b4ff2.mp3",
+   "slow": "audio/3d095d43a7333dda.mp3"
+  },
+  "La concha cuesta treinta pesos.": {
+   "normal": "audio/700c84f8b7c28021.mp3",
+   "slow": "audio/adac71374b50af48.mp3"
+  },
+  "Son ciento veinte pesos.": {
+   "normal": "audio/62e44a7f85ae3501.mp3",
+   "slow": "audio/f9ee2d2ea8659f4e.mp3"
+  },
+  "Son setenta y siete pesos.": {
+   "normal": "audio/89e3dada377875b4.mp3",
+   "slow": "audio/74ec66db10108fd5.mp3"
+  },
+  "Son ciento cincuenta y ocho pesos.": {
+   "normal": "audio/540fbf06cc8dcfa4.mp3",
+   "slow": "audio/7d15e14e300004e4.mp3"
+  },
+  "Cerramos a las diez y media.": {
+   "normal": "audio/b337a170d7168f7a.mp3",
+   "slow": "audio/9cefcf81f4f74942.mp3"
+  },
+  "Son cuarto para las nueve.": {
+   "normal": "audio/8cf2a4a7906cfe6a.mp3",
+   "slow": "audio/78eab232dab874c6.mp3"
+  },
+  "¿Para aquí o para llevar? Para llevar.": {
+   "normal": "audio/d4a4ecd80e514629.mp3",
+   "slow": "audio/95fd063365935aa3.mp3"
+  },
+  "¿Puedo pagar con tarjeta? Sí, claro. Ahorita le paso la terminal.": {
+   "normal": "audio/8fe9be58186447bf.mp3",
+   "slow": "audio/4b7b491212f16650.mp3"
+  },
+  "Aquí tiene, doscientos. Muy bien. Su cambio: noventa pesos.": {
+   "normal": "audio/9150120a958b4775.mp3",
+   "slow": "audio/6c4db230e3a8eb42.mp3"
+  },
+  "¿Aceptan tarjeta? No, joven, nomás efectivo.": {
+   "normal": "audio/d3d5ed3e87494778.mp3",
+   "slow": "audio/99f6a4dfc9b4257e.mp3"
+  },
+  "¿Con todo? ¿Cebolla y cilantro? Sí, con todo.": {
+   "normal": "audio/705261b97e27d6a0.mp3",
+   "slow": "audio/1a4bb2ab3e979291.mp3"
+  },
+  "¿Para aquí o para llevar?": {
+   "normal": "audio/96b839451f0fa333.mp3",
+   "slow": "audio/3dc0f2a6cefa1594.mp3"
+  },
+  "¿Con todo?": {
+   "normal": "audio/f9f4a1253bc9db75.mp3",
+   "slow": "audio/73adde54f1237ef9.mp3"
+  },
+  "Son setenta pesos.": {
+   "normal": "audio/6b79940d3ffd3f7c.mp3",
+   "slow": "audio/a95fdecacbc53612.mp3"
+  }
+ }
+}

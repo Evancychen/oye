@@ -1,0 +1,933 @@
+[
+  {
+    "id": "c-0001",
+    "type": "listen_pick",
+    "scene_id": "s-cafe-01",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-cuanto-es"
+    ],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "Son ochenta y cinco pesos.",
+    "prompt_en": "How much is it?",
+    "sentence": null,
+    "options": [
+      "$75",
+      "$85",
+      "$58",
+      "$95"
+    ],
+    "answer": "$85",
+    "accepted_answers": [],
+    "explanation_en": "Ochenta = 80, so ochenta y cinco = 85. Don't mix it up with cincuenta y ocho (58).",
+    "transcript": "Son ochenta y cinco pesos.",
+    "region_note": null
+  },
+  {
+    "id": "c-0002",
+    "type": "listen_pick",
+    "scene_id": "s-taqueria-01",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-cuanto-es"
+    ],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "Son setenta y cuatro pesos.",
+    "prompt_en": "How much is it?",
+    "sentence": null,
+    "options": [
+      "$64",
+      "$74",
+      "$47",
+      "$84"
+    ],
+    "answer": "$74",
+    "accepted_answers": [],
+    "explanation_en": "Setenta = 70, sesenta = 60, ochenta = 80. Setenta y cuatro = 74.",
+    "transcript": "Son setenta y cuatro pesos.",
+    "region_note": null
+  },
+  {
+    "id": "c-0003",
+    "type": "listen_pick",
+    "scene_id": "s-cafe-02",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-la-cuenta"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "Son ciento diez pesos.",
+    "prompt_en": "How much is the check?",
+    "sentence": null,
+    "options": [
+      "$100",
+      "$110",
+      "$120",
+      "$210"
+    ],
+    "answer": "$110",
+    "accepted_answers": [],
+    "explanation_en": "Ciento = one hundred when followed by more (ciento diez = 110). Cien alone is 100; doscientos is 200.",
+    "transcript": "Son ciento diez pesos.",
+    "region_note": null
+  },
+  {
+    "id": "c-0004",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-cuanto-es"
+    ],
+    "source": "mistake",
+    "difficulty": 1,
+    "audio_text": "Son sesenta y nueve pesos.",
+    "prompt_en": "How much is it?",
+    "sentence": null,
+    "options": [
+      "$59",
+      "$69",
+      "$79",
+      "$96"
+    ],
+    "answer": "$69",
+    "accepted_answers": [],
+    "explanation_en": "Sesenta = 60 (s-sound), setenta = 70 (t-sound). You missed this total in the taquería role-play.",
+    "transcript": "Son sesenta y nueve pesos.",
+    "region_note": null
+  },
+  {
+    "id": "c-0005",
+    "type": "listen_pick",
+    "scene_id": "s-cafe-02",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-cafe-de-olla"
+    ],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "Un café de olla cuesta treinta y cinco pesos.",
+    "prompt_en": "How much is one café de olla?",
+    "sentence": null,
+    "options": [
+      "$25",
+      "$35",
+      "$53",
+      "$45"
+    ],
+    "answer": "$35",
+    "accepted_answers": [],
+    "explanation_en": "Treinta = 30, so treinta y cinco = 35.",
+    "transcript": "Un café de olla cuesta treinta y cinco pesos.",
+    "region_note": null
+  },
+  {
+    "id": "c-0006",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "Son dieciséis pesos.",
+    "prompt_en": "How much is it?",
+    "sentence": null,
+    "options": [
+      "$6",
+      "$16",
+      "$60",
+      "$66"
+    ],
+    "answer": "$16",
+    "accepted_answers": [],
+    "explanation_en": "Dieciséis (16) is one word that starts like diez. Sesenta (60) ends in -enta.",
+    "transcript": "Son dieciséis pesos.",
+    "region_note": null
+  },
+  {
+    "id": "c-0007",
+    "type": "listen_pick",
+    "scene_id": "s-taqueria-01",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-cambio"
+    ],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "Veintiséis de cambio.",
+    "prompt_en": "How much change do you get?",
+    "sentence": null,
+    "options": [
+      "$16",
+      "$26",
+      "$36",
+      "$62"
+    ],
+    "answer": "$26",
+    "accepted_answers": [],
+    "explanation_en": "Veinti- = 20-something. Veintiséis = 26.",
+    "transcript": "Veintiséis de cambio.",
+    "region_note": null
+  },
+  {
+    "id": "c-0008",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "Son doscientos cincuenta pesos.",
+    "prompt_en": "How much is it?",
+    "sentence": null,
+    "options": [
+      "$205",
+      "$215",
+      "$250",
+      "$350"
+    ],
+    "answer": "$250",
+    "accepted_answers": [],
+    "explanation_en": "Doscientos = 200, cincuenta = 50. Trescientos would be 300.",
+    "transcript": "Son doscientos cincuenta pesos.",
+    "region_note": null
+  },
+  {
+    "id": "c-0009",
+    "type": "listen_pick",
+    "scene_id": "s-taqueria-01",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-al-pastor"
+    ],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "Los tacos cuestan dieciocho pesos cada uno.",
+    "prompt_en": "How much is each taco?",
+    "sentence": null,
+    "options": [
+      "$8",
+      "$18",
+      "$28",
+      "$80"
+    ],
+    "answer": "$18",
+    "accepted_answers": [],
+    "explanation_en": "Dieciocho = 18. Ochenta = 80, veintiocho = 28.",
+    "transcript": "Los tacos cuestan dieciocho pesos cada uno.",
+    "region_note": null
+  },
+  {
+    "id": "c-0010",
+    "type": "listen_pick",
+    "scene_id": "s-taqueria-01",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "numbers",
+      "prices",
+      "mental_math"
+    ],
+    "vocab_ids": [
+      "v-cuanto-es"
+    ],
+    "source": "scene",
+    "difficulty": 3,
+    "audio_text": "Son tres tacos de dieciocho y un agua de veinte.",
+    "prompt_en": "What's the total?",
+    "sentence": null,
+    "options": [
+      "$38",
+      "$58",
+      "$64",
+      "$74"
+    ],
+    "answer": "$74",
+    "accepted_answers": [],
+    "explanation_en": "3 x 18 = 54, plus 20 for the drink = 74.",
+    "transcript": "Son tres tacos de dieciocho y un agua de veinte.",
+    "region_note": null
+  },
+  {
+    "id": "c-0011",
+    "type": "listen_type",
+    "scene_id": "s-cafe-02",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-cambio"
+    ],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "Su cambio: noventa pesos.",
+    "prompt_en": "Type the change amount you hear.",
+    "sentence": null,
+    "options": [],
+    "answer": "90",
+    "accepted_answers": [
+      "90",
+      "$90",
+      "noventa"
+    ],
+    "explanation_en": "Noventa = 90. Nueve = 9, nueve + -enta = noventa.",
+    "transcript": "Su cambio: noventa pesos.",
+    "region_note": null
+  },
+  {
+    "id": "c-0012",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "Son cuarenta y cinco pesos.",
+    "prompt_en": "Type the price you hear.",
+    "sentence": null,
+    "options": [],
+    "answer": "45",
+    "accepted_answers": [
+      "45",
+      "$45",
+      "cuarenta y cinco"
+    ],
+    "explanation_en": "Cuarenta = 40, so cuarenta y cinco = 45.",
+    "transcript": "Son cuarenta y cinco pesos.",
+    "region_note": null
+  },
+  {
+    "id": "c-0013",
+    "type": "listen_type",
+    "scene_id": "s-cafe-01",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-concha"
+    ],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "La concha cuesta treinta pesos.",
+    "prompt_en": "Type the price of the concha.",
+    "sentence": null,
+    "options": [],
+    "answer": "30",
+    "accepted_answers": [
+      "30",
+      "$30",
+      "treinta"
+    ],
+    "explanation_en": "Treinta = 30. Trece = 13 sounds similar but is shorter.",
+    "transcript": "La concha cuesta treinta pesos.",
+    "region_note": null
+  },
+  {
+    "id": "c-0014",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "Son ciento veinte pesos.",
+    "prompt_en": "Type the price you hear.",
+    "sentence": null,
+    "options": [],
+    "answer": "120",
+    "accepted_answers": [
+      "120",
+      "$120",
+      "ciento veinte"
+    ],
+    "explanation_en": "Ciento veinte = 100 + 20.",
+    "transcript": "Son ciento veinte pesos.",
+    "region_note": null
+  },
+  {
+    "id": "c-0015",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "Son setenta y siete pesos.",
+    "prompt_en": "Type the price you hear.",
+    "sentence": null,
+    "options": [],
+    "answer": "77",
+    "accepted_answers": [
+      "77",
+      "$77",
+      "setenta y siete"
+    ],
+    "explanation_en": "Setenta = 70, siete = 7.",
+    "transcript": "Son setenta y siete pesos.",
+    "region_note": null
+  },
+  {
+    "id": "c-0016",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [],
+    "source": "scene",
+    "difficulty": 3,
+    "audio_text": "Son ciento cincuenta y ocho pesos.",
+    "prompt_en": "Type the price you hear.",
+    "sentence": null,
+    "options": [],
+    "answer": "158",
+    "accepted_answers": [
+      "158",
+      "$158",
+      "ciento cincuenta y ocho"
+    ],
+    "explanation_en": "Ciento (100) + cincuenta (50) + ocho (8).",
+    "transcript": "Son ciento cincuenta y ocho pesos.",
+    "region_note": null
+  },
+  {
+    "id": "c-0017",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "time"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 1,
+    "audio_text": "Cerramos a las diez y media.",
+    "prompt_en": "What time do they close? (type like 10:30)",
+    "sentence": null,
+    "options": [],
+    "answer": "10:30",
+    "accepted_answers": [
+      "10:30",
+      "10.30",
+      "diez y media",
+      "22:30"
+    ],
+    "explanation_en": "Y media = half past. Diez y media = 10:30.",
+    "transcript": "Cerramos a las diez y media.",
+    "region_note": null
+  },
+  {
+    "id": "c-0018",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "time"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": "Son cuarto para las nueve.",
+    "prompt_en": "What time is it? (type like 8:45)",
+    "sentence": null,
+    "options": [],
+    "answer": "8:45",
+    "accepted_answers": [
+      "8:45",
+      "8.45",
+      "20:45"
+    ],
+    "explanation_en": "Cuarto para las nueve = a quarter to nine.",
+    "transcript": "Son cuarto para las nueve.",
+    "region_note": "Mexico says 'cuarto para las nueve'. Spain says 'las nueve menos cuarto'."
+  },
+  {
+    "id": "c-0019",
+    "type": "scene_question",
+    "scene_id": "s-cafe-01",
+    "lesson_tags": [
+      "A1-L22"
+    ],
+    "grammar_tags": [
+      "listening"
+    ],
+    "vocab_ids": [
+      "v-para-llevar"
+    ],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "¿Para aquí o para llevar? Para llevar.",
+    "prompt_en": "Is the coffee for here or to go?",
+    "sentence": null,
+    "options": [
+      "For here",
+      "To go",
+      "The customer doesn't say"
+    ],
+    "answer": "To go",
+    "accepted_answers": [],
+    "explanation_en": "'Para llevar' = to go. 'Para aquí' = for here.",
+    "transcript": "Barista: ¿Para aquí o para llevar? / Cliente: Para llevar.",
+    "region_note": null
+  },
+  {
+    "id": "c-0020",
+    "type": "scene_question",
+    "scene_id": "s-cafe-01",
+    "lesson_tags": [
+      "A1-L31"
+    ],
+    "grammar_tags": [
+      "listening"
+    ],
+    "vocab_ids": [
+      "v-pagar-con-tarjeta",
+      "v-terminal"
+    ],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "¿Puedo pagar con tarjeta? Sí, claro. Ahorita le paso la terminal.",
+    "prompt_en": "How does the customer pay?",
+    "sentence": null,
+    "options": [
+      "In cash",
+      "By card",
+      "By bank transfer"
+    ],
+    "answer": "By card",
+    "accepted_answers": [],
+    "explanation_en": "'La terminal' is the card machine.",
+    "transcript": "Cliente: ¿Puedo pagar con tarjeta? / Barista: Sí, claro. Ahorita le paso la terminal.",
+    "region_note": null
+  },
+  {
+    "id": "c-0021",
+    "type": "scene_question",
+    "scene_id": "s-cafe-02",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "listening",
+      "numbers"
+    ],
+    "vocab_ids": [
+      "v-cambio"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "Aquí tiene, doscientos. Muy bien. Su cambio: noventa pesos.",
+    "prompt_en": "How much change does the customer get?",
+    "sentence": null,
+    "options": [
+      "$10",
+      "$90",
+      "$110",
+      "$190"
+    ],
+    "answer": "$90",
+    "accepted_answers": [],
+    "explanation_en": "The bill was 110 and they paid 200, so the change is 90.",
+    "transcript": "Cliente: Aquí tiene, doscientos. / Mesero: Muy bien. Su cambio: noventa pesos.",
+    "region_note": null
+  },
+  {
+    "id": "c-0022",
+    "type": "scene_question",
+    "scene_id": "s-taqueria-01",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "listening"
+    ],
+    "vocab_ids": [
+      "v-nomas-efectivo"
+    ],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "¿Aceptan tarjeta? No, joven, nomás efectivo.",
+    "prompt_en": "Why can't the customer pay by card?",
+    "sentence": null,
+    "options": [
+      "They only take cash",
+      "The card machine is broken",
+      "The card was declined"
+    ],
+    "answer": "They only take cash",
+    "accepted_answers": [],
+    "explanation_en": "'Nomás efectivo' = cash only. 'Nomás' is Mexican for 'solo'.",
+    "transcript": "Cliente: ¿Aceptan tarjeta? / Taquero: No, joven, nomás efectivo.",
+    "region_note": null
+  },
+  {
+    "id": "c-0023",
+    "type": "scene_question",
+    "scene_id": "s-taqueria-01",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "listening"
+    ],
+    "vocab_ids": [
+      "v-con-todo"
+    ],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "¿Con todo? ¿Cebolla y cilantro? Sí, con todo.",
+    "prompt_en": "What do the tacos come with when you say 'con todo'?",
+    "sentence": null,
+    "options": [
+      "Onion and cilantro",
+      "Every kind of salsa",
+      "A drink"
+    ],
+    "answer": "Onion and cilantro",
+    "accepted_answers": [],
+    "explanation_en": "At a taquería, 'con todo' means with onion and cilantro. Salsa you usually add yourself.",
+    "transcript": "Taquero: ¿Con todo? ¿Cebolla y cilantro? / Cliente: Sí, con todo.",
+    "region_note": null
+  },
+  {
+    "id": "c-0024",
+    "type": "fix_it",
+    "scene_id": "s-taqueria-01",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "tomar_vs_comer"
+    ],
+    "vocab_ids": [
+      "v-para-aqui"
+    ],
+    "source": "mistake",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "You want to eat your tacos at the stand. Fill in the blank.",
+    "sentence": "Tres tacos, por favor. Me los ___ aquí.",
+    "options": [],
+    "answer": "como",
+    "accepted_answers": [
+      "como"
+    ],
+    "explanation_en": "In Mexico 'tomar' is for drinks. For food use 'comer', or just say 'para aquí'.",
+    "transcript": null,
+    "region_note": "In Spain 'tomar' is also used for food."
+  },
+  {
+    "id": "c-0025",
+    "type": "fix_it",
+    "scene_id": "s-cafe-02",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [
+      "v-la-cuenta"
+    ],
+    "source": "mistake",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "You start with 'Disculpe' (usted). Keep it consistent.",
+    "sentence": "Disculpe, ¿___ traerme la cuenta?",
+    "options": [],
+    "answer": "puede",
+    "accepted_answers": [
+      "puede",
+      "me puede"
+    ],
+    "explanation_en": "'Disculpe' is the usted form, so the verb is 'puede', not 'puedes'.",
+    "transcript": null,
+    "region_note": null
+  },
+  {
+    "id": "c-0026",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L21"
+    ],
+    "grammar_tags": [
+      "articles",
+      "gustar"
+    ],
+    "vocab_ids": [],
+    "source": "mistake",
+    "difficulty": 1,
+    "audio_text": null,
+    "prompt_en": "Fill in the missing word.",
+    "sentence": "Me gusta ___ salsa verde.",
+    "options": [],
+    "answer": "la",
+    "accepted_answers": [
+      "la"
+    ],
+    "explanation_en": "With 'gustar', the thing you like needs an article: me gusta la salsa verde.",
+    "transcript": null,
+    "region_note": null
+  },
+  {
+    "id": "c-0027",
+    "type": "fix_it",
+    "scene_id": "s-taqueria-01",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "articles"
+    ],
+    "vocab_ids": [
+      "v-al-pastor"
+    ],
+    "source": "mistake",
+    "difficulty": 1,
+    "audio_text": null,
+    "prompt_en": "Order your tacos correctly.",
+    "sentence": "Dos tacos ___ pastor, por favor.",
+    "options": [],
+    "answer": "al",
+    "accepted_answers": [
+      "al"
+    ],
+    "explanation_en": "It's always 'al pastor' (a + el), never 'a la pastor'.",
+    "transcript": null,
+    "region_note": null
+  },
+  {
+    "id": "c-0028",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "pronoun_pairs",
+      "reflexive"
+    ],
+    "vocab_ids": [],
+    "source": "mistake",
+    "difficulty": 3,
+    "audio_text": null,
+    "prompt_en": "You're asking the pharmacist about your own pill. Fill in the blank.",
+    "sentence": "La pastilla, ¿___ la tomo con comida?",
+    "options": [],
+    "answer": "me",
+    "accepted_answers": [
+      "me"
+    ],
+    "explanation_en": "'Tomarse' a medicine is reflexive: me la tomo, te la tomas, se la toma. 'Se' is only for he/she/you (usted).",
+    "transcript": null,
+    "region_note": null
+  },
+  {
+    "id": "c-0029",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite_irregular",
+      "preterite_vs_imperfect"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Yesterday you were at the taquería (one finished occasion). Use 'estar'.",
+    "sentence": "Ayer ___ en la taquería de la esquina.",
+    "options": [],
+    "answer": "estuve",
+    "accepted_answers": [
+      "estuve"
+    ],
+    "explanation_en": "A finished event with a clear time ('ayer') takes the preterite: estuve. 'Estaba' sets a scene or describes something ongoing.",
+    "transcript": null,
+    "region_note": null
+  },
+  {
+    "id": "c-0030",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative_irregular"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Tell your friend (tú) to come over, there's a free table. Use 'venir'.",
+    "sentence": "¡Oye, ___ aquí! Hay una mesa libre.",
+    "options": [],
+    "answer": "ven",
+    "accepted_answers": [
+      "ven",
+      "vente"
+    ],
+    "explanation_en": "'Venir' has an irregular tú command: ven. The others to learn are di, haz, ve, pon, sal, sé and ten.",
+    "transcript": null,
+    "region_note": null
+  },
+  {
+    "id": "c-0031",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "phone"
+    ],
+    "vocab_ids": [],
+    "source": "mistake",
+    "difficulty": 1,
+    "audio_text": null,
+    "prompt_en": "Your phone rings in Mexico. How do you answer?",
+    "sentence": null,
+    "options": [
+      "¿Bueno?",
+      "¿Dígame?",
+      "¿Qué pasa?"
+    ],
+    "answer": "¿Bueno?",
+    "accepted_answers": [],
+    "explanation_en": "Mexicans answer the phone with '¿Bueno?'. '¿Dígame?' is used in Spain.",
+    "transcript": null,
+    "region_note": "Spain: ¿Dígame? or ¿Sí? Mexico: ¿Bueno?"
+  },
+  {
+    "id": "c-0032",
+    "type": "reply",
+    "scene_id": "s-cafe-01",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "listening"
+    ],
+    "vocab_ids": [
+      "v-para-llevar"
+    ],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "¿Para aquí o para llevar?",
+    "prompt_en": "You want to take it with you.",
+    "sentence": null,
+    "options": [
+      "Para llevar, por favor.",
+      "Para aquí, por favor.",
+      "Me lo tomo, por favor."
+    ],
+    "answer": "Para llevar, por favor.",
+    "accepted_answers": [],
+    "explanation_en": "'Para llevar' = to go.",
+    "transcript": "¿Para aquí o para llevar?",
+    "region_note": null
+  },
+  {
+    "id": "c-0033",
+    "type": "reply",
+    "scene_id": "s-taqueria-01",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "listening"
+    ],
+    "vocab_ids": [
+      "v-con-todo"
+    ],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "¿Con todo?",
+    "prompt_en": "You want onion and cilantro on your tacos.",
+    "sentence": null,
+    "options": [
+      "Sí, con todo.",
+      "Sí, con nada.",
+      "Sí, todo bien."
+    ],
+    "answer": "Sí, con todo.",
+    "accepted_answers": [],
+    "explanation_en": "Answer with the same words: 'Sí, con todo'. Want no onion? Say 'sin cebolla'.",
+    "transcript": "¿Con todo?",
+    "region_note": null
+  },
+  {
+    "id": "c-0034",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "listening",
+      "politeness"
+    ],
+    "vocab_ids": [
+      "v-mande"
+    ],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "Son setenta pesos.",
+    "prompt_en": "You didn't catch the price. Politely ask them to repeat it, Mexican style.",
+    "sentence": null,
+    "options": [
+      "¿Mande?",
+      "¿Qué?",
+      "¿Cómo que qué?"
+    ],
+    "answer": "¿Mande?",
+    "accepted_answers": [],
+    "explanation_en": "'¿Mande?' is the polite Mexican way to say 'Sorry?'. A bare '¿Qué?' can sound blunt.",
+    "transcript": "Son setenta pesos.",
+    "region_note": null
+  }
+]

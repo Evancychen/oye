@@ -1,0 +1,213 @@
+[
+  {
+    "id": "s-cafe-01",
+    "title_en": "Ordering a coffee to go",
+    "setting": "cafe",
+    "lesson_tags": [
+      "A1-L22",
+      "A1-L31"
+    ],
+    "vocab_ids": [
+      "v-que-le-sirvo",
+      "v-cafe-americano",
+      "v-para-llevar",
+      "v-para-aqui",
+      "v-algo-mas",
+      "v-concha",
+      "v-cuanto-es",
+      "v-pagar-con-tarjeta",
+      "v-terminal",
+      "v-ahorita"
+    ],
+    "dialogue": [
+      {
+        "speaker": "Barista",
+        "es": "¡Buenas tardes! ¿Qué le sirvo?",
+        "en": "Good afternoon! What can I get you?"
+      },
+      {
+        "speaker": "Cliente",
+        "es": "Buenas tardes. Un café americano grande, por favor.",
+        "en": "Good afternoon. A large americano, please."
+      },
+      {
+        "speaker": "Barista",
+        "es": "¿Para aquí o para llevar?",
+        "en": "For here or to go?"
+      },
+      {
+        "speaker": "Cliente",
+        "es": "Para llevar.",
+        "en": "To go."
+      },
+      {
+        "speaker": "Barista",
+        "es": "¿Algo más?",
+        "en": "Anything else?"
+      },
+      {
+        "speaker": "Cliente",
+        "es": "Sí, una concha, por favor. ¿Cuánto es?",
+        "en": "Yes, a concha, please. How much is it?"
+      },
+      {
+        "speaker": "Barista",
+        "es": "Son ochenta y cinco pesos.",
+        "en": "It's eighty-five pesos."
+      },
+      {
+        "speaker": "Cliente",
+        "es": "¿Puedo pagar con tarjeta?",
+        "en": "Can I pay by card?"
+      },
+      {
+        "speaker": "Barista",
+        "es": "Sí, claro. Ahorita le paso la terminal.",
+        "en": "Yes, of course. I'll bring you the card machine right away."
+      }
+    ],
+    "notes_en": "The americano is 55 pesos and the concha is 30, so 85 in total. 'Ahorita' is very Mexican for 'right away'."
+  },
+  {
+    "id": "s-cafe-02",
+    "title_en": "Asking for the check and paying cash",
+    "setting": "cafe",
+    "lesson_tags": [
+      "A1-L26",
+      "A1-L24",
+      "A1-L31"
+    ],
+    "vocab_ids": [
+      "v-la-cuenta",
+      "v-cafe-de-olla",
+      "v-mande",
+      "v-aqui-tiene",
+      "v-cambio",
+      "v-pagar-en-efectivo",
+      "v-vuelva-pronto",
+      "v-cuanto-es"
+    ],
+    "dialogue": [
+      {
+        "speaker": "Mesero",
+        "es": "¿Le traigo la cuenta?",
+        "en": "Shall I bring you the check?"
+      },
+      {
+        "speaker": "Cliente",
+        "es": "Sí, la cuenta, por favor.",
+        "en": "Yes, the check, please."
+      },
+      {
+        "speaker": "Mesero",
+        "es": "Aquí tiene. Fueron dos cafés de olla y un pan de elote. Son ciento diez pesos.",
+        "en": "Here you go. It was two cafés de olla and a corn cake. It's one hundred ten pesos."
+      },
+      {
+        "speaker": "Cliente",
+        "es": "¿Mande? ¿Cuánto?",
+        "en": "Sorry? How much?"
+      },
+      {
+        "speaker": "Mesero",
+        "es": "Ciento diez.",
+        "en": "One hundred ten."
+      },
+      {
+        "speaker": "Cliente",
+        "es": "Voy a pagar en efectivo. Aquí tiene, doscientos.",
+        "en": "I'm going to pay in cash. Here you go, two hundred."
+      },
+      {
+        "speaker": "Mesero",
+        "es": "Muy bien. Su cambio: noventa pesos. Gracias, ¡vuelva pronto!",
+        "en": "Very good. Your change: ninety pesos. Thanks, come back soon!"
+      },
+      {
+        "speaker": "Cliente",
+        "es": "Gracias, todo muy rico.",
+        "en": "Thanks, everything was delicious."
+      }
+    ],
+    "notes_en": "Each café de olla is 35 pesos and the corn cake is 40. Mexicans often use the preterite 'fueron' when reading back what you ordered."
+  },
+  {
+    "id": "s-taqueria-01",
+    "title_en": "Ordering at a taquería (cash only)",
+    "setting": "taqueria",
+    "lesson_tags": [
+      "A1-L22",
+      "A1-L31"
+    ],
+    "vocab_ids": [
+      "v-joven",
+      "v-me-da",
+      "v-al-pastor",
+      "v-suadero",
+      "v-con-todo",
+      "v-para-aqui",
+      "v-de-tomar",
+      "v-agua-de-horchata",
+      "v-nomas-efectivo",
+      "v-buen-provecho"
+    ],
+    "dialogue": [
+      {
+        "speaker": "Taquero",
+        "es": "¿Qué va a llevar, joven?",
+        "en": "What will you have, young man?"
+      },
+      {
+        "speaker": "Cliente",
+        "es": "Me da dos de pastor y uno de suadero, por favor.",
+        "en": "Can I have two al pastor and one suadero, please."
+      },
+      {
+        "speaker": "Taquero",
+        "es": "¿Con todo? ¿Cebolla y cilantro?",
+        "en": "With everything? Onion and cilantro?"
+      },
+      {
+        "speaker": "Cliente",
+        "es": "Sí, con todo. Para aquí.",
+        "en": "Yes, with everything. For here."
+      },
+      {
+        "speaker": "Taquero",
+        "es": "¿Y de tomar?",
+        "en": "And to drink?"
+      },
+      {
+        "speaker": "Cliente",
+        "es": "Un agua de horchata chica. ¿Cuánto es?",
+        "en": "A small horchata. How much is it?"
+      },
+      {
+        "speaker": "Taquero",
+        "es": "Son setenta y cuatro pesos.",
+        "en": "It's seventy-four pesos."
+      },
+      {
+        "speaker": "Cliente",
+        "es": "¿Aceptan tarjeta?",
+        "en": "Do you take cards?"
+      },
+      {
+        "speaker": "Taquero",
+        "es": "No, joven, nomás efectivo.",
+        "en": "No, cash only."
+      },
+      {
+        "speaker": "Cliente",
+        "es": "Ah, bueno. Aquí tiene cien.",
+        "en": "Oh, okay. Here's a hundred."
+      },
+      {
+        "speaker": "Taquero",
+        "es": "Veintiséis de cambio. ¡Buen provecho!",
+        "en": "Twenty-six in change. Enjoy your meal!"
+      }
+    ],
+    "notes_en": "Tacos are 18 pesos each and the small horchata is 20: 54 + 20 = 74. 'Con todo' means with onion and cilantro."
+  }
+]
