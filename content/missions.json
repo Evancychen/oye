@@ -1,0 +1,371 @@
+[
+  {
+    "id": "m-metro-01",
+    "title_en": "Metro announcement: a closed station",
+    "situation_en": "You're on Metro Line 2 heading toward Tasqueña, on your way to the Zócalo. The train has just left Hidalgo when an announcement plays.",
+    "topic": "directions",
+    "lesson_tags": [
+      "A1-L15",
+      "A1-L19",
+      "A1-L12"
+    ],
+    "vocab_ids": [
+      "v-mantenimiento",
+      "v-bajarse",
+      "v-horas-pico",
+      "v-vagon",
+      "v-direccion-metro"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Anuncio",
+          "es": "Próxima estación: Bellas Artes.",
+          "en": "Next station: Bellas Artes.",
+          "voice": "male"
+        },
+        {
+          "speaker": "Anuncio",
+          "es": "Estimados usuarios, les informamos que hoy domingo, por trabajos de mantenimiento, la estación Zócalo/Tenochtitlan de la Línea Dos está cerrada.",
+          "en": "Dear passengers, today, Sunday, Zócalo/Tenochtitlan station on Line 2 is closed for maintenance work.",
+          "voice": "male"
+        },
+        {
+          "speaker": "Anuncio",
+          "es": "Los trenes pasan por la estación, pero no se detienen.",
+          "en": "Trains pass through the station, but they do not stop.",
+          "voice": "male"
+        },
+        {
+          "speaker": "Anuncio",
+          "es": "Si usted va al Zócalo o al Centro Histórico, puede bajar en la estación Allende o en la estación Pino Suárez. Desde Allende son unos cinco minutos caminando.",
+          "en": "If you're going to the Zócalo or the Historic Center, you can get off at Allende or Pino Suárez. From Allende it's about a five-minute walk.",
+          "voice": "male"
+        },
+        {
+          "speaker": "Anuncio",
+          "es": "La estación Zócalo/Tenochtitlan va a abrir otra vez mañana lunes a las cinco de la mañana, en su horario normal.",
+          "en": "Zócalo/Tenochtitlan station is going to open again tomorrow, Monday, at 5 a.m., at its normal time.",
+          "voice": "male"
+        },
+        {
+          "speaker": "Anuncio",
+          "es": "Les recordamos que en horas pico los primeros vagones del tren son exclusivos para mujeres y niños menores de doce años.",
+          "en": "We remind you that at rush hour the first cars of the train are only for women and children under twelve.",
+          "voice": "male"
+        },
+        {
+          "speaker": "Anuncio",
+          "es": "Por su seguridad, no se recarguen en las puertas y dejen salir antes de entrar. Gracias por su comprensión.",
+          "en": "For your safety, don't lean on the doors, and let people off before you get on. Thank you for your understanding.",
+          "voice": "male"
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "Which station is closed today?",
+        "options": [
+          "Zócalo/Tenochtitlan",
+          "Allende",
+          "Pino Suárez",
+          "Bellas Artes"
+        ],
+        "answer": "Zócalo/Tenochtitlan",
+        "hint_en": "Listen for the station that comes before 'está cerrada'.",
+        "explanation_en": "'La estación Zócalo/Tenochtitlan de la Línea Dos está cerrada' = Zócalo/Tenochtitlan station is closed. Allende and Pino Suárez are where you can get off instead, and Bellas Artes is just the next stop."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "You want to go to the Zócalo. What should you do?",
+        "options": [
+          "Get off at Allende or Pino Suárez and walk",
+          "Stay on: the train stops at Zócalo for a moment",
+          "Get off at Bellas Artes and wait for the station to open",
+          "Change to the train going to Cuatro Caminos"
+        ],
+        "answer": "Get off at Allende or Pino Suárez and walk",
+        "hint_en": "What do the trains do at the closed station, and where can you get off instead?",
+        "explanation_en": "Trains pass through Zócalo without stopping ('pasan por la estación, pero no se detienen'). The announcement says you can get off ('puede bajar') at Allende or Pino Suárez; from Allende it's about a five-minute walk. Heading to Tasqueña, Allende is the stop right after Bellas Artes."
+      },
+      {
+        "id": "q3",
+        "kind": "type",
+        "prompt_en": "What time does Zócalo station open again tomorrow? (type it like 7:15)",
+        "answer": "5:00",
+        "accepted_answers": [
+          "5:00",
+          "5",
+          "05:00"
+        ],
+        "hint_en": "Listen for 'va a abrir otra vez'. Type the time like 7:15.",
+        "explanation_en": "'Va a abrir otra vez mañana lunes a las cinco de la mañana' = it's going to open again tomorrow, Monday, at 5:00 a.m."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "At rush hour, which cars are only for women and children under 12?",
+        "options": [
+          "The first cars of the train",
+          "The last cars of the train",
+          "The cars in the middle",
+          "None; any car is fine"
+        ],
+        "answer": "The first cars of the train",
+        "hint_en": "'Horas pico' means rush hour. Listen for 'vagones'.",
+        "explanation_en": "'En horas pico los primeros vagones del tren son exclusivos para mujeres y niños menores de doce años' = at rush hour the first cars are only for women and children under 12."
+      }
+    ],
+    "region_note": "In the CDMX Metro, directions are named after the last station of the line (dirección Tasqueña). 'Horas pico' = rush hour (Spain: 'hora punta'). The ustedes commands at the end ('no se recarguen', 'dejen salir') are just for realism; no question depends on them."
+  },
+  {
+    "id": "m-voicemail-clinic-01",
+    "title_en": "Voicemail from the clinic lab",
+    "situation_en": "You booked a blood test at a clinic for Thursday. You missed a call this morning, and there's a voicemail.",
+    "topic": "health_pharmacy",
+    "lesson_tags": [
+      "A1-L25",
+      "A1-L36",
+      "A1-L12",
+      "A2-L16"
+    ],
+    "vocab_ids": [
+      "v-cita",
+      "v-le-hablo-de",
+      "v-en-ayunas",
+      "v-orden-medico",
+      "v-identificacion"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Buzón de voz",
+          "es": "Tiene un mensaje nuevo. Mensaje recibido hoy a las nueve y diez de la mañana.",
+          "en": "You have one new message. Message received today at 9:10 a.m.",
+          "voice": "male"
+        },
+        {
+          "speaker": "Recepcionista",
+          "es": "Buenos días, le hablo del laboratorio de la Clínica del Valle, sobre su análisis de sangre.",
+          "en": "Good morning, I'm calling from the Clínica del Valle lab about your blood test.",
+          "voice": "female"
+        },
+        {
+          "speaker": "Recepcionista",
+          "es": "El jueves el laboratorio está cerrado, entonces su cita cambia al viernes dieciséis a las ocho de la mañana. Tiene que llegar quince minutos antes para registrarse.",
+          "en": "On Thursday the lab is closed, so your appointment changes to Friday the 16th at 8 a.m. You have to arrive fifteen minutes early to check in.",
+          "voice": "female"
+        },
+        {
+          "speaker": "Recepcionista",
+          "es": "Es un estudio en ayunas: no puede comer nada desde las doce de la noche. Solo puede tomar agua; nada de café, ni jugo.",
+          "en": "It's a fasting test: you can't eat anything after midnight. You can only drink water; no coffee and no juice.",
+          "voice": "female"
+        },
+        {
+          "speaker": "Recepcionista",
+          "es": "Tiene que traer una identificación oficial y la orden de su médico. El estudio cuesta cuatrocientos veinte pesos, y puede pagar con tarjeta o en efectivo.",
+          "en": "You have to bring an official ID and your doctor's order. The test costs 420 pesos, and you can pay by card or in cash.",
+          "voice": "female"
+        },
+        {
+          "speaker": "Recepcionista",
+          "es": "Para confirmar, nada más tiene que mandar un WhatsApp a este mismo número. Los resultados van a estar listos el lunes en la tarde.",
+          "en": "To confirm, you just have to send a WhatsApp to this same number. The results are going to be ready on Monday afternoon.",
+          "voice": "female"
+        },
+        {
+          "speaker": "Recepcionista",
+          "es": "Muchas gracias. Que tenga buen día.",
+          "en": "Thank you very much. Have a nice day.",
+          "voice": "female"
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "When is your new appointment?",
+        "options": [
+          "Friday the 16th at 8:00 a.m.",
+          "Thursday the 16th at 8:00 a.m.",
+          "Friday the 6th at 8:00 a.m.",
+          "Friday the 16th at 8:00 p.m."
+        ],
+        "answer": "Friday the 16th at 8:00 a.m.",
+        "hint_en": "Listen for 'su cita cambia al...'.",
+        "explanation_en": "'Su cita cambia al viernes dieciséis a las ocho de la mañana' = your appointment changes to Friday the 16th at 8 a.m. Thursday is the day the lab is closed. Dieciséis = 16 (seis would be 6)."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "What time should you get to the clinic? (type it like 7:15)",
+        "answer": "7:45",
+        "accepted_answers": [
+          "7:45",
+          "7.45",
+          "07:45"
+        ],
+        "hint_en": "Take the appointment time and count back the minutes she mentions.",
+        "explanation_en": "The appointment is at 8:00, and 'tiene que llegar quince minutos antes' = you have to arrive 15 minutes early, so 7:45."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "It's 7 a.m. on the day of the test. What can you have?",
+        "options": [
+          "Only water",
+          "A coffee with no sugar",
+          "A juice",
+          "A light breakfast"
+        ],
+        "answer": "Only water",
+        "hint_en": "'En ayunas' means fasting. What does she say you can drink?",
+        "explanation_en": "'Solo puede tomar agua; nada de café, ni jugo' = you can only drink water; no coffee, no juice. 'En ayunas' = on an empty stomach."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "What do you need to bring?",
+        "options": [
+          "An ID, the doctor's order, and $420",
+          "An ID, the doctor's order, and $240",
+          "Only an ID and $420 in cash",
+          "A prescription and $420 in cash"
+        ],
+        "answer": "An ID, the doctor's order, and $420",
+        "hint_en": "Two things to bring, plus the price. Check the price carefully.",
+        "explanation_en": "'Tiene que traer una identificación oficial y la orden de su médico' = bring an official ID and your doctor's order. 'Cuesta cuatrocientos veinte pesos' = 420 (not 240). You can pay by card or cash, so cash isn't required."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "How do you confirm the appointment?",
+        "options": [
+          "Send a WhatsApp to the number that called you",
+          "Call back and press 1",
+          "Go to the clinic on Thursday",
+          "You don't need to confirm"
+        ],
+        "answer": "Send a WhatsApp to the number that called you",
+        "hint_en": "Listen for 'para confirmar'.",
+        "explanation_en": "'Para confirmar, nada más tiene que mandar un WhatsApp a este mismo número' = to confirm, you just have to send a WhatsApp to this same number."
+      }
+    ],
+    "region_note": "'Le hablo de...' is the usual Mexican way to say 'I'm calling from...'. An 'identificación oficial' in Mexico is usually the INE card or a passport. 'Que tenga buen día' is a set phrase; no question depends on it."
+  },
+  {
+    "id": "m-landlord-whatsapp-01",
+    "title_en": "WhatsApp from your landlord: plumber visit",
+    "situation_en": "You told your landlord that the bathroom sink is leaking. This afternoon you get a WhatsApp from them.",
+    "topic": "home_errands",
+    "lesson_tags": [
+      "A1-L09",
+      "A2-L11",
+      "A1-L35",
+      "A1-L36",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-fuga",
+      "v-lavabo",
+      "v-plomero",
+      "v-depa",
+      "v-conserje",
+      "v-cubeta",
+      "v-porfa"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "whatsapp",
+      "text_es": "Hola, buenas tardes 👋 Te escribo por la fuga del lavabo del baño. Ya hablé con el plomero y va a ir mañana miércoles entre las 10 y las 12 del día.\n\n¿Vas a estar en el depa? Si no puedes estar, no hay problema: deja las llaves con el conserje en la entrada y él le abre.\n\nPor favor, saca las cosas que tienes abajo del lavabo, porque el plomero necesita espacio para trabajar.\n\nVan a cortar el agua como una hora, entonces si quieres, llena una cubeta en la mañana.\n\nYo le pago directamente al plomero, tú no tienes que pagar nada.\n\nContéstame hoy antes de las 8 de la noche, porfa, para confirmarle la hora. ¡Gracias!",
+      "text_en": "Hi, good afternoon 👋 I'm writing about the leak in the bathroom sink. I already talked to the plumber, and he's going to come tomorrow, Wednesday, between 10 and 12 noon.\n\nAre you going to be at the apartment? If you can't be there, no problem: leave the keys with the caretaker at the entrance and he'll let him in.\n\nPlease take out the things you have under the sink, because the plumber needs room to work.\n\nThey're going to cut off the water for about an hour, so if you want, fill a bucket in the morning.\n\nI'll pay the plumber directly; you don't have to pay anything.\n\nPlease reply today before 8 p.m. so I can confirm the time with him. Thanks!"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "When is the plumber coming?",
+        "options": [
+          "Tomorrow (Wednesday) between 10 and 12",
+          "Tomorrow (Wednesday) at 12",
+          "Today between 10 and 12",
+          "Thursday between 10 and 12"
+        ],
+        "answer": "Tomorrow (Wednesday) between 10 and 12",
+        "hint_en": "Look for 'va a ir'.",
+        "explanation_en": "'Va a ir mañana miércoles entre las 10 y las 12 del día' = he's going to come tomorrow, Wednesday, between 10 and 12 noon."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "You're at work from 9 to 2 tomorrow. What do you do?",
+        "options": [
+          "Leave your keys with the building's caretaker",
+          "Leave the door unlocked",
+          "Ask the landlord to change the day",
+          "Leave the keys under the doormat"
+        ],
+        "answer": "Leave your keys with the building's caretaker",
+        "hint_en": "Look for 'Si no puedes estar...'.",
+        "explanation_en": "'Si no puedes estar, no hay problema: deja las llaves con el conserje en la entrada' = if you can't be there, leave the keys with the caretaker at the entrance, and he'll let the plumber in."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What should you do before the plumber comes?",
+        "options": [
+          "Take your things out from under the sink",
+          "Buy the new parts",
+          "Turn off the electricity",
+          "Clean the kitchen"
+        ],
+        "answer": "Take your things out from under the sink",
+        "hint_en": "Look for the request that starts with 'Por favor'.",
+        "explanation_en": "'Saca las cosas que tienes abajo del lavabo' = take out the things you have under the sink ('abajo de' is the Mexican 'debajo de'). The plumber needs room to work."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "The plumber finishes and asks you for money. What is right?",
+        "options": [
+          "The landlord pays him; you don't pay anything",
+          "You pay and take it off the rent",
+          "You pay half",
+          "You pay in cash and send a photo of the receipt"
+        ],
+        "answer": "The landlord pays him; you don't pay anything",
+        "hint_en": "Look for 'pago' and 'pagar'.",
+        "explanation_en": "'Yo le pago directamente al plomero, tú no tienes que pagar nada' = I'll pay the plumber directly; you don't have to pay anything."
+      },
+      {
+        "id": "q5",
+        "kind": "type",
+        "prompt_en": "By what time do you have to reply today? (type it like 7:15)",
+        "answer": "8:00",
+        "accepted_answers": [
+          "8:00",
+          "8",
+          "20:00",
+          "20"
+        ],
+        "hint_en": "Look for 'Contéstame'. Type the time like 7:15.",
+        "explanation_en": "'Contéstame hoy antes de las 8 de la noche' = reply today before 8 p.m. (20:00)."
+      }
+    ],
+    "region_note": "Mexico: 'depa' (short for departamento), 'plomero' (Spain: fontanero), 'cubeta' (Spain: cubo), 'porfa' = casual please. The message uses tú commands (deja, saca, llena, contéstame)."
+  }
+]

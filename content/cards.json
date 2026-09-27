@@ -87,7 +87,8 @@
     "explanation_en": "Ciento = one hundred when followed by more (ciento diez = 110). Cien alone is 100; doscientos is 200.",
     "transcript": "Son ciento diez pesos.",
     "region_note": null,
-    "hint_en": null
+    "hint_en": null,
+    "voice": "male"
   },
   {
     "id": "c-0004",
@@ -323,7 +324,8 @@
     "explanation_en": "Noventa = 90. Nueve = 9, nueve + -enta = noventa.",
     "transcript": "Su cambio: noventa pesos.",
     "region_note": null,
-    "hint_en": "A two-digit price. Type digits only."
+    "hint_en": "A two-digit price. Type digits only.",
+    "voice": "male"
   },
   {
     "id": "c-0012",
@@ -549,7 +551,19 @@
     "explanation_en": "'Para llevar' = to go. 'Para aquí' = for here.",
     "transcript": "Barista: ¿Para aquí o para llevar? / Cliente: Para llevar.",
     "region_note": null,
-    "hint_en": null
+    "hint_en": null,
+    "audio_lines": [
+      {
+        "speaker": "Barista",
+        "voice": "female",
+        "es": "¿Para aquí o para llevar?"
+      },
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "Para llevar."
+      }
+    ]
   },
   {
     "id": "c-0020",
@@ -580,7 +594,19 @@
     "explanation_en": "'La terminal' is the card machine.",
     "transcript": "Cliente: ¿Puedo pagar con tarjeta? / Barista: Sí, claro. Ahorita le paso la terminal.",
     "region_note": null,
-    "hint_en": null
+    "hint_en": null,
+    "audio_lines": [
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "¿Puedo pagar con tarjeta?"
+      },
+      {
+        "speaker": "Barista",
+        "voice": "female",
+        "es": "Sí, claro. Ahorita le paso la terminal."
+      }
+    ]
   },
   {
     "id": "c-0021",
@@ -610,7 +636,19 @@
     "explanation_en": "The bill was 110 and they paid 200, so the change is 90.",
     "transcript": "Cliente: Aquí tiene, doscientos. / Mesero: Muy bien. Su cambio: noventa pesos.",
     "region_note": null,
-    "hint_en": null
+    "hint_en": null,
+    "audio_lines": [
+      {
+        "speaker": "Cliente",
+        "voice": "female",
+        "es": "Aquí tiene, doscientos."
+      },
+      {
+        "speaker": "Mesero",
+        "voice": "male",
+        "es": "Muy bien. Su cambio: noventa pesos."
+      }
+    ]
   },
   {
     "id": "c-0022",
@@ -636,9 +674,21 @@
     "answer": "They only take cash",
     "accepted_answers": [],
     "explanation_en": "'Nomás efectivo' = cash only. 'Nomás' is Mexican for 'solo'.",
-    "transcript": "Cliente: ¿Aceptan tarjeta? / Taquero: No, joven, nomás efectivo.",
+    "transcript": "Cliente: ¿Aceptan tarjeta? / Taquera: No, joven, nomás efectivo.",
     "region_note": null,
-    "hint_en": null
+    "hint_en": null,
+    "audio_lines": [
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "¿Aceptan tarjeta?"
+      },
+      {
+        "speaker": "Taquera",
+        "voice": "female",
+        "es": "No, joven, nomás efectivo."
+      }
+    ]
   },
   {
     "id": "c-0023",
@@ -664,9 +714,21 @@
     "answer": "Onion and cilantro",
     "accepted_answers": [],
     "explanation_en": "At a taquería, 'con todo' means with onion and cilantro. Salsa you usually add yourself.",
-    "transcript": "Taquero: ¿Con todo? ¿Cebolla y cilantro? / Cliente: Sí, con todo.",
+    "transcript": "Taquera: ¿Con todo? ¿Cebolla y cilantro? / Cliente: Sí, con todo.",
     "region_note": null,
-    "hint_en": null
+    "hint_en": null,
+    "audio_lines": [
+      {
+        "speaker": "Taquera",
+        "voice": "female",
+        "es": "¿Con todo? ¿Cebolla y cilantro?"
+      },
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "Sí, con todo."
+      }
+    ]
   },
   {
     "id": "c-0024",
@@ -963,5 +1025,2310 @@
     "transcript": "Son setenta pesos.",
     "region_note": null,
     "hint_en": null
+  },
+  {
+    "id": "c-0035",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices",
+      "big_numbers"
+    ],
+    "vocab_ids": [
+      "v-mil",
+      "v-renta"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "La renta del departamento es de doce mil quinientos pesos al mes.",
+    "prompt_en": "How much is the monthly rent? Type the number.",
+    "sentence": null,
+    "options": [],
+    "answer": "12500",
+    "accepted_answers": [
+      "12500",
+      "$12500",
+      "12,500",
+      "$12,500",
+      "doce mil quinientos"
+    ],
+    "explanation_en": "Doce mil = 12,000 and quinientos = 500 (not 'cinco-cientos'), so 12,500. Spanish says 'mil', never 'un mil'.",
+    "transcript": "La renta del departamento es de doce mil quinientos pesos al mes.",
+    "region_note": "Mexico: 'la renta' and 'el departamento'. Spain: 'el alquiler' and 'el piso'.",
+    "hint_en": "An amount in the thousands: catch the number before \"mil\", then the hundreds. Type digits only.",
+    "level": "medium",
+    "topic": "numbers_prices"
+  },
+  {
+    "id": "c-0036",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices",
+      "big_numbers"
+    ],
+    "vocab_ids": [
+      "v-mil"
+    ],
+    "source": "scene",
+    "difficulty": 3,
+    "audio_text": "Esta pantalla cuesta cuatro mil novecientos noventa y nueve pesos.",
+    "prompt_en": "Type the price of the TV.",
+    "sentence": null,
+    "options": [],
+    "answer": "4999",
+    "accepted_answers": [
+      "4999",
+      "$4999",
+      "4,999",
+      "$4,999",
+      "cuatro mil novecientos noventa y nueve"
+    ],
+    "explanation_en": "Cuatro mil (4,000) + novecientos (900, irregular: not 'nuevecientos') + noventa y nueve (99) = 4,999.",
+    "transcript": "Esta pantalla cuesta cuatro mil novecientos noventa y nueve pesos.",
+    "region_note": "In Mexico people often call a TV 'la pantalla'.",
+    "hint_en": "A four-digit price: thousands, then hundreds, then tens and ones. Type digits only.",
+    "level": "medium",
+    "topic": "numbers_prices"
+  },
+  {
+    "id": "c-0037",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [],
+    "source": "mistake",
+    "difficulty": 2,
+    "audio_text": "Son setecientos cincuenta pesos.",
+    "prompt_en": "Type the price you hear.",
+    "sentence": null,
+    "options": [],
+    "answer": "750",
+    "accepted_answers": [
+      "750",
+      "$750",
+      "setecientos cincuenta"
+    ],
+    "explanation_en": "Setecientos = 700 (from siete, but 'sete-'), cincuenta = 50. Don't confuse setecientos (700) with seiscientos (600) or setenta (70).",
+    "transcript": "Son setecientos cincuenta pesos.",
+    "region_note": null,
+    "hint_en": "A three-digit price. The hundreds word is one of the irregular ones.",
+    "level": "medium",
+    "topic": "numbers_prices"
+  },
+  {
+    "id": "c-0038",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L31"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices",
+      "change"
+    ],
+    "vocab_ids": [
+      "v-cambio"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "Son trescientos veinte pesos. Me da quinientos, ¿verdad? Entonces le doy ciento ochenta de cambio.",
+    "prompt_en": "How much change do you get?",
+    "sentence": null,
+    "options": [],
+    "answer": "180",
+    "accepted_answers": [
+      "180",
+      "$180",
+      "ciento ochenta"
+    ],
+    "explanation_en": "500 − 320 = 180. Ciento ochenta = 100 + 80, and 'de cambio' tells you it's the change.",
+    "transcript": "Son trescientos veinte pesos. Me da quinientos, ¿verdad? Entonces le doy ciento ochenta de cambio.",
+    "region_note": null,
+    "hint_en": "Three amounts are said. You want the change. Type digits only.",
+    "level": "medium",
+    "topic": "numbers_prices"
+  },
+  {
+    "id": "c-0039",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L31",
+      "A1-L14"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices",
+      "discounts"
+    ],
+    "vocab_ids": [
+      "v-descuento",
+      "v-mitad-de-precio",
+      "v-chamarra"
+    ],
+    "source": "scene",
+    "difficulty": 3,
+    "audio_text": "Todo está a mitad de precio. La chamarra cuesta ochocientos sesenta, y con el descuento queda en cuatrocientos treinta.",
+    "prompt_en": "How much is the jacket after the discount?",
+    "sentence": null,
+    "options": [],
+    "answer": "430",
+    "accepted_answers": [
+      "430",
+      "$430",
+      "cuatrocientos treinta"
+    ],
+    "explanation_en": "Ochocientos sesenta (860) is the original price. 'A mitad de precio' = half price, and 'queda en cuatrocientos treinta' = it comes to 430.",
+    "transcript": "Todo está a mitad de precio. La chamarra cuesta ochocientos sesenta, y con el descuento queda en cuatrocientos treinta.",
+    "region_note": "Mexico: 'chamarra'. Spain: 'chaqueta'.",
+    "hint_en": "Two prices are said: the original and the one after the discount. Type digits only.",
+    "level": "medium",
+    "topic": "numbers_prices"
+  },
+  {
+    "id": "c-0040",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices",
+      "big_numbers"
+    ],
+    "vocab_ids": [
+      "v-mil"
+    ],
+    "source": "mistake",
+    "difficulty": 2,
+    "audio_text": "Son mil quince pesos.",
+    "prompt_en": "How much is it?",
+    "sentence": null,
+    "options": [
+      "$1,015",
+      "$1,050",
+      "$1,500",
+      "$1,115"
+    ],
+    "answer": "$1,015",
+    "accepted_answers": [],
+    "explanation_en": "Mil (1,000) + quince (15) = 1,015. Cincuenta would be 50, quinientos 500, and 'mil ciento quince' 1,115.",
+    "transcript": "Son mil quince pesos.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "numbers_prices"
+  },
+  {
+    "id": "c-0041",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [],
+    "source": "mistake",
+    "difficulty": 2,
+    "audio_text": "Son seiscientos setenta pesos.",
+    "prompt_en": "How much is it?",
+    "sentence": null,
+    "options": [
+      "$670",
+      "$760",
+      "$660",
+      "$770"
+    ],
+    "answer": "$670",
+    "accepted_answers": [],
+    "explanation_en": "Seiscientos = 600 and setenta = 70, so 670. Setecientos sesenta would be 760.",
+    "transcript": "Son seiscientos setenta pesos.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "numbers_prices"
+  },
+  {
+    "id": "c-0042",
+    "type": "scene_question",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L22",
+      "A1-L31"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices",
+      "listening",
+      "mental_math"
+    ],
+    "vocab_ids": [
+      "v-a-como",
+      "v-kilo-y-medio",
+      "v-me-da",
+      "v-joven"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "¿A cómo está el kilo de aguacate? Cuarenta pesos el kilo, joven. Me da kilo y medio, por favor. Son sesenta pesos.",
+    "prompt_en": "At the market: how much does the customer pay in total?",
+    "sentence": null,
+    "options": [
+      "$40",
+      "$45",
+      "$60",
+      "$90"
+    ],
+    "answer": "$60",
+    "accepted_answers": [],
+    "explanation_en": "A kilo costs 40 and 'kilo y medio' is 1.5 kilos: 40 + 20 = 60, which is what the vendor says at the end.",
+    "transcript": "Cliente: ¿A cómo está el kilo de aguacate? / Vendedora: Cuarenta pesos el kilo, joven. / Cliente: Me da kilo y medio, por favor. / Vendedora: Son sesenta pesos.",
+    "region_note": "'¿A cómo está...?' is the usual way to ask prices at a Mexican market.",
+    "hint_en": null,
+    "level": "medium",
+    "topic": "numbers_prices",
+    "audio_lines": [
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "¿A cómo está el kilo de aguacate?"
+      },
+      {
+        "speaker": "Vendedora",
+        "voice": "female",
+        "es": "Cuarenta pesos el kilo, joven."
+      },
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "Me da kilo y medio, por favor."
+      },
+      {
+        "speaker": "Vendedora",
+        "voice": "female",
+        "es": "Son sesenta pesos."
+      }
+    ]
+  },
+  {
+    "id": "c-0043",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices",
+      "number_words"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "The doctor's visit costs 500 pesos. Write the number in words.",
+    "sentence": "La consulta cuesta ___ pesos.",
+    "options": [],
+    "answer": "quinientos",
+    "accepted_answers": [
+      "quinientos"
+    ],
+    "explanation_en": "500 is quinientos, not 'cincocientos'. The other irregular hundreds: setecientos (700) and novecientos (900).",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "A number word for the hundreds. It is one of the irregular ones.",
+    "level": "medium",
+    "topic": "numbers_prices"
+  },
+  {
+    "id": "c-0044",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07",
+      "A1-L31"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices",
+      "number_words",
+      "cien_ciento"
+    ],
+    "vocab_ids": [
+      "v-aqui-tiene"
+    ],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "You pay with exactly 100 pesos. Write the number in words.",
+    "sentence": "Aquí tiene, ___ pesos exactos.",
+    "options": [],
+    "answer": "cien",
+    "accepted_answers": [
+      "cien"
+    ],
+    "explanation_en": "On its own, 100 is 'cien'. Use 'ciento' only when more follows: ciento diez (110), ciento cincuenta (150).",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "A number word for 100, when no other number comes after it.",
+    "level": "medium",
+    "topic": "numbers_prices"
+  },
+  {
+    "id": "c-0045",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "time"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": "La farmacia abre a las siete y media de la mañana.",
+    "prompt_en": "What time does the pharmacy open? (type it like 9:15)",
+    "sentence": null,
+    "options": [],
+    "answer": "7:30",
+    "accepted_answers": [
+      "7:30",
+      "7.30",
+      "07:30"
+    ],
+    "explanation_en": "'Y media' = half past, so siete y media = 7:30. 'De la mañana' = a.m.",
+    "transcript": "La farmacia abre a las siete y media de la mañana.",
+    "region_note": null,
+    "hint_en": "A morning time: the hour plus part of an hour. Type it like 9:15.",
+    "level": "medium",
+    "topic": "time_schedules"
+  },
+  {
+    "id": "c-0046",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12",
+      "A1-L16"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "time",
+      "opening_hours"
+    ],
+    "vocab_ids": [
+      "v-entre-semana"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "Entre semana, el banco cierra a las cuatro de la tarde.",
+    "prompt_en": "What time does the bank close on weekdays? (type it like 9:15)",
+    "sentence": null,
+    "options": [],
+    "answer": "4:00",
+    "accepted_answers": [
+      "4:00",
+      "4",
+      "04:00",
+      "16:00",
+      "16"
+    ],
+    "explanation_en": "'A las cuatro de la tarde' = 4:00 p.m. (16:00). 'Entre semana' = on weekdays.",
+    "transcript": "Entre semana, el banco cierra a las cuatro de la tarde.",
+    "region_note": null,
+    "hint_en": "An afternoon time, right on the hour. Type it like 9:15 (24-hour time is fine too).",
+    "level": "medium",
+    "topic": "time_schedules"
+  },
+  {
+    "id": "c-0047",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12",
+      "A1-L25"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "time",
+      "appointments"
+    ],
+    "vocab_ids": [
+      "v-cita"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "Su cita con el dentista es a las once y cuarto.",
+    "prompt_en": "What time is the appointment? (type it like 9:15)",
+    "sentence": null,
+    "options": [],
+    "answer": "11:15",
+    "accepted_answers": [
+      "11:15",
+      "11.15"
+    ],
+    "explanation_en": "'Y cuarto' = a quarter past, so once y cuarto = 11:15. Careful: once (11) and doce (12) sound alike.",
+    "transcript": "Su cita con el dentista es a las once y cuarto.",
+    "region_note": null,
+    "hint_en": "The hour plus part of an hour. Type it like 9:15.",
+    "level": "medium",
+    "topic": "time_schedules"
+  },
+  {
+    "id": "c-0048",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L15",
+      "A1-L17"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "frequency"
+    ],
+    "vocab_ids": [
+      "v-camion"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "El camión pasa cada doce minutos.",
+    "prompt_en": "How often does the bus come? Type the number of minutes.",
+    "sentence": null,
+    "options": [],
+    "answer": "12",
+    "accepted_answers": [
+      "12",
+      "doce"
+    ],
+    "explanation_en": "'Cada doce minutos' = every 12 minutes. Doce (12) is easy to confuse with dos (2) by ear.",
+    "transcript": "El camión pasa cada doce minutos.",
+    "region_note": "In Mexico the city bus is 'el camión'. In Spain 'camión' means truck.",
+    "hint_en": "A number of minutes. 'Cada' means every.",
+    "level": "medium",
+    "topic": "time_schedules"
+  },
+  {
+    "id": "c-0049",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "time"
+    ],
+    "vocab_ids": [
+      "v-para-las"
+    ],
+    "source": "mistake",
+    "difficulty": 3,
+    "audio_text": "Son veinticinco para las seis.",
+    "prompt_en": "What time is it? (type it like 9:15)",
+    "sentence": null,
+    "options": [],
+    "answer": "5:35",
+    "accepted_answers": [
+      "5:35",
+      "5.35",
+      "17:35"
+    ],
+    "explanation_en": "Veinticinco para las seis = 25 minutes before 6:00 = 5:35.",
+    "transcript": "Son veinticinco para las seis.",
+    "region_note": "Mexico: 'veinticinco para las seis'. Spain: 'las seis menos veinticinco'.",
+    "hint_en": "'Para las...' means minutes before the hour, so count back. Type it like 9:15.",
+    "level": "medium",
+    "topic": "time_schedules"
+  },
+  {
+    "id": "c-0050",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "dates"
+    ],
+    "vocab_ids": [
+      "v-cita"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "Tu cita es el martes trece de octubre.",
+    "prompt_en": "When is your appointment?",
+    "sentence": null,
+    "options": [
+      "Tuesday, October 13",
+      "Tuesday, October 3",
+      "Thursday, October 13",
+      "Tuesday, October 30"
+    ],
+    "answer": "Tuesday, October 13",
+    "accepted_answers": [],
+    "explanation_en": "Martes = Tuesday (jueves is Thursday). Trece = 13; tres is 3 and treinta is 30.",
+    "transcript": "Tu cita es el martes trece de octubre.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "time_schedules"
+  },
+  {
+    "id": "c-0051",
+    "type": "scene_question",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12",
+      "A1-L16"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "time",
+      "opening_hours",
+      "listening"
+    ],
+    "vocab_ids": [
+      "v-entre-semana"
+    ],
+    "source": "scene",
+    "difficulty": 3,
+    "audio_text": "¿A qué hora abren los domingos? Los domingos abrimos a las diez y cerramos a las tres. Entre semana abrimos hasta las ocho de la noche.",
+    "prompt_en": "You want to go on Sunday at 4 p.m. What will you find?",
+    "sentence": null,
+    "options": [
+      "It's already closed",
+      "It's open until 8 p.m.",
+      "It opens at 4 p.m.",
+      "It's open all day"
+    ],
+    "answer": "It's already closed",
+    "accepted_answers": [],
+    "explanation_en": "On Sundays they close at 3 ('cerramos a las tres'), so at 4 it's closed. Open until 8 p.m. is only 'entre semana' (on weekdays).",
+    "transcript": "Cliente: ¿A qué hora abren los domingos? / Empleada: Los domingos abrimos a las diez y cerramos a las tres. Entre semana abrimos hasta las ocho de la noche.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "time_schedules",
+    "audio_lines": [
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "¿A qué hora abren los domingos?"
+      },
+      {
+        "speaker": "Empleada",
+        "voice": "female",
+        "es": "Los domingos abrimos a las diez y cerramos a las tres. Entre semana abrimos hasta las ocho de la noche."
+      }
+    ]
+  },
+  {
+    "id": "c-0052",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12"
+    ],
+    "grammar_tags": [
+      "time",
+      "articles"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "The meeting is at 1:30. Fill in the missing word.",
+    "sentence": "La reunión es a ___ una y media.",
+    "options": [],
+    "answer": "la",
+    "accepted_answers": [
+      "la"
+    ],
+    "explanation_en": "One o'clock is singular: 'a la una', 'es la una'. Every other hour is plural: 'a las dos', 'son las tres'.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "A little word before the hour. Is 'una' singular or plural?",
+    "level": "medium",
+    "topic": "time_schedules"
+  },
+  {
+    "id": "c-0053",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L16"
+    ],
+    "grammar_tags": [
+      "time",
+      "prepositions",
+      "days"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "The store is open Monday through Saturday. Fill in the blank.",
+    "sentence": "La tienda abre ___ lunes a sábado.",
+    "options": [],
+    "answer": "de",
+    "accepted_answers": [
+      "de"
+    ],
+    "explanation_en": "Spanish uses 'de ... a ...' for ranges: de lunes a sábado, de nueve a seis.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "A small word that starts a range; it pairs with 'a' (to).",
+    "level": "medium",
+    "topic": "time_schedules"
+  },
+  {
+    "id": "c-0054",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12",
+      "A1-L37"
+    ],
+    "grammar_tags": [
+      "time",
+      "making_plans"
+    ],
+    "vocab_ids": [],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "¿Nos vemos mañana a las nueve?",
+    "prompt_en": "A friend suggests 9 tomorrow. You can't at 9, but 10 works. Answer.",
+    "sentence": null,
+    "options": [
+      "A las nueve no puedo. ¿A las diez?",
+      "Sí, a las nueve está perfecto.",
+      "Ayer a las diez, ¿no?"
+    ],
+    "answer": "A las nueve no puedo. ¿A las diez?",
+    "accepted_answers": [],
+    "explanation_en": "'A las nueve no puedo' = I can't at nine; then suggest another time: '¿A las diez?'. 'Ayer' (yesterday) doesn't fit a plan for tomorrow.",
+    "transcript": "¿Nos vemos mañana a las nueve?",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "time_schedules"
+  },
+  {
+    "id": "c-0055",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L08",
+      "A1-L09"
+    ],
+    "grammar_tags": [
+      "location",
+      "prepositions"
+    ],
+    "vocab_ids": [
+      "v-encima-de",
+      "v-junto-a"
+    ],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Your keys are ON the table. Fill in the location (two words).",
+    "sentence": "Tus llaves están ___ la mesa, junto a la lámpara.",
+    "options": [],
+    "answer": "encima de",
+    "accepted_answers": [
+      "encima de",
+      "arriba de",
+      "sobre"
+    ],
+    "explanation_en": "'Encima de' = on top of. Mexicans very often say 'arriba de la mesa'; 'sobre la mesa' works too. 'Junto a' means next to.",
+    "transcript": null,
+    "region_note": "Mexico often says 'arriba de' / 'abajo de' where textbooks say 'encima de' / 'debajo de'.",
+    "hint_en": "A two-word location phrase meaning 'on top of'.",
+    "level": "medium",
+    "topic": "directions"
+  },
+  {
+    "id": "c-0056",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L08"
+    ],
+    "grammar_tags": [
+      "location",
+      "contractions"
+    ],
+    "vocab_ids": [
+      "v-enfrente-de",
+      "v-oxxo"
+    ],
+    "source": "mistake",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "The OXXO is across the street from the bank. Fill in the blank.",
+    "sentence": "El OXXO está enfrente ___ banco.",
+    "options": [],
+    "answer": "del",
+    "accepted_answers": [
+      "del"
+    ],
+    "explanation_en": "'Enfrente de' + 'el banco' → 'enfrente del banco' (de + el = del). With a feminine word there's no contraction: enfrente de la farmacia.",
+    "transcript": null,
+    "region_note": "'Enfrente de' is the usual Mexican way to say across from. 'Delante de' is more like in front of (e.g. in a line).",
+    "hint_en": "One short word. 'Banco' is masculine, and two little words join here.",
+    "level": "medium",
+    "topic": "directions"
+  },
+  {
+    "id": "c-0057",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L08",
+      "A1-L19"
+    ],
+    "grammar_tags": [
+      "location",
+      "listening"
+    ],
+    "vocab_ids": [
+      "v-parada",
+      "v-camion",
+      "v-detras-de"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "La parada del camión está detrás del mercado.",
+    "prompt_en": "Where is the bus stop?",
+    "sentence": null,
+    "options": [
+      "Behind the market",
+      "Across from the market",
+      "Inside the market",
+      "Next to the market"
+    ],
+    "answer": "Behind the market",
+    "accepted_answers": [],
+    "explanation_en": "'Detrás de' = behind (detrás del mercado: de + el = del). Across from = enfrente de, inside = adentro de, next to = al lado de.",
+    "transcript": "La parada del camión está detrás del mercado.",
+    "region_note": "Mexicans also say 'atrás del mercado'.",
+    "hint_en": null,
+    "level": "medium",
+    "topic": "directions"
+  },
+  {
+    "id": "c-0058",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L19",
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "directions",
+      "numbers",
+      "imperative"
+    ],
+    "vocab_ids": [
+      "v-cuadra",
+      "v-todo-derecho",
+      "v-esquina",
+      "v-doblar"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "Camina tres cuadras todo derecho y en la esquina dobla a la derecha.",
+    "prompt_en": "How many blocks do you walk straight ahead?",
+    "sentence": null,
+    "options": [],
+    "answer": "3",
+    "accepted_answers": [
+      "3",
+      "tres"
+    ],
+    "explanation_en": "'Tres cuadras todo derecho' = three blocks straight ahead; then 'dobla a la derecha' = turn right. Derecho (straight) and derecha (right) sound alike.",
+    "transcript": "Camina tres cuadras todo derecho y en la esquina dobla a la derecha.",
+    "region_note": "Mexico: 'todo derecho'. Spain: 'todo recto'.",
+    "hint_en": "A small number of blocks (cuadras).",
+    "level": "medium",
+    "topic": "directions"
+  },
+  {
+    "id": "c-0059",
+    "type": "scene_question",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L08",
+      "A1-L09"
+    ],
+    "grammar_tags": [
+      "location",
+      "listening"
+    ],
+    "vocab_ids": [
+      "v-debajo-de",
+      "v-adentro",
+      "v-entre"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "Oye, ¿dónde dejé mis llaves? No sé, pero no están adentro de tu mochila. Mira, están abajo de la cama, entre los tenis.",
+    "prompt_en": "Where are the keys?",
+    "sentence": null,
+    "options": [
+      "Under the bed",
+      "Inside the backpack",
+      "On the bed",
+      "Next to the backpack"
+    ],
+    "answer": "Under the bed",
+    "accepted_answers": [],
+    "explanation_en": "'Abajo de la cama' = under the bed ('debajo de' also works). 'No están adentro de tu mochila' = they're NOT inside the backpack. 'Entre los tenis' = between the sneakers.",
+    "transcript": "Compañero: Oye, ¿dónde dejé mis llaves? / Compañera: No sé, pero no están adentro de tu mochila. Mira, están abajo de la cama, entre los tenis.",
+    "region_note": "Mexico prefers 'abajo de' and 'adentro de'. 'Tenis' = sneakers (Spain: 'zapatillas').",
+    "hint_en": null,
+    "level": "medium",
+    "topic": "directions",
+    "audio_lines": [
+      {
+        "speaker": "Compañero",
+        "voice": "male",
+        "es": "Oye, ¿dónde dejé mis llaves?"
+      },
+      {
+        "speaker": "Compañera",
+        "voice": "female",
+        "es": "No sé, pero no están adentro de tu mochila. Mira, están abajo de la cama, entre los tenis."
+      }
+    ]
+  },
+  {
+    "id": "c-0060",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L08"
+    ],
+    "grammar_tags": [
+      "location"
+    ],
+    "vocab_ids": [
+      "v-afuera"
+    ],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "You'll wait out on the street, because there are no tables inside. Fill in the location word.",
+    "sentence": "Te espero ___ del café; adentro no hay mesas.",
+    "options": [],
+    "answer": "afuera",
+    "accepted_answers": [
+      "afuera",
+      "fuera"
+    ],
+    "explanation_en": "'Afuera de' = outside of: afuera del café (de + el = del). 'Fuera de' also works.",
+    "transcript": null,
+    "region_note": "Mexico prefers 'afuera' / 'adentro'; 'fuera de' / 'dentro de' are also correct.",
+    "hint_en": "One location word, the opposite of 'adentro'.",
+    "level": "medium",
+    "topic": "directions"
+  },
+  {
+    "id": "c-0061",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L19",
+      "A1-L23"
+    ],
+    "grammar_tags": [
+      "directions",
+      "imperative"
+    ],
+    "vocab_ids": [
+      "v-doblar",
+      "v-esquina"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Tell a friend (tú) to turn left at the corner.",
+    "sentence": "Sal del metro y en la esquina ___ a la izquierda.",
+    "options": [],
+    "answer": "dobla",
+    "accepted_answers": [
+      "dobla",
+      "voltea",
+      "gira"
+    ],
+    "explanation_en": "'Dobla a la izquierda' = turn left. Regular tú commands look like the él form: doblar → dobla. You'll also hear 'da vuelta' and 'voltea'.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "A verb meaning 'to turn' at a corner, tú command.",
+    "level": "medium",
+    "topic": "directions"
+  },
+  {
+    "id": "c-0062",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L15"
+    ],
+    "grammar_tags": [
+      "directions",
+      "metro",
+      "listening"
+    ],
+    "vocab_ids": [
+      "v-bajarse",
+      "v-direccion-metro"
+    ],
+    "source": "scene",
+    "difficulty": 3,
+    "audio_text": "Toma la línea tres, dirección Universidad, y bájate en Centro Médico.",
+    "prompt_en": "At which station do you get off?",
+    "sentence": null,
+    "options": [
+      "Centro Médico",
+      "Universidad",
+      "Hospital General",
+      "Coyoacán"
+    ],
+    "answer": "Centro Médico",
+    "accepted_answers": [],
+    "explanation_en": "'Bájate en Centro Médico' = get off at Centro Médico. 'Dirección Universidad' only tells you which way the train goes: metro directions are named after the last station of the line.",
+    "transcript": "Toma la línea tres, dirección Universidad, y bájate en Centro Médico.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "directions"
+  },
+  {
+    "id": "c-0063",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L08"
+    ],
+    "grammar_tags": [
+      "directions",
+      "listening"
+    ],
+    "vocab_ids": [
+      "v-ahorita",
+      "v-oxxo",
+      "v-enfrente-de"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "Ya llegué. Estoy enfrente del OXXO, en un carro gris.",
+    "prompt_en": "Your Uber driver sent a voice note. You're on your way down. Reply.",
+    "sentence": null,
+    "options": [
+      "Ya voy, ahorita salgo.",
+      "Estoy en un carro gris.",
+      "Ya llegué al OXXO."
+    ],
+    "answer": "Ya voy, ahorita salgo.",
+    "accepted_answers": [],
+    "explanation_en": "'Ya voy, ahorita salgo' = I'm coming, I'll be right out. The other two repeat what the driver said about himself.",
+    "transcript": "Ya llegué. Estoy enfrente del OXXO, en un carro gris.",
+    "region_note": "Mexico: 'carro'. Spain: 'coche'.",
+    "hint_en": null,
+    "level": "medium",
+    "topic": "directions"
+  },
+  {
+    "id": "c-0064",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L08"
+    ],
+    "grammar_tags": [
+      "location",
+      "contractions"
+    ],
+    "vocab_ids": [
+      "v-al-lado-de"
+    ],
+    "source": "mistake",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "The ATM is right next to the pharmacy. Fill in the blank.",
+    "sentence": "El cajero está ___ lado de la farmacia.",
+    "options": [],
+    "answer": "al",
+    "accepted_answers": [
+      "al"
+    ],
+    "explanation_en": "It's always 'al lado de' (a + el = al), never 'a lado de': al lado del OXXO, al lado de la farmacia. 'Junto a' means the same.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "One short word before 'lado'. Two little words join here.",
+    "level": "medium",
+    "topic": "directions"
+  },
+  {
+    "id": "c-0065",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite",
+      "preterite_stem_change"
+    ],
+    "vocab_ids": [
+      "v-pidio",
+      "v-al-pastor"
+    ],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Last night your brother ordered tacos for everyone. Use 'pedir'.",
+    "sentence": "Anoche mi hermano ___ tacos al pastor para todos.",
+    "options": [],
+    "answer": "pidió",
+    "accepted_answers": [
+      "pidió"
+    ],
+    "explanation_en": "Pedir changes e→i only in the él/ella/usted and ellos forms of the preterite: pidió, pidieron (but yo pedí, tú pediste). Same pattern: sirvió, repitió, prefirió, sintió.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb pedir, preterite, él. The stem changes in this person.",
+    "level": "medium",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0066",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite",
+      "preterite_stem_change"
+    ],
+    "vocab_ids": [
+      "v-durmio"
+    ],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "The kids slept the whole trip. Use 'dormir'.",
+    "sentence": "Los niños ___ todo el viaje en el autobús a Puebla.",
+    "options": [],
+    "answer": "durmieron",
+    "accepted_answers": [
+      "durmieron"
+    ],
+    "explanation_en": "Dormir changes o→u only in the 3rd person of the preterite: durmió, durmieron (yo dormí, tú dormiste). Morir works the same way: murió.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb dormir, preterite, ellos. Watch the stem.",
+    "level": "medium",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0067",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite",
+      "preterite_spelling_change"
+    ],
+    "vocab_ids": [
+      "v-leyo",
+      "v-celular"
+    ],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "This morning your dad read the news on his phone. Use 'leer'.",
+    "sentence": "Esta mañana mi papá ___ la noticia en el celular.",
+    "options": [],
+    "answer": "leyó",
+    "accepted_answers": [
+      "leyó"
+    ],
+    "explanation_en": "When the stem ends in a vowel, the i between vowels becomes y in the 3rd person: leyó, leyeron; also creyó, oyó, construyó. Yo leí and tú leíste keep the i.",
+    "transcript": null,
+    "region_note": "Mexico: 'celular'. Spain: 'móvil'.",
+    "hint_en": "Verb leer, preterite, él. Watch the spelling between the two vowels.",
+    "level": "medium",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0068",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L26",
+      "A1-L36"
+    ],
+    "grammar_tags": [
+      "preterite_irregular",
+      "tener_que"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Yesterday you had to go to the bank, and you went. Use 'tener'.",
+    "sentence": "Ayer ___ que ir al banco porque perdí mi tarjeta.",
+    "options": [],
+    "answer": "tuve",
+    "accepted_answers": [
+      "tuve"
+    ],
+    "explanation_en": "Tener has the irregular preterite stem tuv-: tuve, tuviste, tuvo. Others like it: estuve, pude, puse, hice, vine, dije. 'Tenía que' would mean you were supposed to go, without saying if you did.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb tener, preterite, yo. Irregular stem.",
+    "level": "medium",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0069",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L15"
+    ],
+    "grammar_tags": [
+      "imperfect",
+      "preterite_vs_imperfect",
+      "ser"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Talk about your childhood. Use 'ser'.",
+    "sentence": "Cuando ___ niño, vivía en Puebla con mis abuelos.",
+    "options": [],
+    "answer": "era",
+    "accepted_answers": [
+      "era"
+    ],
+    "explanation_en": "Describing a period of your life ('when I was a kid') takes the imperfect: era. 'Fui' is for a finished event, e.g. 'Fui a Puebla el sábado'.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb ser, past, yo. A stage of life, or one finished event?",
+    "level": "medium",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0070",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L15",
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite",
+      "preterite_vs_imperfect",
+      "ser"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Say how last night's concert was. Use 'ser'.",
+    "sentence": "El concierto de anoche ___ increíble.",
+    "options": [],
+    "answer": "fue",
+    "accepted_answers": [
+      "fue",
+      "estuvo"
+    ],
+    "explanation_en": "A single finished event judged as a whole takes the preterite: fue increíble (Mexicans also say 'estuvo increíble'). 'Era' is for descriptions and background: 'Cuando era niño...'.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb ser, past, él. One finished event, or a description of a period?",
+    "level": "medium",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0071",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L15"
+    ],
+    "grammar_tags": [
+      "imperfect",
+      "preterite_vs_imperfect",
+      "estar"
+    ],
+    "vocab_ids": [],
+    "source": "mistake",
+    "difficulty": 3,
+    "audio_text": null,
+    "prompt_en": "You were on the metro when your boss called. Use 'estar'.",
+    "sentence": "___ en el metro cuando me llamó mi jefa.",
+    "options": [],
+    "answer": "estaba",
+    "accepted_answers": [
+      "estaba"
+    ],
+    "explanation_en": "The background (what was going on) takes the imperfect: estaba en el metro. The interruption takes the preterite: me llamó. 'Estuve' is for a finished stay: 'Ayer estuve dos horas en el metro'.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb estar, past, yo. Is it the background action or the interruption?",
+    "level": "medium",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0072",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L15"
+    ],
+    "grammar_tags": [
+      "imperfect",
+      "preterite_vs_imperfect",
+      "ir"
+    ],
+    "vocab_ids": [
+      "v-camion"
+    ],
+    "source": "mistake",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Talk about a childhood habit. Use 'ir'.",
+    "sentence": "De niño, ___ a la escuela en camión todos los días.",
+    "options": [],
+    "answer": "iba",
+    "accepted_answers": [
+      "iba"
+    ],
+    "explanation_en": "'Todos los días' signals a habit, so imperfect: iba. For one trip, use the preterite: 'Ayer fui a la escuela en Uber'.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb ir, past, yo. A habit, or a one-time trip?",
+    "level": "medium",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0073",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L15"
+    ],
+    "grammar_tags": [
+      "imperfect",
+      "preterite",
+      "preterite_vs_imperfect",
+      "listening"
+    ],
+    "vocab_ids": [],
+    "source": "scene",
+    "difficulty": 3,
+    "audio_text": "Cuando llegué a la casa, mi compañero cocinaba.",
+    "prompt_en": "When you got home, what was your roommate doing?",
+    "sentence": null,
+    "options": [
+      "He was in the middle of cooking",
+      "He had already finished cooking",
+      "He started cooking after you arrived",
+      "He wasn't home"
+    ],
+    "answer": "He was in the middle of cooking",
+    "accepted_answers": [],
+    "explanation_en": "'Cocinaba' (imperfect) is the background: the cooking was already going on when you arrived ('llegué', preterite). 'Cuando llegué, cocinó' would mean he started cooking after you arrived.",
+    "transcript": "Cuando llegué a la casa, mi compañero cocinaba.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0074",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L26",
+      "A2-L06"
+    ],
+    "grammar_tags": [
+      "preterite",
+      "preterite_regular"
+    ],
+    "vocab_ids": [
+      "v-celular"
+    ],
+    "source": "class_quizlet",
+    "difficulty": 1,
+    "audio_text": null,
+    "prompt_en": "Last Saturday you bought a new phone downtown. Use 'comprar'.",
+    "sentence": "El sábado ___ un celular nuevo en el centro.",
+    "options": [],
+    "answer": "compré",
+    "accepted_answers": [
+      "compré"
+    ],
+    "explanation_en": "Regular -ar preterite, yo: -é (compré, llegué, trabajé). Write the accent: 'compre' without it is a different form.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb comprar, preterite, yo (regular -ar verb).",
+    "level": "medium",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0075",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L18"
+    ],
+    "grammar_tags": [
+      "present",
+      "present_irregular"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Say what you do on Saturdays. Use 'hacer'.",
+    "sentence": "Los sábados ___ la limpieza del departamento.",
+    "options": [],
+    "answer": "hago",
+    "accepted_answers": [
+      "hago"
+    ],
+    "explanation_en": "Hacer is irregular only in the yo form: hago (tú haces, él hace). Same '-go' pattern: pongo, salgo, tengo, vengo, digo.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb hacer, present, yo. Irregular yo form.",
+    "level": "medium",
+    "topic": "verbs_present"
+  },
+  {
+    "id": "c-0076",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L18",
+      "A2-L14"
+    ],
+    "grammar_tags": [
+      "present",
+      "present_irregular",
+      "saber_conocer"
+    ],
+    "vocab_ids": [
+      "v-parada",
+      "v-camion"
+    ],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "You don't know where the bus stop is. Use 'saber'.",
+    "sentence": "Perdón, no ___ dónde está la parada del camión.",
+    "options": [],
+    "answer": "sé",
+    "accepted_answers": [
+      "sé"
+    ],
+    "explanation_en": "Saber in the yo form is 'sé' (with an accent, to tell it apart from 'se'). Use saber for facts and information; conocer for people and places.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb saber, present, yo. Very short and irregular.",
+    "level": "medium",
+    "topic": "verbs_present"
+  },
+  {
+    "id": "c-0077",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L18",
+      "A1-L31"
+    ],
+    "grammar_tags": [
+      "present",
+      "present_irregular",
+      "saber_conocer"
+    ],
+    "vocab_ids": [
+      "v-colonia"
+    ],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "You moved a month ago and don't know the neighborhood well yet. Use 'conocer'.",
+    "sentence": "Todavía no ___ bien la colonia; me mudé hace un mes.",
+    "options": [],
+    "answer": "conozco",
+    "accepted_answers": [
+      "conozco"
+    ],
+    "explanation_en": "Conocer → yo conozco (tú conoces). Use conocer for places and people you are familiar with, saber for facts.",
+    "transcript": null,
+    "region_note": "Mexico: 'la colonia'. Spain: 'el barrio'.",
+    "hint_en": "Verb conocer, present, yo. Irregular yo form.",
+    "level": "medium",
+    "topic": "verbs_present"
+  },
+  {
+    "id": "c-0078",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L21",
+      "A2-L02"
+    ],
+    "grammar_tags": [
+      "present",
+      "present_stem_change"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Say what you do on Sundays. Use 'jugar'.",
+    "sentence": "Los domingos ___ fútbol con mis amigos en el parque.",
+    "options": [],
+    "answer": "juego",
+    "accepted_answers": [
+      "juego"
+    ],
+    "explanation_en": "Jugar changes u→ue: juego, juegas, juega (but jugamos). Other stem-changers: quiero, puedo, duermo, pido.",
+    "transcript": null,
+    "region_note": "In Mexico it's usually 'jugar fútbol', without 'al'.",
+    "hint_en": "Verb jugar, present, yo. The stem changes.",
+    "level": "medium",
+    "topic": "verbs_present"
+  },
+  {
+    "id": "c-0079",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L16"
+    ],
+    "grammar_tags": [
+      "present",
+      "reflexive"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Say what time you get up on weekdays. Use 'levantarse'.",
+    "sentence": "Entre semana ___ a las seis y media.",
+    "options": [],
+    "answer": "me levanto",
+    "accepted_answers": [
+      "me levanto"
+    ],
+    "explanation_en": "Reflexive verbs need the pronoun: me levanto, te levantas, se levanta. Same with me baño, me visto, me acuesto.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb levantarse, present, yo. Reflexive, so two words.",
+    "level": "medium",
+    "topic": "verbs_present"
+  },
+  {
+    "id": "c-0080",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L16",
+      "A1-L17"
+    ],
+    "grammar_tags": [
+      "present_irregular",
+      "reflexive",
+      "time",
+      "listening"
+    ],
+    "vocab_ids": [],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "Me levanto a las seis, me baño a las seis y veinte y salgo de la casa a las siete.",
+    "prompt_en": "What time does the speaker leave home? (type it like 9:15)",
+    "sentence": null,
+    "options": [],
+    "answer": "7:00",
+    "accepted_answers": [
+      "7:00",
+      "7",
+      "07:00"
+    ],
+    "explanation_en": "'Salgo de la casa a las siete' = I leave home at 7:00 ('salgo' is the irregular yo form of salir). 'Me levanto' (6:00) and 'me baño' (6:20) come first.",
+    "transcript": "Me levanto a las seis, me baño a las seis y veinte y salgo de la casa a las siete.",
+    "region_note": null,
+    "hint_en": "Three times are said; you want the one for leaving the house. Type it like 9:15.",
+    "level": "medium",
+    "topic": "verbs_present"
+  },
+  {
+    "id": "c-0081",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L35",
+      "A1-L30"
+    ],
+    "grammar_tags": [
+      "ir_a_infinitive",
+      "present_progressive",
+      "numbers",
+      "listening"
+    ],
+    "vocab_ids": [
+      "v-ahorita"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "Voy a llegar en quince minutos; ahorita estoy saliendo del metro.",
+    "prompt_en": "In how many minutes is your friend going to arrive?",
+    "sentence": null,
+    "options": [],
+    "answer": "15",
+    "accepted_answers": [
+      "15",
+      "quince"
+    ],
+    "explanation_en": "'Voy a llegar en quince minutos' = I'm going to arrive in 15 minutes (ir a + infinitive). 'Estoy saliendo' = I'm coming out right now (present progressive). Quince (15) vs cinco (5).",
+    "transcript": "Voy a llegar en quince minutos; ahorita estoy saliendo del metro.",
+    "region_note": null,
+    "hint_en": "A number of minutes.",
+    "level": "medium",
+    "topic": "verbs_present"
+  },
+  {
+    "id": "c-0082",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L30"
+    ],
+    "grammar_tags": [
+      "present_progressive",
+      "estar"
+    ],
+    "vocab_ids": [
+      "v-manejar",
+      "v-ahorita"
+    ],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "You can't talk because you're driving right now. Use 'estar'.",
+    "sentence": "Ahorita no puedo hablar, ___ manejando.",
+    "options": [],
+    "answer": "estoy",
+    "accepted_answers": [
+      "estoy"
+    ],
+    "explanation_en": "Present progressive = estar + -ando / -iendo: estoy manejando, está comiendo.",
+    "transcript": null,
+    "region_note": "Mexico: 'manejar'. Spain: 'conducir'.",
+    "hint_en": "Verb estar, present, yo. For an action happening right now.",
+    "level": "medium",
+    "topic": "verbs_present"
+  },
+  {
+    "id": "c-0083",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L35"
+    ],
+    "grammar_tags": [
+      "ir_a_infinitive",
+      "present_irregular"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 1,
+    "audio_text": null,
+    "prompt_en": "Say your plan for this weekend. Use 'ir a' + infinitive.",
+    "sentence": "Este fin de semana ___ a visitar a mis papás en Querétaro.",
+    "options": [],
+    "answer": "voy",
+    "accepted_answers": [
+      "voy"
+    ],
+    "explanation_en": "Plans: ir (present) + a + infinitive: voy a visitar, vas a comer, vamos a salir.",
+    "transcript": null,
+    "region_note": "Mexico: 'mis papás' for my parents. Spain usually says 'mis padres'.",
+    "hint_en": "Verb ir, present, yo: the first part of 'ir a' + infinitive.",
+    "level": "medium",
+    "topic": "verbs_present"
+  },
+  {
+    "id": "c-0084",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L32",
+      "A1-L33"
+    ],
+    "grammar_tags": [
+      "present_perfect",
+      "ya_todavia"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 3,
+    "audio_text": null,
+    "prompt_en": "Ask a friend if they've tried tacos de canasta yet. Use 'probar'.",
+    "sentence": "¿Ya ___ los tacos de canasta?",
+    "options": [],
+    "answer": "has probado",
+    "accepted_answers": [
+      "has probado",
+      "probaste"
+    ],
+    "explanation_en": "Present perfect = haber + participle: ¿ya has probado...? In Mexico people very often use the preterite for this: ¿ya probaste...? Both are accepted.",
+    "transcript": null,
+    "region_note": "Mexico often prefers the preterite (¿ya probaste?) where Spain uses the present perfect (¿ya has probado?).",
+    "hint_en": "Verb probar, tú, 'have you ... yet?' (present perfect, two words).",
+    "level": "medium",
+    "topic": "verbs_present"
+  },
+  {
+    "id": "c-0085",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "imperative_irregular",
+      "tu_command"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Tell a friend to put their backpack on the chair. Use 'poner'.",
+    "sentence": "___ tu mochila en la silla, por favor.",
+    "options": [],
+    "answer": "pon",
+    "accepted_answers": [
+      "pon"
+    ],
+    "explanation_en": "Poner → pon. The eight irregular tú commands: di, haz, ve, pon, sal, sé, ten, ven.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb poner, command, tú. Short and irregular.",
+    "level": "medium",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0086",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "imperative_irregular",
+      "tu_command"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Tell your little brother to do his homework first. Use 'hacer'.",
+    "sentence": "___ la tarea antes de ver la tele.",
+    "options": [],
+    "answer": "haz",
+    "accepted_answers": [
+      "haz"
+    ],
+    "explanation_en": "Hacer → haz (with z). 'Has' with s is from haber (has comido).",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb hacer, command, tú. Irregular, three letters.",
+    "level": "medium",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0087",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "imperative_irregular",
+      "tu_command"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Send a friend to the store for tortillas. Use 'ir'.",
+    "sentence": "___ a la tienda y compra tortillas, por favor.",
+    "options": [],
+    "answer": "ve",
+    "accepted_answers": [
+      "ve"
+    ],
+    "explanation_en": "Ir → ve. Don't confuse it with 'ven' (come, from venir). 'Compra' is a regular tú command.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb ir, command, tú. Very short.",
+    "level": "medium",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0088",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "imperative_irregular",
+      "tu_command"
+    ],
+    "vocab_ids": [
+      "v-camion"
+    ],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Tell a friend to be patient. Use 'tener'.",
+    "sentence": "___ paciencia, el camión ya viene.",
+    "options": [],
+    "answer": "ten",
+    "accepted_answers": [
+      "ten"
+    ],
+    "explanation_en": "Tener → ten: ten paciencia, ten cuidado. Venir → ven works the same way.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb tener, command, tú. Irregular and short.",
+    "level": "medium",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0089",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "imperative_irregular",
+      "tu_command"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Ask a friend to tell you the truth. Use 'decir'.",
+    "sentence": "___ la verdad, ¿te gustó la comida?",
+    "options": [],
+    "answer": "di",
+    "accepted_answers": [
+      "di",
+      "dime"
+    ],
+    "explanation_en": "Decir → di. With 'me' attached it becomes 'dime' (tell me): dime la verdad. Both are accepted.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb decir, command, tú.",
+    "level": "medium",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0090",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "imperative_irregular",
+      "tu_command"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Your Uber is here. Tell your friend to come out now. Use 'salir'.",
+    "sentence": "¡___ ya! El Uber está afuera.",
+    "options": [],
+    "answer": "sal",
+    "accepted_answers": [
+      "sal"
+    ],
+    "explanation_en": "Salir → sal. Same spelling as the word for salt, but here it means 'go out / come out'.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb salir, command, tú. Three letters.",
+    "level": "medium",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0091",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "imperative_irregular",
+      "tu_command"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Tell a friend to be nice to the new neighbors. Use 'ser'.",
+    "sentence": "___ amable con los vecinos nuevos.",
+    "options": [],
+    "answer": "sé",
+    "accepted_answers": [
+      "sé"
+    ],
+    "explanation_en": "Ser → sé, with an accent: the same spelling as 'yo sé' (saber). Context tells you which one it is.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb ser, command, tú. Two letters.",
+    "level": "medium",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0092",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24",
+      "A1-L19"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "usted_command"
+    ],
+    "vocab_ids": [
+      "v-cuadra",
+      "v-todo-derecho"
+    ],
+    "source": "class_quizlet",
+    "difficulty": 3,
+    "audio_text": null,
+    "prompt_en": "A stranger (usted) asks you the way. Tell them to keep going straight. Use 'seguir'.",
+    "sentence": "___ derecho dos cuadras y ahí está el metro.",
+    "options": [],
+    "answer": "siga",
+    "accepted_answers": [
+      "siga",
+      "sígale"
+    ],
+    "explanation_en": "Usted commands switch the vowel: seguir → siga (tú: sigue). 'Sígale' is a friendly, very Mexican version.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb seguir, command, usted.",
+    "level": "medium",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0093",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "imperative_negative",
+      "tu_command"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 3,
+    "audio_text": null,
+    "prompt_en": "Tell a friend (tú) not to open the window. Use 'abrir'.",
+    "sentence": "No ___ la ventana, hace mucho frío.",
+    "options": [],
+    "answer": "abras",
+    "accepted_answers": [
+      "abras"
+    ],
+    "explanation_en": "Negative tú commands switch the ending vowel: -ar verbs take -es, -er/-ir verbs take -as: no abras, no comas, no hables. The affirmative is 'abre'.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb abrir, negative command, tú.",
+    "level": "medium",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0094",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "imperative_irregular",
+      "tu_command",
+      "listening"
+    ],
+    "vocab_ids": [
+      "v-de-tomar"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "Ven a mi casa el sábado en la tarde y trae algo de tomar.",
+    "prompt_en": "What does your friend ask you to do?",
+    "sentence": null,
+    "options": [
+      "Come over Saturday afternoon and bring something to drink",
+      "Go to the store Saturday afternoon and buy drinks",
+      "Come over Saturday morning and bring food",
+      "Call on Saturday afternoon"
+    ],
+    "answer": "Come over Saturday afternoon and bring something to drink",
+    "accepted_answers": [],
+    "explanation_en": "'Ven' (venir) = come; 've' would be go. 'Trae' = bring (traer). 'En la tarde' = in the afternoon. 'Algo de tomar' = something to drink: in Mexico 'tomar' is for drinks.",
+    "transcript": "Ven a mi casa el sábado en la tarde y trae algo de tomar.",
+    "region_note": "Mexico: 'en la tarde'. Spain: 'por la tarde'.",
+    "hint_en": null,
+    "level": "medium",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0095",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "future",
+      "future_irregular"
+    ],
+    "vocab_ids": [
+      "v-pronostico"
+    ],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Say there will be rain tomorrow afternoon. Use 'haber' (the 'hay' verb).",
+    "sentence": "Según el pronóstico, mañana ___ lluvia en la tarde.",
+    "options": [],
+    "answer": "habrá",
+    "accepted_answers": [
+      "habrá",
+      "va a haber"
+    ],
+    "explanation_en": "Hay → habrá (there will be). In everyday Mexican speech you'll also hear 'va a haber'; both are accepted.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb haber (as in 'hay'), simple future.",
+    "level": "medium",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0096",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "future",
+      "future_irregular"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Say you'll have more time next year. Use 'tener' in the future.",
+    "sentence": "El próximo año ___ más tiempo para estudiar.",
+    "options": [],
+    "answer": "tendré",
+    "accepted_answers": [
+      "tendré"
+    ],
+    "explanation_en": "Tener has the irregular future stem tendr-: tendré, tendrás, tendrá. Also: podré, saldré, pondré, vendré, haré, diré.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb tener, simple future, yo. Irregular stem.",
+    "level": "medium",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0097",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "conditional",
+      "polite_requests"
+    ],
+    "vocab_ids": [
+      "v-mudanza"
+    ],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Politely ask a friend (tú) if they could help you move. Use 'poder' in the conditional ('could').",
+    "sentence": "¿___ ayudarme con la mudanza el sábado?",
+    "options": [],
+    "answer": "podrías",
+    "accepted_answers": [
+      "podrías"
+    ],
+    "explanation_en": "Conditional = future stem + -ía endings: podría, podrías. It softens a request: ¿podrías ayudarme? sounds more polite than ¿puedes ayudarme?",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb poder, conditional, tú.",
+    "level": "medium",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0098",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "future",
+      "future_irregular",
+      "si_clauses"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "If you have time, you'll make dinner. Use 'hacer' in the future.",
+    "sentence": "Si tengo tiempo, ___ la cena esta noche.",
+    "options": [],
+    "answer": "haré",
+    "accepted_answers": [
+      "haré"
+    ],
+    "explanation_en": "Hacer → haré (stem har-). 'Si + present, future' is the normal pattern for real possibilities: si tengo tiempo, haré la cena.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb hacer, simple future, yo. Irregular stem.",
+    "level": "medium",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0099",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "conditional",
+      "gustar",
+      "polite_requests"
+    ],
+    "vocab_ids": [
+      "v-cafe-americano"
+    ],
+    "source": "class_quizlet",
+    "difficulty": 1,
+    "audio_text": null,
+    "prompt_en": "Order politely: 'I would like...'. Use 'gustar'.",
+    "sentence": "Me ___ un café americano, por favor.",
+    "options": [],
+    "answer": "gustaría",
+    "accepted_answers": [
+      "gustaría"
+    ],
+    "explanation_en": "'Me gustaría' = I would like. It's a polite way to order or ask for something.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb gustar, conditional.",
+    "level": "medium",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0100",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "conditional",
+      "advice"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Give a friend advice: in their place, you'd take the metro. Use 'tomar'.",
+    "sentence": "Yo en tu lugar ___ el metro; a esta hora hay mucho tráfico.",
+    "options": [],
+    "answer": "tomaría",
+    "accepted_answers": [
+      "tomaría"
+    ],
+    "explanation_en": "'Yo en tu lugar' + conditional gives advice: yo en tu lugar tomaría el metro. Regular conditional = infinitive + -ía.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb tomar, conditional, yo.",
+    "level": "medium",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0101",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "future",
+      "future_irregular"
+    ],
+    "vocab_ids": [],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Your parents will come to Mexico in December. Use 'venir' in the future.",
+    "sentence": "Mis papás ___ a México en diciembre.",
+    "options": [],
+    "answer": "vendrán",
+    "accepted_answers": [
+      "vendrán"
+    ],
+    "explanation_en": "Venir → vendr-: vendré, vendrás, vendrá, vendremos, vendrán. (Van a venir means the same in everyday speech.)",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Verb venir, simple future, ellos. Irregular stem.",
+    "level": "medium",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0102",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "future",
+      "time",
+      "listening"
+    ],
+    "vocab_ids": [],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "El autobús a Puebla saldrá a las ocho y cuarto de la noche.",
+    "prompt_en": "What time will the bus leave? (type it like 9:15)",
+    "sentence": null,
+    "options": [],
+    "answer": "8:15",
+    "accepted_answers": [
+      "8:15",
+      "8.15",
+      "20:15"
+    ],
+    "explanation_en": "'Saldrá' = it will leave (future of salir, stem saldr-). 'A las ocho y cuarto de la noche' = 8:15 p.m.",
+    "transcript": "El autobús a Puebla saldrá a las ocho y cuarto de la noche.",
+    "region_note": "For long-distance trips Mexicans say 'autobús' (or 'camión'); the city bus is usually 'camión'.",
+    "hint_en": "An evening time: the hour plus part of an hour. Type it like 9:15.",
+    "level": "medium",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0103",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "future",
+      "numbers",
+      "prices",
+      "listening"
+    ],
+    "vocab_ids": [
+      "v-plomero",
+      "v-mil"
+    ],
+    "source": "scene",
+    "difficulty": 3,
+    "audio_text": "El plomero dice que la reparación costará mil ochocientos pesos.",
+    "prompt_en": "How much will the repair cost?",
+    "sentence": null,
+    "options": [],
+    "answer": "1800",
+    "accepted_answers": [
+      "1800",
+      "$1800",
+      "1,800",
+      "$1,800",
+      "mil ochocientos"
+    ],
+    "explanation_en": "'Costará' = it will cost (future of costar). Mil ochocientos = 1,000 + 800 = 1,800.",
+    "transcript": "El plomero dice que la reparación costará mil ochocientos pesos.",
+    "region_note": "Mexico: 'plomero'. Spain: 'fontanero'.",
+    "hint_en": "A price in the thousands. Type digits only.",
+    "level": "medium",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0104",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "conditional",
+      "listening"
+    ],
+    "vocab_ids": [],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": "¿Qué harías con un día libre?",
+    "prompt_en": "A friend asks what you'd do with a free day. Pick the best answer.",
+    "sentence": null,
+    "options": [
+      "Iría a Xochimilco con mis amigos.",
+      "Fui a Xochimilco con mis amigos.",
+      "Voy a Xochimilco ayer."
+    ],
+    "answer": "Iría a Xochimilco con mis amigos.",
+    "accepted_answers": [],
+    "explanation_en": "'¿Qué harías?' (conditional) = what would you do? Answer in the conditional too: iría (I would go). 'Fui' is past, and 'voy ... ayer' mixes the present with yesterday.",
+    "transcript": "¿Qué harías con un día libre?",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "verbs_future"
   }
 ]

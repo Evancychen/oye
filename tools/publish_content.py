@@ -4,9 +4,11 @@
 1. Runs /workspace/spanish-app/validate_content.py and aborts unless it prints CLEAN.
 2. Compares the new cards.json with the app's current app/content/cards.json to find
    new card ids.
-3. Copies content/*.json (cards, scenes, vocab) into app/content/.
+3. Copies content/*.json (cards, scenes, vocab, and missions.json for the Hard level
+   since v2; missions.json is optional) into app/content/.
 4. Bumps app/content/version.json (version + 1, published date, new_cards, new_card_ids).
-5. Runs tools/build_audio.py (only missing audio is generated).
+5. Runs tools/build_audio.py --prune (only missing audio is generated; files no card,
+   dialogue line or mission uses any more are deleted).
 6. Updates CACHE_VERSION in sw.js so installed apps pick up the new shell/content.
 
 If the content is byte-identical to what the app already has, the version is not
@@ -20,6 +22,7 @@ APP = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT = os.path.dirname(APP)
 APP_CONTENT = os.path.join(APP, 'content')
 FILES = ['cards.json', 'scenes.json', 'vocab.json']
+OPTIONAL_FILES = ['missions.json']   # v2 Levels: Hard missions
 SHELL_FILES = ['index.html', 'styles.css', 'manifest.webmanifest', 'js/*.js',
                'fonts/*.woff2', 'icons/*.png']
 
@@ -73,7 +76,8 @@ def main():
     validate(args.validator)
 
     os.makedirs(APP_CONTENT, exist_ok=True)
-    changed = [f for f in FILES
+    files = FILES + [f for f in OPTIONAL_FILES if os.path.exists(os.path.join(args.source, f))]
+    changed = [f for f in files
                if not os.path.exists(os.path.join(APP_CONTENT, f))
                or sha(os.path.join(APP_CONTENT, f)) != sha(os.path.join(args.source, f))]
     old_version = load(os.path.join(APP_CONTENT, 'version.json'))
@@ -96,7 +100,7 @@ def main():
             current = {c.get('id') for c in new_cards}
             carried = [i for i in (old_version or {}).get('new_card_ids', []) if i in current and i not in new_ids]
             new_ids = carried + new_ids
-        for f in FILES:
+        for f in files:
             shutil.copyfile(os.path.join(args.source, f), os.path.join(APP_CONTENT, f))
             print(f'copied {f}')
         version = {
@@ -106,12 +110,15 @@ def main():
             'new_card_ids': new_ids,
             'card_count': len(new_cards),
         }
+        missions = load(os.path.join(args.source, 'missions.json'))
+        if missions is not None:
+            version['mission_count'] = len(missions)
         with open(os.path.join(APP_CONTENT, 'version.json'), 'w', encoding='utf-8') as f:
             json.dump(version, f, ensure_ascii=False, indent=1)
         print(f"version.json -> version {version['version']}, new_cards {version['new_cards']}")
 
     print('> tools/build_audio.py')
-    r = subprocess.run([sys.executable, os.path.join(APP, 'tools', 'build_audio.py')])
+    r = subprocess.run([sys.executable, os.path.join(APP, 'tools', 'build_audio.py'), '--prune'])
     if r.returncode != 0:
         sys.exit('ABORT: audio build failed (content was copied; rerun after fixing).')
 

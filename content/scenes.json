@@ -23,47 +23,56 @@
       {
         "speaker": "Barista",
         "es": "¡Buenas tardes! ¿Qué le sirvo?",
-        "en": "Good afternoon! What can I get you?"
+        "en": "Good afternoon! What can I get you?",
+        "voice": "female"
       },
       {
         "speaker": "Cliente",
         "es": "Buenas tardes. Un café americano grande, por favor.",
-        "en": "Good afternoon. A large americano, please."
+        "en": "Good afternoon. A large americano, please.",
+        "voice": "male"
       },
       {
         "speaker": "Barista",
         "es": "¿Para aquí o para llevar?",
-        "en": "For here or to go?"
+        "en": "For here or to go?",
+        "voice": "female"
       },
       {
         "speaker": "Cliente",
         "es": "Para llevar.",
-        "en": "To go."
+        "en": "To go.",
+        "voice": "male"
       },
       {
         "speaker": "Barista",
         "es": "¿Algo más?",
-        "en": "Anything else?"
+        "en": "Anything else?",
+        "voice": "female"
       },
       {
         "speaker": "Cliente",
         "es": "Sí, una concha, por favor. ¿Cuánto es?",
-        "en": "Yes, a concha, please. How much is it?"
+        "en": "Yes, a concha, please. How much is it?",
+        "voice": "male"
       },
       {
         "speaker": "Barista",
         "es": "Son ochenta y cinco pesos.",
-        "en": "It's eighty-five pesos."
+        "en": "It's eighty-five pesos.",
+        "voice": "female"
       },
       {
         "speaker": "Cliente",
         "es": "¿Puedo pagar con tarjeta?",
-        "en": "Can I pay by card?"
+        "en": "Can I pay by card?",
+        "voice": "male"
       },
       {
         "speaker": "Barista",
         "es": "Sí, claro. Ahorita le paso la terminal.",
-        "en": "Yes, of course. I'll bring you the card machine right away."
+        "en": "Yes, of course. I'll bring you the card machine right away.",
+        "voice": "female"
       }
     ],
     "notes_en": "The americano is 55 pesos and the concha is 30, so 85 in total. 'Ahorita' is very Mexican for 'right away'."
@@ -91,42 +100,50 @@
       {
         "speaker": "Mesero",
         "es": "¿Le traigo la cuenta?",
-        "en": "Shall I bring you the check?"
+        "en": "Shall I bring you the check?",
+        "voice": "male"
       },
       {
         "speaker": "Cliente",
         "es": "Sí, la cuenta, por favor.",
-        "en": "Yes, the check, please."
+        "en": "Yes, the check, please.",
+        "voice": "female"
       },
       {
         "speaker": "Mesero",
         "es": "Aquí tiene. Fueron dos cafés de olla y un pan de elote. Son ciento diez pesos.",
-        "en": "Here you go. It was two cafés de olla and a corn cake. It's one hundred ten pesos."
+        "en": "Here you go. It was two cafés de olla and a corn cake. It's one hundred ten pesos.",
+        "voice": "male"
       },
       {
         "speaker": "Cliente",
         "es": "¿Mande? ¿Cuánto?",
-        "en": "Sorry? How much?"
+        "en": "Sorry? How much?",
+        "voice": "female"
       },
       {
         "speaker": "Mesero",
         "es": "Ciento diez.",
-        "en": "One hundred ten."
+        "en": "One hundred ten.",
+        "voice": "male"
       },
       {
         "speaker": "Cliente",
         "es": "Voy a pagar en efectivo. Aquí tiene, doscientos.",
-        "en": "I'm going to pay in cash. Here you go, two hundred."
+        "en": "I'm going to pay in cash. Here you go, two hundred.",
+        "voice": "female"
       },
       {
         "speaker": "Mesero",
         "es": "Muy bien. Su cambio: noventa pesos. Gracias, ¡vuelva pronto!",
-        "en": "Very good. Your change: ninety pesos. Thanks, come back soon!"
+        "en": "Very good. Your change: ninety pesos. Thanks, come back soon!",
+        "voice": "male"
       },
       {
         "speaker": "Cliente",
         "es": "Gracias, todo muy rico.",
-        "en": "Thanks, everything was delicious."
+        "en": "Thanks, everything was delicious.",
+        "voice": "female"
       }
     ],
     "notes_en": "Each café de olla is 35 pesos and the corn cake is 40. Mexicans often use the preterite 'fueron' when reading back what you ordered."
@@ -153,59 +170,70 @@
     ],
     "dialogue": [
       {
-        "speaker": "Taquero",
+        "speaker": "Taquera",
         "es": "¿Qué va a llevar, joven?",
-        "en": "What will you have, young man?"
+        "en": "What will you have, young man?",
+        "voice": "female"
       },
       {
         "speaker": "Cliente",
         "es": "Me da dos de pastor y uno de suadero, por favor.",
-        "en": "Can I have two al pastor and one suadero, please."
+        "en": "Can I have two al pastor and one suadero, please.",
+        "voice": "male"
       },
       {
-        "speaker": "Taquero",
+        "speaker": "Taquera",
         "es": "¿Con todo? ¿Cebolla y cilantro?",
-        "en": "With everything? Onion and cilantro?"
+        "en": "With everything? Onion and cilantro?",
+        "voice": "female"
       },
       {
         "speaker": "Cliente",
         "es": "Sí, con todo. Para aquí.",
-        "en": "Yes, with everything. For here."
+        "en": "Yes, with everything. For here.",
+        "voice": "male"
       },
       {
-        "speaker": "Taquero",
+        "speaker": "Taquera",
         "es": "¿Y de tomar?",
-        "en": "And to drink?"
+        "en": "And to drink?",
+        "voice": "female"
       },
       {
         "speaker": "Cliente",
         "es": "Un agua de horchata chica. ¿Cuánto es?",
-        "en": "A small horchata. How much is it?"
+        "en": "A small horchata. How much is it?",
+        "voice": "male"
       },
       {
-        "speaker": "Taquero",
+        "speaker": "Taquera",
         "es": "Son setenta y cuatro pesos.",
-        "en": "It's seventy-four pesos."
+        "en": "It's seventy-four pesos.",
+        "voice": "female"
       },
       {
         "speaker": "Cliente",
         "es": "¿Aceptan tarjeta?",
-        "en": "Do you take cards?"
+        "en": "Do you take cards?",
+        "voice": "male"
       },
       {
-        "speaker": "Taquero",
+        "speaker": "Taquera",
         "es": "No, joven, nomás efectivo.",
-        "en": "No, cash only."
+        "en": "No, cash only.",
+        "voice": "female"
       },
       {
         "speaker": "Cliente",
         "es": "Ah, bueno. Aquí tiene cien.",
-        "en": "Oh, okay. Here's a hundred."
+        "en": "Oh, okay. Here's a hundred.",
+        "voice": "male"
       },
       {
-        "speaker": "Taquero",
+        "speaker": "Taquera",
         "es": "Veintiséis de cambio. ¡Buen provecho!",
-        "en": "Twenty-six in change. Enjoy your meal!"
+        "en": "Twenty-six in change. Enjoy your meal!",
+        "voice": "female"
       }
     ],
     "notes_en": "Tacos are 18 pesos each and the small horchata is 20: 54 + 20 = 74. 'Con todo' means with onion and cilantro."

@@ -93,8 +93,10 @@ hr, .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
 .row-btn { display: flex; align-items: center; width: 100%; height: 56px; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); text-align: left; }
 .row-btn .grow { flex: 1; }
 .row-btn .val { color: var(--gray-600); display: flex; align-items: center; gap: 4px; }
-.meta-line { text-align: center; margin-top: 24px; word-spacing: 1px; }
+.meta-line { display: flex; align-items: center; justify-content: center; gap: 2px; width: 100%; min-height: 32px; margin-top: 12px; word-spacing: 1px;
+  font: 400 13px/16px var(--font); color: var(--gray-600); text-transform: none; flex: none; }
 .meta-line .sep { margin: 0 7px; }
+.meta-line .meta-chev svg { width: 14px; height: 14px; display: block; color: var(--gray-400); }
 
 /* ---------- session (v1.1: one screen) ----------
    Three zones: header 48 / middle (the only part that may scroll) / dock pinned to the bottom.
@@ -233,6 +235,9 @@ hr, .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
 .dtext .spk { color: var(--gray-600); }
 .dtext .spk.spk-1 { color: var(--accent); }
 .dtext .spk.spk-2 { color: var(--correct); }
+/* v2.1: the label colour follows the voice, not the speaking order (Alonso = accent blue, Paloma = green) */
+.dtext .spk.v-male { color: var(--accent); }
+.dtext .spk.v-female { color: var(--correct); }
 .dtext .es { font: 400 17px/24px var(--font); color: var(--ink); margin-top: 4px; }
 .dtext .en { margin-top: 4px; line-height: 16px; }
 
@@ -304,3 +309,167 @@ hr, .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
 .sheet-row .caption { margin-left: 8px; }
 .sheet-row.on { font-weight: 600; }
 .check-mark { color: var(--ink); }
+
+/* ================= v2 Levels (design/levels-v2-spec.md) ================= */
+/* home: stats = streak + stars earned; CHALLENGES (Medium, Hard) above the pinned Quick session */
+.home .stats .value { display: flex; align-items: center; gap: 8px; }
+.star-total svg { display: block; }
+.quiet:empty { display: none; }
+.challenges-head { flex: none; margin-bottom: 8px; }
+.challenges { flex: none; display: grid; gap: 8px; }
+.challenge, .mission-row {
+  display: flex; align-items: center; gap: 12px; width: 100%; min-height: 76px; padding: 12px 12px 12px 16px;
+  border-radius: var(--radius-l); background: var(--surface); text-align: left; color: var(--ink);
+}
+.challenge:active:not(:disabled), .mission-row:active, .topic-tile:active { background: var(--gray-200); }
+.challenge:disabled { opacity: .5; cursor: default; }
+.ch-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ch-tag { color: var(--accent); }
+.ch-title { font: 500 17px/24px var(--font); margin-top: 2px; }
+.ch-text .caption { margin-top: 2px; }
+.star-n { display: inline-flex; align-items: center; gap: 4px; font: 400 13px/16px var(--font); color: var(--gray-600); font-variant-numeric: tabular-nums; }
+.star-n svg { display: block; }
+.ch-chev { display: grid; place-items: center; color: var(--ink); flex: none; }
+.stars { display: inline-flex; gap: 2px; color: var(--gray-300); }
+.stars i { display: block; line-height: 0; }
+.stars i.on { color: var(--ink); }
+.stars svg { display: block; }
+.stars.s40 { gap: 4px; } .stars.s32 { gap: 4px; }
+
+/* short phones (360 x 640, 375 x 667): tighten the home so everything fits without scrolling */
+@media (max-height: 760px) {
+  .screen.page.home { padding-top: calc(var(--safe-top) + 20px); padding-bottom: calc(16px + var(--safe-bottom)); }
+  .home .home-header .display { margin-top: 8px; }
+  .home .stats { margin-top: 16px; padding: 14px 0 12px; }
+  .home .trend { padding: 16px 0 14px; }
+  .home .trend .title { margin-top: 6px; }
+  .home .spacer { min-height: 8px; }
+  .home .quiet { margin-bottom: 8px; }
+  .home .challenge { min-height: 68px; padding-top: 8px; padding-bottom: 8px; }
+  .home .meta-line { margin-top: 6px; }
+  .home .action { padding-top: 6px; }
+}
+
+/* sub-pages: back link, eyebrow, title, caption; only the list below scrolls */
+.screen.page.topics { padding-top: calc(var(--safe-top) + 8px); padding-bottom: calc(16px + var(--safe-bottom)); }
+.back-link { flex: none; display: inline-flex; align-items: center; gap: 4px; height: 48px; margin-left: -6px; align-self: flex-start; font: 400 13px/16px var(--font); color: var(--gray-700); }
+.back-link svg { display: block; }
+.lv-tag { color: var(--accent); flex: none; }
+.lv-tag .sub-dot { margin: 0 6px; }
+.lv-title { flex: none; margin-top: 8px; }
+.lv-cap { flex: none; margin-top: 4px; }
+.topics-zone { margin-top: 16px; }
+.topic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.topic-tile { position: relative; height: 84px; border-radius: var(--radius-l); background: var(--surface); text-align: left; padding: 12px; color: var(--ink); }
+.topic-tile .tname { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font: 500 15px/20px var(--font); }
+.topic-tile .stars { position: absolute; left: 12px; top: 64px; }
+.soon-head { margin-top: 24px; }
+.soon { margin-top: 8px; line-height: 16px; color: var(--gray-400); }
+.mission-list { display: grid; gap: 8px; }
+.mission-row .stars { margin-top: 6px; }
+
+/* Medium summary (21:839) */
+.msum .stars-line { display: flex; align-items: center; gap: 16px; margin-top: 16px; }
+.new-best { height: 24px; padding: 0 10px; border-radius: 12px; background: var(--accent-tint); color: var(--accent); font: 600 13px/24px var(--font); }
+.msum-score { margin-top: 16px; }
+.msum-why { margin-top: 4px; }
+.msum .results-status { margin: 12px 0 0; }
+.breakdown { margin-top: 20px; border-top: 1px solid var(--hairline); }
+.bd-row { display: flex; justify-content: space-between; align-items: center; height: 50px; border-bottom: 1px solid var(--hairline); color: var(--gray-600); }
+.bd-val { color: var(--ink); font-variant-numeric: tabular-nums; }
+.topic-note { margin-top: 16px; }
+.action.two { display: flex; flex-direction: column; gap: 0; padding-top: 4px; }
+.action.two .btn-text { height: 48px; }
+
+/* Hard mission screens */
+.mission-screen { padding: var(--safe-top) var(--space-3) 0; }
+.mtop .grow { flex: 1; }
+.mtop .hint-pill { margin-right: 12px; }
+.mcount { min-width: 0; white-space: nowrap; }
+.intro-zone .scroll-inner { padding-top: 16px; }
+.mi-title { margin-top: 8px; }
+.mi-sit { margin-top: 12px; color: var(--gray-600); }
+.facts { margin-top: 24px; border-top: 1px solid var(--hairline); padding-top: 8px; }
+.fact { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; color: var(--gray-600); }
+.fact .fv { color: var(--ink); text-align: right; }
+.mi-note { margin-top: 16px; line-height: 16px; }
+.mission-screen .dock .btn-text { height: 48px; }
+.q-preview { margin: 0; padding-left: 20px; display: grid; gap: 12px; font: 400 17px/24px var(--font); }
+
+/* player bar: stays on every question (replay / pause, scrub, slow) */
+.player { flex: none; display: flex; align-items: center; gap: 12px; height: 72px; margin-top: 8px; padding: 0 12px; border-radius: var(--radius-l); background: var(--surface); }
+.pl-play { width: 48px; height: 48px; border-radius: 50%; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; flex: none; }
+.pl-play svg { width: 24px; height: 24px; }
+.pl-mid { flex: 1; min-width: 0; }
+.pl-track { position: relative; height: 24px; cursor: pointer; touch-action: none; }
+.pl-track::before { content: ""; position: absolute; left: 0; right: 0; top: 10px; height: 4px; border-radius: 2px; background: var(--gray-300); }
+.pl-fill { position: absolute; left: 0; top: 10px; height: 4px; border-radius: 2px; background: var(--accent); width: 0; }
+.pl-knob { position: absolute; top: 6px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: var(--ink); left: 0; }
+.pl-time { margin-top: 0; font-variant-numeric: tabular-nums; }
+.pl-slow.is-on { background: var(--ink); color: var(--on-accent); }
+.msg-row { flex: none; display: flex; align-items: center; justify-content: space-between; width: 100%; height: 48px; margin-top: 8px; padding: 0 12px 0 16px;
+  border-radius: var(--radius-l); background: var(--surface); color: var(--ink); font: 500 15px/20px var(--font); text-align: left; }
+.mq-prompt { margin-top: 20px; }
+/* answer options wrap: hug height, 12 top/bottom padding, min 56, gap 8 (metro q2 has four 2-line options) */
+.moptions { display: grid; gap: 8px; margin-top: 20px; padding-bottom: 8px; }
+.mopt { min-height: 56px; height: auto; padding: 12px 16px; border-radius: var(--radius-l); background: var(--surface); border: 1px solid var(--gray-300);
+  font: 500 17px/24px var(--font); text-align: left; color: var(--ink); white-space: normal; overflow-wrap: anywhere; }
+.mopt.is-selected { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.mission-screen .hint-box { margin-top: 16px; }
+
+/* text missions: WhatsApp-style bubble */
+.sender { flex: none; margin-top: 4px; }
+.msg-zone { margin-top: 12px; }
+.bubble { position: relative; background: var(--surface); border-radius: 4px 18px 18px 18px; padding: 16px 14px; font: 400 17px/24px var(--font);
+  color: var(--ink); white-space: pre-wrap; overflow-wrap: anywhere; margin-bottom: 8px; }
+.btime { display: block; text-align: right; margin-top: 4px; font: 400 12px/16px var(--font); color: var(--gray-600); }
+
+/* mission result (21:796) */
+.screen.page.mission-result { padding: var(--safe-top) var(--space-3) calc(16px + var(--safe-bottom)); }
+.mr-head-block { flex: none; margin-top: 4px; }
+.mr-score { margin-top: 12px; }
+.mr-cap { margin-top: 4px; }
+.mr-zone { margin-top: 16px; border-top: 1px solid var(--hairline); }
+.mr-row { display: block; width: 100%; border-bottom: 1px solid var(--hairline); padding: 0; text-align: left; }
+.mr-head { display: flex; align-items: flex-start; gap: 12px; width: 100%; padding: 16px 0; text-align: left; color: var(--ink); }
+.mr-ico { flex: none; width: 20px; display: grid; place-items: center; padding-top: 3px; }
+.mr-row.ok .mr-ico { color: var(--correct); }
+.mr-row.bad .mr-ico { color: var(--wrong); }
+.mr-prompt { flex: 1; font: 500 17px/24px var(--font); }
+.mr-chev { flex: none; color: var(--gray-600); padding-top: 2px; }
+.why-box { margin: 0 0 16px 32px; padding: 12px 14px; border-radius: var(--radius-l); background: var(--wrong-tint); }
+.why-box.is-ok { background: var(--surface); }
+.why-box[hidden] { display: none; }
+.wb-given { color: var(--gray-600); line-height: 18px; }
+.wb-why { color: var(--ink); margin-top: 4px; line-height: 18px; }
+.transcript-row { display: flex; align-items: center; justify-content: space-between; height: 56px; color: var(--accent); font: 500 17px/24px var(--font); }
+.transcript-row svg { color: var(--accent); }
+.msg-text { white-space: pre-wrap; font-weight: 400; }
+.en-head { margin-top: 16px; }
+.msg-en { margin-top: 8px; white-space: pre-wrap; line-height: 20px; color: var(--gray-700); }
+
+/* mission question on short phones: slimmer player + prompt so four 2-line options still fit above Check */
+@media (max-height: 700px) {
+  .player { height: 56px; margin-top: 4px; }
+  .player .pl-play { width: 44px; height: 44px; }
+  .mission-screen .mq-prompt { margin-top: 12px; }
+  .mission-screen .moptions { margin-top: 12px; padding-bottom: 0; }
+  .mission-screen .msg-row { margin-top: 4px; }
+}
+.meta-line .meta-txt { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.meta-line .meta-txt::first-line { text-transform: none; }
+
+/* v2: Medium cards have longer prompts and hints. On short screens the open hint and the phone keyboard
+   get slightly tighter spacing so they still fit above the dock (v1.1 one-screen rule). */
+@media (max-height: 760px) {
+  .card-screen:has(.hint-box:not([hidden])) .card-inner > .eyebrow:first-child { margin-top: 8px; }
+  .card-screen:has(.hint-box:not([hidden])) .audio-row { margin-top: 12px; }
+  .card-screen .hint-box { padding: 12px 14px; margin-top: 12px; }
+  .card-screen .hint-slot { margin-top: 12px; }
+  .card-screen .hint-text { font-size: 16px; line-height: 22px; }
+}
+@media (max-height: 480px) {   /* phone keyboard open on a short phone */
+  .card-screen .card-inner > .eyebrow:first-child { margin-top: 8px; }
+  .card-screen .sentence { font-size: 22px; line-height: 28px; margin-top: 6px; }
+  .card-screen .instruction { font-size: 15px; line-height: 20px; margin-top: 6px; }
+}

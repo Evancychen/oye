@@ -30,6 +30,13 @@ SHOT_SIZES = {(360, 720), (412, 915)}
 # Cards that match the design previews go first so they are the screenshotted ones.
 SHOWCASE = ['c-0010', 'c-0018', 'c-0023', 'c-0029', 'c-0034']
 RESULTS = []
+SHELL_VERSION = re.search(r"SHELL_VERSION = '([^']+)'", open(os.path.join(APP, 'js', 'app.js'), encoding='utf-8').read()).group(1)
+VOICE_COLOR = {'male': 'rgb(110, 139, 255)', 'female': 'rgb(76, 195, 138)'}   # accent blue (Alonso), correct green (Paloma)
+
+
+def all_audio_files(idx):
+    """Every MP3 audio.json points at: card clips (items), dialogue lines (lines) and mission clips (missions)."""
+    return sorted({e[k] for sec in ('items', 'lines', 'missions') for e in (idx.get(sec) or {}).values() for k in ('normal', 'slow') if e.get(k)})
 # Results upload: the real Apps Script endpoint must NEVER be hit by the tests. Every browser context
 # routes it (and Google's redirect host) to a fake; ENDPOINT_SEEN logs every request the browser made to
 # those hosts, ENDPOINT_ROUTED the ones the fake answered, and a final check compares the two.
@@ -140,7 +147,7 @@ async def main():
     by_id = {c['id']: c for c in cards}
     audio_idx = json.load(open(os.path.join(APP, 'content', 'audio.json'), encoding='utf-8'))
     version = json.load(open(os.path.join(APP, 'content', 'version.json'), encoding='utf-8'))
-    audio_files = sorted({f for e in audio_idx['items'].values() for f in e.values()})
+    audio_files = all_audio_files(audio_idx)
 
     # ---------- static checks ----------
     man = json.load(open(os.path.join(APP, 'manifest.webmanifest')))
@@ -172,6 +179,7 @@ async def main():
     check('sw.js CACHE_VERSION matches the content version', m_cv and m_cv.group(1).startswith(f"oye-v{version.get('version')}-"), m_cv and m_cv.group(1))
     check('viewport meta has interactive-widget=resizes-content (keyboard resizes the layout)',
           'interactive-widget=resizes-content' in open(os.path.join(APP, 'index.html'), encoding='utf-8').read())
+    static_v2_checks(cards, audio_idx, version, sw_src)
 
     port = free_port()
     server = start_server(APP, port)
@@ -232,6 +240,7 @@ async def main():
         # ---------- full Quick session ----------
         await page.click('[data-act=start]')
         seen_types, first_q, first_fb = [], set(), set()
+        quick_levels = []
         hint_used_ids = set()
         counts = {}
         autoplayed, listening = 0, 0
@@ -247,6 +256,7 @@ async def main():
             card = by_id[cur['card']]
             t = card['type']
             seen_types.append(t)
+            quick_levels.append(card.get('level', 'easy'))
             counts[t] = counts.get(t, 0) + 1
             k = counts[t]
             # autoplay
@@ -264,7 +274,7 @@ async def main():
                 await page.wait_for_timeout(700)
                 slow = await page.evaluate('(() => { const a = window.__oyeAudioEl; return {t: a.currentTime, rate: a.playbackRate, d: a.duration}; })()')
                 slow_checked = slow['t'] > 0 and slow['d'] > normal_dur
-                check('slow replay plays the slower es-MX file', slow_checked, f"normal {normal_dur:.2f}s, slow {slow['d']:.2f}s")
+                check('slow replay plays the slower pre-generated file', slow_checked, f"normal {normal_dur:.2f}s, slow {slow['d']:.2f}s")
                 await wait_audio_idle(page)
 
             if t in ('listen_type', 'fix_it') and card.get('hint_en'):
@@ -329,6 +339,7 @@ async def main():
         check('session reaches the summary screen', cur['screen'] == 'summary')
         check('session has 8-10 cards', plan_len is not None and 8 <= plan_len <= 10, plan_len)
         check('session covered every card type', set(seen_types) == set(TYPES), seen_types)
+        check('v2: the Quick session (Easy) showed only Easy cards (no Medium card)', quick_levels and all(l == 'easy' for l in quick_levels), quick_levels)
         check('autoplay on listening cards', autoplayed == listening, f'{autoplayed}/{listening}')
         score = (await page.text_content('[data-testid=score]')).strip()
         expect_right = sum(1 for i, t in enumerate(seen_types) if not ((t == 'listen_pick' and seen_types[:i + 1].count(t) == 1) or (t in ('scene_question', 'fix_it') and seen_types[:i + 1].count(t) == 2)))
@@ -340,8 +351,11 @@ async def main():
         await page.wait_for_selector('[data-screen=home]')
         streak = (await page.text_content('[data-testid=streak]')).strip()
         check('home streak = 1 after the first session', streak == '1', streak)
-        today = (await page.text_content('.stats .col:nth-of-type(3) .value, .stats .col:last-child .value')).strip()
-        check(f'home cards today = {len(seen_types)}', today.startswith(str(len(seen_types))), today)
+        # v2 design: the second home stat is "stars earned" (was "cards today"); cards answered today still live in progress.
+        stars_home = (await page.text_content('[data-testid=stars-total]')).strip()
+        today_n = await page.evaluate("(() => { const p = JSON.parse(localStorage.getItem('oye.progress.v1')); const d = new Date(); const k = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); return p.days[k].answered; })()")
+        check(f'home: cards answered today = {len(seen_types)} (progress) and "stars earned" counts the session (1-3)',
+              today_n == len(seen_types) and stars_home.isdigit() and 1 <= int(stars_home) <= 3, {'today': today_n, 'stars': stars_home})
         await page.screenshot(path=os.path.join(SHOTS, '01b-home-after-session.png'))
         prog = await page.evaluate("JSON.parse(localStorage.getItem('oye.progress.v1'))")
         wrong_ids = [cid for cid, s in prog['cards'].items() if s['lastOk'] is False]
@@ -472,6 +486,7 @@ async def main():
             await layout_suite(browser, base4, cards, w, h)
         await keyboard_visual_viewport_test(browser, base4)
         await results_upload_tests(browser, base4, version)
+        await levels_suite(browser, base4, cards)
         server4.terminate(); server4.wait()
 
         # ---------- v1.1: service worker update path ----------
@@ -737,11 +752,13 @@ async def layout_suite(browser, base, cards, w, h):
             if t == 'scene_question':
                 if sg['lines'] == 0 or sg['linePlay'] != sg['lines']: sp.append(f'speaker lines {sg["lines"]}, per-line replay {sg["linePlay"]}')
                 scene = scenes.get(card.get('scene_id'))
-                if scene:  # colours follow the scene's speaker order: first speaker accent blue, second correct green
-                    order = list(dict.fromkeys(d['speaker'] for d in scene['dialogue']))
-                    want = {order[0].upper(): 'rgb(110, 139, 255)', order[1].upper(): 'rgb(76, 195, 138)'}
-                    bad = [(n, col) for n, col in sg['spkPairs'] if n.upper() in want and want[n.upper()] != col]
-                    if bad: sp.append(f'speaker colours {bad[:2]}')
+                # v2.1: colours follow the VOICE (content `voice`), not the order: male/Alonso accent blue, female/Paloma green
+                src_lines = card.get('audio_lines') or (scene or {}).get('dialogue') or []
+                want = {l['speaker'].upper(): VOICE_COLOR[l['voice']] for l in src_lines if l.get('voice') in VOICE_COLOR}
+                if scene:
+                    want.update({d['speaker'].upper(): VOICE_COLOR[d['voice']] for d in scene['dialogue'] if d.get('voice') in VOICE_COLOR})
+                bad = [(n, col) for n, col in sg['spkPairs'] if n.upper() in want and want[n.upper()] != col]
+                if bad or (src_lines and not sg['spkPairs']): sp.append(f'speaker colours {bad[:2] or "missing"}')
             if first:
                 await page.screenshot(path=shot_path(w, h, f'{pre}-e-sheet.png'))
                 if sg['overflow'] > 1:
@@ -877,10 +894,10 @@ async def update_path_test(browser):
         # deploy the new build to the same origin, then "open the app again"
         copy_current(site)
         await page.reload()   # next launch: the old SW still serves the v1 shell first
-        ok = await wait_for(page, "document.documentElement.dataset.shell === '1.1' && document.documentElement.dataset.ready === '1' && !!document.querySelector('[data-screen=home]')", 25000)
+        ok = await wait_for(page, f"document.documentElement.dataset.shell === '{SHELL_VERSION}' && document.documentElement.dataset.ready === '1' && !!document.querySelector('[data-screen=home]')", 25000)
         info = await page.evaluate("""async () => ({ keys: await caches.keys(), cache: (await (await fetch('sw.js', {cache: 'no-store'})).text()).match(/CACHE_VERSION = '([^']+)'/)[1],
             ver: window.__oye && window.__oye.content.version.version, hints: window.__oye && window.__oye.content.cards.filter(c => c.hint_en).length })""")
-        check('update test: on the next open the new SW activates and the page switches itself to the v1.1 shell (no reinstall)',
+        check(f'update test: on the next open the new SW activates and the page switches itself to the new shell ({SHELL_VERSION}, no reinstall)',
               ok and f"{info['cache']}-shell" in info['keys'] and not any(k.endswith('-shell') and k != f"{info['cache']}-shell" for k in info['keys']), info)
         check('update test: new content version downloaded, hints present', info['ver'] == json.load(open(os.path.join(APP, 'content', 'version.json')))['version'] and info['hints'] > 0, info)
         prog_after = await page.evaluate("localStorage.getItem('oye.progress.v1')")
@@ -932,7 +949,7 @@ async def live_check(url):
         check(f'live: content/version.json is version {local_ver}', v.get('version') == local_ver, v.get('version'))
         await page.goto(url)
         await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=20000)
-        check('live: page runs the v1.1 shell', await page.evaluate("document.documentElement.dataset.shell") == '1.1')
+        check(f'live: page runs the {SHELL_VERSION} shell', await page.evaluate("document.documentElement.dataset.shell") == SHELL_VERSION)
         await page.screenshot(path=os.path.join(SHOTS11, 'live-412x915-home.png'))
         await page.evaluate("(() => { const S = window.__oye; S.plan = ['c-0018', 'c-0010', 'c-0029'].map(id => S.playable.find(c => c.id === id)).filter(Boolean); })()")
         await page.click('[data-act=start]')
@@ -966,7 +983,8 @@ async def live_check(url):
 
 # ---------------------------------------------------------------- results upload (Google Sheet)
 QUEUE_JS = "JSON.parse(localStorage.getItem('oye.resultsQueue.v1') || '[]')"
-ROW_KEYS = ['answered_at', 'card_id', 'content_version', 'correct', 'answer_given', 'used_hint', 'used_slow', 'session_id']
+# v2 adds level, topic, mission_id and the session's stars (additive; the current Apps Script ignores extra keys).
+ROW_KEYS = ['answered_at', 'card_id', 'content_version', 'correct', 'answer_given', 'used_hint', 'used_slow', 'session_id', 'level', 'topic', 'mission_id', 'stars']
 STATUS_JS = """() => {
   const el = document.querySelector('#app [data-testid=results-status]');
   if (!el) return null;
@@ -1073,8 +1091,9 @@ async def results_upload_tests(browser, base, version):
             return t_start - 5 <= t <= t_end + 5 and len(str(v)) <= 30
         except Exception:
             return False
-    check(f'results: rows have exactly the 8 fields; content_version {cv}; one session_id (<=40 chars); answered_at ISO time of each answer',
+    check(f'results: rows have exactly the {len(ROW_KEYS)} fields (v2: + level easy, topic "", mission_id "", stars 1-3); content_version {cv}; one session_id (<=40 chars); answered_at ISO time of each answer',
           all(list(r) == ROW_KEYS for r in rows) and all(r['content_version'] == cv for r in rows)
+          and all(r['level'] == 'easy' and r['topic'] == '' and r['mission_id'] == '' and r['stars'] in (1, 2, 3) for r in rows)
           and len(sids) == 1 and all(isinstance(x, str) and 0 < len(x) <= 40 for x in sids)
           and all(iso_ok(r['answered_at']) for r in rows) and [r['answered_at'] for r in rows] == sorted(r['answered_at'] for r in rows),
           rows[:1])
@@ -1233,6 +1252,462 @@ async def live_results_check(browser, url):
 
 
 TYPES = ['listen_pick', 'listen_type', 'scene_question', 'fix_it', 'reply']
+
+
+# ---------------------------------------------------------------- v2 Levels + v2.1 voices
+SHOTS_V2 = os.environ.get('OYE_V2_SHOTS') or os.path.join(SHOTS, 'v2')
+TOPIC_ORDER = ['numbers_prices', 'time_schedules', 'directions', 'verbs_past', 'verbs_present', 'verbs_commands', 'verbs_future']
+TOPIC_NAMES = {'numbers_prices': 'Numbers & prices', 'time_schedules': 'Time & schedules', 'directions': 'Directions & places',
+               'verbs_past': 'Past tense', 'verbs_present': 'Present tense', 'verbs_commands': 'Commands', 'verbs_future': 'Future & conditional',
+               'weather_plans': 'Weather & plans', 'food_ordering': 'Food & ordering', 'shopping': 'Shopping & sizes',
+               'health_pharmacy': 'Health & pharmacy', 'phone_reservations': 'Calls & bookings', 'home_errands': 'Home & errands', 'small_talk': 'Small talk'}
+
+
+def load_build_audio():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('build_audio', os.path.join(APP, 'tools', 'build_audio.py'))
+    mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
+    return mod
+
+
+def static_v2_checks(cards, idx, version, sw_src):
+    """Content + audio index checks for Levels and the v2.1 voices (no browser)."""
+    ba = load_build_audio()
+    scenes = json.load(open(os.path.join(APP, 'content', 'scenes.json'), encoding='utf-8'))
+    mpath = os.path.join(APP, 'content', 'missions.json')
+    missions = json.load(open(mpath, encoding='utf-8')) if os.path.exists(mpath) else []
+    src = os.path.join(os.path.dirname(APP), 'content', 'missions.json')
+    if os.path.exists(src):
+        check('publish: content/missions.json copied into the app (identical to the team\'s file)',
+              os.path.exists(mpath) and open(src, 'rb').read() == open(mpath, 'rb').read(), f'{len(missions)} missions')
+    check('publish: version.json card_count/mission_count match the app content',
+          version.get('card_count') == len(cards) and version.get('mission_count', len(missions)) == len(missions), version.get('mission_count'))
+    check('v2.1 voices: Alonso (male) and Paloma (female), no Dalia/Jorge left',
+          ba.VOICES == {'male': 'es-US-AlonsoNeural', 'female': 'es-US-PalomaNeural'} and idx.get('voices') == ba.VOICES
+          and 'Dalia' not in json.dumps(idx) and 'Jorge' not in json.dumps(idx))
+    # Every dialogue line carries a voice (never defaulted from speaking order).
+    dlines = [(f"scene {sc['id']}", l) for sc in scenes for l in sc.get('dialogue') or []]
+    dlines += [(f"card {c['id']} audio_lines", l) for c in cards for l in c.get('audio_lines') or []]
+    dlines += [(f"mission {m['id']}", l) for m in missions if (m.get('media') or {}).get('kind') == 'audio' for l in m['media'].get('lines') or []]
+    untagged = [f"{w}: {l.get('speaker')} {l.get('es', '')[:30]!r}" for w, l in dlines if l.get('voice') not in ('male', 'female')]
+    check(f'v2.1 voices: every dialogue line and audio_lines entry has voice male|female ({len(dlines)} lines)', not untagged, untagged[:4])
+    # One voice per speaker; two speakers never share one (per dialogue).
+    clash = []
+    groups = [(sc['id'], sc.get('dialogue') or []) for sc in scenes] + [(c['id'], c.get('audio_lines') or []) for c in cards]
+    groups += [(m['id'], (m.get('media') or {}).get('lines') or []) for m in missions]
+    for gid, ls in groups:
+        by_spk = {}
+        for l in ls:
+            by_spk.setdefault(l.get('speaker'), set()).add(l.get('voice'))
+        if any(len(v) > 1 for v in by_spk.values()) or (len(by_spk) == 2 and len(set().union(*by_spk.values())) < 2):
+            clash.append(gid)
+    check('v2.1 voices: a speaker keeps one voice; the two speakers of a dialogue never share a voice', not clash, clash)
+    # audio.json maps each line to a file generated in THAT voice (file name = sha1(voice name|rate|text)).
+    wrong = []
+    for w, l in dlines:
+        e = (idx.get('lines') or {}).get(f"{l.get('voice')}|{l['es'].strip()}")
+        if not e or e.get('voice') != l.get('voice') or os.path.basename(e['normal']) != ba.file_name(l['es'].strip(), ba.RATES['normal'], l['voice']):
+            wrong.append(f"{w}: {l['es'][:30]!r}")
+    check('v2.1 voices: audio.json maps every dialogue line to a file made in that line\'s voice', not wrong, wrong[:4])
+    bad_cards = []
+    for c in cards:
+        t = (c.get('audio_text') or '').strip()
+        if not t: continue
+        e = idx['items'].get(t)
+        if not e: bad_cards.append(f"{c['id']}: no entry"); continue
+        if c.get('audio_lines'):
+            want = [ba.file_name(l['es'].strip(), ba.RATES[k], l['voice']) for k in ('normal',) for l in c['audio_lines']]
+            want_s = [ba.file_name(l['es'].strip(), ba.RATES['slow'], l['voice']) for l in c['audio_lines']]
+            ok = e.get('voice') == 'dialogue' and e['parts']['normal'] == want and e['parts']['slow'] == want_s \
+                and [(l['speaker'], l['voice']) for l in e['lines']] == [(l['speaker'], l['voice']) for l in c['audio_lines']] \
+                and os.path.basename(e['normal']) == ba.joined_name(want)
+        else:
+            v = c.get('voice') or {'easy': 'female', 'medium': 'male', 'hard': 'male'}[c.get('level', 'easy')]
+            ok = e.get('voice') == v and os.path.basename(e['normal']) == ba.file_name(t, ba.RATES['normal'], v) \
+                and os.path.basename(e['slow']) == ba.file_name(t, ba.RATES['slow'], v)
+        if not ok: bad_cards.append(c['id'])
+    n_override = sum(1 for c in cards if c.get('voice'))
+    check(f'v2.1 voices: card audio uses the card voice ({n_override} overrides, e.g. c-0003/c-0011 male), else Easy=Paloma, Medium/Hard=Alonso; audio_lines cards join each line in its own voice',
+          not bad_cards, bad_cards[:5])
+    bad_m = []
+    for m in missions:
+        md = m.get('media') or {}
+        if md.get('kind') != 'audio': continue
+        e = (idx.get('missions') or {}).get(m['id'])
+        want = [ba.file_name(l['es'].strip(), ba.RATES['normal'], l['voice']) for l in md['lines']]
+        if not e or e['parts']['normal'] != want or not (30 <= e.get('duration', 0) <= 120) or not e.get('slow_duration', 0) > e['duration']:
+            bad_m.append(m['id'])
+    check('v2.1 voices: each audio mission is one clip joined from its lines in their voices, with duration (slow clip longer)', not bad_m, bad_m)
+    used = set(os.path.basename(f) for f in all_audio_files(idx))
+    on_disk = {f for f in os.listdir(os.path.join(APP, 'audio')) if f.endswith('.mp3')}
+    check(f'audio: every referenced file exists and no stale file is left over from the old voice ({len(used)} files)',
+          used <= on_disk and not (on_disk - used), {'missing': sorted(used - on_disk)[:3], 'stale': len(on_disk - used)})
+    js = sorted(f'js/{f}' for f in os.listdir(os.path.join(APP, 'js')) if f.endswith('.js'))
+    missing_sw = [f for f in js if f"'{f}'" not in sw_src]
+    check('sw.js precaches every js/*.js file (incl. js/levels.js)', not missing_sw, missing_sw)
+    mc = [c['id'] for c in cards if c.get('level') == 'medium']
+    check(f'content: {len(mc)} Medium cards, all with a topic; Easy cards have no level or level easy',
+          all(c.get('topic') for c in cards if c.get('level') == 'medium') and len(mc) > 0)
+
+
+async def shot_v2(page, name):
+    os.makedirs(SHOTS_V2, exist_ok=True)
+    await page.screenshot(path=os.path.join(SHOTS_V2, name))
+
+
+async def home_fresh(page, base):
+    await page.goto(base)
+    await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=15000)
+
+
+async def answer_card_right(page, card):
+    """Answer the card on screen correctly (any template)."""
+    t = card['type']
+    if await page.query_selector('#fix-input'):
+        await page.fill('#fix-input', card['answer']); await page.click('[data-act=check]')
+    elif t == 'listen_type':
+        for ch in card['answer'].replace('$', ''):
+            await page.click(f'[data-key="{ch}"]')
+        await page.click('[data-act=check]')
+    else:
+        await page.click(f'[data-opt="{card["options"].index(card["answer"])}"]')
+    await page.wait_for_selector('[data-state=correct], [data-state=wrong]')
+
+
+MQ_GEOM = """() => {
+  const r = (e) => { const b = e.getBoundingClientRect(); return {top: b.top, bottom: b.bottom, h: b.height, left: b.left, right: b.right}; };
+  const sc = document.querySelector('.mq-zone .scroller');
+  const opts = [...document.querySelectorAll('.mopt')].map((e) => ({ ...r(e), lines: Math.round((e.clientHeight - parseFloat(getComputedStyle(e).paddingTop) - parseFloat(getComputedStyle(e).paddingBottom)) / parseFloat(getComputedStyle(e).lineHeight)),
+      hclip: e.scrollWidth > e.clientWidth + 1 }));
+  const player = document.querySelector('.player');
+  return { opts, check: r(document.querySelector('[data-act=check]')), overflow: sc.scrollHeight - sc.clientHeight, player: player && r(player),
+           docScroll: document.scrollingElement.scrollHeight - innerHeight, vh: innerHeight, prompt: r(document.querySelector('.mq-prompt')) };
+}"""
+
+
+async def levels_suite(browser, base, cards):
+    by_id = {c['id']: c for c in cards}
+    missions = json.load(open(os.path.join(APP, 'content', 'missions.json'), encoding='utf-8'))
+    mby = {m['id']: m for m in missions}
+    medium = [c for c in cards if c.get('level') == 'medium']
+    errors = []
+
+    # ---- 1. Level filter: Quick session never contains a Medium card, whatever the progress looks like ----
+    ctx, page = await new_page(browser, errors, viewport={'width': 360, 'height': 640})
+    await home_fresh(page, base)
+    info = await page.evaluate("(() => { const S = window.__oye; return { easy: S.easy.map(c => c.id), medium: S.medium.map(c => c.id), plan: S.plan.map(c => c.id) }; })()")
+    easy_ids = {c['id'] for c in cards if c.get('level', 'easy') == 'easy'}
+    med_ids = {c['id'] for c in medium}
+    plans = [info['plan']]
+    # Medium cards made maximally "urgent" (wrong, due, box 1) + every Easy card seen and not due -> early-review path
+    today = time.strftime('%Y-%m-%d')
+    for scenario in ('medium-urgent', 'easy-not-due', 'lesson'):
+        prog = {'cards': {}, 'days': {}, 'history': [], 'lesson': 'all'}
+        for cid in med_ids:
+            prog['cards'][cid] = {'box': 1, 'seen': 3, 'right': 0, 'wrong': 3, 'due': '2000-01-01', 'last': today, 'lastOk': False}
+        if scenario == 'easy-not-due':
+            for cid in easy_ids:
+                prog['cards'][cid] = {'box': 5, 'seen': 5, 'right': 5, 'wrong': 0, 'due': '2999-01-01', 'last': today, 'lastOk': True}
+        if scenario == 'lesson':
+            easy_tags = [t for e in cards if e['id'] in easy_ids for t in (e.get('lesson_tags') or [])]
+            shared = [t for c in medium for t in c.get('lesson_tags', []) if t in easy_tags]
+            prog['lesson'] = (shared or easy_tags)[0]
+        await page.evaluate(f"localStorage.setItem('oye.progress.v1', {json.dumps(json.dumps(prog))})")
+        for _ in range(8):
+            await page.reload(); await page.wait_for_selector('html[data-ready="1"] [data-screen=home]')
+            plans.append(await page.evaluate('window.__oye.plan.map(c => c.id)'))
+    leaked = sorted({i for pl in plans for i in pl if i not in easy_ids})
+    check(f'v2 level filter: {len(plans)} Quick-session plans (fresh, Medium cards overdue, Easy all not due, lesson filter) contain only Easy cards',
+          not leaked and set(info['easy']) == easy_ids and set(info['medium']) == med_ids and all(len(pl) >= 1 for pl in plans), leaked[:5])
+    await page.evaluate("localStorage.clear()")
+    await ctx.close()
+
+    # ---- 2. Home at small phones: two challenge cards above Quick session, fits without scrolling ----
+    for (w, h) in [(360, 640), (375, 667), (360, 720)]:
+        ctx, page = await new_page(browser, errors, viewport={'width': w, 'height': h})
+        await home_fresh(page, base)
+        g = await page.evaluate("""() => { const r = (s) => { const e = document.querySelector(s); if (!e) return null; const b = e.getBoundingClientRect(); return {top: b.top, bottom: b.bottom, h: b.height, w: b.width}; };
+            return { docScroll: document.scrollingElement.scrollHeight - innerHeight, med: r('[data-testid=challenge-medium]'), hard: r('[data-testid=challenge-hard]'),
+                     start: r('[data-act=start]'), head: document.querySelector('.challenges-head')?.textContent, meta: document.querySelector('.meta-line')?.textContent.trim(),
+                     medText: document.querySelector('[data-testid=challenge-medium]')?.textContent.replace(/\\s+/g, ' ').trim(),
+                     hardText: document.querySelector('[data-testid=challenge-hard]')?.textContent.replace(/\\s+/g, ' ').trim() }; }""")
+        ok = (g['docScroll'] <= 1 and g['med'] and g['hard'] and g['med']['bottom'] <= g['hard']['top'] and g['hard']['bottom'] < g['start']['top']
+              and g['start']['bottom'] <= h - 15.5 and 'Topic challenge' in g['medText'] and 'Real-life mission' in g['hardText'] and g['meta'].startswith('EASY'))
+        check(f'[{w}x{h}] v2 home: Medium then Hard challenge cards above the pinned Quick session, EASY caption, no scrolling', ok, g)
+        if (w, h) == (360, 640):
+            await shot_v2(page, '01-home-360x640.png')
+        await ctx.close()
+
+    # ---- 3. Topic grid + a Medium topic session (stars, results rows, letter keyboard) ----
+    fake = FakeEndpoint('ok')
+    ctx, page = await new_page(browser, errors, viewport={'width': 360, 'height': 640}, endpoint=fake)
+    await home_fresh(page, base)
+    await page.click('[data-act=medium]')
+    await page.wait_for_selector('[data-screen=topics]')
+    tiles = await page.evaluate("[...document.querySelectorAll('[data-topic]')].map(b => { const r = b.getBoundingClientRect(); return {code: b.dataset.topic, name: b.querySelector('.tname').textContent, w: r.width, h: r.height, stars: b.querySelector('.stars').dataset.stars}; })")
+    soon = (await page.text_content('[data-testid=coming-soon]')).strip()
+    have = [t for t in TOPIC_ORDER if any(c.get('topic') == t for c in medium)]
+    check('v2 topic grid: one tile per topic that has cards, in design order, 152x84, 0 stars to start',
+          [t['code'] for t in tiles] == have and all(t['name'] == TOPIC_NAMES[t['code']] and abs(t['w'] - 152) <= 1 and abs(t['h'] - 84) <= 0.5 and t['stars'] == '0' for t in tiles), tiles)
+    rest = [TOPIC_NAMES[k] for k in TOPIC_NAMES if k not in have]
+    check('v2 topic grid: the other topics are listed under "Coming soon" (not tappable)', soon.split(' · ') == rest and not await page.query_selector('.soon [data-topic]'), soon)
+    await shot_v2(page, '02-topic-grid-360x640.png')
+    await page.click('[data-topic=numbers_prices]')
+    await page.wait_for_selector('[data-screen=card][data-state=question]')
+    await page.wait_for_timeout(400)
+    await shot_v2(page, '03-medium-topic-card-360x640.png')
+    n = int((await page.text_content('.count')).split(' of ')[1])
+    seen, hinted = [], False
+    for i in range(n):
+        await page.wait_for_selector('[data-screen=card][data-state=question]')
+        cur = await current(page)
+        card = by_id[cur['card']]
+        seen.append(card)
+        await answer_card_right(page, card)
+        await page.click('[data-act=next]')
+    await page.wait_for_selector('[data-screen=summary][data-level=medium]')
+    check(f'v2 Medium session: {n} cards (8-10), all Medium cards from the chosen topic, existing card templates',
+          8 <= n <= 10 and all(c.get('level') == 'medium' and c.get('topic') == 'numbers_prices' for c in seen), [c['id'] for c in seen])
+    txt = await page.text_content('[data-screen=summary]')
+    stars = await page.get_attribute('.msum .stars', 'data-stars')
+    check('v2 Medium summary: "MEDIUM · Numbers & prices", 3 stars for all right with no hints, "New best", "N of N right", Another topic + Done',
+          'Numbers & prices' in txt and stars == '3' and await page.query_selector('[data-testid=new-best]') and f'{n} of {n} right' in txt
+          and await page.query_selector('[data-act=another]') and await page.query_selector('[data-act=done]'), (stars, txt[:120]))
+    sent = await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 8000)
+    rows = fake.ok_rows()
+    check('v2 results: Medium rows carry level "medium", topic, mission_id "" and the session stars',
+          sent and len(rows) == n and all(r['level'] == 'medium' and r['topic'] == 'numbers_prices' and r['mission_id'] == '' and r['stars'] == 3 for r in rows), rows[:1])
+    await shot_v2(page, '04-medium-summary-360x640.png')
+    await page.click('[data-act=another]')
+    await page.wait_for_selector('[data-screen=topics]')
+    st = await page.get_attribute('[data-topic=numbers_prices] .stars', 'data-stars')
+    check('v2 topic grid: "Another topic" goes back to the grid, which shows the best stars (3) for the topic', st == '3', st)
+    # Hint caps a card at half: all right, one hint -> not 3 stars; best stays 3 (no "New best")
+    await page.click('[data-topic=verbs_past]')
+    await page.wait_for_selector('[data-screen=card][data-state=question]')
+    n2 = int((await page.text_content('.count')).split(' of ')[1])
+    fix_checked = None
+    for i in range(n2):
+        await page.wait_for_selector('[data-screen=card][data-state=question]')
+        card = by_id[(await current(page))['card']]
+        if not hinted and await page.query_selector('[data-act=hint]'):
+            await page.click('[data-act=hint]'); hinted = True
+        inp = await page.query_selector('#fix-input')
+        if inp and fix_checked is None:
+            attrs = await page.evaluate("(() => { const i = document.querySelector('#fix-input'); return ['autocapitalize', 'autocorrect', 'spellcheck', 'inputmode', 'autocomplete', 'type'].map(a => i.getAttribute(a)); })()")
+            plain = card['answer'].lower()
+            import unicodedata
+            plain = ''.join(ch for ch in unicodedata.normalize('NFD', plain) if unicodedata.category(ch) != 'Mn').upper()
+            await page.fill('#fix-input', plain); await page.click('[data-act=check]')
+            await page.wait_for_selector('[data-state=correct], [data-state=wrong]')
+            fix_checked = (attrs, plain, (await current(page))['state'])
+        else:
+            await answer_card_right(page, card)
+        await page.click('[data-act=next]')
+    await page.wait_for_selector('[data-screen=summary][data-level=medium]')
+    check('v2 letter keyboard (Medium typed answers): text input has autocapitalize=off, autocorrect=off, spellcheck=false, inputmode=text; accent/case-insensitive',
+          fix_checked and fix_checked[0] == ['off', 'off', 'false', 'text', 'off', 'text'] and fix_checked[2] == 'correct', fix_checked)
+    st2 = await page.get_attribute('.msum .stars', 'data-stars')
+    check('v2 stars: a hint caps that card at half, and 3 stars need no hints (all right + 1 hint -> 2 stars)', hinted and st2 == '2', {'hinted': hinted, 'stars': st2})
+    stars_js = await page.evaluate("""import('./js/levels.js').then(L => [
+        L.starsFor([{ok: true}], 'easy').stars, L.starsFor(Array(10).fill({ok: true}).map((a, i) => i < 7 ? a : {ok: false}), 'medium').stars,
+        L.starsFor(Array(10).fill({ok: true}).map((a, i) => i < 6 ? a : {ok: false}), 'medium').stars,
+        L.starsFor(Array(10).fill({ok: true}).map((a, i) => i < 9 ? a : {ok: false}), 'medium').stars,
+        L.starsFor([{ok: true, hint: true}, {ok: true}, {ok: true}, {ok: true}], 'hard').stars,
+        L.starsFor([{ok: false}, {ok: false}], 'hard').stars])""")
+    check('v2 stars rule: 1 = finished, 2 = 70%+, 3 = 90%+ without hints', stars_js == [3, 2, 1, 3, 2, 1], stars_js)
+    await page.click('[data-act=done]')
+    await page.wait_for_selector('[data-screen=home]')
+    tot = (await page.text_content('[data-testid=stars-total]')).strip()
+    med = (await page.text_content('[data-testid=challenge-medium] .star-n')).strip()
+    check('v2 home: stars earned = best per topic (3 + 2); Medium card shows ★ 5; Done returns straight Home', tot == '5' and med == '5', (tot, med))
+    await ctx.close()
+
+    # ---- 4. Hard missions: intro, player bar on every question, keypad, result + Why, transcript ----
+    for (w, h) in [(360, 640), (375, 667), (360, 720)]:
+        fake = FakeEndpoint('ok')
+        ctx, page = await new_page(browser, errors, viewport={'width': w, 'height': h}, endpoint=fake)
+        await home_fresh(page, base)
+        tag = f'[{w}x{h}]'
+        main = (w, h) == (360, 640)
+        m = mby['m-metro-01']
+        await page.click('[data-act=hard]'); await page.wait_for_selector('[data-screen=missions]')
+        if main:
+            rows_n = len(await page.query_selector_all('[data-testid=mission-row]'))
+            check('v2 Hard: mission list shows every mission (3)', rows_n == len(missions), rows_n)
+        await page.click('[data-mission=m-metro-01]')
+        await page.wait_for_selector('[data-screen=mission-intro]')
+        it = await page.text_content('[data-screen=mission-intro]')
+        g = await page.evaluate("document.scrollingElement.scrollHeight - innerHeight")
+        if main:
+            check('v2 mission intro: HARD eyebrow, title, situation, audio length "about 1 min", 4 questions, "Read the questions first" + "Play announcement"',
+                  'Real-life mission' in it and m['title_en'] in it and m['situation_en'] in it and 'about 1 min' in it and '4, one at a time' in it
+                  and 'Read the questions first' in it and 'Play announcement' in it and g <= 1, it[:200])
+            await shot_v2(page, '05-mission-intro-360x640.png')
+            await page.click('[data-act=preview]'); await page.wait_for_selector('[data-testid=sheet]')
+            pv = await page.text_content('[data-testid=sheet]')
+            check('v2 mission intro: "Read the questions first" shows the prompts only (no options)',
+                  all(q['prompt_en'].split(' (type')[0] in pv for q in m['questions']) and m['questions'][1]['options'][2] not in pv)
+            await page.click('[data-act=sheet-close]')
+        await page.click('[data-act=begin]')
+        await page.wait_for_selector('[data-screen=mission-q][data-q=q1]')
+        await page.wait_for_timeout(1200)
+        a = await page.evaluate("(() => { const a = window.__oyeAudioEl; return {t: a.currentTime, clip: a.dataset.clip, paused: a.paused}; })()")
+        if main:
+            check('v2 mission: "Play announcement" starts the mission clip, the player bar is shown', a['clip'] == 'm-metro-01' and a['t'] > 0 and await page.is_visible('[data-testid=player]'), a)
+            # slow toggles the slow file keeping the position; scrub seeks
+            await page.click('[data-act=pl-slow]'); await page.wait_for_timeout(700)
+            s1 = await page.evaluate("(() => { const a = window.__oyeAudioEl; return {slow: a.dataset.slow, d: a.duration, t: a.currentTime}; })()")
+            box = await (await page.query_selector('.pl-track')).bounding_box()
+            await page.mouse.click(box['x'] + box['width'] * 0.5, box['y'] + box['height'] / 2); await page.wait_for_timeout(400)
+            s2 = await page.evaluate("(() => { const a = window.__oyeAudioEl; return {t: a.currentTime, d: a.duration, txt: document.querySelector('.pl-time').textContent}; })()")
+            check('v2 player: slow (0.75×) switches to the slow clip; scrubbing seeks; elapsed / total shown',
+                  s1['slow'] == '1' and s1['d'] > 60 and abs(s2['t'] / s2['d'] - 0.5) < 0.1 and '/ 1:1' in s2['txt'], (s1, s2))
+            await page.click('[data-act=pl-slow]'); await page.wait_for_timeout(300)
+        players = []
+        # q1 right, q2 wrong, q3 typed 5:00 on the keypad (right), q4 right
+        for q in m['questions']:
+            await page.wait_for_selector(f'[data-screen=mission-q][data-q={q["id"]}]')
+            players.append(await page.is_visible('[data-testid=player]') and await page.is_visible('[data-act=pl-slow]'))
+            if q['id'] == 'q2':
+                await page.wait_for_timeout(100)
+                await page.click('[data-opt="1"]')
+                mg = await page.evaluate(MQ_GEOM)
+                two_line = all(o['lines'] == 2 and o['h'] > 56 for o in mg['opts'])
+                fits = mg['overflow'] <= 1 and mg['opts'][-1]['bottom'] <= mg['check']['top'] + 0.5 and mg['docScroll'] <= 1 and not any(o['hclip'] for o in mg['opts'])
+                check(f'{tag} v2 fit: metro q2 options wrap onto two lines (hug height, not fixed 56px) and all four fit above Check, no scrolling',
+                      two_line and fits, {'opts': [(round(o['top']), round(o['bottom']), o['lines']) for o in mg['opts']], 'check_top': mg['check']['top'], 'overflow': mg['overflow']})
+                sel = await page.evaluate("getComputedStyle(document.querySelector('.mopt.is-selected')).borderColor")
+                if main:
+                    check('v2 mission: the selected option gets the accent border; Check enabled after choosing', sel == 'rgb(110, 139, 255)' and not await page.is_disabled('[data-act=check]'), sel)
+                await shot_v2(page, f'06-metro-q2-wrapped-options-{w}x{h}.png')
+                await page.click('[data-act=check]')
+            elif q['kind'] == 'type':
+                kp = await page.is_visible('[data-testid=keypad]') and await page.is_visible('[data-key=":"]')
+                for ch in '5:00': await page.click(f'[data-key="{ch}"]')
+                if main:
+                    typed = (await page.text_content('[data-testid=typed]')).strip()
+                    check('v2 mission typed answer uses the v1.1 keypad (numbers and colon)', kp and typed == '5:00', typed)
+                    await shot_v2(page, '07-metro-q3-keypad-360x640.png')
+                await page.click('[data-act=check]')
+            else:
+                await page.click(f'[data-opt="{q["options"].index(q["answer"])}"]'); await page.click('[data-act=check]')
+        await page.wait_for_selector('[data-screen=mission-result]')
+        if not main:
+            await ctx.close(); continue
+        check('v2 mission: the player bar (replay + slow) stays on every question', all(players) and len(players) == 4, players)
+        res = await page.evaluate("""(() => ({ stars: document.querySelector('.mission-result .stars').dataset.stars, score: document.querySelector('[data-testid=score]').textContent,
+            rows: [...document.querySelectorAll('[data-testid=mr-row]')].map(r => ({ q: r.dataset.q, bad: r.classList.contains('bad'), open: !r.querySelector('.why-box').hidden,
+                     why: r.querySelector('.why-box').textContent, prompt: r.querySelector('.mr-prompt').textContent })),
+            last: document.querySelector('.mr-zone .scroll-inner').lastElementChild.textContent.trim(),
+            wrongBg: getComputedStyle(document.querySelector('.mr-row.bad .why-box')).backgroundColor }))()""")
+        q2 = next(r for r in res['rows'] if r['q'] == 'q2')
+        others_closed = all(not r['open'] for r in res['rows'] if r['q'] != 'q2')
+        check('v2 mission result: 3 of 4 right -> 2 stars; the wrong answer\'s "Why" starts open (wrongTint, "You picked …" + explanation); right ones closed; last row "Read the transcript"',
+              res['stars'] == '2' and '3 of 4 right' in res['score'] and q2['bad'] and q2['open'] and 'You picked' in q2['why'] and m['questions'][1]['explanation_en'] in q2['why']
+              and others_closed and res['last'] == 'Read the transcript' and res['wrongBg'] == 'rgb(45, 23, 20)'
+              and '(type it like' not in ''.join(r['prompt'] for r in res['rows']), res)
+        await shot_v2(page, '08-mission-result-why-open-360x640.png')
+        await page.click('[data-q=q1] [data-act=why]')
+        opened = await page.is_visible('[data-q=q1] [data-testid=why-box]')
+        check('v2 mission result: tapping any row opens its "Why"', opened and m['questions'][0]['explanation_en'] in (await page.text_content('[data-q=q1] [data-testid=why-box]')))
+        await page.click('[data-act=transcript]'); await page.wait_for_selector('[data-testid=sheet]'); await page.wait_for_timeout(250)
+        tr = await page.text_content('[data-testid=sheet]')
+        check('v2 mission result: "Read the transcript" opens every line of the announcement with speaker labels',
+              all(l['es'] in tr for l in m['media']['lines']) and 'Anuncio' in tr and await page.query_selector('.fb-sheet .spk.v-male'))
+        await page.click('[data-act=sheet-close]')
+        q = await page.evaluate(QUEUE_JS)
+        check('v2 results: mission answers are not queued for the Sheet (the Apps Script only accepts c-NNNN card ids); no request sent', q == [] and not fake.calls, len(fake.calls))
+        await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
+        hs = (await page.text_content('[data-testid=challenge-hard] .star-n')).strip()
+        streak = (await page.text_content('[data-testid=streak]')).strip()
+        check('v2 home after a mission: Hard card shows its stars (★ 2); the mission counts for the streak (1)', hs == '2' and streak == '1', (hs, streak))
+
+        # ---- clinic voicemail: two voices, label colour follows the voice ----
+        mc = mby['m-voicemail-clinic-01']
+        await page.click('[data-act=hard]'); await page.click('[data-mission=m-voicemail-clinic-01]')
+        it = await page.text_content('[data-screen=mission-intro]')
+        await page.click('[data-act=begin]')
+        for q in mc['questions']:
+            await page.wait_for_selector(f'[data-screen=mission-q][data-q={q["id"]}]')
+            if q['kind'] == 'pick':
+                await page.click(f'[data-opt="{q["options"].index(q["answer"])}"]')
+            else:
+                for ch in q['answer']: await page.click(f'[data-key="{ch}"]')
+            await page.click('[data-act=check]')
+        await page.wait_for_selector('[data-screen=mission-result]')
+        st = await page.get_attribute('.mission-result .stars', 'data-stars')
+        await page.click('[data-act=transcript]'); await page.wait_for_selector('[data-testid=sheet]'); await page.wait_for_timeout(250)
+        pairs = await page.evaluate("[...document.querySelectorAll('.fb-sheet .dline')].map(d => [d.querySelector('.spk').textContent, d.dataset.voice, getComputedStyle(d.querySelector('.spk')).color, !!d.querySelector('[data-testid=line-play]')])")
+        want = [(l['speaker'], l['voice'], VOICE_COLOR[l['voice']]) for l in mc['media']['lines']]
+        check('v2.1 two-voice mission transcript: each line labelled from content, colour follows its voice (male blue, female green), per-line replay',
+              [tuple(p[:3]) for p in pairs] == want and all(p[3] for p in pairs) and 'Play voicemail' in it and st == '3', {'pairs': pairs[:3], 'stars': st})
+        await shot_v2(page, '09-two-voice-transcript-clinic-360x640.png')
+        await page.click('[data-act=sheet-close]')
+        await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
+
+        # ---- landlord WhatsApp: long message scrolls with fade + "More below"; row reopens it ----
+        ml = mby['m-landlord-whatsapp-01']
+        await page.click('[data-act=hard]'); await page.click('[data-mission=m-landlord-whatsapp-01]')
+        it = await page.text_content('[data-screen=mission-intro]')
+        await page.click('[data-act=begin]')
+        await page.wait_for_selector('[data-screen=mission-msg]'); await page.wait_for_timeout(250)
+        mg = await page.evaluate("""(() => { const z = document.querySelector('.msg-zone'), sc = z.querySelector('.scroller'), b = document.querySelector('[data-testid=bubble]');
+            return { overflow: sc.scrollHeight - sc.clientHeight, pill: getComputedStyle(z.querySelector('.more-pill')).display !== 'none', fade: getComputedStyle(z.querySelector('.fade')).opacity,
+                     text: b.textContent, ws: getComputedStyle(b).whiteSpace, sender: document.querySelector('[data-testid=sender]').textContent,
+                     docScroll: document.scrollingElement.scrollHeight - innerHeight }; })()""")
+        check('v2 text mission: WhatsApp message (line breaks + emoji kept) is longer than the screen: it scrolls inside the bubble area with the fade + "More below" pill',
+              mg['overflow'] > 40 and mg['pill'] and mg['fade'] == '1' and mg['text'].strip() == ml['media']['text_es'] and mg['ws'] == 'pre-wrap' and mg['docScroll'] <= 1
+              and 'Read the message' in it and 'Your landlord' in mg['sender'], {k: v for k, v in mg.items() if k != 'text'})
+        await shot_v2(page, '10-landlord-whatsapp-scroll-360x640.png')
+        for _ in range(8):
+            if not await page.is_visible('.msg-zone .more-pill'): break
+            await page.click('.msg-zone .more-pill'); await page.wait_for_timeout(450)
+        end = await page.evaluate("(() => { const z = document.querySelector('.msg-zone'); return getComputedStyle(z.querySelector('.more-pill')).display === 'none'; })()")
+        check('v2 text mission: "More below" scrolls down and hides at the end of the message', end)
+        await shot_v2(page, '10b-landlord-whatsapp-end-360x640.png')
+        await page.click('[data-act=to-questions]')
+        await page.wait_for_selector('[data-screen=mission-q][data-q=q1]')
+        row = await page.is_visible('[data-testid=msg-row]') and not await page.query_selector('[data-testid=player]')
+        await page.click('[data-testid=msg-row]'); await page.wait_for_selector('[data-screen=mission-msg]')
+        back = (await page.text_content('[data-act=to-questions]')).strip()
+        await page.click('[data-act=to-questions]'); await page.wait_for_selector('[data-screen=mission-q][data-q=q1]')
+        check('v2 text mission: questions show "Message from your landlord" (no player) that reopens the message and comes back', row and back == 'Back to question 1')
+        for q in ml['questions']:
+            await page.wait_for_selector(f'[data-screen=mission-q][data-q={q["id"]}]')
+            if q['kind'] == 'pick':
+                await page.click('[data-opt="0"]')
+            else:
+                for ch in '8:00': await page.click(f'[data-key="{ch}"]')
+            await page.click('[data-act=check]')
+        await page.wait_for_selector('[data-screen=mission-result]')
+        await page.click('[data-act=transcript]'); await page.wait_for_selector('[data-testid=sheet]')
+        tt = await page.text_content('[data-testid=sheet]')
+        check('v2 text mission result: the transcript row shows the message and its English after answering', ml['media']['text_en'][:40] in tt and ml['media']['text_es'][:40] in tt)
+        await page.click('[data-act=sheet-close]')
+        await ctx.close()
+
+    # ---- 5. Easy scene transcript: label colours follow the voice (Barista is female in s-cafe-01) ----
+    ctx, page = await new_page(browser, errors, viewport={'width': 360, 'height': 640})
+    await home_fresh(page, base)
+    await start_plan(page, ['c-0019', 'c-0022'])
+    for cid in ('c-0019', 'c-0022'):
+        await page.wait_for_selector(f'[data-card={cid}][data-state=question]')
+        await page.click('[data-act=dontknow]')
+        await page.wait_for_selector('[data-state=wrong]')
+        await page.click('[data-sheet=heard]'); await page.wait_for_selector('[data-testid=sheet]'); await page.wait_for_timeout(250)
+        pairs = await page.evaluate("[...document.querySelectorAll('[data-sec=heard] .dline')].map(d => [d.querySelector('.spk').textContent, d.dataset.voice, getComputedStyle(d.querySelector('.spk')).color])")
+        want = [(l['speaker'], l['voice'], VOICE_COLOR[l['voice']]) for l in by_id[cid]['audio_lines']]
+        check(f'v2.1 Easy scene {cid}: "What you heard" labels come from content ({", ".join(l["speaker"] for l in by_id[cid]["audio_lines"])}) and colours follow the voice',
+              [tuple(p) for p in pairs] == want, pairs)
+        if cid == 'c-0019':
+            await shot_v2(page, '11-two-voice-transcript-easy-scene-360x640.png')
+        await page.click('[data-act=sheet-close]')
+        await page.click('[data-act=next]')
+    await ctx.close()
+    check('v2 levels suite: no JS errors', not [e for e in errors if 'net::' not in e], errors[:3])
+
+
 if __name__ == '__main__':
     if len(sys.argv) > 2 and sys.argv[1] == '--live':
         sys.exit(asyncio.run(live_check(sys.argv[2].rstrip('/') + '/')))

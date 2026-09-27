@@ -3,3 +3,4 @@ __pycache__/
 *.part
 screenshots/
 tests/last-run.json
+.audio-parts/

@@ -57,6 +57,14 @@ export function finishSession(s) {
   d.sessions++; s.days[t] = d; save(s);
 }
 
+/** v2: a finished Hard mission counts for the streak (n = questions answered). */
+export function recordActivity(s, n) {
+  const t = todayKey();
+  const d = s.days[t] || { answered: 0, correct: 0, introduced: 0, sessions: 0 };
+  d.answered += Math.max(1, n || 0); d.sessions++;
+  s.days[t] = d; save(s);
+}
+
 export function isPriceByEar(card) {
   const tags = card.grammar_tags || [];
   return !!card.audio_text && (tags.includes('prices') || tags.includes('numbers'));
@@ -129,6 +137,15 @@ export function planSession(s, cards, { newIds = new Set(), size = SESSION_SIZE 
     picked.push(...pickNew(fresh.filter(c => !picked.includes(c)), MIN_SESSION - picked.length, newIds));
   }
   return interleave(picked.slice(0, size));
+}
+
+/**
+ * v2 Medium: a topic session (8-10 cards from one topic). Never-seen cards and weak spots
+ * (wrong last time, low box) are more likely; no daily cap, no due dates.
+ */
+export function planTopic(s, cards, { size = SESSION_SIZE } = {}) {
+  const w = (c) => { const st = s.cards[c.id]; return st?.seen ? weight(st) : 8; };
+  return interleave(weightedSample(cards, w, Math.min(size, cards.length)));
 }
 
 // ---------- stats ----------

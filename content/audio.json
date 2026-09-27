@@ -1,197 +1,821 @@
 {
- "voice": "es-MX-DaliaNeural",
+ "format": 2,
+ "voices": {
+  "male": "es-US-AlonsoNeural",
+  "female": "es-US-PalomaNeural"
+ },
+ "level_voice": {
+  "easy": "female",
+  "medium": "male",
+  "hard": "male"
+ },
  "rates": {
   "normal": "+0%",
   "slow": "-25%"
  },
+ "pause_s": 0.45,
  "items": {
   "Son ochenta y cinco pesos.": {
-   "normal": "audio/990a6bfc588fe741.mp3",
-   "slow": "audio/8e55b2163a1685b1.mp3"
+   "normal": "audio/22aa09569e4eade9.mp3",
+   "slow": "audio/81f77471c9aea3b2.mp3",
+   "voice": "female"
   },
   "Son setenta y cuatro pesos.": {
-   "normal": "audio/1ae4d00cdd59ce94.mp3",
-   "slow": "audio/7b90f6192642b4e5.mp3"
+   "normal": "audio/b43d60e9f0108618.mp3",
+   "slow": "audio/4d4f239e481c1cee.mp3",
+   "voice": "female"
   },
   "Son ciento diez pesos.": {
-   "normal": "audio/b3af4c7df388a8d4.mp3",
-   "slow": "audio/27aaa36de57d0b00.mp3"
+   "normal": "audio/6306da7c2998cebe.mp3",
+   "slow": "audio/9b8ee54ac6c51e49.mp3",
+   "voice": "male"
   },
   "Son sesenta y nueve pesos.": {
-   "normal": "audio/0426e458af6b0dd6.mp3",
-   "slow": "audio/9c8c36057f10ce02.mp3"
+   "normal": "audio/fce3b5ecd85a5528.mp3",
+   "slow": "audio/015e467beb25bd7a.mp3",
+   "voice": "female"
   },
   "Un café de olla cuesta treinta y cinco pesos.": {
-   "normal": "audio/e006320f7aa05f51.mp3",
-   "slow": "audio/a26181cf7adc1019.mp3"
+   "normal": "audio/aba1e3f465921b87.mp3",
+   "slow": "audio/cb948649db69a5bd.mp3",
+   "voice": "female"
   },
   "Son dieciséis pesos.": {
-   "normal": "audio/41035710f884914f.mp3",
-   "slow": "audio/eaec3207ecc1d1f3.mp3"
+   "normal": "audio/4c447a51e6b77a7e.mp3",
+   "slow": "audio/e34f5207cf9bef09.mp3",
+   "voice": "female"
   },
   "Veintiséis de cambio.": {
-   "normal": "audio/741ff0c00a0ed2d4.mp3",
-   "slow": "audio/7440d38ffbb29816.mp3"
+   "normal": "audio/43406b259738b053.mp3",
+   "slow": "audio/b2c6e0df4bbfb6c6.mp3",
+   "voice": "female"
   },
   "Son doscientos cincuenta pesos.": {
-   "normal": "audio/18ca051ace8b07d5.mp3",
-   "slow": "audio/3cbe892455aa0f0b.mp3"
+   "normal": "audio/81ccf2ae68537408.mp3",
+   "slow": "audio/d2258848bc143d52.mp3",
+   "voice": "female"
   },
   "Los tacos cuestan dieciocho pesos cada uno.": {
-   "normal": "audio/39d265513e2e1430.mp3",
-   "slow": "audio/0bb45b856441641d.mp3"
+   "normal": "audio/374a35c33cb9f1c0.mp3",
+   "slow": "audio/80568300205fa5bd.mp3",
+   "voice": "female"
   },
   "Son tres tacos de dieciocho y un agua de veinte.": {
-   "normal": "audio/f17b4c4507ec6e15.mp3",
-   "slow": "audio/38ca5e0cb2a7408c.mp3"
+   "normal": "audio/c689b4632df6ffd8.mp3",
+   "slow": "audio/d8b975c3453fcf86.mp3",
+   "voice": "female"
   },
   "Su cambio: noventa pesos.": {
-   "normal": "audio/720baeccd947350b.mp3",
-   "slow": "audio/d096d31e0608d404.mp3"
+   "normal": "audio/07b16dd04e92cb79.mp3",
+   "slow": "audio/e5aff7e1bb97897b.mp3",
+   "voice": "male"
   },
   "Son cuarenta y cinco pesos.": {
-   "normal": "audio/aedc9e769a9b4ff2.mp3",
-   "slow": "audio/3d095d43a7333dda.mp3"
+   "normal": "audio/c98f27af4a635622.mp3",
+   "slow": "audio/82ae589c3ab4b1ff.mp3",
+   "voice": "female"
   },
   "La concha cuesta treinta pesos.": {
-   "normal": "audio/700c84f8b7c28021.mp3",
-   "slow": "audio/adac71374b50af48.mp3"
+   "normal": "audio/cf630da8165ef46c.mp3",
+   "slow": "audio/fd68c85f4ae58028.mp3",
+   "voice": "female"
   },
   "Son ciento veinte pesos.": {
-   "normal": "audio/62e44a7f85ae3501.mp3",
-   "slow": "audio/f9ee2d2ea8659f4e.mp3"
+   "normal": "audio/be6106ab4be76cb1.mp3",
+   "slow": "audio/f3bed2362f587e3f.mp3",
+   "voice": "female"
   },
   "Son setenta y siete pesos.": {
-   "normal": "audio/89e3dada377875b4.mp3",
-   "slow": "audio/74ec66db10108fd5.mp3"
+   "normal": "audio/aea5462212484fa1.mp3",
+   "slow": "audio/6851f1e386a46501.mp3",
+   "voice": "female"
   },
   "Son ciento cincuenta y ocho pesos.": {
-   "normal": "audio/540fbf06cc8dcfa4.mp3",
-   "slow": "audio/7d15e14e300004e4.mp3"
+   "normal": "audio/bfe3da50892fb49a.mp3",
+   "slow": "audio/8ff956a88d084f96.mp3",
+   "voice": "female"
   },
   "Cerramos a las diez y media.": {
-   "normal": "audio/b337a170d7168f7a.mp3",
-   "slow": "audio/9cefcf81f4f74942.mp3"
+   "normal": "audio/550d6ca9f119d12e.mp3",
+   "slow": "audio/b43fcba812f2ccb6.mp3",
+   "voice": "female"
   },
   "Son cuarto para las nueve.": {
-   "normal": "audio/8cf2a4a7906cfe6a.mp3",
-   "slow": "audio/78eab232dab874c6.mp3"
+   "normal": "audio/60821f4ad609cca0.mp3",
+   "slow": "audio/33121313862ae370.mp3",
+   "voice": "female"
   },
   "¿Para aquí o para llevar? Para llevar.": {
-   "normal": "audio/d4a4ecd80e514629.mp3",
-   "slow": "audio/95fd063365935aa3.mp3"
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Barista",
+     "voice": "female",
+     "es": "¿Para aquí o para llevar?"
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Para llevar."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "79dcbce70da29eaa.mp3",
+     "e4b019667bfdc97c.mp3"
+    ],
+    "slow": [
+     "656445bd7c76cd34.mp3",
+     "6c5ea7877c64ac91.mp3"
+    ]
+   },
+   "normal": "audio/2076b777ab74fc33.mp3",
+   "slow": "audio/f57baa1a32839434.mp3"
   },
   "¿Puedo pagar con tarjeta? Sí, claro. Ahorita le paso la terminal.": {
-   "normal": "audio/8fe9be58186447bf.mp3",
-   "slow": "audio/4b7b491212f16650.mp3"
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "¿Puedo pagar con tarjeta?"
+    },
+    {
+     "speaker": "Barista",
+     "voice": "female",
+     "es": "Sí, claro. Ahorita le paso la terminal."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "bf48205d387fd16c.mp3",
+     "5e3ae7abb81a89c4.mp3"
+    ],
+    "slow": [
+     "5b37a9bddc01385d.mp3",
+     "cdca2afda9912e3b.mp3"
+    ]
+   },
+   "normal": "audio/1a1364595e4f0697.mp3",
+   "slow": "audio/00d774644d64cbc1.mp3"
   },
   "Aquí tiene, doscientos. Muy bien. Su cambio: noventa pesos.": {
-   "normal": "audio/9150120a958b4775.mp3",
-   "slow": "audio/6c4db230e3a8eb42.mp3"
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Cliente",
+     "voice": "female",
+     "es": "Aquí tiene, doscientos."
+    },
+    {
+     "speaker": "Mesero",
+     "voice": "male",
+     "es": "Muy bien. Su cambio: noventa pesos."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "d1d79e90b6bc200c.mp3",
+     "b4f981ac935ab863.mp3"
+    ],
+    "slow": [
+     "f5684973dbcaa6aa.mp3",
+     "6741c4fc12312dce.mp3"
+    ]
+   },
+   "normal": "audio/d789d7269e3c6023.mp3",
+   "slow": "audio/39c4908bd5f3ee80.mp3"
   },
   "¿Aceptan tarjeta? No, joven, nomás efectivo.": {
-   "normal": "audio/d3d5ed3e87494778.mp3",
-   "slow": "audio/99f6a4dfc9b4257e.mp3"
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "¿Aceptan tarjeta?"
+    },
+    {
+     "speaker": "Taquera",
+     "voice": "female",
+     "es": "No, joven, nomás efectivo."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "4f2f376137f17798.mp3",
+     "f3882811d71812f5.mp3"
+    ],
+    "slow": [
+     "573b751fe83a9526.mp3",
+     "16abd8db8772d3c0.mp3"
+    ]
+   },
+   "normal": "audio/398fe0d6e6fbb6e3.mp3",
+   "slow": "audio/1a32cee720d1ed9a.mp3"
   },
   "¿Con todo? ¿Cebolla y cilantro? Sí, con todo.": {
-   "normal": "audio/705261b97e27d6a0.mp3",
-   "slow": "audio/1a4bb2ab3e979291.mp3"
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Taquera",
+     "voice": "female",
+     "es": "¿Con todo? ¿Cebolla y cilantro?"
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Sí, con todo."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "73d551b3b845b736.mp3",
+     "f8ca60c533634378.mp3"
+    ],
+    "slow": [
+     "baa8301c5db83813.mp3",
+     "144a2282acc9f724.mp3"
+    ]
+   },
+   "normal": "audio/63632904378e888a.mp3",
+   "slow": "audio/bc97d677d34421bd.mp3"
   },
   "¿Para aquí o para llevar?": {
-   "normal": "audio/96b839451f0fa333.mp3",
-   "slow": "audio/3dc0f2a6cefa1594.mp3"
+   "normal": "audio/79dcbce70da29eaa.mp3",
+   "slow": "audio/656445bd7c76cd34.mp3",
+   "voice": "female"
   },
   "¿Con todo?": {
-   "normal": "audio/f9f4a1253bc9db75.mp3",
-   "slow": "audio/73adde54f1237ef9.mp3"
+   "normal": "audio/4dc7381cde2dfd16.mp3",
+   "slow": "audio/c4bb5facb9467e95.mp3",
+   "voice": "female"
   },
   "Son setenta pesos.": {
-   "normal": "audio/6b79940d3ffd3f7c.mp3",
-   "slow": "audio/a95fdecacbc53612.mp3"
+   "normal": "audio/53c5f3ff897775f9.mp3",
+   "slow": "audio/1f0bc77a68470174.mp3",
+   "voice": "female"
   },
-  "¡Buenas tardes! ¿Qué le sirvo?": {
-   "normal": "audio/718217b86a80ccb9.mp3"
+  "La renta del departamento es de doce mil quinientos pesos al mes.": {
+   "normal": "audio/4a0311d3de2eff99.mp3",
+   "slow": "audio/0b52cc3781e9fb14.mp3",
+   "voice": "male"
   },
-  "Buenas tardes. Un café americano grande, por favor.": {
-   "normal": "audio/909e174d83ba9ba9.mp3"
+  "Esta pantalla cuesta cuatro mil novecientos noventa y nueve pesos.": {
+   "normal": "audio/ba21491ab5a18958.mp3",
+   "slow": "audio/f71e8dc2b3fac2ac.mp3",
+   "voice": "male"
   },
-  "Para llevar.": {
-   "normal": "audio/6d1524a29f4daaf5.mp3"
+  "Son setecientos cincuenta pesos.": {
+   "normal": "audio/ecf86c06d67c088f.mp3",
+   "slow": "audio/2ef0915b696a4d81.mp3",
+   "voice": "male"
   },
-  "¿Algo más?": {
-   "normal": "audio/23dde4860253251d.mp3"
+  "Son trescientos veinte pesos. Me da quinientos, ¿verdad? Entonces le doy ciento ochenta de cambio.": {
+   "normal": "audio/1495a1b1aea4d8c1.mp3",
+   "slow": "audio/8199452fe2a1743d.mp3",
+   "voice": "male"
   },
-  "Sí, una concha, por favor. ¿Cuánto es?": {
-   "normal": "audio/0cc387762a6757c5.mp3"
+  "Todo está a mitad de precio. La chamarra cuesta ochocientos sesenta, y con el descuento queda en cuatrocientos treinta.": {
+   "normal": "audio/dd3c190057013fe3.mp3",
+   "slow": "audio/bea6d610faf9e390.mp3",
+   "voice": "male"
   },
-  "¿Puedo pagar con tarjeta?": {
-   "normal": "audio/2ed0333b917e573c.mp3"
+  "Son mil quince pesos.": {
+   "normal": "audio/a2bcb194a8b83d04.mp3",
+   "slow": "audio/0683cb4cce9340bd.mp3",
+   "voice": "male"
   },
-  "Sí, claro. Ahorita le paso la terminal.": {
-   "normal": "audio/9860154f1d546744.mp3"
+  "Son seiscientos setenta pesos.": {
+   "normal": "audio/38ab480d60ff044f.mp3",
+   "slow": "audio/d70a835f05176ec1.mp3",
+   "voice": "male"
   },
-  "¿Le traigo la cuenta?": {
-   "normal": "audio/e3588ca97b0282e1.mp3"
+  "¿A cómo está el kilo de aguacate? Cuarenta pesos el kilo, joven. Me da kilo y medio, por favor. Son sesenta pesos.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "¿A cómo está el kilo de aguacate?"
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Cuarenta pesos el kilo, joven."
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Me da kilo y medio, por favor."
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Son sesenta pesos."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "8324cec4f325a609.mp3",
+     "efc4b452749f8c19.mp3",
+     "90dcad55948c221f.mp3",
+     "13d8e8a57357f381.mp3"
+    ],
+    "slow": [
+     "fbf9ab0362755805.mp3",
+     "66d0a85e10a2a1c0.mp3",
+     "995034db90823ef7.mp3",
+     "794b698f9859c6e5.mp3"
+    ]
+   },
+   "normal": "audio/b680b708d5dd6e0c.mp3",
+   "slow": "audio/cd23d0721b31518f.mp3"
   },
-  "Sí, la cuenta, por favor.": {
-   "normal": "audio/7968d2e1b9155da5.mp3"
+  "La farmacia abre a las siete y media de la mañana.": {
+   "normal": "audio/de0ef298fb54a3e4.mp3",
+   "slow": "audio/798f7812e130236a.mp3",
+   "voice": "male"
   },
-  "Aquí tiene. Fueron dos cafés de olla y un pan de elote. Son ciento diez pesos.": {
-   "normal": "audio/ceab30826a14c27d.mp3"
+  "Entre semana, el banco cierra a las cuatro de la tarde.": {
+   "normal": "audio/05b2aff90b207738.mp3",
+   "slow": "audio/ab4154afa40ff083.mp3",
+   "voice": "male"
   },
-  "¿Mande? ¿Cuánto?": {
-   "normal": "audio/612f45b56baa634c.mp3"
+  "Su cita con el dentista es a las once y cuarto.": {
+   "normal": "audio/0bcabe4db062f58b.mp3",
+   "slow": "audio/844ea5298c472908.mp3",
+   "voice": "male"
   },
-  "Ciento diez.": {
-   "normal": "audio/a4a07be143440f60.mp3"
+  "El camión pasa cada doce minutos.": {
+   "normal": "audio/12358599675878a7.mp3",
+   "slow": "audio/60f829cd7f3435d9.mp3",
+   "voice": "male"
   },
-  "Voy a pagar en efectivo. Aquí tiene, doscientos.": {
-   "normal": "audio/30dce37969f335f4.mp3"
+  "Son veinticinco para las seis.": {
+   "normal": "audio/3b5685b68ffb9088.mp3",
+   "slow": "audio/459eed9c5b4b57f3.mp3",
+   "voice": "male"
   },
-  "Muy bien. Su cambio: noventa pesos. Gracias, ¡vuelva pronto!": {
-   "normal": "audio/4348e91de30cb0c3.mp3"
+  "Tu cita es el martes trece de octubre.": {
+   "normal": "audio/41acf39944124471.mp3",
+   "slow": "audio/7bba687defb95d68.mp3",
+   "voice": "male"
   },
-  "Gracias, todo muy rico.": {
-   "normal": "audio/b95c7747ed520c33.mp3"
+  "¿A qué hora abren los domingos? Los domingos abrimos a las diez y cerramos a las tres. Entre semana abrimos hasta las ocho de la noche.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "¿A qué hora abren los domingos?"
+    },
+    {
+     "speaker": "Empleada",
+     "voice": "female",
+     "es": "Los domingos abrimos a las diez y cerramos a las tres. Entre semana abrimos hasta las ocho de la noche."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "4412c339df94d93e.mp3",
+     "c5bbcc5dea96ec8f.mp3"
+    ],
+    "slow": [
+     "3014334abe0e0652.mp3",
+     "260bba1d96f8d3c1.mp3"
+    ]
+   },
+   "normal": "audio/f271c3afaba4194a.mp3",
+   "slow": "audio/8a31af351506d543.mp3"
   },
-  "¿Qué va a llevar, joven?": {
-   "normal": "audio/ee91b4b25c2b9bca.mp3"
+  "¿Nos vemos mañana a las nueve?": {
+   "normal": "audio/72bbdc100d0f94da.mp3",
+   "slow": "audio/49735c75b382d8f9.mp3",
+   "voice": "male"
   },
-  "Me da dos de pastor y uno de suadero, por favor.": {
-   "normal": "audio/bf905c76e5323678.mp3"
+  "La parada del camión está detrás del mercado.": {
+   "normal": "audio/f925fc63692a2e77.mp3",
+   "slow": "audio/82be0f74d957c6d6.mp3",
+   "voice": "male"
   },
-  "¿Con todo? ¿Cebolla y cilantro?": {
-   "normal": "audio/fc5758c3a6f1b231.mp3"
+  "Camina tres cuadras todo derecho y en la esquina dobla a la derecha.": {
+   "normal": "audio/0e3cc7523ec34a96.mp3",
+   "slow": "audio/991b0d90a442745d.mp3",
+   "voice": "male"
   },
-  "Sí, con todo. Para aquí.": {
-   "normal": "audio/14c1bae898b87966.mp3"
+  "Oye, ¿dónde dejé mis llaves? No sé, pero no están adentro de tu mochila. Mira, están abajo de la cama, entre los tenis.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Compañero",
+     "voice": "male",
+     "es": "Oye, ¿dónde dejé mis llaves?"
+    },
+    {
+     "speaker": "Compañera",
+     "voice": "female",
+     "es": "No sé, pero no están adentro de tu mochila. Mira, están abajo de la cama, entre los tenis."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "4b8add14681be611.mp3",
+     "5e4263b88af7a2ed.mp3"
+    ],
+    "slow": [
+     "843bd42307c6ba87.mp3",
+     "0c99652a2ec7d485.mp3"
+    ]
+   },
+   "normal": "audio/129b4b6c67c8bfef.mp3",
+   "slow": "audio/1313a8ab36d51e2b.mp3"
   },
-  "¿Y de tomar?": {
-   "normal": "audio/5eb1c2061956b11d.mp3"
+  "Toma la línea tres, dirección Universidad, y bájate en Centro Médico.": {
+   "normal": "audio/6596cee7878e175b.mp3",
+   "slow": "audio/3393baf1a656692d.mp3",
+   "voice": "male"
   },
-  "Un agua de horchata chica. ¿Cuánto es?": {
-   "normal": "audio/849a2e8586865803.mp3"
+  "Ya llegué. Estoy enfrente del OXXO, en un carro gris.": {
+   "normal": "audio/39f1f2a072abf3ca.mp3",
+   "slow": "audio/e3383bf8c66665fe.mp3",
+   "voice": "male"
   },
-  "¿Aceptan tarjeta?": {
-   "normal": "audio/37eae9e7edcb7a9c.mp3"
+  "Cuando llegué a la casa, mi compañero cocinaba.": {
+   "normal": "audio/103ac771b544b7f0.mp3",
+   "slow": "audio/2f35643bcb7e271f.mp3",
+   "voice": "male"
   },
-  "No, joven, nomás efectivo.": {
-   "normal": "audio/09471dd0d83fdbe3.mp3"
+  "Me levanto a las seis, me baño a las seis y veinte y salgo de la casa a las siete.": {
+   "normal": "audio/776e95d0cb58fc90.mp3",
+   "slow": "audio/90c4176dd65ce6c6.mp3",
+   "voice": "male"
   },
-  "Ah, bueno. Aquí tiene cien.": {
-   "normal": "audio/29ce8429391a878b.mp3"
+  "Voy a llegar en quince minutos; ahorita estoy saliendo del metro.": {
+   "normal": "audio/9c8614d3c9b3db5b.mp3",
+   "slow": "audio/8b806c9baec37040.mp3",
+   "voice": "male"
   },
-  "Veintiséis de cambio. ¡Buen provecho!": {
-   "normal": "audio/045b030d81fd1b96.mp3"
+  "Ven a mi casa el sábado en la tarde y trae algo de tomar.": {
+   "normal": "audio/9e190c1a6ea7ec78.mp3",
+   "slow": "audio/4808110bda734f00.mp3",
+   "voice": "male"
   },
-  "Aquí tiene, doscientos.": {
-   "normal": "audio/0c227828115760d6.mp3"
+  "El autobús a Puebla saldrá a las ocho y cuarto de la noche.": {
+   "normal": "audio/9372a657902b2b5a.mp3",
+   "slow": "audio/e5d8edbbd460c9af.mp3",
+   "voice": "male"
   },
-  "Muy bien. Su cambio: noventa pesos.": {
-   "normal": "audio/13eb8baeff4ef71e.mp3"
+  "El plomero dice que la reparación costará mil ochocientos pesos.": {
+   "normal": "audio/7adac5ded5cdc637.mp3",
+   "slow": "audio/0ccf0756e86e5f6b.mp3",
+   "voice": "male"
   },
-  "Sí, con todo.": {
-   "normal": "audio/38fc197c56836a31.mp3"
+  "¿Qué harías con un día libre?": {
+   "normal": "audio/13e6b99d4769fbd4.mp3",
+   "slow": "audio/1fe792b1a398e4a2.mp3",
+   "voice": "male"
+  }
+ },
+ "lines": {
+  "female|¡Buenas tardes! ¿Qué le sirvo?": {
+   "normal": "audio/60f178f73decb38c.mp3",
+   "voice": "female"
+  },
+  "male|Buenas tardes. Un café americano grande, por favor.": {
+   "normal": "audio/88ce26356ea5a908.mp3",
+   "voice": "male"
+  },
+  "female|¿Para aquí o para llevar?": {
+   "normal": "audio/79dcbce70da29eaa.mp3",
+   "voice": "female"
+  },
+  "male|Para llevar.": {
+   "normal": "audio/e4b019667bfdc97c.mp3",
+   "voice": "male"
+  },
+  "female|¿Algo más?": {
+   "normal": "audio/2f73986263b11d3f.mp3",
+   "voice": "female"
+  },
+  "male|Sí, una concha, por favor. ¿Cuánto es?": {
+   "normal": "audio/fdfa5abf6a002cfc.mp3",
+   "voice": "male"
+  },
+  "female|Son ochenta y cinco pesos.": {
+   "normal": "audio/22aa09569e4eade9.mp3",
+   "voice": "female"
+  },
+  "male|¿Puedo pagar con tarjeta?": {
+   "normal": "audio/bf48205d387fd16c.mp3",
+   "voice": "male"
+  },
+  "female|Sí, claro. Ahorita le paso la terminal.": {
+   "normal": "audio/5e3ae7abb81a89c4.mp3",
+   "voice": "female"
+  },
+  "male|¿Le traigo la cuenta?": {
+   "normal": "audio/5ec9389d58953d41.mp3",
+   "voice": "male"
+  },
+  "female|Sí, la cuenta, por favor.": {
+   "normal": "audio/19e9b9e374e72768.mp3",
+   "voice": "female"
+  },
+  "male|Aquí tiene. Fueron dos cafés de olla y un pan de elote. Son ciento diez pesos.": {
+   "normal": "audio/69cdb6d03f06f58e.mp3",
+   "voice": "male"
+  },
+  "female|¿Mande? ¿Cuánto?": {
+   "normal": "audio/40b4728f38c9859e.mp3",
+   "voice": "female"
+  },
+  "male|Ciento diez.": {
+   "normal": "audio/fe344082e3c77ac5.mp3",
+   "voice": "male"
+  },
+  "female|Voy a pagar en efectivo. Aquí tiene, doscientos.": {
+   "normal": "audio/de351a4bdbed1df7.mp3",
+   "voice": "female"
+  },
+  "male|Muy bien. Su cambio: noventa pesos. Gracias, ¡vuelva pronto!": {
+   "normal": "audio/d842866c131252f8.mp3",
+   "voice": "male"
+  },
+  "female|Gracias, todo muy rico.": {
+   "normal": "audio/f0de29eb37a24e20.mp3",
+   "voice": "female"
+  },
+  "female|¿Qué va a llevar, joven?": {
+   "normal": "audio/dda7afdedfb82d67.mp3",
+   "voice": "female"
+  },
+  "male|Me da dos de pastor y uno de suadero, por favor.": {
+   "normal": "audio/f1e3a741eb8629a0.mp3",
+   "voice": "male"
+  },
+  "female|¿Con todo? ¿Cebolla y cilantro?": {
+   "normal": "audio/73d551b3b845b736.mp3",
+   "voice": "female"
+  },
+  "male|Sí, con todo. Para aquí.": {
+   "normal": "audio/486cd00b2eea17d3.mp3",
+   "voice": "male"
+  },
+  "female|¿Y de tomar?": {
+   "normal": "audio/277efe9103346c0b.mp3",
+   "voice": "female"
+  },
+  "male|Un agua de horchata chica. ¿Cuánto es?": {
+   "normal": "audio/1f33128869533b79.mp3",
+   "voice": "male"
+  },
+  "female|Son setenta y cuatro pesos.": {
+   "normal": "audio/b43d60e9f0108618.mp3",
+   "voice": "female"
+  },
+  "male|¿Aceptan tarjeta?": {
+   "normal": "audio/4f2f376137f17798.mp3",
+   "voice": "male"
+  },
+  "female|No, joven, nomás efectivo.": {
+   "normal": "audio/f3882811d71812f5.mp3",
+   "voice": "female"
+  },
+  "male|Ah, bueno. Aquí tiene cien.": {
+   "normal": "audio/306adc98d35eec71.mp3",
+   "voice": "male"
+  },
+  "female|Veintiséis de cambio. ¡Buen provecho!": {
+   "normal": "audio/0e733280776202ca.mp3",
+   "voice": "female"
+  },
+  "female|Aquí tiene, doscientos.": {
+   "normal": "audio/d1d79e90b6bc200c.mp3",
+   "voice": "female"
+  },
+  "male|Muy bien. Su cambio: noventa pesos.": {
+   "normal": "audio/b4f981ac935ab863.mp3",
+   "voice": "male"
+  },
+  "male|Sí, con todo.": {
+   "normal": "audio/f8ca60c533634378.mp3",
+   "voice": "male"
+  },
+  "male|¿A cómo está el kilo de aguacate?": {
+   "normal": "audio/8324cec4f325a609.mp3",
+   "voice": "male"
+  },
+  "female|Cuarenta pesos el kilo, joven.": {
+   "normal": "audio/efc4b452749f8c19.mp3",
+   "voice": "female"
+  },
+  "male|Me da kilo y medio, por favor.": {
+   "normal": "audio/90dcad55948c221f.mp3",
+   "voice": "male"
+  },
+  "female|Son sesenta pesos.": {
+   "normal": "audio/13d8e8a57357f381.mp3",
+   "voice": "female"
+  },
+  "male|¿A qué hora abren los domingos?": {
+   "normal": "audio/4412c339df94d93e.mp3",
+   "voice": "male"
+  },
+  "female|Los domingos abrimos a las diez y cerramos a las tres. Entre semana abrimos hasta las ocho de la noche.": {
+   "normal": "audio/c5bbcc5dea96ec8f.mp3",
+   "voice": "female"
+  },
+  "male|Oye, ¿dónde dejé mis llaves?": {
+   "normal": "audio/4b8add14681be611.mp3",
+   "voice": "male"
+  },
+  "female|No sé, pero no están adentro de tu mochila. Mira, están abajo de la cama, entre los tenis.": {
+   "normal": "audio/5e4263b88af7a2ed.mp3",
+   "voice": "female"
+  },
+  "male|Próxima estación: Bellas Artes.": {
+   "normal": "audio/25404699261bfa84.mp3",
+   "voice": "male"
+  },
+  "male|Estimados usuarios, les informamos que hoy domingo, por trabajos de mantenimiento, la estación Zócalo/Tenochtitlan de la Línea Dos está cerrada.": {
+   "normal": "audio/5741ede107940a7a.mp3",
+   "voice": "male"
+  },
+  "male|Los trenes pasan por la estación, pero no se detienen.": {
+   "normal": "audio/e95bbd986f1d2cf0.mp3",
+   "voice": "male"
+  },
+  "male|Si usted va al Zócalo o al Centro Histórico, puede bajar en la estación Allende o en la estación Pino Suárez. Desde Allende son unos cinco minutos caminando.": {
+   "normal": "audio/053905f052f17061.mp3",
+   "voice": "male"
+  },
+  "male|La estación Zócalo/Tenochtitlan va a abrir otra vez mañana lunes a las cinco de la mañana, en su horario normal.": {
+   "normal": "audio/65195ef71e3ec96b.mp3",
+   "voice": "male"
+  },
+  "male|Les recordamos que en horas pico los primeros vagones del tren son exclusivos para mujeres y niños menores de doce años.": {
+   "normal": "audio/3b1b269c18db19ea.mp3",
+   "voice": "male"
+  },
+  "male|Por su seguridad, no se recarguen en las puertas y dejen salir antes de entrar. Gracias por su comprensión.": {
+   "normal": "audio/0b7a365fc4ad8cbc.mp3",
+   "voice": "male"
+  },
+  "male|Tiene un mensaje nuevo. Mensaje recibido hoy a las nueve y diez de la mañana.": {
+   "normal": "audio/2fe85736a52f736b.mp3",
+   "voice": "male"
+  },
+  "female|Buenos días, le hablo del laboratorio de la Clínica del Valle, sobre su análisis de sangre.": {
+   "normal": "audio/9fe3903b11133c52.mp3",
+   "voice": "female"
+  },
+  "female|El jueves el laboratorio está cerrado, entonces su cita cambia al viernes dieciséis a las ocho de la mañana. Tiene que llegar quince minutos antes para registrarse.": {
+   "normal": "audio/5d9f40e8d39011ba.mp3",
+   "voice": "female"
+  },
+  "female|Es un estudio en ayunas: no puede comer nada desde las doce de la noche. Solo puede tomar agua; nada de café, ni jugo.": {
+   "normal": "audio/1f919334f34134ef.mp3",
+   "voice": "female"
+  },
+  "female|Tiene que traer una identificación oficial y la orden de su médico. El estudio cuesta cuatrocientos veinte pesos, y puede pagar con tarjeta o en efectivo.": {
+   "normal": "audio/ff251b51287e6bcf.mp3",
+   "voice": "female"
+  },
+  "female|Para confirmar, nada más tiene que mandar un WhatsApp a este mismo número. Los resultados van a estar listos el lunes en la tarde.": {
+   "normal": "audio/7c3b04774659e6a9.mp3",
+   "voice": "female"
+  },
+  "female|Muchas gracias. Que tenga buen día.": {
+   "normal": "audio/d8f6233dce60a47b.mp3",
+   "voice": "female"
+  }
+ },
+ "missions": {
+  "m-metro-01": {
+   "lines": [
+    {
+     "speaker": "Anuncio",
+     "voice": "male",
+     "es": "Próxima estación: Bellas Artes."
+    },
+    {
+     "speaker": "Anuncio",
+     "voice": "male",
+     "es": "Estimados usuarios, les informamos que hoy domingo, por trabajos de mantenimiento, la estación Zócalo/Tenochtitlan de la Línea Dos está cerrada."
+    },
+    {
+     "speaker": "Anuncio",
+     "voice": "male",
+     "es": "Los trenes pasan por la estación, pero no se detienen."
+    },
+    {
+     "speaker": "Anuncio",
+     "voice": "male",
+     "es": "Si usted va al Zócalo o al Centro Histórico, puede bajar en la estación Allende o en la estación Pino Suárez. Desde Allende son unos cinco minutos caminando."
+    },
+    {
+     "speaker": "Anuncio",
+     "voice": "male",
+     "es": "La estación Zócalo/Tenochtitlan va a abrir otra vez mañana lunes a las cinco de la mañana, en su horario normal."
+    },
+    {
+     "speaker": "Anuncio",
+     "voice": "male",
+     "es": "Les recordamos que en horas pico los primeros vagones del tren son exclusivos para mujeres y niños menores de doce años."
+    },
+    {
+     "speaker": "Anuncio",
+     "voice": "male",
+     "es": "Por su seguridad, no se recarguen en las puertas y dejen salir antes de entrar. Gracias por su comprensión."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "25404699261bfa84.mp3",
+     "5741ede107940a7a.mp3",
+     "e95bbd986f1d2cf0.mp3",
+     "053905f052f17061.mp3",
+     "65195ef71e3ec96b.mp3",
+     "3b1b269c18db19ea.mp3",
+     "0b7a365fc4ad8cbc.mp3"
+    ],
+    "slow": [
+     "712398a15f4e45b6.mp3",
+     "749e9b30cb386da9.mp3",
+     "da8ef979e1afdb17.mp3",
+     "947d14aad8776134.mp3",
+     "e1187d09d8e77b31.mp3",
+     "b9bf36c376bef63e.mp3",
+     "7489cd78022399cd.mp3"
+    ]
+   },
+   "normal": "audio/f98ca2b9b152208c.mp3",
+   "slow": "audio/08bb33daee867421.mp3",
+   "duration": 57.07,
+   "slow_duration": 75.05
+  },
+  "m-voicemail-clinic-01": {
+   "lines": [
+    {
+     "speaker": "Buzón de voz",
+     "voice": "male",
+     "es": "Tiene un mensaje nuevo. Mensaje recibido hoy a las nueve y diez de la mañana."
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Buenos días, le hablo del laboratorio de la Clínica del Valle, sobre su análisis de sangre."
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "El jueves el laboratorio está cerrado, entonces su cita cambia al viernes dieciséis a las ocho de la mañana. Tiene que llegar quince minutos antes para registrarse."
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Es un estudio en ayunas: no puede comer nada desde las doce de la noche. Solo puede tomar agua; nada de café, ni jugo."
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Tiene que traer una identificación oficial y la orden de su médico. El estudio cuesta cuatrocientos veinte pesos, y puede pagar con tarjeta o en efectivo."
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Para confirmar, nada más tiene que mandar un WhatsApp a este mismo número. Los resultados van a estar listos el lunes en la tarde."
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Muchas gracias. Que tenga buen día."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "2fe85736a52f736b.mp3",
+     "9fe3903b11133c52.mp3",
+     "5d9f40e8d39011ba.mp3",
+     "1f919334f34134ef.mp3",
+     "ff251b51287e6bcf.mp3",
+     "7c3b04774659e6a9.mp3",
+     "d8f6233dce60a47b.mp3"
+    ],
+    "slow": [
+     "c2d4c373777534d8.mp3",
+     "b12730d75f156b3b.mp3",
+     "64f9954e47d34d95.mp3",
+     "bc2af89cc44d96f0.mp3",
+     "8f1bf43d293362d4.mp3",
+     "b4c0a776672a4c83.mp3",
+     "3706235b09fdf889.mp3"
+    ]
+   },
+   "normal": "audio/1f05914e3599b182.mp3",
+   "slow": "audio/b06436c358547e22.mp3",
+   "duration": 55.78,
+   "slow_duration": 73.32
   }
  }
 }

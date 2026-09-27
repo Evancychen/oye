@@ -76,6 +76,45 @@ ends (never mid-card). Windows that don't ack within 3s (the v1 shell) are reloa
 page checks for a new `sw.js` on every launch and when the app comes back from the background.
 Progress (`localStorage`) and stored content/audio (`oye-content`) are never touched by an update.
 
+## v2: levels, topic challenges and missions
+
+- **Levels** come from each card's `level` (`easy` default, `medium`, `hard`); `js/levels.js` has the topic
+  names, `levelOf()` and the star rule. Lessons, Quick session and the SRS pool use **Easy** cards only.
+- **Home**: streak + stars earned, price trend, then CHALLENGES: *Medium · Topic challenge* (topic grid →
+  10-card session drawn from that topic, `planTopic` in `js/srs.js`) and *Hard · Real-life mission*
+  (missions list → intro → message/player → questions → result). The EASY caption above Quick session opens
+  the Lessons sheet (it replaces the old Lessons row).
+- **Stars** (`oye.stars.v1` in localStorage): 1 = finished, 2 = 70%+, 3 = 90%+ with no hints; in Medium a correct
+  answer after a hint counts 0.5. Medium topics and missions keep their best score; Easy sessions add their stars
+  to the total.
+- **Missions** (`content/missions.json`): one long joined audio clip (or a WhatsApp-style text message) plus
+  questions (`pick` with wrapping options, keypad `type` answers like `5:00`, letter input for word answers).
+  Check moves on without feedback; the result screen shows every answer with an open "Why" box for mistakes
+  and the full transcript. Missions count toward the streak.
+- Text answers are accent- and case-insensitive; text inputs use `autocapitalize/autocorrect=off`,
+  `spellcheck=false`.
+- Short phones (≤760 px / ≤700 px tall) get tighter spacing so the home screen and mission questions fit
+  without scrolling; Medium cards with long two-line options use the compact audio row, and after answering
+  they keep only the right answer and your pick.
+
+### v2: voices and audio.json
+
+Every dialogue line in content carries `voice` (`male` = `es-US-AlonsoNeural`, `female` = `es-US-PalomaNeural`).
+`build_audio.py` **aborts** if a dialogue line has no valid voice; it never falls back to speaking order.
+Single cards use the card's `voice` override, else the level default (Easy → Paloma, Medium/Hard → Alonso).
+Cards with `audio_lines` and missions get each line synthesised in its own voice, then joined (0.45 s pause)
+into one clip. File names are `sha1("<voice>|<rate>|<text>")[:16].mp3`, so a voice change always makes a new
+file. Single lines used only for joining are cached in `.audio-parts/` (gitignored), not shipped.
+
+`content/audio.json` (format 2):
+- `items[text]` → `{normal, slow, voice}`; dialogue cards: `voice: "dialogue"`, `lines` (speaker, voice, es), `parts`;
+- `lines["<voice>|<es>"]` → `{normal, voice}` (per-line replay in transcripts; colour follows the voice:
+  Alonso blue, Paloma green; labels come from content);
+- `missions[id]` → `{normal, slow, parts, lines, duration, slow_duration}`.
+
+The e2e test fails if any dialogue line or `audio_lines` entry lacks a voice, or if `audio.json` maps a line or
+card to the wrong voice.
+
 ## Results upload (Google Sheet for Gabriel)
 
 `js/results.js`. Every answer in a session is recorded (`answered_at`, `card_id`, `content_version`, `correct`,
@@ -86,7 +125,9 @@ at most 200 rows per request. Rows leave the queue only after a reply with `ok: 
 on the next app open, on resume and on the `online` event. Rows whose card id isn't in the loaded content (or
 doesn't match `c-NNNN`) are dropped before sending. The Summary shows "Results sent to Gabriel" (green dot) once
 confirmed, "Saved · will send when you're online" (hollow dot) while sending or queued. Sessions closed with ✕
-before the Summary are not uploaded. The e2e tests route the endpoint to a fake and fail if a request ever reaches it.
+before the Summary are not uploaded. v2 rows also carry `level`, `topic`, `mission_id` (empty for now) and
+`stars`; the current Apps Script ignores unknown keys, so these need new sheet columns to be stored. Mission
+answers are **not** uploaded yet (the script only accepts `c-NNNN` card ids) and stay on the phone. The e2e tests route the endpoint to a fake and fail if a request ever reaches it.
 
 ## How content works at runtime
 
@@ -124,8 +165,12 @@ If the content is unchanged the version is not bumped (`--force` bumps anyway), 
 Then deploy (commit + push, below). Installed apps pick up the new version on their next launch
 (see "How an installed app picks up a new version").
 
-Audio only: `.venv/bin/python tools/build_audio.py [--prune]` (voice `es-MX-DaliaNeural`,
-normal speed plus a slow file at rate −25% ≈ 0.75×; `--prune` deletes unused files).
+Publishing also copies the optional `missions.json`, writes `mission_count` into `version.json`, and runs
+`build_audio.py --prune`.
+
+Audio only: `.venv/bin/python tools/build_audio.py [--prune] [--dry-run]` (normal speed plus a slow file at
+rate −25% ≈ 0.75×; `--prune` deletes files nothing uses). Needs `ffmpeg`/`ffprobe` to join dialogue lines.
+See "v2: voices and audio.json" below.
 
 ## Deploy to GitHub Pages
 

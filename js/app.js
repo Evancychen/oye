@@ -1,17 +1,20 @@
 // Oye: app shell, screens and card templates.
 // v1.1: one-screen cards (header / scrolling middle / pinned dock), hints, feedback sheet, SW update flow.
+// v2 Levels: Easy (Quick session, Easy cards only), Medium (topic grid + topic sessions), Hard (missions),
+// stars, and v2.1 voices (transcript labels coloured by voice: Alonso blue, Paloma green).
 import { loadContent } from './content.js';
-import { setAudioIndex, hasAudio, play, stop } from './audio.js';
+import { setAudioIndex, hasAudio, hasLine, play, stop, clipInfo, playClip, clipLoaded, audioEl } from './audio.js';
+import * as levels from './levels.js';
 import { isCorrect } from './check.js';
 import * as srs from './srs.js';
 import * as results from './results.js';
 
-export const SHELL_VERSION = '1.1';
+export const SHELL_VERSION = '2.0';
 document.documentElement.dataset.shell = SHELL_VERSION;
 
 const $app = document.getElementById('app');
 const S = {
-  content: null, playable: [], scenes: new Map(), progress: srs.load(),
+  content: null, playable: [], easy: [], medium: [], missions: [], scenes: new Map(), progress: srs.load(),
   plan: [], session: null, view: 'boot', audioStatus: null, keyHandler: null,
   shell: SHELL_VERSION, updatePending: false,
 };
@@ -28,6 +31,10 @@ const ICON = {
   cross: (s = 14) => svg('<path d="M8 8L16 16M16 8L8 16" stroke="currentColor" stroke-width="2.6"/>', { size: s }),
   chevron: svg('<path d="M9.5 6L15.5 12L9.5 18" stroke="currentColor" stroke-width="1.8"/>', { size: 20 }),
   chevronDown: svg('<path d="M6 9.5L12 15.5L18 9.5" stroke="currentColor" stroke-width="1.8"/>', { size: 18 }),
+  star: (s = 12) => svg('<path d="M12 2.8L14.7 8.9L21.3 9.5L16.3 13.9L17.8 20.4L12 17L6.2 20.4L7.7 13.9L2.7 9.5L9.3 8.9Z" fill="currentColor"/>', { size: s }),
+  back: svg('<path d="M14.5 6L8.5 12L14.5 18" stroke="currentColor" stroke-width="1.8"/>', { size: 20 }),
+  play: svg('<path d="M8 5.5V18.5L18.5 12Z" fill="currentColor" stroke="currentColor" stroke-width="1.2"/>'),
+  pause: svg('<path d="M8 5.5V18.5M16 5.5V18.5" stroke="currentColor" stroke-width="3"/>'),
   backspace: svg('<path d="M9 5.5H19.5A1.5 1.5 0 0 1 21 7V17A1.5 1.5 0 0 1 19.5 18.5H9L2.5 12Z" stroke="currentColor" stroke-width="1.6"/><path d="M11.5 9.5L16.5 14.5M16.5 9.5L11.5 14.5" stroke="currentColor" stroke-width="1.6"/>', { size: 26 }),
 };
 const TYPE_LABEL = { listen_pick: 'Listen', listen_type: 'Listen and type', scene_question: 'Scene', fix_it: 'Fix it', reply: 'Your reply' };
@@ -121,7 +128,7 @@ function setupServiceWorker() {
   });
 }
 function maybeApplyUpdate() {
-  if (!S.updatePending || S.view === 'session') return false;
+  if (!S.updatePending || S.view === 'session' || S.view === 'mission') return false;
   // Let a results upload finish first (a reload mid-request could make the retry send the rows twice).
   if (results.isSending()) { results.whenIdle().then(() => maybeApplyUpdate()); return false; }
   S.updatePending = false;
@@ -152,8 +159,11 @@ async function boot() {
   setupKeyboardInset();
   if (history.state?.oye) history.replaceState(null, '');
   window.addEventListener('popstate', () => {
-    if (S.sheet) { closeSheet(); if (S.view === 'session') history.pushState({ oye: 'session' }, ''); return; }
-    if (S.view !== 'home') goHome(false);
+    if (S.sheet) { closeSheet(); if (S.view === 'session' || S.view === 'mission') history.pushState(S.lastState || { oye: S.view }, ''); return; }
+    const st = history.state?.oye;
+    if (st === 'topics') openTopics(false);
+    else if (st === 'missions') openMissions(false);
+    else if (S.view !== 'home') goHome(false);
   });
   try {
     S.content = await loadContent((p) => {
@@ -168,6 +178,9 @@ async function boot() {
   setAudioIndex(S.content.audio);
   S.scenes = new Map(S.content.scenes.map((s) => [s.id, s]));
   S.playable = S.content.cards.filter(isPlayable);
+  S.easy = S.playable.filter(levels.isEasy);                          // Quick session: Easy cards only
+  S.medium = S.playable.filter((c) => levels.levelOf(c) === 'medium' && c.topic);
+  S.missions = (S.content.missions || []).filter(isPlayableMission);
   const skipped = S.content.cards.length - S.playable.length;
   if (skipped) console.info(`[oye] skipped ${skipped} card(s) with unknown type or missing fields`);
   S.content.audioSync.then((r) => { S.audioStatus = { ...S.audioStatus, finished: true, ...r }; const q = document.getElementById('quiet'); if (q) q.textContent = quietLine(); });
@@ -213,32 +226,41 @@ function quietLine() {
   }
   return recent ? `${v.new_cards} new card${v.new_cards === 1 ? '' : 's'} this week` : '';
 }
+/** Quick session pool: Easy cards only (v2: Medium cards never appear here), optionally one lesson. */
 function lessonPool() {
   const l = S.progress.lesson || 'all';
-  return l === 'all' ? S.playable : S.playable.filter((c) => cardLessons(c).includes(l));
+  return l === 'all' ? S.easy : S.easy.filter((c) => cardLessons(c).includes(l));
 }
 function lessonName(tag) {
   const m = /^(A\d)-L(\d+)$/.exec(tag || '');
   return m ? `${m[1]} · Lesson ${Number(m[2])}` : tag;
 }
-function sessionMeta(plan) {
-  if (!plan.length) return 'No cards for this lesson yet';
-  const mins = Math.max(1, Math.round(plan.length * 0.4));
+function sessionMeta(plan, lesson = 'all') {
+  if (!plan.length) return `<span class="meta-txt">${['EASY', 'No cards for this lesson yet'].map(esc).join('<span class="sep">·</span>')}</span>`;
+  const mins = Math.max(1, Math.round(plan.length * 0.3));
   const prices = plan.filter(srs.isPriceByEar).length;
-  const listening = plan.filter((c) => c.audio_text).length;
-  const focus = prices >= plan.length / 2 ? 'mostly prices' : listening >= plan.length / 2 ? 'mostly listening' : 'mixed';
-  return [`${plan.length} cards`, `about ${mins} min`, focus].map(esc).join('<span class="sep">·</span>');
+  const focus = lesson !== 'all' ? lessonName(lesson) : prices >= plan.length * 0.6 ? 'mostly prices' : 'mixed review';
+  return `<span class="meta-txt">${['EASY', `${plan.length} cards`, `about ${mins} min`, focus].map(esc).join('<span class="sep">·</span>')}</span>`;
+}
+const starsInline = (n, cls = '') => `<span class="star-n ${cls}">${ICON.star(12)}<span>${n}</span></span>`;
+function starRow(n, size = 12, label = '') {
+  return `<span class="stars s${size}" data-stars="${n}" role="img" aria-label="${label || `${n} of 3 stars`}">${[1, 2, 3].map((i) => `<i class="${i <= n ? 'on' : ''}">${ICON.star(size)}</i>`).join('')}</span>`;
+}
+/** History entries for the v2 screens: depth lets "Done" jump straight back to Home. */
+function pushView(oye) {
+  const depth = (history.state?.depth || 0) + 1;
+  S.lastState = { oye, depth };
+  history.pushState(S.lastState, '');
 }
 function goHome(pop = true) {
   stop(); setKeyHandler(null);
-  if (pop && history.state?.oye) { history.back(); return; } // popstate will call goHome(false)
-  S.view = 'home'; S.session = null;
+  if (pop && history.state?.oye) { history.go(-(history.state.depth || 1)); return; } // popstate will call goHome(false)
+  S.view = 'home'; S.session = null; S.mission = null;
   if (maybeApplyUpdate()) return; // a new version was installed: reload into it now
   S.progress = srs.load();
   const newIds = new Set(S.content.version?.new_card_ids || []);
   S.plan = srs.planSession(S.progress, lessonPool(), { newIds });
-  const st = srs.streak(S.progress), dots = srs.last7(S.progress);
-  const today = srs.answeredToday(S.progress);
+  const st = srs.streak(S.progress);
   const pe = srs.pricesByEar(S.progress);
   let trendNote = 'Answer a few price cards to see this';
   if (pe.now != null && pe.twoWeeksAgo != null) {
@@ -251,6 +273,12 @@ function goHome(pop = true) {
     return `<i class="${cls}" style="height:${Math.max(6, Math.round((p / 100) * maxH))}px"></i>`;
   }).join('');
   const lesson = S.progress.lesson || 'all';
+  const tot = levels.totals();
+  const challenge = (act, tag, title, sub, n, ok) => `
+    <button class="challenge" data-act="${act}" data-testid="challenge-${act}" ${ok ? '' : 'disabled'}>
+      <span class="ch-text"><span class="eyebrow ch-tag">${esc(tag)}</span><span class="ch-title">${esc(title)}</span><span class="caption">${esc(sub)}</span></span>
+      ${starsInline(n, 'ch-stars')}<span class="ch-chev">${ICON.chevron}</span>
+    </button>`;
   render(`
   <div class="screen page home" data-screen="home">
     <header class="home-header">
@@ -261,13 +289,11 @@ function goHome(pop = true) {
       <div class="col">
         <div class="value" data-testid="streak">${st}</div>
         <p class="caption">day streak</p>
-        <div class="dots" aria-label="Last 7 days">${dots.map((d) => `<i class="${d ? 'on' : ''}"></i>`).join('')}</div>
       </div>
       <div class="divider"></div>
       <div class="col">
-        <div class="value">${today} <span class="dim">/ ${srs.DAILY_GOAL}</span></div>
-        <p class="caption">cards today</p>
-        <div class="bar"><i style="width:${Math.min(100, (today / srs.DAILY_GOAL) * 100)}%"></i></div>
+        <div class="value star-total" data-testid="stars-total">${tot.all} ${ICON.star(24)}</div>
+        <p class="caption">stars earned</p>
       </div>
     </section>
     <section class="trend" aria-label="Prices by ear">
@@ -280,26 +306,32 @@ function goHome(pop = true) {
     </section>
     <div class="spacer"></div>
     <p class="caption quiet" id="quiet" data-testid="quiet">${esc(quietLine())}</p>
-    <button class="row-btn" data-act="lessons"><span class="grow">Lessons</span><span class="val">${esc(lesson === 'all' ? 'All' : lessonName(lesson))} ${ICON.chevron}</span></button>
-    <p class="caption meta-line">${sessionMeta(S.plan)}</p>
-    <div class="action" style="padding-top:16px">
+    <p class="eyebrow challenges-head">Challenges</p>
+    <div class="challenges">
+      ${challenge('medium', 'Medium', 'Topic challenge', 'Pick a topic · about 4 min', tot.medium, S.medium.length > 0)}
+      ${challenge('hard', 'Hard', 'Real-life mission', 'One longer situation · about 5 min', tot.hard, S.missions.length > 0)}
+    </div>
+    <button class="caption meta-line" data-act="lessons" aria-label="Quick session: choose a lesson">${sessionMeta(S.plan, lesson)}<span class="meta-chev">${ICON.chevron}</span></button>
+    <div class="action">
       <button class="btn-primary" data-act="start" ${S.plan.length ? '' : 'disabled'}>Quick session</button>
     </div>
   </div>`);
   $('[data-act="start"]').onclick = startSession;
   $('[data-act="lessons"]').onclick = openLessons;
+  $('[data-act="medium"]').onclick = () => openTopics(true);
+  $('[data-act="hard"]').onclick = () => openMissions(true);
 }
 
 function openLessons() {
   const counts = new Map();
-  for (const c of S.playable) for (const t of cardLessons(c)) counts.set(t, (counts.get(t) || 0) + 1);
+  for (const c of S.easy) for (const t of cardLessons(c)) counts.set(t, (counts.get(t) || 0) + 1);
   const tags = [...counts.keys()].sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
   const cur = S.progress.lesson || 'all';
   const row = (val, label, n) => `<button class="sheet-row ${cur === val ? 'on' : ''}" data-lesson="${esc(val)}"><span>${esc(label)}<span class="caption">${n} cards</span></span>${cur === val ? `<span class="check-mark">${ICON.check(18)}</span>` : ''}</button>`;
   const el = document.createElement('div');
   el.className = 'sheet-backdrop';
   el.innerHTML = `<div class="sheet" role="dialog" aria-label="Lessons"><span class="eyebrow">Lessons</span>
-    ${row('all', 'All lessons', S.playable.length)}${tags.map((t) => row(t, lessonName(t), counts.get(t))).join('')}</div>`;
+    ${row('all', 'All lessons', S.easy.length)}${tags.map((t) => row(t, lessonName(t), counts.get(t))).join('')}</div>`;
   el.addEventListener('click', (e) => {
     const b = e.target.closest('[data-lesson]');
     if (b) { const p = srs.load(); p.lesson = b.dataset.lesson; srs.save(p); el.remove(); goHome(false); }
@@ -311,9 +343,9 @@ function openLessons() {
 // ---------- session ----------
 function startSession() {
   if (!S.plan.length) return;
-  S.session = { cards: S.plan, i: 0, results: [], start: Date.now(), id: results.newSessionId() };
+  S.session = { cards: S.plan, i: 0, results: [], start: Date.now(), id: results.newSessionId(), level: 'easy', topic: null };
   S.view = 'session';
-  history.pushState({ oye: 'session' }, '');
+  pushView('session');
   showCard();
 }
 function showCard(fb = null) {
@@ -357,7 +389,7 @@ function bindAudio(card, root = $app) {
       const slow = b.dataset.play === 'slow';
       // Slow replay before answering is recorded with the answer (used_slow in the results upload).
       if (slow && S.session && S.view === 'session' && S.session.answered !== S.session.i) S.session.slowUsed = true;
-      play(b.dataset.text || card.audio_text, { slow, btn: b });
+      play(b.dataset.text || card?.audio_text, { slow, btn: b, voice: b.dataset.voice || null });
     };
   });
 }
@@ -411,7 +443,8 @@ function bindHint(card) {
   [pill, hide].forEach((b) => b && b.addEventListener('mousedown', (e) => e.preventDefault()));
   pill.onclick = () => {
     box.hidden = false; pill.hidden = true; pill.setAttribute('aria-expanded', 'true');
-    if (S.session) S.session.hintUsed = true;
+    if (S.session && S.view === 'session') S.session.hintUsed = true;
+    if (S.mission && S.view === 'mission') S.mission.hintUsed = true;
     refreshHints();
   };
   if (hide) hide.onclick = () => { box.hidden = true; pill.hidden = false; pill.setAttribute('aria-expanded', 'false'); refreshHints(); };
@@ -441,28 +474,40 @@ function parseTranscript(t) {
   });
 }
 /** Lines for "What you heard": scene cards get speakers (+ English from the scene where it matches). */
+const VOICES = new Set(['male', 'female']);
+/** The voice a single-voice card is spoken in (v2.1): card `voice`, else Easy = female, Medium/Hard = male. */
+const cardVoice = (card) => (VOICES.has(card?.voice) ? card.voice : levels.isEasy(card) ? 'female' : 'male');
 function heardLines(card) {
   const scene = sceneOf(card);
   let lines = [];
-  if (card.type === 'scene_question' && !card.audio_text && scene) lines = scene.dialogue.map((d) => ({ ...d }));
+  if (Array.isArray(card.audio_lines) && card.audio_lines.length) lines = card.audio_lines.map((l) => ({ ...l }));
+  else if (card.type === 'scene_question' && !card.audio_text && scene) lines = scene.dialogue.map((d) => ({ ...d }));
   else lines = parseTranscript(card.transcript || card.audio_text);
   if (scene) {
     const en = new Map(scene.dialogue.map((d) => [d.es, d.en]));
-    lines = lines.map((l) => ({ ...l, en: l.en || en.get(l.es) || '' }));
+    const voiceOf = new Map(scene.dialogue.filter((d) => VOICES.has(d.voice)).map((d) => [d.speaker, d.voice]));
+    lines = lines.map((l) => ({ ...l, en: l.en || en.get(l.es) || '', voice: l.voice || voiceOf.get(l.speaker) }));
   }
+  // A one-speaker clip is read in the card's own voice.
+  if (!lines.some((l) => l.voice) && new Set(lines.map((l) => l.speaker)).size <= 1) lines = lines.map((l) => ({ ...l, voice: cardVoice(card) }));
   return lines;
 }
+/** Speaker label colour follows the VOICE (v2.1): male (Alonso) accent blue, female (Paloma) green.
+ *  Only lines with no voice at all fall back to speaking order. */
 function speakerClasses(lines, scene) {
   const order = [];
   for (const l of [...(scene?.dialogue || []), ...lines]) if (l.speaker && !order.includes(l.speaker)) order.push(l.speaker);
-  return (spk) => { const i = order.indexOf(spk); return i === 0 ? 'spk-1' : i === 1 ? 'spk-2' : 'spk-n'; };
+  return (l) => {
+    if (VOICES.has(l.voice)) return `v-${l.voice}`;
+    const i = order.indexOf(l.speaker); return i === 0 ? 'spk-1' : i === 1 ? 'spk-2' : 'spk-n';
+  };
 }
 function dialogueHtml(lines, scene, { play = true } = {}) {
   const cls = speakerClasses(lines, scene);
   return `<div class="dialogue">${lines.map((l) => `
-    <div class="dline">
-      ${play && hasAudio(l.es) ? `<button class="line-play" data-play="normal" data-text="${esc(l.es)}" data-testid="line-play" aria-label="Play this line">${ICON.speaker}</button>` : '<span class="line-play placeholder" aria-hidden="true"></span>'}
-      <div class="dtext">${l.speaker ? `<p class="eyebrow spk ${cls(l.speaker)}">${esc(l.speaker)}</p>` : ''}<p class="es">${esc(l.es)}</p>${l.en ? `<p class="caption en">${esc(l.en)}</p>` : ''}</div>
+    <div class="dline" ${l.voice ? `data-voice="${esc(l.voice)}"` : ''}>
+      ${play && hasLine(l.es, l.voice) ? `<button class="line-play" data-play="normal" data-text="${esc(l.es)}" ${l.voice ? `data-voice="${esc(l.voice)}"` : ''} data-testid="line-play" aria-label="Play this line">${ICON.speaker}</button>` : '<span class="line-play placeholder" aria-hidden="true"></span>'}
+      <div class="dtext">${l.speaker ? `<p class="eyebrow spk ${cls(l)}" data-testid="spk">${esc(l.speaker)}</p>` : ''}<p class="es">${esc(l.es)}</p>${l.en ? `<p class="caption en">${esc(l.en)}</p>` : ''}</div>
     </div>`).join('')}</div>`;
 }
 /** After answering: "What you heard" and "Why" rows (each opens the sheet). */
@@ -499,12 +544,13 @@ function openFeedbackSheet(card, focus = 'heard') {
   const scene = sceneOf(card);
   const lines = heardLines(card);
   const isScene = !!scene && (card.type === 'scene_question' || lines.some((l) => l.speaker));
+  const isDialogue = isScene || new Set(lines.filter((l) => l.speaker).map((l) => l.speaker)).size > 1;
   const secs = [];
   if (lines.length) {
     secs.push(`<section class="sheet-sec" data-sec="heard" data-testid="sheet-heard">
       ${eyebrow('What you heard', isScene ? scene.title_en : '')}
-      ${isScene ? dialogueHtml(lines, scene) : `<p class="heard-text">${esc(lines.map((l) => l.es).join(' '))}</p>`}
-      ${card.audio_text ? audioRow(card, { caption: isScene ? 'Whole clip' : '', cls: 'sheet-audio' }) : ''}
+      ${isDialogue ? dialogueHtml(lines, scene) : `<p class="heard-text">${esc(lines.map((l) => l.es).join(' '))}</p>`}
+      ${card.audio_text ? audioRow(card, { caption: isDialogue ? 'Whole clip' : '', cls: 'sheet-audio' }) : ''}
     </section>`);
   }
   if (card.explanation_en || card.region_note) {
@@ -537,8 +583,11 @@ function openFeedbackSheet(card, focus = 'heard') {
 }
 
 // ---------- options ----------
+/** v2: Medium cards can have long, two-line text options. */
+const longOptions = (card) => (card.options || []).some((o) => String(o).length > 32);
 function optionsBlock(card, fb, { grid } = {}) {
   const opts = card.options;
+  const long = !grid && longOptions(card);
   const priceLike = opts.length === 4 && opts.every((o) => String(o).length <= 7);
   // Price options always use the 2 x 2 grid of 64px cells (spec rule 4), even on scene cards.
   const useGrid = (grid ?? priceLike) || (priceLike && opts.every((o) => /^\$?\d[\d.,:]*$/.test(String(o))));
@@ -549,9 +598,11 @@ function optionsBlock(card, fb, { grid } = {}) {
       else if (o === fb.given) { cls = 'is-wrong'; dot = `<span class="status-dot is-wrong">${ICON.cross(14)}</span>`; }
       else cls = 'is-dim';
     }
+    // Long two-line options: after answering, keep only the right answer and your pick so the feedback still fits.
+    if (fb && long && cls === 'is-dim') return '';
     return `<button class="opt ${cls}" data-opt="${i}" ${fb ? 'disabled' : ''}>${esc(o)}${dot}</button>`;
   }).join('');
-  return `<div class="options ${useGrid ? 'grid' : ''}" data-testid="options">${items}</div>`;
+  return `<div class="options ${useGrid ? 'grid' : ''} ${long ? 'long' : ''}" data-testid="options">${items}</div>`;
 }
 function bindOptions(card) {
   $$('[data-opt]').forEach((b) => {
@@ -565,7 +616,9 @@ const optionsDock = (card, fb, o) => `${optionsBlock(card, fb, o)}${fb ? btnNext
 // ---------- listen_pick ----------
 function renderListenPick(card, fb) {
   const head = `${eyebrow('Listen')}<h2 class="title prompt">${esc(card.prompt_en || 'What did you hear?')}</h2>`;
-  if (!fb) return { body: `${head}${audioHero(card)}`, dock: optionsDock(card, null), dockClass: 'opts-dock', bind: () => bindOptions(card) };
+  // Long text options (Medium) take the room of the big replay: use the compact audio row instead.
+  const hero = longOptions(card) ? audioRow(card, { size: 56 }) : audioHero(card);
+  if (!fb) return { body: `${head}${hero}`, dock: optionsDock(card, null), dockClass: 'opts-dock', bind: () => bindOptions(card) };
   return { body: feedbackBody(card, fb, head), dock: optionsDock(card, fb), dockClass: 'opts-dock' };
 }
 
@@ -575,6 +628,10 @@ function renderListenType(card, fb) {
   const head = `${eyebrow('Listen and type')}<h2 class="title prompt">${esc(card.prompt_en || 'Type what you hear.')}</h2>`;
   const show = (v) => `${money && !/[a-z]/i.test(v || '') ? '<span class="prefix">$</span>' : ''}<span class="value ${/[a-z]/i.test(v || '') ? 'words' : ''}">${esc(v || '')}</span>`;
   if (fb) return { body: feedbackBody(card, fb, head), dock: btnNext };
+  if (wordAnswer(card)) {
+    return { body: `${head}${audioRow(card, { right: hintPill(card) })}${hintBox(card)}`, dockClass: 'fix-dock', dock: textInputRow(),
+      bind: () => bindTextInput(card, (v) => answer(card, isCorrect(card, v), v)) };
+  }
   const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', ':', '0', 'del'];
   const keypad = keys.map((k) => k === 'del'
     ? `<button class="key" data-key="del" aria-label="Delete">${ICON.backspace}</button>`
@@ -644,19 +701,25 @@ function renderFixIt(card, fb) {
   return {
     body: `${head}${sentenceHtml(card, '')}${instruction}${hint}`,
     dockClass: 'fix-dock',
-    dock: `<div class="fix-row"><input id="fix-input" class="text-input" type="text" aria-label="Your answer" placeholder="Your answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" lang="es">
-      <button class="btn-primary check-compact" data-act="check" disabled>Check</button></div>`,
-    bind: () => {
-      const inp = $('#fix-input'), check = $('[data-act="check"]'), blank = $('.blank');
-      check.addEventListener('mousedown', (e) => e.preventDefault()); // don't drop the keyboard before the tap lands
-      inp.oninput = () => { if (blank) blank.innerHTML = inp.value ? esc(inp.value) : '&nbsp;'; check.disabled = !inp.value.trim(); };
-      inp.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); check.click(); } };
-      inp.onfocus = () => setTimeout(() => { S.updateKeyboardInset?.(); refreshHints(); }, 350);
-      setTimeout(() => inp.focus({ preventScroll: true }), 50);
-      check.onclick = () => { const v = inp.value.trim(); if (v) { inp.blur(); answer(card, isCorrect(card, v), v); } };
-    },
+    dock: textInputRow(),
+    bind: () => bindTextInput(card, (v) => answer(card, isCorrect(card, v), v)),
   };
 }
+/** The phone's letter keyboard (fix-it, and Medium typed answers with words). Checking is accent/case-insensitive (check.js).
+ *  No autocapitalize / autocorrect / spellcheck, so the keyboard doesn't "fix" Spanish into English. */
+const textInputRow = () => `<div class="fix-row"><input id="fix-input" class="text-input" type="text" inputmode="text" aria-label="Your answer" placeholder="Your answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" lang="es">
+      <button class="btn-primary check-compact" data-act="check" disabled>Check</button></div>`;
+function bindTextInput(card, onCheck) {
+  const inp = $('#fix-input'), check = $('[data-act="check"]'), blank = $('.blank');
+  check.addEventListener('mousedown', (e) => e.preventDefault()); // don't drop the keyboard before the tap lands
+  inp.oninput = () => { if (blank) blank.innerHTML = inp.value ? esc(inp.value) : '&nbsp;'; check.disabled = !inp.value.trim(); };
+  inp.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); check.click(); } };
+  inp.onfocus = () => setTimeout(() => { S.updateKeyboardInset?.(); refreshHints(); }, 350);
+  setTimeout(() => inp.focus({ preventScroll: true }), 50);
+  check.onclick = () => { const v = inp.value.trim(); if (v) { inp.blur(); onCheck(v); } };
+}
+/** Typed answer that is a word, not a number/price/time: use the letter keyboard instead of the number pad. */
+const wordAnswer = (c) => /[a-zñáéíóúü]/i.test(String(c.answer ?? (c.accepted_answers || [])[0] ?? '').replace(/\$/g, ''));
 
 // ---------- reply ----------
 function renderReply(card, fb) {
@@ -703,6 +766,11 @@ function showSummary() {
   srs.finishSession(S.progress);
   S.progress = srs.load();
   S.view = 'summary';
+  // Stars (v2): computed and saved once per session.
+  if (!ses.starsResult) {
+    ses.starsResult = levels.starsFor(ses.results, ses.level);
+    ses.starsSaved = levels.record(ses.level, ses.topic, ses.starsResult.stars);
+  }
   const right = ses.results.filter((r) => r.ok).length;
   const mins = Math.max(1, Math.round((Date.now() - ses.start) / 60000));
   const misses = ses.results.filter((r) => !r.ok);
@@ -712,14 +780,16 @@ function showSummary() {
   if (!ses.rowIds) ses.rowIds = results.enqueue(ses.results.map((r) => ({
     answered_at: r.at, card_id: r.card.id, content_version: cv, correct: !!r.ok,
     answer_given: r.given == null ? '' : String(r.given), used_hint: !!r.hint, used_slow: !!r.slow, session_id: ses.id,
+    level: ses.level || 'easy', topic: ses.topic || '', mission_id: '', stars: ses.starsResult.stars,
   })), validCardIds());
   S.summaryRowIds = ses.rowIds;
+  if (ses.level === 'medium') return showTopicSummary(ses, mins);
   const statusLine = S.summaryRowIds.length
     ? `<p class="caption results-status" data-testid="results-status" data-state="queued" role="status">${resultsStatusHtml(false)}</p>` : '';
   render(`
   <div class="screen page summary" data-screen="summary">
     <div class="zone summary-zone"><div class="scroll scroller"><div class="scroll-inner">
-      <p class="eyebrow">${esc(fmtDate())}<span class="sub">${mins} min</span></p>
+      <p class="eyebrow">${esc(fmtDate())}<span class="sub">${mins} min</span><span class="sub" data-testid="session-stars">${ICON.star(11)} ${ses.starsResult.stars}</span></p>
       <h1 class="display">Session done</h1>
       <div class="dial">${dialSvg(ses.results)}<div class="center"><span class="score" data-testid="score">${right}<span class="dim">/${ses.results.length}</span></span><span class="caption">correct</span></div></div>
       ${statusLine}
@@ -739,5 +809,425 @@ function showSummary() {
   setupScrollHint($('.summary-zone'));
   if (S.summaryRowIds.length) sendResults();
 }
+
+
+// ======================================================================= v2 Levels
+// ---------- Medium: topic grid ----------
+const topicCards = (code) => S.medium.filter((c) => c.topic === code);
+function openTopics(push = true) {
+  stop(); setKeyHandler(null);
+  if (push) pushView('topics');
+  S.view = 'topics'; S.session = null;
+  const best = levels.load().topics;
+  const withCards = levels.TOPICS.filter((t) => topicCards(t.code).length);
+  const soon = levels.TOPICS.filter((t) => !topicCards(t.code).length);
+  render(`
+  <div class="screen page topics" data-screen="topics">
+    <button class="back-link" data-act="home">${ICON.back}<span>Home</span></button>
+    <p class="eyebrow lv-tag">Medium</p>
+    <h1 class="title lv-title">Topic challenge</h1>
+    <p class="caption lv-cap">Pick a topic: 10 cards, normal-speed audio.</p>
+    <div class="zone topics-zone"><div class="scroller"><div class="scroll-inner">
+      <div class="topic-grid" data-testid="topic-grid">${withCards.map((t) => `
+        <button class="topic-tile" data-topic="${esc(t.code)}" data-testid="topic-tile">
+          <span class="tname">${esc(t.name)}</span>${starRow(best[t.code] || 0, 12, `Best: ${best[t.code] || 0} of 3 stars`)}
+        </button>`).join('')}</div>
+      ${soon.length ? `<p class="eyebrow soon-head">Coming soon</p><p class="caption soon" data-testid="coming-soon">${soon.map((t) => esc(t.name)).join(' · ')}</p>` : ''}
+    </div></div>${moreHint()}</div>
+  </div>`);
+  $('[data-act="home"]').onclick = () => goHome(true);
+  $$('[data-topic]').forEach((b) => { b.onclick = () => startTopic(b.dataset.topic); });
+  setupScrollHint($('.topics-zone'));
+}
+function startTopic(code) {
+  const cards = srs.planTopic(S.progress, topicCards(code));
+  if (!cards.length) return;
+  S.session = { cards, i: 0, results: [], start: Date.now(), id: results.newSessionId(), level: 'medium', topic: code };
+  S.view = 'session';
+  pushView('session');
+  showCard();
+}
+function fmtDuration(ms) {
+  const s = Math.max(1, Math.round(ms / 1000));
+  return s < 60 ? `${s} s` : `${Math.floor(s / 60)} min ${s % 60} s`;
+}
+function starsSentence(r, level) {
+  const bits = [];
+  if (r.stars === 3) bits.push(`3 stars: ${r.need3} or more right with no hints.`);
+  else if (r.stars === 2) bits.push(r.hints && r.right >= r.need3 ? `2 stars: 3 stars needs ${r.need3} right with no hints.` : `2 stars: ${r.need2} or more right. ${r.need3} right with no hints earns 3.`);
+  else bits.push(`1 star for finishing. ${r.need2} right earns 2 stars.`);
+  if (level === 'medium' && r.hints && r.stars < 3) bits.push('A right answer after a hint counts as half.');
+  return bits.join(' ');
+}
+function showTopicSummary(ses, mins) {
+  const r = ses.starsResult, saved = ses.starsSaved, name = levels.topicName(ses.topic);
+  const typed = (c) => c.type === 'listen_type' || (c.type === 'fix_it' && !hasOptions(c));
+  const cnt = (f) => { const rs = ses.results.filter((x) => f(x.card)); return { n: rs.length, ok: rs.filter((x) => x.ok).length }; };
+  const typing = cnt(typed), listening = cnt((c) => !typed(c) && !!c.audio_text), choosing = cnt((c) => !typed(c) && !c.audio_text);
+  const row = (k, v) => `<div class="bd-row"><span>${esc(k)}</span><span class="bd-val">${esc(v)}</span></div>`;
+  const statusLine = S.summaryRowIds.length
+    ? `<p class="caption results-status" data-testid="results-status" data-state="queued" role="status">${resultsStatusHtml(false)}</p>` : '';
+  const before = saved.prev ? ` Your best before was ${saved.prev}.` : '';
+  render(`
+  <div class="screen page summary msum" data-screen="summary" data-level="medium" data-topic="${esc(ses.topic)}">
+    <div class="zone summary-zone"><div class="scroll scroller"><div class="scroll-inner">
+      <p class="eyebrow lv-tag">Medium<span class="sub-dot">·</span>${esc(name)}</p>
+      <div class="stars-line">${starRow(r.stars, 40)}${saved.newBest ? '<span class="new-best" data-testid="new-best">New best</span>' : ''}</div>
+      <h1 class="display msum-score" data-testid="score">${r.right} of ${r.n} right</h1>
+      <p class="body-copy msum-why">${esc(starsSentence(r, 'medium') + before)}</p>
+      ${statusLine}
+      <div class="breakdown">
+        ${typing.n ? row('Typing', `${typing.ok} of ${typing.n}`) : ''}
+        ${listening.n ? row('Listening', `${listening.ok} of ${listening.n}`) : ''}
+        ${choosing.n ? row('Choosing', `${choosing.ok} of ${choosing.n}`) : ''}
+        ${row('Hints used', String(r.hints))}
+        ${row('Time', fmtDuration(Date.now() - ses.start))}
+      </div>
+      <p class="caption topic-note">Topic stars: ${esc(name)} is now at ${saved.best} of 3.</p>
+    </div></div>${moreHint()}</div>
+    <div class="action two"><button class="btn-text" data-act="another">Another topic</button><button class="btn-primary" data-act="done">Done</button></div>
+  </div>`);
+  $('[data-act="done"]').onclick = () => goHome(true);
+  $('[data-act="another"]').onclick = () => { S.view = 'summary-back'; history.back(); }; // back to the grid
+  setupScrollHint($('.summary-zone'));
+  if (S.summaryRowIds.length) sendResults();
+}
+
+// ---------- Hard: missions ----------
+function isPlayableMission(m) {
+  try {
+    const md = m.media || {};
+    const okMedia = md.kind === 'text' ? !!md.text_es : md.kind === 'audio' && (md.lines || []).length > 0;
+    const qs = (m.questions || []).filter((q) => (q.kind === 'pick' && hasOptions(q)) || (q.kind === 'type' && hasAnswers(q)));
+    return !!m.id && okMedia && qs.length > 0;
+  } catch { return false; }
+}
+const mQuestions = (m) => m.questions.filter((q) => (q.kind === 'pick' && hasOptions(q)) || (q.kind === 'type' && hasAnswers(q)));
+const shortTitle = (m) => String(m.title_en || '').split(':')[0].trim();
+const cleanPrompt = (p) => String(p || '').replace(/\s*\(type it like [^)]*\)\s*$/i, '');
+function clipMinutes(m) {
+  const d = clipInfo(m.id)?.duration;
+  if (!d) return 'about 1 min';
+  return d < 40 ? 'under a minute' : `about ${Math.max(1, Math.round(d / 60))} min`;
+}
+/** "WhatsApp from your landlord: …" -> "Your landlord". Content may set media.sender_en instead. */
+function senderOf(m) {
+  if (m.media?.sender_en) return m.media.sender_en;
+  const x = /from (?:the |your |a )?([^:]+?)(?::|$)/i.exec(m.title_en || '');
+  const who = x ? x[1].trim() : '';
+  if (!who) return 'The message';
+  return /^(your|the)\b/i.test(who) ? who.replace(/^./, (c) => c.toUpperCase()) : (/from your /i.test(m.title_en) ? `Your ${who}` : who);
+}
+const FORMAT_LABEL = { whatsapp: 'WhatsApp', sign: 'Sign', menu: 'Menu', receipt: 'Receipt', email: 'Email', label: 'Label' };
+function openMissions(push = true) {
+  stop(); setKeyHandler(null);
+  if (push) pushView('missions');
+  S.view = 'missions'; S.mission = null;
+  const best = levels.load().missions;
+  render(`
+  <div class="screen page topics missions" data-screen="missions">
+    <button class="back-link" data-act="home">${ICON.back}<span>Home</span></button>
+    <p class="eyebrow lv-tag">Hard</p>
+    <h1 class="title lv-title">Real-life mission</h1>
+    <p class="caption lv-cap">One longer situation: listen or read, then answer.</p>
+    <div class="zone topics-zone"><div class="scroller"><div class="scroll-inner"><div class="mission-list">${S.missions.map((m) => `
+      <button class="mission-row" data-mission="${esc(m.id)}" data-testid="mission-row">
+        <span class="ch-text"><span class="ch-title">${esc(m.title_en)}</span>
+          <span class="caption">${m.media.kind === 'audio' ? `Audio · ${esc(clipMinutes(m))}` : `Message · ${esc(FORMAT_LABEL[m.media.text_format] || 'text')}`} · ${mQuestions(m).length} questions</span>
+          ${starRow(best[m.id] || 0, 12)}</span>
+        <span class="ch-chev">${ICON.chevron}</span>
+      </button>`).join('')}</div></div></div>${moreHint()}</div>
+  </div>`);
+  $('[data-act="home"]').onclick = () => goHome(true);
+  $$('[data-mission]').forEach((b) => { b.onclick = () => startMission(b.dataset.mission); });
+  setupScrollHint($('.topics-zone'));
+}
+function startMission(id) {
+  const m = S.missions.find((x) => x.id === id);
+  if (!m) return;
+  S.mission = { m, qs: mQuestions(m), i: 0, answers: [], start: Date.now(), slow: false, hintUsed: false, id: results.newSessionId() };
+  S.view = 'mission';
+  pushView('mission');
+  missionIntro();
+}
+function missionTop(right = '') {
+  return `<header class="topbar mtop"><button class="close" data-act="close" aria-label="End mission">${ICON.close}</button><span class="grow"></span>${right}</header>`;
+}
+function bindMissionClose() { $('[data-act="close"]').onclick = () => goHome(true); }
+function missionIntro() {
+  const { m, qs } = S.mission;
+  const audio = m.media.kind === 'audio';
+  const primary = audio ? (/voicemail/i.test(m.title_en) ? 'Play voicemail' : /call/i.test(m.title_en) ? 'Play the call' : 'Play announcement') : 'Read the message';
+  const fact = (k, v) => `<div class="fact"><span>${esc(k)}</span><span class="fv">${esc(v)}</span></div>`;
+  render(`
+  <div class="screen mission-screen" data-screen="mission-intro" data-mission="${esc(m.id)}">
+    ${missionTop()}
+    <div class="zone intro-zone"><div class="scroller"><div class="scroll-inner">
+      <p class="eyebrow lv-tag">Hard · Real-life mission</p>
+      <h1 class="title mi-title">${esc(m.title_en)}</h1>
+      <p class="body-copy mi-sit">${esc(m.situation_en)}</p>
+      <div class="facts">
+        ${audio ? fact('Audio', clipMinutes(m)) : fact('Message', FORMAT_LABEL[m.media.text_format] || 'Text')}
+        ${fact('Questions', `${qs.length}, one at a time`)}
+        ${fact(audio ? 'Replay' : 'Reread', audio ? 'Normal or slow, any time' : 'Any time')}
+      </div>
+      <p class="caption mi-note">The transcript and a “Why” for each question open after you answer.</p>
+    </div></div>${moreHint()}</div>
+    <div class="dock">
+      <button class="btn-text" data-act="preview">Read the questions first</button>
+      <button class="btn-primary" data-act="begin">${esc(primary)}</button>
+    </div>
+  </div>`);
+  bindMissionClose();
+  setupScrollHint($('.intro-zone'));
+  $('[data-act="preview"]').onclick = () => openSimpleSheet('Questions', `<ol class="q-preview">${qs.map((q) => `<li>${esc(cleanPrompt(q.prompt_en))}</li>`).join('')}</ol>`);
+  $('[data-act="begin"]').onclick = () => {
+    if (audio) { missionQuestion(); playClip(m.id, { slow: S.mission.slow }); }
+    else missionMessage();
+  };
+}
+function openSimpleSheet(title, html, { sub = '', bindWith = null } = {}) {
+  closeSheet();
+  const el = document.createElement('div');
+  el.className = 'sheet-backdrop fb-backdrop';
+  el.innerHTML = `<div class="sheet fb-sheet" role="dialog" aria-modal="true" aria-label="${esc(title)}" data-testid="sheet">
+    <span class="grab" aria-hidden="true"></span>
+    <div class="zone sheet-zone"><div class="sheet-scroll scroller"><div class="scroll-inner"><section class="sheet-sec">${eyebrow(title, sub)}${html}</section></div></div>${moreHint()}</div>
+    <button class="btn-text sheet-close" data-act="sheet-close">Close</button>
+  </div>`;
+  el.addEventListener('click', (e) => { if (e.target === el) closeSheet(); });
+  el.querySelector('.grab').addEventListener('click', () => closeSheet());
+  el.querySelector('[data-act="sheet-close"]').onclick = () => closeSheet();
+  document.body.appendChild(el);
+  S.sheet = el;
+  S.sheetPrevKey = S.keyHandler; setKeyHandler((e) => { if (e.key === 'Escape') closeSheet(); });
+  if (bindWith) bindAudio(null, el);
+  setupScrollHint(el.querySelector('.sheet-zone'));
+  el.querySelector('.sheet-close').focus({ preventScroll: true });
+}
+/** Text missions: the message in one WhatsApp-style bubble, scrolling with the "More below" fade. */
+function missionMessage(backTo = null) {
+  const { m } = S.mission;
+  const md = m.media;
+  const fmt = FORMAT_LABEL[md.text_format] || '';
+  render(`
+  <div class="screen mission-screen" data-screen="mission-msg" data-mission="${esc(m.id)}">
+    ${missionTop('<span class="count">Read, then answer</span>')}
+    <p class="caption sender" data-testid="sender">${esc([senderOf(m), fmt, md.time].filter(Boolean).join(' · '))}</p>
+    <div class="zone msg-zone"><div class="scroller" data-testid="msg-scroll"><div class="scroll-inner">
+      <div class="bubble ${md.text_format === 'whatsapp' ? 'wa' : ''}" data-testid="bubble" lang="es">${esc(md.text_es)}${md.time ? `<span class="btime">${esc(md.time)}</span>` : ''}</div>
+    </div></div>${moreHint()}</div>
+    <div class="dock"><button class="btn-primary" data-act="to-questions">${backTo == null ? 'Go to questions' : `Back to question ${backTo + 1}`}</button></div>
+  </div>`);
+  bindMissionClose();
+  setupScrollHint($('.msg-zone'));
+  $('[data-act="to-questions"]').onclick = () => missionQuestion();
+}
+const fmtClock = (sec) => { sec = Math.max(0, Math.floor(sec || 0)); return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`; };
+function playerBar(m) {
+  const info = clipInfo(m.id) || {};
+  const tot = S.mission.slow ? info.slow_duration : info.duration;
+  return `<div class="player" data-testid="player">
+    <button class="pl-play" data-act="pl-play" aria-label="Play">${ICON.speaker}</button>
+    <div class="pl-mid">
+      <div class="pl-track" data-testid="scrub" role="slider" aria-label="Position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><i class="pl-fill"></i><b class="pl-knob"></b></div>
+      <div class="caption pl-time"><span class="pl-el">0:00</span> / <span class="pl-tot">${fmtClock(tot)}</span></div>
+    </div>
+    <button class="slow s48 pl-slow ${S.mission.slow ? 'is-on' : ''}" data-act="pl-slow" data-testid="slow" aria-pressed="${S.mission.slow}" aria-label="Slow (0.75×)">0.75×</button>
+  </div>`;
+}
+function bindPlayer(m) {
+  const el = audioEl();
+  const bar = $('.player');
+  if (!bar) return;
+  const btn = $('[data-act="pl-play"]', bar), fill = $('.pl-fill', bar), knob = $('.pl-knob', bar), track = $('.pl-track', bar);
+  const elT = $('.pl-el', bar), totT = $('.pl-tot', bar);
+  const upd = () => {
+    if (!document.body.contains(bar)) return;
+    const mine = clipLoaded(m.id);
+    const d = mine && isFinite(el.duration) ? el.duration : (S.mission?.slow ? clipInfo(m.id)?.slow_duration : clipInfo(m.id)?.duration) || 0;
+    const t = mine ? el.currentTime : 0;
+    const f = d ? Math.min(1, t / d) : 0;
+    fill.style.width = `${f * 100}%`; knob.style.left = `${f * 100}%`;
+    track.setAttribute('aria-valuenow', String(Math.round(f * 100)));
+    elT.textContent = fmtClock(t); totT.textContent = fmtClock(d);
+    const playing = mine && !el.paused && !el.ended;
+    bar.classList.toggle('is-active', playing);
+    btn.innerHTML = playing ? ICON.pause : ICON.speaker;
+    btn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+  };
+  if (S.playerOff) S.playerOff();
+  const evs = ['timeupdate', 'play', 'pause', 'ended', 'loadedmetadata', 'seeked'];
+  evs.forEach((e) => el.addEventListener(e, upd));
+  S.playerOff = () => evs.forEach((e) => el.removeEventListener(e, upd));
+  const frac = () => (clipLoaded(m.id) && isFinite(el.duration) && el.duration ? el.currentTime / el.duration : 0);
+  btn.onclick = () => {
+    if (clipLoaded(m.id) && !el.paused && !el.ended) el.pause();
+    else if (clipLoaded(m.id) && !el.ended && el.currentTime > 0) el.play().catch(() => {});
+    else playClip(m.id, { slow: S.mission.slow });
+  };
+  $('[data-act="pl-slow"]', bar).onclick = (e) => {
+    S.mission.slow = !S.mission.slow;
+    const b = e.currentTarget; b.classList.toggle('is-on', S.mission.slow); b.setAttribute('aria-pressed', String(S.mission.slow));
+    const f = frac(), wasPlaying = clipLoaded(m.id) && !el.paused && !el.ended;
+    if (wasPlaying || f > 0) playClip(m.id, { slow: S.mission.slow, at: f });
+    else playClip(m.id, { slow: S.mission.slow });
+  };
+  const seek = (ev) => {
+    const r = track.getBoundingClientRect();
+    const f = Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width));
+    if (clipLoaded(m.id) && isFinite(el.duration)) { el.currentTime = f * el.duration; if (el.paused) el.play().catch(() => {}); }
+    else playClip(m.id, { slow: S.mission.slow, at: f });
+  };
+  track.addEventListener('pointerdown', (ev) => { seek(ev); track.setPointerCapture?.(ev.pointerId); track.onpointermove = seek; });
+  track.addEventListener('pointerup', () => { track.onpointermove = null; });
+  upd();
+}
+function keypadHtml() {
+  const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', ':', '0', 'del'];
+  return keys.map((k) => k === 'del'
+    ? `<button class="key" data-key="del" aria-label="Delete">${ICON.backspace}</button>`
+    : `<button class="key ${k === ':' ? 'colon' : ''}" data-key="${k}">${k}</button>`).join('');
+}
+function missionQuestion() {
+  const ms = S.mission;
+  const { m, qs } = ms;
+  const q = qs[ms.i];
+  ms.hintUsed = false; ms.selected = null;
+  setKeyHandler(null);
+  const audio = m.media.kind === 'audio';
+  const media = audio ? playerBar(m)
+    : `<button class="msg-row" data-act="reopen" data-testid="msg-row"><span>Message from ${esc(senderOf(m).replace(/^Your /, 'your ').replace(/^The /, 'the '))}</span>${ICON.chevron}</button>`;
+  const pick = q.kind === 'pick';
+  const letters = !pick && wordAnswer(q);
+  let dock, dockClass = '';
+  if (pick) dock = `<button class="btn-primary" data-act="check" disabled>Check</button>`;
+  else if (letters) { dock = textInputRow(); dockClass = 'fix-dock'; }
+  else { dock = `<div class="typed" data-testid="typed" aria-live="polite"><span class="value"></span><span class="caret"></span></div>
+      <button class="btn-primary" data-act="check" disabled>Check</button><div class="keypad" data-testid="keypad">${keypadHtml()}</div>`; dockClass = 'type-dock'; }
+  const opts = pick ? `<div class="moptions" data-testid="options" role="radiogroup">${q.options.map((o, i) => `<button class="mopt" data-opt="${i}" role="radio" aria-checked="false">${esc(o)}</button>`).join('')}</div>` : '';
+  render(`
+  <div class="screen card-screen mission-screen" data-screen="mission-q" data-mission="${esc(m.id)}" data-q="${esc(q.id)}" data-kind="${esc(q.kind)}">
+    ${missionTop(`${hintPill(q)}<span class="count mcount">Question ${ms.i + 1} of ${qs.length}</span>`)}
+    ${media}
+    <div class="zone card-zone mq-zone"><div class="card-body scroller" data-testid="card-body"><div class="card-inner">
+      <h2 class="title prompt mq-prompt">${esc(q.prompt_en)}</h2>
+      ${hintBox(q)}
+      ${opts}
+    </div></div>${moreHint()}</div>
+    <div class="dock ${dockClass}" data-testid="dock">${dock}</div>
+  </div>`);
+  bindMissionClose();
+  bindHint(q);
+  if (audio) bindPlayer(m);
+  else $('[data-act="reopen"]').onclick = () => missionMessage(ms.i);
+  const done = (ok, given) => {
+    ms.answers.push({ q, ok, given, hint: !!ms.hintUsed, at: new Date().toISOString() });
+    ms.i++;
+    if (ms.i >= qs.length) missionResult(); else missionQuestion();
+  };
+  const check = $('[data-act="check"]');
+  if (pick) {
+    $$('[data-opt]').forEach((b) => {
+      b.onclick = () => {
+        $$('[data-opt]').forEach((x) => { x.classList.remove('is-selected'); x.setAttribute('aria-checked', 'false'); });
+        b.classList.add('is-selected'); b.setAttribute('aria-checked', 'true');
+        ms.selected = Number(b.dataset.opt); check.disabled = false;
+      };
+    });
+    check.onclick = () => { if (ms.selected == null) return; const o = q.options[ms.selected]; done(o === q.answer, o); };
+  } else if (letters) {
+    bindTextInput(q, (v) => done(isCorrect(q, v), v));
+  } else {
+    let val = '';
+    const box = $('.typed');
+    const upd = () => { box.innerHTML = `<span class="value ${/[a-z]/i.test(val) ? 'words' : ''}">${esc(val)}</span><span class="caret"></span>`; check.disabled = !val.trim(); };
+    const press = (k) => { if (k === 'del') val = val.slice(0, -1); else if (val.length < 24) val += k; upd(); };
+    $$('[data-key]').forEach((b) => { b.onclick = () => press(b.dataset.key); });
+    check.onclick = () => { if (val.trim()) done(isCorrect(q, val), val.trim()); };
+    setKeyHandler((e) => {
+      if (e.metaKey || e.ctrlKey || e.altKey || S.sheet) return;
+      if (e.key === 'Enter') { e.preventDefault(); check.click(); }
+      else if (e.key === 'Backspace') { e.preventDefault(); press('del'); }
+      else if (/^[0-9:.a-zA-Záéíóúñü ]$/.test(e.key)) { e.preventDefault(); press(e.key); }
+    });
+  }
+  setupScrollHint($('.mq-zone'));
+}
+function missionResult() {
+  const ms = S.mission;
+  const { m } = ms;
+  stop(); setKeyHandler(null);
+  if (S.playerOff) { S.playerOff(); S.playerOff = null; }
+  if (!ms.starsResult) {
+    ms.starsResult = levels.starsFor(ms.answers, 'hard');
+    ms.starsSaved = levels.record('hard', m.id, ms.starsResult.stars);
+    srs.recordActivity(S.progress, ms.answers.length);   // a finished mission counts for the streak
+    S.progress = srs.load();
+    ms.end = Date.now();
+    // Results upload: the Apps Script only accepts card ids (c-NNNN) for now, so mission answers are kept
+    // on the phone (oye.stars.v1 log) and not queued. See README "Results upload".
+  }
+  const r = ms.starsResult;
+  const rows = ms.answers.map((a, i) => {
+    const given = a.q.kind === 'pick' ? `You picked “${a.given}”` : `You typed ${a.given}`;
+    const open = !a.ok;
+    return `<div class="mr-row ${a.ok ? 'ok' : 'bad'} ${open ? 'open' : ''}" data-q="${esc(a.q.id)}" data-testid="mr-row">
+      <button class="mr-head" data-act="why" aria-expanded="${open}">
+        <span class="mr-ico">${a.ok ? ICON.check(18) : ICON.cross(18)}</span>
+        <span class="mr-prompt">${esc(cleanPrompt(a.q.prompt_en))}</span>
+        <span class="mr-chev">${open ? ICON.chevronDown : ICON.chevron}</span>
+      </button>
+      <div class="why-box ${a.ok ? 'is-ok' : ''}" data-testid="why-box" ${open ? '' : 'hidden'}>
+        <p class="caption wb-given">${esc(given)}${a.ok ? '' : ` · The answer is “${esc(a.q.answer)}”`}</p>
+        <p class="caption wb-why">${esc(a.q.explanation_en || '')}</p>
+      </div>
+    </div>`;
+  }).join('');
+  render(`
+  <div class="screen page mission-result" data-screen="mission-result" data-mission="${esc(m.id)}">
+    ${missionTop()}
+    <div class="mr-head-block">
+      ${starRow(r.stars, 32)}
+      <h1 class="display mr-score" data-testid="score">${r.right} of ${r.n} right</h1>
+      <p class="caption mr-cap">${esc(shortTitle(m))} · ${r.need3} of ${r.n} right${r.hints ? ' with no hints' : ''} earns 3 stars${ms.starsSaved.newBest && ms.starsSaved.prev ? ' · New best' : ''}</p>
+    </div>
+    <div class="zone mr-zone"><div class="scroller"><div class="scroll-inner">
+      ${rows}
+      <button class="mr-row transcript-row" data-act="transcript" data-testid="transcript-row"><span>Read the transcript</span>${ICON.chevron}</button>
+    </div></div>${moreHint()}</div>
+    <div class="action two"><button class="btn-text" data-act="retry">Try again</button><button class="btn-primary" data-act="done">Done</button></div>
+  </div>`);
+  bindMissionClose();
+  $$('[data-act="why"]').forEach((b) => {
+    b.onclick = () => {
+      const row = b.closest('.mr-row'), box = row.querySelector('.why-box');
+      const open = box.hidden;
+      box.hidden = !open; row.classList.toggle('open', open); b.setAttribute('aria-expanded', String(open));
+      row.querySelector('.mr-chev').innerHTML = open ? ICON.chevronDown : ICON.chevron;
+      refreshHints();
+    };
+  });
+  $('[data-act="transcript"]').onclick = () => openMissionTranscript(m);
+  $('[data-act="done"]').onclick = () => goHome(true);
+  $('[data-act="retry"]').onclick = () => {
+    Object.assign(ms, { i: 0, answers: [], start: Date.now(), starsResult: null, starsSaved: null, id: results.newSessionId() });
+    missionIntro();
+  };
+  setupScrollHint($('.mr-zone'));
+}
+function openMissionTranscript(m) {
+  const md = m.media;
+  let html;
+  if (md.kind === 'audio') {
+    const lines = md.lines.map((l) => ({ ...l }));
+    html = `${dialogueHtml(lines, null)}`;
+  } else {
+    html = `<p class="heard-text msg-text" lang="es">${esc(md.text_es)}</p>${md.text_en ? `<p class="eyebrow en-head">In English</p><p class="caption msg-en">${esc(md.text_en)}</p>` : ''}`;
+  }
+  if (m.region_note) html += `<div class="region"><p class="eyebrow">Mexico vs Spain</p><p class="caption">${esc(m.region_note)}</p></div>`;
+  openSimpleSheet(md.kind === 'audio' ? 'Transcript' : 'The message', html, { sub: shortTitle(m), bindWith: true });
+}
+
 
 boot();

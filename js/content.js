@@ -1,6 +1,7 @@
 // Runtime content: version check, download, offline storage (Cache Storage).
 const CONTENT_CACHE = 'oye-content';           // shared with sw.js; survives app-shell updates
-const JSON_FILES = ['cards.json', 'scenes.json', 'vocab.json', 'audio.json'];
+const JSON_FILES = ['cards.json', 'scenes.json', 'vocab.json', 'audio.json', 'missions.json'];
+const OPTIONAL = { 'audio.json': '{"items":{}}', 'missions.json': '[]' }; // v2: missions.json is new, older content has none
 const LS_VERSION = 'oye.contentVersion';
 
 const hasCaches = typeof caches !== 'undefined';
@@ -29,7 +30,7 @@ async function downloadAll(version) {
   for (const f of JSON_FILES) {
     const r = await fetch(`content/${f}?fresh=${encodeURIComponent(version.version)}`, { cache: 'no-store' });
     if (!r.ok) {
-      if (f === 'audio.json') { texts[f] = '{"items":{}}'; continue; }
+      if (OPTIONAL[f]) { texts[f] = OPTIONAL[f]; continue; }
       throw new Error(`${f}: HTTP ${r.status}`);
     }
     texts[f] = await r.text();
@@ -40,7 +41,7 @@ async function downloadAll(version) {
 
 /**
  * Load content. Online + new version -> download and store. Otherwise use the stored copy.
- * Returns { cards, scenes, vocab, audio, version, updated, audioSync }.
+ * Returns { cards, scenes, vocab, missions, audio, version, updated, audioSync }.
  */
 export async function loadContent(onAudioProgress) {
   const cache = hasCaches ? await caches.open(CONTENT_CACHE) : null;
@@ -85,13 +86,15 @@ export async function loadContent(onAudioProgress) {
     cards: Array.isArray(data['cards.json']) ? data['cards.json'] : [],
     scenes: Array.isArray(data['scenes.json']) ? data['scenes.json'] : [],
     vocab: Array.isArray(data['vocab.json']) ? data['vocab.json'] : [],
+    missions: Array.isArray(data['missions.json']) ? data['missions.json'] : [],
     audio, version, updated, online, audioSync,
   };
 }
 
 /** Download audio files that aren't stored yet; drop stored audio no card uses any more. */
 async function syncAudio(cache, audio, onProgress) {
-  const urls = [...new Set(Object.values(audio.items || {}).flatMap(e => [e.normal, e.slow]).filter(Boolean))];
+  const entries = ['items', 'lines', 'missions'].flatMap(k => Object.values(audio[k] || {}));
+  const urls = [...new Set(entries.flatMap(e => [e.normal, e.slow]).filter(Boolean))];
   const abs = new Set(urls.map(u => new URL(u, location.href).href));
   const missing = [];
   for (const u of urls) if (!(await cache.match(u))) missing.push(u);
