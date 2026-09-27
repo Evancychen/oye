@@ -86,11 +86,14 @@ Progress (`localStorage`) and stored content/audio (`oye-content`) are never tou
   the Lessons sheet (it replaces the old Lessons row).
 - **Stars** (`oye.stars.v1` in localStorage): 1 = finished, 2 = 70%+, 3 = 90%+ with no hints; in Medium a correct
   answer after a hint counts 0.5. Medium topics and missions keep their best score; Easy sessions add their stars
-  to the total.
+  to the total. Opening the Hint on any mission question also rules out 3 stars (same as cards).
 - **Missions** (`content/missions.json`): one long joined audio clip (or a WhatsApp-style text message) plus
   questions (`pick` with wrapping options, keypad `type` answers like `5:00`, letter input for word answers).
-  Check moves on without feedback; the result screen shows every answer with an open "Why" box for mistakes
-  and the full transcript. Missions count toward the streak.
+  Check moves on without feedback (the last question's button reads "See results"); the result screen shows every
+  answer with an open "Why" box for mistakes and the full transcript. Missions count toward the streak. The
+  missions list (Home → Hard) shows each mission's title, "Audio · about N min" or "Message", and best stars.
+  Message missions show `media.sender_en` as the sender line (falls back to `title_en`) and `media.time`
+  (24-hour HH:MM) bottom-right on the bubble.
 - Text answers are accent- and case-insensitive; text inputs use `autocapitalize/autocorrect=off`,
   `spellcheck=false`.
 - Short phones (≤760 px / ≤700 px tall) get tighter spacing so the home screen and mission questions fit
@@ -126,8 +129,12 @@ on the next app open, on resume and on the `online` event. Rows whose card id is
 doesn't match `c-NNNN`) are dropped before sending. The Summary shows "Results sent to Gabriel" (green dot) once
 confirmed, "Saved · will send when you're online" (hollow dot) while sending or queued. Sessions closed with ✕
 before the Summary are not uploaded. v2 rows also carry `level`, `topic`, `mission_id` (empty for now) and
-`stars`; the current Apps Script ignores unknown keys, so these need new sheet columns to be stored. Mission
-answers are **not** uploaded yet (the script only accepts `c-NNNN` card ids) and stay on the phone. The e2e tests route the endpoint to a fake and fail if a request ever reaches it.
+`stars` (the Apps Script v3 stores them in their own columns). **Hard mission answers are uploaded too**, through the
+same offline queue, when the mission result screen opens: one row per question with `card_id` `<mission_id>:qN`
+(e.g. `m-metro-01:q2`), `level` `hard`, the mission's `topic`, `mission_id` and the attempt's `stars`; the result
+screen shows the same "Results sent to Gabriel" / "Saved · will send…" line. `js/results.js` keeps only rows the
+script accepts: `c-NNNN` card ids, or mission rows (`mission_id` `m-…`, level `hard`, `card_id` `<mission_id>:qN`;
+a bare `qN` is rewritten to that form), and only ids in the loaded content. The e2e tests route the endpoint to a fake and fail if a request ever reaches it.
 
 ## How content works at runtime
 

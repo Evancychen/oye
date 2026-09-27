@@ -5,7 +5,11 @@ export const RESULTS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwD3ECx
 const QUEUE_KEY = 'oye.resultsQueue.v1';
 const BATCH = 200;                       // the Apps Script keeps at most 200 rows per request
 const TIMEOUT_MS = 30000;
-const CARD_ID = /^c-\d{4}$/;             // the only ids the Apps Script accepts
+// Ids the Apps Script (v3) accepts: card answers "c-NNNN", and Hard mission answers with mission_id "m-..."
+// and card_id "<mission_id>:qN" (it also takes a bare "qN", which we normalise before queueing).
+const CARD_ID = /^c-\d{4}$/;
+const MISSION_ID = /^m-[a-z0-9]+(?:-[a-z0-9]+){0,8}$/;
+const QUESTION_ID = /^q\d{1,2}$/;
 
 let flushing = null;                     // one send at a time (per tab); navigator.locks covers other tabs
 const listeners = new Set();
@@ -23,12 +27,27 @@ const notify = () => { const n = readQueue().length; listeners.forEach((fn) => {
 /** fn(queueLength) after every send attempt. Returns an unsubscribe function. */
 export function onQueueChange(fn) { listeners.add(fn); return () => listeners.delete(fn); }
 
-/** Only ids the endpoint accepts and that exist in the loaded content (validIds = Set, or null = don't know yet). */
-const keep = (validIds) => (r) => CARD_ID.test(String(r.card_id)) && (!validIds || validIds.has(r.card_id));
+/** Mission rows: "qN" + mission_id -> "<mission_id>:qN" (the form the Sheet stores). Card rows are left alone. */
+function normalise(r) {
+  const cid = String(r.card_id ?? ''), mid = String(r.mission_id ?? '');
+  return MISSION_ID.test(mid) && QUESTION_ID.test(cid) ? { ...r, card_id: `${mid}:${cid}` } : r;
+}
+/** Would the endpoint accept this row's ids? Card: c-NNNN. Mission: level hard, mission_id m-..., card_id "<mission_id>:qN". */
+function acceptable(r) {
+  const cid = String(r.card_id ?? '');
+  if (CARD_ID.test(cid)) return true;
+  const mid = String(r.mission_id ?? '');
+  if (r.level !== 'hard' || !MISSION_ID.test(mid)) return false;
+  const i = cid.lastIndexOf(':');
+  return i > 0 && cid.slice(0, i) === mid && QUESTION_ID.test(cid.slice(i + 1));
+}
+/** Only ids the endpoint accepts and that exist in the loaded content (validIds = Set of card ids and
+ *  "<mission_id>:qN" question ids, or null = don't know yet). */
+const keep = (validIds) => (r) => acceptable(r) && (!validIds || validIds.has(r.card_id));
 
 /** Add a finished session's rows to the queue. Returns the local ids of the rows that were queued. */
 export function enqueue(rows, validIds) {
-  const add = rows.filter(keep(validIds)).map((r) => ({ ...r, _id: rid() }));
+  const add = rows.map(normalise).filter(keep(validIds)).map((r) => ({ ...r, _id: rid() }));
   if (!add.length) return [];
   if (!writeQueue([...readQueue(), ...add])) return [];
   return add.map((r) => r._id);

@@ -72,6 +72,18 @@ def png_size(path):
     return struct.unpack('>II', d[16:24])
 
 
+FAKE_MISSION_ID = re.compile(r'^m-[a-z0-9]+(?:-[a-z0-9]+){0,8}$')
+
+
+def fake_accepts(r):
+    """Same id rule as the v3 Apps Script (oye-notes/oye-results-script.gs): c-NNNN cards, or mission rows with
+    mission_id m-... and card_id qN / <mission_id>:qN."""
+    cid, mid = str(r.get('card_id') or '').strip(), str(r.get('mission_id') or '').strip()
+    if re.match(r'^c-\d{4}$', cid): return True
+    if not FAKE_MISSION_ID.match(mid): return False
+    return bool(re.match(r'^q\d{1,2}$', cid)) or (cid.startswith(mid + ':') and bool(re.match(r'^q\d{1,2}$', cid[len(mid) + 1:])))
+
+
 class FakeEndpoint:
     """Stands in for the Apps Script web app. mode: 'ok' | 'http500' | 'okfalse' | 'abort'."""
     def __init__(self, mode='ok', delay=0):
@@ -93,7 +105,7 @@ class FakeEndpoint:
             return await route.fulfill(status=500, headers=cors, content_type='text/html', body='<html>Error</html>')
         if self.mode == 'okfalse':
             return await route.fulfill(status=200, headers=cors, content_type='application/json', body='{"ok":false}')
-        n = len([r for r in (body.get('results') or []) if re.match(r'^c-\d{4}$', str(r.get('card_id')))][:200]) if isinstance(body, dict) else 0
+        n = len([r for r in (body.get('results') or []) if fake_accepts(r)][:200]) if isinstance(body, dict) else 0
         return await route.fulfill(status=200, headers=cors, content_type='application/json', body=json.dumps({'ok': True, 'saved': n}))
 
     def ok_rows(self):
@@ -1189,13 +1201,19 @@ async def results_upload_tests(browser, base, version):
             content_version: 3, correct: i % 2 === 0, answer_given: 'seed ' + i, used_hint: false, used_slow: false, session_id: 'e2e-seed' });
         rows.push({ answered_at: 'x', card_id: 'c-9999', content_version: 3, correct: false, answer_given: '', used_hint: false, used_slow: false, session_id: 'e2e-seed' });
         rows.push({ answered_at: 'x', card_id: 'bad', content_version: 3, correct: false, answer_given: '', used_hint: false, used_slow: false, session_id: 'e2e-seed' });
-        return m.enqueue(rows, valid).length;
+        // mission rows that must not be queued: unknown question, mission_id mismatch, not level hard, malformed mission id
+        const mrow = (card_id, mission_id, level) => ({ answered_at: 'x', card_id, content_version: 3, correct: false, answer_given: '', used_hint: false, used_slow: false,
+            session_id: 'e2e-seed', level, topic: 'directions', mission_id, stars: 1 });
+        rows.push(mrow('m-metro-01:q9', 'm-metro-01', 'hard'), mrow('m-metro-01:q1', 'm-voicemail-clinic-01', 'hard'), mrow('m-metro-01:q1', 'm-metro-01', 'medium'),
+                  mrow('M-Metro-01:q1', 'M-Metro-01', 'hard'), mrow('q1', '', 'hard'));
+        return m.enqueue(rows, valid.add ? new Set([...valid, 'm-metro-01:q1', 'm-voicemail-clinic-01:q1']) : valid).length;
     })""")
     await page.evaluate(f"""(() => {{ const q = {QUEUE_JS};
         q.push({{ _id: 'raw1', answered_at: 'x', card_id: 'c-8888', content_version: 3, correct: false, answer_given: '', used_hint: false, used_slow: false, session_id: 'e2e-raw' }});
         q.push({{ _id: 'raw2', answered_at: 'x', card_id: 'C-0001 ', content_version: 3, correct: false, answer_given: '', used_hint: false, used_slow: false, session_id: 'e2e-raw' }});
+        q.push({{ _id: 'raw3', answered_at: 'x', card_id: 'm-metro-01:q9', content_version: 3, correct: false, answer_given: '', used_hint: false, used_slow: false, session_id: 'e2e-raw', level: 'hard', topic: '', mission_id: 'm-metro-01', stars: 0 }});
         localStorage.setItem('oye.resultsQueue.v1', JSON.stringify(q)); }})()""")
-    check('results: card ids not in the loaded content are dropped when queued (450 of 452 kept)', added == 450, added)
+    check('results: card ids not in the loaded content, and malformed or unknown mission rows, are dropped when queued (450 of 457 kept)', added == 450, added)
     await ctx.set_offline(False)                                # fires "online"
     sent = await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 15000)
     sizes = [len(c['body']['results']) for c in fake.calls if isinstance(c['body'], dict)]
@@ -1389,6 +1407,7 @@ async def levels_suite(browser, base, cards):
     by_id = {c['id']: c for c in cards}
     missions = json.load(open(os.path.join(APP, 'content', 'missions.json'), encoding='utf-8'))
     mby = {m['id']: m for m in missions}
+    audio_index = json.load(open(os.path.join(APP, 'content', 'audio.json'), encoding='utf-8'))
     medium = [c for c in cards if c.get('level') == 'medium']
     errors = []
 
@@ -1535,6 +1554,27 @@ async def levels_suite(browser, base, cards):
         if main:
             rows_n = len(await page.query_selector_all('[data-testid=mission-row]'))
             check('v2 Hard: mission list shows every mission (3)', rows_n == len(missions), rows_n)
+            ml_ = await page.evaluate("""(() => { const s = document.querySelector('[data-screen=missions]');
+                return { back: s.querySelector('.back-link').textContent.trim(), eyebrow: s.querySelector('.lv-tag').textContent.trim(),
+                  eyeTT: getComputedStyle(s.querySelector('.lv-tag')).textTransform, title: s.querySelector('.lv-title').textContent.trim(),
+                  gridBack: !!s.querySelector('.back-link[data-act=home]'),
+                  rows: [...s.querySelectorAll('[data-testid=mission-row]')].map(r => ({ id: r.dataset.mission, title: r.querySelector('.ch-title').textContent.trim(),
+                     sub: r.querySelector('[data-testid=mission-sub]').textContent.trim(), stars: r.querySelector('.stars') ? r.querySelector('.stars').dataset.stars : null,
+                     chev: !!r.querySelector('.ch-chev svg'), bg: getComputedStyle(r).backgroundColor, radius: getComputedStyle(r).borderRadius, h: r.getBoundingClientRect().height })),
+                  surface: getComputedStyle(document.documentElement).getPropertyValue('--surface').trim(),
+                  docScroll: document.scrollingElement.scrollHeight - innerHeight }; })()""")
+            def want_sub(mm):
+                if mm['media']['kind'] != 'audio': return 'Message'
+                d = audio_index['missions'][mm['id']]['duration']
+                return f'Audio · about {max(1, round(d / 60))} min'
+            want_rows = [(mm['id'], mm['title_en'], want_sub(mm), '0') for mm in missions]
+            got_rows = [(r['id'], r['title'], r['sub'], r['stars']) for r in ml_['rows']]
+            check('v2 missions list (Picasso): "Home" back link, HARD eyebrow, title "Real-life missions"; one surface row per mission with title_en, '
+                  '"Audio · about N min" (rounded from the clip) or "Message", best stars and a chevron',
+                  ml_['back'] == 'Home' and ml_['gridBack'] and ml_['eyebrow'].lower() == 'hard' and ml_['eyeTT'] == 'uppercase' and ml_['title'] == 'Real-life missions'
+                  and got_rows == want_rows and all(r['chev'] and r['bg'] not in ('rgba(0, 0, 0, 0)', 'transparent') and r['radius'] == '12px' for r in ml_['rows'])
+                  and ml_['docScroll'] <= 1, {'got': got_rows, 'want': want_rows, 'hdr': (ml_['back'], ml_['eyebrow'], ml_['title'])})
+            await shot_v2(page, '12-missions-list-360x640.png')
         await page.click('[data-mission=m-metro-01]')
         await page.wait_for_selector('[data-screen=mission-intro]')
         it = await page.text_content('[data-screen=mission-intro]')
@@ -1565,10 +1605,15 @@ async def levels_suite(browser, base, cards):
                   s1['slow'] == '1' and s1['d'] > 60 and abs(s2['t'] / s2['d'] - 0.5) < 0.1 and '/ 1:1' in s2['txt'], (s1, s2))
             await page.click('[data-act=pl-slow]'); await page.wait_for_timeout(300)
         players = []
+        labels = []
         # q1 right, q2 wrong, q3 typed 5:00 on the keypad (right), q4 right
         for q in m['questions']:
             await page.wait_for_selector(f'[data-screen=mission-q][data-q={q["id"]}]')
             players.append(await page.is_visible('[data-testid=player]') and await page.is_visible('[data-act=pl-slow]'))
+            labels.append((await page.text_content('[data-act=check]')).strip())
+            if main and q is m['questions'][-1]:
+                await page.click(f'[data-opt="{q["options"].index(q["answer"])}"]')
+                await shot_v2(page, '14-last-question-see-results-360x640.png')
             if q['id'] == 'q2':
                 await page.wait_for_timeout(100)
                 await page.click('[data-opt="1"]')
@@ -1596,6 +1641,8 @@ async def levels_suite(browser, base, cards):
         if not main:
             await ctx.close(); continue
         check('v2 mission: the player bar (replay + slow) stays on every question', all(players) and len(players) == 4, players)
+        check('v2 mission (Picasso): the button reads "Check" on every question and "See results" on the last one',
+              labels == ['Check'] * (len(m['questions']) - 1) + ['See results'], labels)
         res = await page.evaluate("""(() => ({ stars: document.querySelector('.mission-result .stars').dataset.stars, score: document.querySelector('[data-testid=score]').textContent,
             rows: [...document.querySelectorAll('[data-testid=mr-row]')].map(r => ({ q: r.dataset.q, bad: r.classList.contains('bad'), open: !r.querySelector('.why-box').hidden,
                      why: r.querySelector('.why-box').textContent, prompt: r.querySelector('.mr-prompt').textContent })),
@@ -1616,8 +1663,22 @@ async def levels_suite(browser, base, cards):
         check('v2 mission result: "Read the transcript" opens every line of the announcement with speaker labels',
               all(l['es'] in tr for l in m['media']['lines']) and 'Anuncio' in tr and await page.query_selector('.fb-sheet .spk.v-male'))
         await page.click('[data-act=sheet-close]')
+        sent_ok = await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 10000)
         q = await page.evaluate(QUEUE_JS)
-        check('v2 results: mission answers are not queued for the Sheet (the Apps Script only accepts c-NNNN card ids); no request sent', q == [] and not fake.calls, len(fake.calls))
+        mrows = fake.ok_rows()
+        want_ids = [f'm-metro-01:{qq["id"]}' for qq in m['questions']]
+        sid = {r.get('session_id') for r in mrows}
+        row_ok = (len(mrows) == 4 and [r['card_id'] for r in mrows] == want_ids and all(list(r.keys()) == ROW_KEYS for r in mrows)
+                  and all(r['level'] == 'hard' and r['mission_id'] == 'm-metro-01' and r['topic'] == m['topic'] and r['stars'] == 2 for r in mrows)
+                  and [r['correct'] for r in mrows] == [True, False, True, True] and mrows[2]['answer_given'] == '5:00'
+                  and mrows[1]['answer_given'] == m['questions'][1]['options'][1] and len(sid) == 1 and all(fake_accepts(r) for r in mrows)
+                  and all(isinstance(r['content_version'], int) and r['content_version'] > 0 for r in mrows) and not any(r['used_hint'] for r in mrows))
+        check('v2 results (Apps Script v3): mission answers are queued and sent like card answers: card_id "<mission_id>:qN", level hard, topic, mission_id, stars (2); '
+              'result screen shows "Results sent to Gabriel"; queue empty',
+              row_ok and sent_ok and q == [] and all(c['ctype'].startswith('text/plain') for c in fake.calls),
+              {'rows': [(r['card_id'], r['correct'], r['level'], r['mission_id'], r['stars'], r['used_slow']) for r in mrows], 'queue': len(q), 'sent': sent_ok})
+        check('v2 results: slow replay used before answering q1 is recorded (used_slow) on that mission row only', mrows and mrows[0]['used_slow'] is True and not any(r['used_slow'] for r in mrows[1:]),
+              [r.get('used_slow') for r in mrows])
         await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
         hs = (await page.text_content('[data-testid=challenge-hard] .star-n')).strip()
         streak = (await page.text_content('[data-testid=streak]')).strip()
@@ -1644,6 +1705,43 @@ async def levels_suite(browser, base, cards):
               [tuple(p[:3]) for p in pairs] == want and all(p[3] for p in pairs) and 'Play voicemail' in it and st == '3', {'pairs': pairs[:3], 'stars': st})
         await shot_v2(page, '09-two-voice-transcript-clinic-360x640.png')
         await page.click('[data-act=sheet-close]')
+        # Try again, this time opening the header Hint on one question: same v1.1 hint panel, and no 3 stars
+        await page.click('[data-act=retry]'); await page.wait_for_selector('[data-screen=mission-intro]')
+        await page.click('[data-act=begin]')
+        hint_info = None
+        for q in mc['questions']:
+            await page.wait_for_selector(f'[data-screen=mission-q][data-q={q["id"]}]')
+            if q is mc['questions'][0]:
+                before = await page.evaluate("(() => ({ pill: !!document.querySelector('header [data-testid=hint-pill]'), boxHidden: document.querySelector('[data-testid=hint-box]').hidden }))()")
+                await page.click('[data-act=hint]'); await page.wait_for_timeout(150)
+                hint_info = await page.evaluate("""(() => { const b = document.querySelector('[data-testid=hint-box]'), cs = getComputedStyle(b);
+                    const probe = document.createElement('div'); probe.style.background = 'var(--accent-tint)'; probe.style.borderRadius = 'var(--radius-l)';
+                    document.body.appendChild(probe); const want = getComputedStyle(probe); const w = { bg: want.backgroundColor, radius: want.borderTopLeftRadius }; probe.remove();
+                    const r = b.getBoundingClientRect(), dock = document.querySelector('[data-testid=dock]').getBoundingClientRect();
+                    return { visible: !b.hidden && r.height > 0, cls: b.className, eyebrow: b.querySelector('.hint-head .eyebrow').textContent.trim(),
+                             hide: !!b.querySelector('[data-act=hint-hide]'), text: b.querySelector('.hint-text').textContent,
+                             bg: cs.backgroundColor, radius: cs.borderTopLeftRadius, want: w, pillHidden: document.querySelector('[data-act=hint]').hidden,
+                             aboveDock: r.bottom <= dock.top + 0.5, used: window.__oye.mission.hintUsed }; })()""")
+                await shot_v2(page, '13-mission-question-hint-open-360x640.png')
+                await page.click('[data-act=hint-hide]')
+                hint_info['pillBack'] = await page.is_visible('[data-act=hint]')
+                hint_info['before'] = before
+            if q['kind'] == 'pick':
+                await page.click(f'[data-opt="{q["options"].index(q["answer"])}"]')
+            else:
+                for ch in q['answer']: await page.click(f'[data-key="{ch}"]')
+            await page.click('[data-act=check]')
+        await page.wait_for_selector('[data-screen=mission-result]')
+        st2 = await page.get_attribute('.mission-result .stars', 'data-stars')
+        cap2 = await page.text_content('.mr-cap')
+        q1 = mc['questions'][0]
+        check('v2 mission hint (Picasso): the header Hint opens the same v1.1 hint panel (hint-box, "Hint" eyebrow, Hide, accentTint, radius-l) with hint_en; Hide brings the pill back',
+              hint_info['before']['pill'] and hint_info['before']['boxHidden'] and hint_info['visible'] and hint_info['cls'] == 'hint-box' and hint_info['eyebrow'].lower() == 'hint'
+              and hint_info['hide'] and hint_info['text'] == q1['hint_en'] and hint_info['bg'] == hint_info['want']['bg'] and hint_info['radius'] == hint_info['want']['radius']
+              and hint_info['pillHidden'] and hint_info['pillBack'] and hint_info['used'] is True, hint_info)
+        best = await page.evaluate("JSON.parse(localStorage.getItem('oye.stars.v1')).missions['m-voicemail-clinic-01']")
+        check('v2 mission hint (Picasso): all right but one hint used -> 2 stars, not 3 (no-hints rule, same as cards); the saved best stays 3',
+              st2 == '2' and 'with no hints' in cap2 and best == 3, (st2, cap2, best))
         await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
 
         # ---- landlord WhatsApp: long message scrolls with fade + "More below"; row reopens it ----
@@ -1654,11 +1752,19 @@ async def levels_suite(browser, base, cards):
         await page.wait_for_selector('[data-screen=mission-msg]'); await page.wait_for_timeout(250)
         mg = await page.evaluate("""(() => { const z = document.querySelector('.msg-zone'), sc = z.querySelector('.scroller'), b = document.querySelector('[data-testid=bubble]');
             return { overflow: sc.scrollHeight - sc.clientHeight, pill: getComputedStyle(z.querySelector('.more-pill')).display !== 'none', fade: getComputedStyle(z.querySelector('.fade')).opacity,
-                     text: b.textContent, ws: getComputedStyle(b).whiteSpace, sender: document.querySelector('[data-testid=sender]').textContent,
+                     text: [...b.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join(''), ws: getComputedStyle(b).whiteSpace, sender: document.querySelector('[data-testid=sender]').textContent,
                      docScroll: document.scrollingElement.scrollHeight - innerHeight }; })()""")
         check('v2 text mission: WhatsApp message (line breaks + emoji kept) is longer than the screen: it scrolls inside the bubble area with the fade + "More below" pill',
               mg['overflow'] > 40 and mg['pill'] and mg['fade'] == '1' and mg['text'].strip() == ml['media']['text_es'] and mg['ws'] == 'pre-wrap' and mg['docScroll'] <= 1
-              and 'Read the message' in it and 'Your landlord' in mg['sender'], {k: v for k, v in mg.items() if k != 'text'})
+              and 'Read the message' in it, {k: v for k, v in mg.items() if k != 'text'})
+        tm = await page.evaluate("""(() => { const b = document.querySelector('[data-testid=bubble]'), t = b.querySelector('[data-testid=msg-time]');
+            if (!t) return null; const br = b.getBoundingClientRect(), tr = t.getBoundingClientRect(), range = document.createRange(); range.selectNodeContents(t);
+            const txt = range.getBoundingClientRect();
+            return { text: t.textContent, last: b.lastElementChild === t, align: getComputedStyle(t).textAlign, right: br.right - txt.right, inside: tr.left >= br.left && tr.right <= br.right,
+                     sender: document.querySelector('[data-testid=sender]').textContent.trim() }; })()""")
+        check('v2 text mission (content v2.2): sender line is media.sender_en ("Your landlord"); media.time ("16:35") sits bottom-right on the bubble',
+              tm and tm['sender'] == ml['media']['sender_en'] == 'Your landlord' and tm['text'] == ml['media']['time'] == '16:35' and tm['last'] and tm['align'] == 'right'
+              and 0 <= tm['right'] <= 16.5 and tm['inside'], tm)
         await shot_v2(page, '10-landlord-whatsapp-scroll-360x640.png')
         for _ in range(8):
             if not await page.is_visible('.msg-zone .more-pill'): break
@@ -1666,15 +1772,19 @@ async def levels_suite(browser, base, cards):
         end = await page.evaluate("(() => { const z = document.querySelector('.msg-zone'); return getComputedStyle(z.querySelector('.more-pill')).display === 'none'; })()")
         check('v2 text mission: "More below" scrolls down and hides at the end of the message', end)
         await shot_v2(page, '10b-landlord-whatsapp-end-360x640.png')
+        await shot_v2(page, '15-landlord-message-sender-time-360x640.png')
         await page.click('[data-act=to-questions]')
         await page.wait_for_selector('[data-screen=mission-q][data-q=q1]')
         row = await page.is_visible('[data-testid=msg-row]') and not await page.query_selector('[data-testid=player]')
+        row_txt = (await page.text_content('[data-testid=msg-row]')).strip()
         await page.click('[data-testid=msg-row]'); await page.wait_for_selector('[data-screen=mission-msg]')
         back = (await page.text_content('[data-act=to-questions]')).strip()
         await page.click('[data-act=to-questions]'); await page.wait_for_selector('[data-screen=mission-q][data-q=q1]')
-        check('v2 text mission: questions show "Message from your landlord" (no player) that reopens the message and comes back', row and back == 'Back to question 1')
+        check('v2 text mission: questions show "Message from your landlord" (no player) that reopens the message and comes back', row and back == 'Back to question 1' and row_txt == 'Message from your landlord', row_txt)
+        ll = []
         for q in ml['questions']:
             await page.wait_for_selector(f'[data-screen=mission-q][data-q={q["id"]}]')
+            ll.append((await page.text_content('[data-act=check]')).strip())
             if q['kind'] == 'pick':
                 await page.click('[data-opt="0"]')
             else:
@@ -1684,7 +1794,19 @@ async def levels_suite(browser, base, cards):
         await page.click('[data-act=transcript]'); await page.wait_for_selector('[data-testid=sheet]')
         tt = await page.text_content('[data-testid=sheet]')
         check('v2 text mission result: the transcript row shows the message and its English after answering', ml['media']['text_en'][:40] in tt and ml['media']['text_es'][:40] in tt)
+        check('v2 text mission: the last question (keypad) also reads "See results"', ll == ['Check'] * (len(ml['questions']) - 1) + ['See results'], ll)
         await page.click('[data-act=sheet-close]')
+        await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
+        # Fallbacks: no sender_en -> title_en; a time that isn't 24-hour HH:MM is not shown
+        await page.evaluate("""(() => { const m = window.__oye.missions.find(x => x.id === 'm-landlord-whatsapp-01');
+            window.__oyeSaved = { s: m.media.sender_en, t: m.media.time }; delete m.media.sender_en; m.media.time = '4:35 pm'; })()""")
+        await page.click('[data-act=hard]'); await page.click('[data-mission=m-landlord-whatsapp-01]'); await page.click('[data-act=begin]')
+        await page.wait_for_selector('[data-screen=mission-msg]')
+        fb = await page.evaluate("(() => ({ sender: document.querySelector('[data-testid=sender]').textContent.trim(), time: !!document.querySelector('[data-testid=msg-time]') }))()")
+        await page.click('[data-act=to-questions]'); await page.wait_for_selector('[data-screen=mission-q][data-q=q1]')
+        fr = (await page.text_content('[data-testid=msg-row]')).strip()
+        check('v2 text mission fallback: without sender_en the sender line is title_en; a non-HH:MM time is hidden; the reopen row still works',
+              fb['sender'] == ml['title_en'] and not fb['time'] and fr == 'Read the message again', (fb, fr))
         await ctx.close()
 
     # ---- 5. Easy scene transcript: label colours follow the voice (Barista is female in s-cafe-01) ----

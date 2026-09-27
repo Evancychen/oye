@@ -190,7 +190,10 @@ async function boot() {
 }
 
 // ---------- results upload (Google Sheet via Apps Script; see js/results.js) ----------
-const validCardIds = () => (S.content ? new Set(S.content.cards.map((c) => c.id)) : null);
+// Card ids plus mission question ids ("m-metro-01:q2") in the loaded content; other rows are never sent.
+const validCardIds = () => (S.content
+  ? new Set([...S.content.cards.map((c) => c.id), ...(S.content.missions || []).flatMap((m) => (m.questions || []).map((q) => `${m.id}:${q.id}`))])
+  : null);
 const sendResults = () => results.flush(validCardIds());
 function setupResultsRetry() {
   sendResults(); // anything left from an earlier offline session
@@ -707,8 +710,8 @@ function renderFixIt(card, fb) {
 }
 /** The phone's letter keyboard (fix-it, and Medium typed answers with words). Checking is accent/case-insensitive (check.js).
  *  No autocapitalize / autocorrect / spellcheck, so the keyboard doesn't "fix" Spanish into English. */
-const textInputRow = () => `<div class="fix-row"><input id="fix-input" class="text-input" type="text" inputmode="text" aria-label="Your answer" placeholder="Your answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" lang="es">
-      <button class="btn-primary check-compact" data-act="check" disabled>Check</button></div>`;
+const textInputRow = (label = 'Check') => `<div class="fix-row"><input id="fix-input" class="text-input" type="text" inputmode="text" aria-label="Your answer" placeholder="Your answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" lang="es">
+      <button class="btn-primary check-compact ${label === 'Check' ? '' : 'wide'}" data-act="check" disabled>${esc(label)}</button></div>`;
 function bindTextInput(card, onCheck) {
   const inp = $('#fix-input'), check = $('[data-act="check"]'), blank = $('.blank');
   check.addEventListener('mousedown', (e) => e.preventDefault()); // don't drop the keyboard before the tap lands
@@ -908,15 +911,21 @@ const cleanPrompt = (p) => String(p || '').replace(/\s*\(type it like [^)]*\)\s*
 function clipMinutes(m) {
   const d = clipInfo(m.id)?.duration;
   if (!d) return 'about 1 min';
-  return d < 40 ? 'under a minute' : `about ${Math.max(1, Math.round(d / 60))} min`;
+  return `about ${Math.max(1, Math.round(d / 60))} min`;   // rounded from the audio file, never "0 min"
 }
-/** "WhatsApp from your landlord: …" -> "Your landlord". Content may set media.sender_en instead. */
-function senderOf(m) {
-  if (m.media?.sender_en) return m.media.sender_en;
-  const x = /from (?:the |your |a )?([^:]+?)(?::|$)/i.exec(m.title_en || '');
-  const who = x ? x[1].trim() : '';
-  if (!who) return 'The message';
-  return /^(your|the)\b/i.test(who) ? who.replace(/^./, (c) => c.toUpperCase()) : (/from your /i.test(m.title_en) ? `Your ${who}` : who);
+/** Sender line of a message mission: content's media.sender_en, else title_en (content-format v1). */
+const senderOf = (m) => String(m.media?.sender_en || m.title_en || '').trim();
+/** media.time is 24-hour "HH:MM" (content-format v1); anything else is not shown. */
+function msgTime(m) {
+  const t = String(m.media?.time || '').trim();
+  const x = /^(\d{1,2}):(\d{2})$/.exec(t);
+  return x && Number(x[1]) < 24 && Number(x[2]) < 60 ? t : '';
+}
+/** Question-screen row that reopens the message: "Message from your landlord". */
+function msgRowLabel(m) {
+  const who = String(m.media?.sender_en || '').trim();
+  if (!who) return 'Read the message again';
+  return `Message from ${/^(your|the|a|an)\b/i.test(who) ? who.replace(/^./, (c) => c.toLowerCase()) : who}`;
 }
 const FORMAT_LABEL = { whatsapp: 'WhatsApp', sign: 'Sign', menu: 'Menu', receipt: 'Receipt', email: 'Email', label: 'Label' };
 function openMissions(push = true) {
@@ -928,12 +937,12 @@ function openMissions(push = true) {
   <div class="screen page topics missions" data-screen="missions">
     <button class="back-link" data-act="home">${ICON.back}<span>Home</span></button>
     <p class="eyebrow lv-tag">Hard</p>
-    <h1 class="title lv-title">Real-life mission</h1>
+    <h1 class="title lv-title">Real-life missions</h1>
     <p class="caption lv-cap">One longer situation: listen or read, then answer.</p>
     <div class="zone topics-zone"><div class="scroller"><div class="scroll-inner"><div class="mission-list">${S.missions.map((m) => `
       <button class="mission-row" data-mission="${esc(m.id)}" data-testid="mission-row">
         <span class="ch-text"><span class="ch-title">${esc(m.title_en)}</span>
-          <span class="caption">${m.media.kind === 'audio' ? `Audio · ${esc(clipMinutes(m))}` : `Message · ${esc(FORMAT_LABEL[m.media.text_format] || 'text')}`} · ${mQuestions(m).length} questions</span>
+          <span class="caption mr-sub" data-testid="mission-sub">${m.media.kind === 'audio' ? `Audio · ${esc(clipMinutes(m))}` : 'Message'}</span>
           ${starRow(best[m.id] || 0, 12)}</span>
         <span class="ch-chev">${ICON.chevron}</span>
       </button>`).join('')}</div></div></div>${moreHint()}</div>
@@ -1009,13 +1018,13 @@ function openSimpleSheet(title, html, { sub = '', bindWith = null } = {}) {
 function missionMessage(backTo = null) {
   const { m } = S.mission;
   const md = m.media;
-  const fmt = FORMAT_LABEL[md.text_format] || '';
+  const time = msgTime(m);
   render(`
   <div class="screen mission-screen" data-screen="mission-msg" data-mission="${esc(m.id)}">
     ${missionTop('<span class="count">Read, then answer</span>')}
-    <p class="caption sender" data-testid="sender">${esc([senderOf(m), fmt, md.time].filter(Boolean).join(' · '))}</p>
+    <p class="caption sender" data-testid="sender">${esc(senderOf(m))}</p>
     <div class="zone msg-zone"><div class="scroller" data-testid="msg-scroll"><div class="scroll-inner">
-      <div class="bubble ${md.text_format === 'whatsapp' ? 'wa' : ''}" data-testid="bubble" lang="es">${esc(md.text_es)}${md.time ? `<span class="btime">${esc(md.time)}</span>` : ''}</div>
+      <div class="bubble ${md.text_format === 'whatsapp' ? 'wa' : ''}" data-testid="bubble" lang="es">${esc(md.text_es)}${time ? `<span class="btime" data-testid="msg-time">${esc(time)}</span>` : ''}</div>
     </div></div>${moreHint()}</div>
     <div class="dock"><button class="btn-primary" data-act="to-questions">${backTo == null ? 'Go to questions' : `Back to question ${backTo + 1}`}</button></div>
   </div>`);
@@ -1068,6 +1077,7 @@ function bindPlayer(m) {
   };
   $('[data-act="pl-slow"]', bar).onclick = (e) => {
     S.mission.slow = !S.mission.slow;
+    if (S.mission.slow) S.mission.slowUsed = true;
     const b = e.currentTarget; b.classList.toggle('is-on', S.mission.slow); b.setAttribute('aria-pressed', String(S.mission.slow));
     const f = frac(), wasPlaying = clipLoaded(m.id) && !el.paused && !el.ended;
     if (wasPlaying || f > 0) playClip(m.id, { slow: S.mission.slow, at: f });
@@ -1093,18 +1103,20 @@ function missionQuestion() {
   const ms = S.mission;
   const { m, qs } = ms;
   const q = qs[ms.i];
-  ms.hintUsed = false; ms.selected = null;
+  ms.hintUsed = false; ms.selected = null; ms.slowUsed = !!ms.slow;
   setKeyHandler(null);
   const audio = m.media.kind === 'audio';
   const media = audio ? playerBar(m)
-    : `<button class="msg-row" data-act="reopen" data-testid="msg-row"><span>Message from ${esc(senderOf(m).replace(/^Your /, 'your ').replace(/^The /, 'the '))}</span>${ICON.chevron}</button>`;
+    : `<button class="msg-row" data-act="reopen" data-testid="msg-row"><span>${esc(msgRowLabel(m))}</span>${ICON.chevron}</button>`;
   const pick = q.kind === 'pick';
   const letters = !pick && wordAnswer(q);
   let dock, dockClass = '';
-  if (pick) dock = `<button class="btn-primary" data-act="check" disabled>Check</button>`;
-  else if (letters) { dock = textInputRow(); dockClass = 'fix-dock'; }
+  const last = ms.i === qs.length - 1;
+  const checkLabel = last ? 'See results' : 'Check';   // no per-question feedback, so the last one says where it goes
+  if (pick) dock = `<button class="btn-primary" data-act="check" disabled>${checkLabel}</button>`;
+  else if (letters) { dock = textInputRow(checkLabel); dockClass = 'fix-dock'; }
   else { dock = `<div class="typed" data-testid="typed" aria-live="polite"><span class="value"></span><span class="caret"></span></div>
-      <button class="btn-primary" data-act="check" disabled>Check</button><div class="keypad" data-testid="keypad">${keypadHtml()}</div>`; dockClass = 'type-dock'; }
+      <button class="btn-primary" data-act="check" disabled>${checkLabel}</button><div class="keypad" data-testid="keypad">${keypadHtml()}</div>`; dockClass = 'type-dock'; }
   const opts = pick ? `<div class="moptions" data-testid="options" role="radiogroup">${q.options.map((o, i) => `<button class="mopt" data-opt="${i}" role="radio" aria-checked="false">${esc(o)}</button>`).join('')}</div>` : '';
   render(`
   <div class="screen card-screen mission-screen" data-screen="mission-q" data-mission="${esc(m.id)}" data-q="${esc(q.id)}" data-kind="${esc(q.kind)}">
@@ -1122,7 +1134,7 @@ function missionQuestion() {
   if (audio) bindPlayer(m);
   else $('[data-act="reopen"]').onclick = () => missionMessage(ms.i);
   const done = (ok, given) => {
-    ms.answers.push({ q, ok, given, hint: !!ms.hintUsed, at: new Date().toISOString() });
+    ms.answers.push({ q, ok, given, hint: !!ms.hintUsed, slow: !!ms.slowUsed, at: new Date().toISOString() });
     ms.i++;
     if (ms.i >= qs.length) missionResult(); else missionQuestion();
   };
@@ -1165,9 +1177,18 @@ function missionResult() {
     srs.recordActivity(S.progress, ms.answers.length);   // a finished mission counts for the streak
     S.progress = srs.load();
     ms.end = Date.now();
-    // Results upload: the Apps Script only accepts card ids (c-NNNN) for now, so mission answers are kept
-    // on the phone (oye.stars.v1 log) and not queued. See README "Results upload".
   }
+  // Queue the answers for the results Sheet like card sessions (same offline queue): card_id "<mission_id>:qN",
+  // level hard, the mission's topic, mission_id and the stars of this attempt.
+  const cv = Number(S.content?.version?.version) || 0;
+  if (!ms.rowIds) ms.rowIds = results.enqueue(ms.answers.map((a) => ({
+    answered_at: a.at, card_id: `${m.id}:${a.q.id}`, content_version: cv, correct: !!a.ok,
+    answer_given: a.given == null ? '' : String(a.given), used_hint: !!a.hint, used_slow: !!a.slow, session_id: ms.id,
+    level: 'hard', topic: m.topic || '', mission_id: m.id, stars: ms.starsResult.stars,
+  })), validCardIds());
+  S.summaryRowIds = ms.rowIds;
+  const statusLine = ms.rowIds.length
+    ? `<p class="caption results-status mr-status" data-testid="results-status" data-state="queued" role="status">${resultsStatusHtml(false)}</p>` : '';
   const r = ms.starsResult;
   const rows = ms.answers.map((a, i) => {
     const given = a.q.kind === 'pick' ? `You picked “${a.given}”` : `You typed ${a.given}`;
@@ -1191,6 +1212,7 @@ function missionResult() {
       ${starRow(r.stars, 32)}
       <h1 class="display mr-score" data-testid="score">${r.right} of ${r.n} right</h1>
       <p class="caption mr-cap">${esc(shortTitle(m))} · ${r.need3} of ${r.n} right${r.hints ? ' with no hints' : ''} earns 3 stars${ms.starsSaved.newBest && ms.starsSaved.prev ? ' · New best' : ''}</p>
+      ${statusLine}
     </div>
     <div class="zone mr-zone"><div class="scroller"><div class="scroll-inner">
       ${rows}
@@ -1209,9 +1231,10 @@ function missionResult() {
     };
   });
   $('[data-act="transcript"]').onclick = () => openMissionTranscript(m);
+  if (ms.rowIds.length) sendResults();
   $('[data-act="done"]').onclick = () => goHome(true);
   $('[data-act="retry"]').onclick = () => {
-    Object.assign(ms, { i: 0, answers: [], start: Date.now(), starsResult: null, starsSaved: null, id: results.newSessionId() });
+    Object.assign(ms, { i: 0, answers: [], start: Date.now(), starsResult: null, starsSaved: null, rowIds: null, id: results.newSessionId() });
     missionIntro();
   };
   setupScrollHint($('.mr-zone'));

@@ -259,6 +259,7 @@ hr, .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
 .text-input:focus { outline: none; border: 1.5px solid var(--ink); padding: 0 15.5px; }
 .text-input::placeholder { color: var(--gray-400); font-weight: 400; font-size: 17px; }
 .check-compact { width: 88px; flex: none; }
+.check-compact.wide { width: auto; padding: 0 16px; white-space: nowrap; }
 
 /* summary (v1.1: fits 360x720, Done pinned 16px from the bottom; the review list scrolls with "More below") */
 .screen.page.summary { padding-top: calc(var(--safe-top) + 40px); padding-bottom: calc(16px + var(--safe-bottom)); }
@@ -429,6 +430,7 @@ hr, .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
 .mr-head-block { flex: none; margin-top: 4px; }
 .mr-score { margin-top: 12px; }
 .mr-cap { margin-top: 4px; }
+.mission-result .mr-status { margin: 8px 0 0; }
 .mr-zone { margin-top: 16px; border-top: 1px solid var(--hairline); }
 .mr-row { display: block; width: 100%; border-bottom: 1px solid var(--hairline); padding: 0; text-align: left; }
 .mr-head { display: flex; align-items: flex-start; gap: 12px; width: 100%; padding: 16px 0; text-align: left; color: var(--ink); }
