@@ -34,7 +34,12 @@ body {
   overscroll-behavior: none;
 }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; touch-action: manipulation; }
+/* Focus ring only for keyboard focus (:focus-visible). A tap never leaves an outline: not on the tapped button,
+   and not on Next, which is focused from script after the tap (html.pointer is set by js/app.js on pointerdown
+   and removed on Tab / arrow keys, so keyboard users still get the ring). */
 button:focus-visible, input:focus-visible { outline: 2px solid var(--gray-600); outline-offset: 2px; }
+button:focus:not(:focus-visible) { outline: none; }
+html.pointer button:focus-visible { outline: none; }
 p { margin: 0; }
 .tnum { font-variant-numeric: tabular-nums; }
 
@@ -139,6 +144,9 @@ hr, .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
 .replay { border-radius: 50%; background: var(--ink); color: var(--on-accent); display: grid; place-items: center; flex: none; transition: transform .12s; }
 .replay:active { transform: scale(.96); }
 .replay svg { display: block; }
+.replay .ic { display: grid; place-items: center; }
+.replay .ic-stop, .replay.is-playing .ic-play { display: none; }
+.replay.is-playing .ic-stop { display: grid; }
 .replay.r112 { width: 112px; height: 112px; } .replay.r112 svg { width: 53px; height: 53px; }
 .replay.r56 { width: 56px; height: 56px; }   .replay.r56 svg { width: 30px; height: 30px; }
 .replay.r48 { width: 48px; height: 48px; }   .replay.r48 svg { width: 26px; height: 26px; }
@@ -146,8 +154,9 @@ hr, .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
 .slow:active { background: var(--gray-200); }
 .slow.s64 { width: 64px; height: 64px; }
 .slow.s48 { width: 48px; height: 48px; }
-.is-playing { animation: pulse 1s ease-in-out infinite; }
-@keyframes pulse { 50% { opacity: .72; } }
+/* Playing state: static (no pulse or other animation). The play button swaps to a stop icon (above);
+   the slow and per-line buttons get a filled look while their clip plays. */
+.slow.is-playing, .line-play.is-playing, .mini.is-playing { background: var(--gray-200); }
 
 /* hint */
 .hint-pill { flex: none; width: 72px; height: 32px; border-radius: 16px; border: 1px solid var(--gray-300); background: transparent;
@@ -360,10 +369,13 @@ hr, .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
 .lv-title { flex: none; margin-top: 8px; }
 .lv-cap { flex: none; margin-top: 4px; }
 .topics-zone { margin-top: 16px; }
-.topic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.topic-tile { position: relative; height: 84px; border-radius: var(--radius-l); background: var(--surface); text-align: left; padding: 12px; color: var(--ink); }
-.topic-tile .tname { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font: 500 15px/20px var(--font); }
-.topic-tile .stars { position: absolute; left: 12px; top: 64px; }
+.topic-grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 8px; }
+/* Name at the top, stars pinned to the bottom (at y 64 in an 84px tile) with at least 12px above them;
+   a tile grows if it needs more room and every row stretches to its tallest tile, so the stars line up. */
+.topic-tile { display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 12px; min-height: 84px;
+  border-radius: var(--radius-l); background: var(--surface); text-align: left; padding: 12px 12px 8px; color: var(--ink); }
+.topic-tile .tname { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font: 500 15px/20px var(--font); flex: none; }
+.topic-tile .stars { margin-top: auto; flex: none; }
 .soon-head { margin-top: 24px; }
 .soon { margin-top: 8px; line-height: 16px; color: var(--gray-400); }
 .mission-list { display: grid; gap: 8px; }

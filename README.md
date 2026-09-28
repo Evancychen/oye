@@ -55,11 +55,12 @@ Spec: `../design/v1.1-one-screen-spec.md` (designed at 360 x 720; taller phones 
   dock pinned to the bottom (16px bottom padding) with the options / input and the main button.
   Everything is `flex: none`, so nothing is squashed. If the middle still overflows, a 120px fade and a
   "More below" pill appear (same on the feedback sheet and the summary's review list).
-- Listen and type: replay 48 + slow 48 + "Replay · Slow" + Hint pill in one row; pinned 358px dock
+- Listen and type: replay 48 + slow 48 + "Tap to listen" / "Play again" + Hint pill in one row; pinned 358px dock
   (input 56, Check 56, number pad 4 x 48).
 - Fix it: answer field + 88px Check in one 56px row, 16px above the phone keyboard
   (`interactive-widget=resizes-content`, plus a `visualViewport` fallback that sets `--kb`).
-- After answering: result, "The answer is …", replay + slow, then "What you heard" / "Why" rows that
+- After answering: result, "The answer is …" (or, for a right typed answer that is an accepted alternate, see
+  "ux-replays" below), replay + slow, then "What you heard" / "Why" rows that
   open a bottom sheet. Scene transcripts show speaker labels (first speaker blue, second green), the
   English line from the scene, and a replay button per line.
 - `hint_en` (fix_it, listen_type) is only shown behind a "Hint" tap; no field / `null` = no Hint tap.
@@ -75,6 +76,39 @@ and reloads itself into the new shell right away on Home/summary, or as soon as 
 ends (never mid-card). Windows that don't ack within 3s (the v1 shell) are reloaded by the SW. The
 page checks for a new `sw.js` on every launch and when the app comes back from the background.
 Progress (`localStorage`) and stored content/audio (`oye-content`) are never touched by an update.
+
+## ux-replays: no autoplay, replays / skipped, accepted alternates
+
+Spec: `../design/levels-v2-spec.md` → "No autoplay".
+
+- **No autoplay anywhere.** Every card opens silent with the question and answers visible. Under / next to the play
+  button a caption reads "Tap to listen" until the first play, then "Play again". While a clip plays the play button
+  shows a stop icon (`aria-pressed="true"`, label "Stop") and tapping it stops the audio. No pulse or other animation
+  (the old `.is-playing` pulse is gone). The slow button still starts slow playback on tap; the play button shows the
+  playing state during slow playback too, so it can stop it.
+- **Missions**: the audio intro's primary button is now "Go to questions" (it used to be "Play announcement" /
+  "Play voicemail" and started the clip). Question 1 opens with the player bar at 0:00 and nothing playing; the bar's
+  button plays, and tapping it again stops (pauses; the next tap goes on from there). A clip that was started keeps
+  playing when Check moves to the next question (that is the user's own playback, not autoplay). Check never waits
+  for the audio.
+- **`replays`** (results rows, 0-99): audio plays started on the card / mission question **before the answer is
+  submitted**, minus the first listen, i.e. `max(0, plays - 1)`. Normal and slow both count; stop + tap again is a
+  new play. In missions every play started from the player bar counts (play, resume after a stop, the slow toggle
+  or a seek while stopped); switching speed or seeking while it plays does not. Plays on the mission intro screen
+  count toward question 1 (the intro has no audio button today). Plays on the feedback screen, in the What-you-heard
+  sheet and on the result/summary screens are **not** counted. Message (WhatsApp) missions send 0.
+- **`skipped`** (results rows, boolean): true when the card was answered with "I don't know" (`answer_given` stays
+  empty, `correct` false). Missions have no skip path: always false.
+- **Accepted alternates**: when a right typed answer (fix_it, listen_type, mission `type` questions) is an accepted
+  alternate that differs from the card's main answer after `normalize()` (e.g. "gira" on c-0061, "sobre" on c-0055),
+  the blank keeps the user's own word (same green style) and the line reads `“gira” works. Also common: “dobla”.`
+  (only the main answer, never the whole list; prices keep their `$` format). Typing the main answer, and wrong
+  answers, look as before. On the mission result the right row's Why box uses the same sentence.
+- **Focus ring**: buttons show the ring only for keyboard focus (`:focus-visible`). Because Chrome can still treat
+  the script-focused Next button as `:focus-visible` after a tap (e.g. right after the text field), `html.pointer`
+  (set on pointerdown, cleared by Tab / arrow keys) hides it until the keyboard is used.
+- **Topic grid**: tiles are flex columns (name at the top, stars pinned to the bottom with at least 12px above them,
+  `grid-auto-rows: 1fr`), so two-line names ("Future & conditional") no longer crowd the stars and every tile lines up.
 
 ## v2: levels, topic challenges and missions
 
@@ -121,7 +155,8 @@ card to the wrong voice.
 ## Results upload (Google Sheet for Gabriel)
 
 `js/results.js`. Every answer in a session is recorded (`answered_at`, `card_id`, `content_version`, `correct`,
-`answer_given` (empty for "I don't know"), `used_hint`, `used_slow` (slow replay tapped before answering), `session_id`).
+`answer_given` (empty for "I don't know"), `used_hint`, `used_slow` (slow replay tapped before answering), `session_id`,
+and since ux-replays `replays` (plays before answering minus the first listen, 0-99) and `skipped` (true for "I don't know")).
 When the session reaches the Summary, its rows go into a localStorage queue (`oye.resultsQueue.v1`) and are
 POSTed to the Apps Script web app as `text/plain;charset=utf-8` JSON `{results: [...]}` (no CORS preflight),
 at most 200 rows per request. Rows leave the queue only after a reply with `ok: true`; otherwise they are retried
@@ -135,6 +170,12 @@ same offline queue, when the mission result screen opens: one row per question w
 screen shows the same "Results sent to Gabriel" / "Saved · will send…" line. `js/results.js` keeps only rows the
 script accepts: `c-NNNN` card ids, or mission rows (`mission_id` `m-…`, level `hard`, `card_id` `<mission_id>:qN`;
 a bare `qN` is rewritten to that form), and only ids in the loaded content. The e2e tests route the endpoint to a fake and fail if a request ever reaches it.
+
+`replays` / `skipped` (ux-replays) are stored by the Apps Script **v4** in two new columns at the end
+(`…, stars, replays, skipped`). The v3 script builds each Sheet row from the fields it knows and ignores any others,
+so rows with the two new fields are still accepted (and simply not stored) while v3 is live. The queue coerces the
+two fields when present (replays integer 0-99, skipped boolean); rows queued by an older app version without them
+still send unchanged (v4 stores replays blank and skipped false for them). Mission rows send `skipped: false`.
 
 ## How content works at runtime
 

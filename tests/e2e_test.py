@@ -255,7 +255,7 @@ async def main():
         quick_levels = []
         hint_used_ids = set()
         counts = {}
-        autoplayed, listening = 0, 0
+        autoplayed, listening, silent_bad = 0, 0, []
         slow_checked = None
         plan_len = None
         for step in range(12):
@@ -271,12 +271,17 @@ async def main():
             quick_levels.append(card.get('level', 'easy'))
             counts[t] = counts.get(t, 0) + 1
             k = counts[t]
-            # autoplay
+            # no autoplay: the card opens silent ("Tap to listen"); audio only plays after tapping the play button
             if card.get('audio_text'):
                 listening += 1
                 await page.wait_for_timeout(900)
-                played = await page.evaluate('(() => { const a = window.__oyeAudioEl; return a.currentTime > 0 || !a.paused; })()')
-                autoplayed += 1 if played else 0
+                st0 = await page.evaluate("(() => { const a = window.__oyeAudioEl; const c = document.querySelector('[data-testid=listen-cap]'); return {played: !a.paused && !a.ended, cap: c && c.textContent}; })()")
+                autoplayed += 1 if st0['played'] else 0
+                if st0['cap'] != 'Tap to listen': silent_bad.append((card['id'], st0['cap']))
+                await page.click('[data-testid=replay]')
+                await page.wait_for_timeout(300)
+                if not await page.evaluate('(() => { const a = window.__oyeAudioEl; return !a.paused; })()'):
+                    silent_bad.append((card['id'], 'tap did not play'))
                 await wait_audio_idle(page)
             # Outcome plan: listen_pick #1 wrong, #2 correct; scene #2, fix_it #2 wrong; everything else correct.
             correct = not ((t == 'listen_pick' and k == 1) or (t in ('scene_question', 'fix_it') and k == 2))
@@ -352,7 +357,8 @@ async def main():
         check('session has 8-10 cards', plan_len is not None and 8 <= plan_len <= 10, plan_len)
         check('session covered every card type', set(seen_types) == set(TYPES), seen_types)
         check('v2: the Quick session (Easy) showed only Easy cards (no Medium card)', quick_levels and all(l == 'easy' for l in quick_levels), quick_levels)
-        check('autoplay on listening cards', autoplayed == listening, f'{autoplayed}/{listening}')
+        check('no autoplay: every listening card opens silent with "Tap to listen"; tapping the play button plays it',
+              autoplayed == 0 and listening > 0 and not silent_bad, {'autoplayed': f'{autoplayed}/{listening}', 'bad': silent_bad[:3]})
         score = (await page.text_content('[data-testid=score]')).strip()
         expect_right = sum(1 for i, t in enumerate(seen_types) if not ((t == 'listen_pick' and seen_types[:i + 1].count(t) == 1) or (t in ('scene_question', 'fix_it') and seen_types[:i + 1].count(t) == 2)))
         check('summary score matches answers', score == f'{expect_right}/{len(seen_types)}', score)
@@ -405,9 +411,10 @@ async def main():
             cur = await current(page)
             c = by_id[cur['card']]
             if c.get('audio_text'):
+                await page.click('[data-testid=replay]')
                 await page.wait_for_timeout(1200)
                 played = await page.evaluate('(() => { const a = window.__oyeAudioEl; return a.currentTime > 0 || !a.paused; })()')
-                check('offline: card audio plays from the cache', played)
+                check('offline: card audio plays from the cache (after tapping play)', played)
             r = await page.evaluate(f"fetch('{audio_files[0]}').then(r => r.status + ':' + r.headers.get('content-length')).catch(e => 'ERR ' + e)")
             check('offline: audio file served by the service worker', r.startswith('200'), r)
         await ctx.close()
@@ -499,6 +506,7 @@ async def main():
         await keyboard_visual_viewport_test(browser, base4)
         await results_upload_tests(browser, base4, version)
         await levels_suite(browser, base4, cards)
+        await ux_replays_suite(browser, base4, cards)
         server4.terminate(); server4.wait()
 
         # ---------- v1.1: service worker update path ----------
@@ -995,8 +1003,10 @@ async def live_check(url):
 
 # ---------------------------------------------------------------- results upload (Google Sheet)
 QUEUE_JS = "JSON.parse(localStorage.getItem('oye.resultsQueue.v1') || '[]')"
-# v2 adds level, topic, mission_id and the session's stars (additive; the current Apps Script ignores extra keys).
-ROW_KEYS = ['answered_at', 'card_id', 'content_version', 'correct', 'answer_given', 'used_hint', 'used_slow', 'session_id', 'level', 'topic', 'mission_id', 'stars']
+# v2 adds level, topic, mission_id and the session's stars; ux-replays adds replays (plays before answering minus the
+# first listen, 0-99) and skipped ("I don't know"). All additive: the v3 Apps Script ignores keys it doesn't know.
+ROW_KEYS = ['answered_at', 'card_id', 'content_version', 'correct', 'answer_given', 'used_hint', 'used_slow', 'session_id', 'level', 'topic', 'mission_id', 'stars',
+            'replays', 'skipped']
 STATUS_JS = """() => {
   const el = document.querySelector('#app [data-testid=results-status]');
   if (!el) return null;
@@ -1059,15 +1069,23 @@ async def results_upload_tests(browser, base, version):
     await start_plan(page, ['c-0010', 'c-0018', 'c-0029', 'c-0031'])
     t_start = time.time()
     await page.wait_for_selector('[data-card=c-0010][data-state=question]')
-    await page.click('[data-play=slow]')                       # used_slow
+    await page.click('[data-testid=replay]')                    # first listen
+    await page.wait_for_timeout(200)
+    await page.click('[data-testid=replay]')                    # tap again = stop
+    await page.wait_for_timeout(100)
+    await page.click('[data-play=slow]')                       # used_slow; a new play after stopping -> replays 1
     await page.click('[data-opt="0"]')                          # $38: wrong
-    await page.wait_for_selector('[data-state=wrong]'); await page.click('[data-act=next]')
+    await page.wait_for_selector('[data-state=wrong]')
+    await page.click('[data-testid=replay]')                    # plays on the feedback screen are not counted
+    await page.wait_for_timeout(150)
+    await page.click('[data-act=next]')
     await page.wait_for_selector('[data-card=c-0018][data-state=question]')
     await page.click('[data-act=hint]')                         # used_hint
     for ch in '8:45': await page.click(f'[data-key="{ch}"]')
     await page.click('[data-act=check]')
     await page.wait_for_selector('[data-state=correct]'); await page.click('[data-act=next]')
     await page.wait_for_selector('[data-card=c-0029][data-state=question]')
+    await page.evaluate('window.__oye.session.plays = 150')    # cap: replays never go above 99
     await page.fill('#fix-input', 'Estuve'); await page.click('[data-act=check]')
     await page.wait_for_selector('[data-state=correct]'); await page.click('[data-act=next]')
     await page.wait_for_selector('[data-card=c-0031][data-state=question]')
@@ -1095,6 +1113,10 @@ async def results_upload_tests(browser, base, version):
             ('c-0029', True, 'Estuve', False, False), ('c-0031', False, '', False, False)]
     got = [(r.get('card_id'), r.get('correct'), r.get('answer_given'), r.get('used_hint'), r.get('used_slow')) for r in rows]
     check('results: one row per answer: card_id, correct, answer_given, used_hint, used_slow as answered', got == want, got)
+    rs = [(r.get('card_id'), r.get('replays'), r.get('skipped')) for r in rows]
+    check('results: replays = plays started before answering minus the first listen (play, stop, slow = 1; none = 0; '
+          'feedback-screen plays not counted; capped at 99); skipped true only for "I don\u2019t know"',
+          rs == [('c-0010', 1, False), ('c-0018', 0, False), ('c-0029', 99, False), ('c-0031', 0, True)], rs)
     sids = {r.get('session_id') for r in rows}
     def iso_ok(v):
         try:
@@ -1103,8 +1125,9 @@ async def results_upload_tests(browser, base, version):
             return t_start - 5 <= t <= t_end + 5 and len(str(v)) <= 30
         except Exception:
             return False
-    check(f'results: rows have exactly the {len(ROW_KEYS)} fields (v2: + level easy, topic "", mission_id "", stars 1-3); content_version {cv}; one session_id (<=40 chars); answered_at ISO time of each answer',
+    check(f'results: rows have exactly the {len(ROW_KEYS)} fields (v2: + level easy, topic "", mission_id "", stars 1-3; + replays int, skipped bool); content_version {cv}; one session_id (<=40 chars); answered_at ISO time of each answer',
           all(list(r) == ROW_KEYS for r in rows) and all(r['content_version'] == cv for r in rows)
+          and all(isinstance(r['replays'], int) and not isinstance(r['replays'], bool) and 0 <= r['replays'] <= 99 and isinstance(r['skipped'], bool) for r in rows)
           and all(r['level'] == 'easy' and r['topic'] == '' and r['mission_id'] == '' and r['stars'] in (1, 2, 3) for r in rows)
           and len(sids) == 1 and all(isinstance(x, str) and 0 < len(x) <= 40 for x in sids)
           and all(iso_ok(r['answered_at']) for r in rows) and [r['answered_at'] for r in rows] == sorted(r['answered_at'] for r in rows),
@@ -1226,6 +1249,19 @@ async def results_upload_tests(browser, base, version):
     check('results: every queued row sent exactly once; invalid card ids never sent; queue empty',
           len(rows) == 453 and len(set(keys)) == 453 and ids_sent <= valid and await page.evaluate(QUEUE_JS) == [],
           {'rows': len(rows), 'unique': len(set(keys)), 'bad': sorted(ids_sent - valid)})
+    seeded = [r for r in rows if r['session_id'] == 'e2e-seed']
+    check('results: rows queued without replays/skipped (older app versions) still send, and no value is invented for them',
+          len(seeded) == 450 and not any('replays' in r or 'skipped' in r for r in seeded), len(seeded))
+    norm = await page.evaluate("""import('./js/results.js').then(m => {
+        const base = { answered_at: 'x', content_version: 3, correct: false, answer_given: '', used_hint: false, used_slow: false, session_id: 'e2e-norm' };
+        const ids = m.enqueue([{ ...base, card_id: 'c-0001', replays: 150, skipped: true }, { ...base, card_id: 'c-0002', replays: '3', skipped: 'yes' },
+                               { ...base, card_id: 'c-0003', replays: -2, skipped: false }, { ...base, card_id: 'c-0004' }], null);
+        const q = JSON.parse(localStorage.getItem('oye.resultsQueue.v1') || '[]').filter(r => ids.includes(r._id));
+        localStorage.setItem('oye.resultsQueue.v1', JSON.stringify(JSON.parse(localStorage.getItem('oye.resultsQueue.v1')).filter(r => !ids.includes(r._id))));
+        return [q.map(r => [r.card_id, r.replays, r.skipped]), m.clampReplays(99.7), m.clampReplays(null)];
+    })""")
+    check('results: the offline queue keeps replays as an integer 0-99 and skipped as a boolean (a row without them stays without them)',
+          norm == [[['c-0001', 99, True], ['c-0002', 3, False], ['c-0003', 0, False], ['c-0004', None, None]], 99, 0], norm)
     check('results (offline test): no JS errors', not [e for e in errors if 'net::' not in e and 'Failed to load resource' not in e and 'Failed to fetch' not in e], errors[:3])
     await ctx.close()
 
@@ -1580,9 +1616,9 @@ async def levels_suite(browser, base, cards):
         it = await page.text_content('[data-screen=mission-intro]')
         g = await page.evaluate("document.scrollingElement.scrollHeight - innerHeight")
         if main:
-            check('v2 mission intro: HARD eyebrow, title, situation, audio length "about 1 min", 4 questions, "Read the questions first" + "Play announcement"',
+            check('v2 mission intro: HARD eyebrow, title, situation, audio length "about 1 min", 4 questions, "Read the questions first" + "Go to questions" (no autoplay: nothing plays from the intro)',
                   'Real-life mission' in it and m['title_en'] in it and m['situation_en'] in it and 'about 1 min' in it and '4, one at a time' in it
-                  and 'Read the questions first' in it and 'Play announcement' in it and g <= 1, it[:200])
+                  and 'Read the questions first' in it and 'Go to questions' in it and 'Play announcement' not in it and g <= 1, it[:200])
             await shot_v2(page, '05-mission-intro-360x640.png')
             await page.click('[data-act=preview]'); await page.wait_for_selector('[data-testid=sheet]')
             pv = await page.text_content('[data-testid=sheet]')
@@ -1592,10 +1628,28 @@ async def levels_suite(browser, base, cards):
         await page.click('[data-act=begin]')
         await page.wait_for_selector('[data-screen=mission-q][data-q=q1]')
         await page.wait_for_timeout(1200)
-        a = await page.evaluate("(() => { const a = window.__oyeAudioEl; return {t: a.currentTime, clip: a.dataset.clip, paused: a.paused}; })()")
+        a = await page.evaluate("""(() => { const a = window.__oyeAudioEl, b = document.querySelector('[data-act=pl-play]');
+            return {t: a.currentTime, clip: a.dataset.clip || '', paused: a.paused, time: document.querySelector('.pl-el').textContent,
+                    label: b.getAttribute('aria-label'), pressed: b.getAttribute('aria-pressed'), anim: getComputedStyle(b).animationName}; })()""")
+        check(f'{tag} no autoplay: mission question 1 opens with the player at 0:00, nothing playing, Play button not pressed',
+              a['paused'] and a['clip'] == '' and a['time'] == '0:00' and a['label'] == 'Play' and a['pressed'] == 'false' and a['anim'] == 'none'
+              and await page.is_visible('[data-testid=player]'), a)
         if main:
-            check('v2 mission: "Play announcement" starts the mission clip, the player bar is shown', a['clip'] == 'm-metro-01' and a['t'] > 0 and await page.is_visible('[data-testid=player]'), a)
-            # slow toggles the slow file keeping the position; scrub seeks
+            await shot_v2(page, '16-mission-question-before-play-360x640.png')
+            # Check never waits for audio: pick an answer without listening -> Check is enabled
+            q1 = m['questions'][0]
+            await page.click(f'[data-opt="{q1["options"].index(q1["answer"])}"]')
+            check('v2 mission: Check is available without listening (enabled as soon as an answer is picked)', not await page.is_disabled('[data-act=check]'))
+            await page.click('[data-act=pl-play]'); await page.wait_for_timeout(900)
+            a = await page.evaluate("""(() => { const a = window.__oyeAudioEl, b = document.querySelector('[data-act=pl-play]');
+                return {t: a.currentTime, clip: a.dataset.clip, paused: a.paused, label: b.getAttribute('aria-label'), pressed: b.getAttribute('aria-pressed')}; })()""")
+            check('v2 mission: tapping Play starts the mission clip; the button shows the playing state (Pause, aria-pressed)',
+                  a['clip'] == 'm-metro-01' and a['t'] > 0 and not a['paused'] and a['label'] == 'Pause' and a['pressed'] == 'true', a)
+            await page.click('[data-act=pl-play]'); await page.wait_for_timeout(250)
+            a2 = await page.evaluate("""(() => { const a = window.__oyeAudioEl, b = document.querySelector('[data-act=pl-play]');
+                return {t: a.currentTime, paused: a.paused, label: b.getAttribute('aria-label'), pressed: b.getAttribute('aria-pressed')}; })()""")
+            check('v2 mission: tapping it again stops the audio (button back to Play)', a2['paused'] and a2['label'] == 'Play' and a2['pressed'] == 'false' and a2['t'] > 0, a2)
+            # slow toggles the slow file keeping the position (a new play after the stop); scrub seeks
             await page.click('[data-act=pl-slow]'); await page.wait_for_timeout(700)
             s1 = await page.evaluate("(() => { const a = window.__oyeAudioEl; return {slow: a.dataset.slow, d: a.duration, t: a.currentTime}; })()")
             box = await (await page.query_selector('.pl-track')).bounding_box()
@@ -1604,6 +1658,9 @@ async def levels_suite(browser, base, cards):
             check('v2 player: slow (0.75×) switches to the slow clip; scrubbing seeks; elapsed / total shown',
                   s1['slow'] == '1' and s1['d'] > 60 and abs(s2['t'] / s2['d'] - 0.5) < 0.1 and '/ 1:1' in s2['txt'], (s1, s2))
             await page.click('[data-act=pl-slow]'); await page.wait_for_timeout(300)
+            plays_q1 = await page.evaluate('window.__oye.mission.plays')
+            check('v2 mission replays: play, stop, slow (a new play) = 2 plays on q1; seeking or switching speed while playing is not a new play',
+                  plays_q1 == 2, plays_q1)
         players = []
         labels = []
         # q1 right, q2 wrong, q3 typed 5:00 on the keypad (right), q4 right
@@ -1635,6 +1692,8 @@ async def levels_suite(browser, base, cards):
                     check('v2 mission typed answer uses the v1.1 keypad (numbers and colon)', kp and typed == '5:00', typed)
                     await shot_v2(page, '07-metro-q3-keypad-360x640.png')
                 await page.click('[data-act=check]')
+            elif main and q is m['questions'][0]:
+                await page.click('[data-act=check]')           # answer already picked above
             else:
                 await page.click(f'[data-opt="{q["options"].index(q["answer"])}"]'); await page.click('[data-act=check]')
         await page.wait_for_selector('[data-screen=mission-result]')
@@ -1679,6 +1738,9 @@ async def levels_suite(browser, base, cards):
               {'rows': [(r['card_id'], r['correct'], r['level'], r['mission_id'], r['stars'], r['used_slow']) for r in mrows], 'queue': len(q), 'sent': sent_ok})
         check('v2 results: slow replay used before answering q1 is recorded (used_slow) on that mission row only', mrows and mrows[0]['used_slow'] is True and not any(r['used_slow'] for r in mrows[1:]),
               [r.get('used_slow') for r in mrows])
+        check('v2 results: mission rows carry replays per question (q1: 2 plays -> 1; questions with no new play -> 0) and skipped false',
+              [r.get('replays') for r in mrows] == [1, 0, 0, 0] and all(r.get('skipped') is False for r in mrows),
+              [(r.get('replays'), r.get('skipped')) for r in mrows])
         await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
         hs = (await page.text_content('[data-testid=challenge-hard] .star-n')).strip()
         streak = (await page.text_content('[data-testid=streak]')).strip()
@@ -1702,7 +1764,7 @@ async def levels_suite(browser, base, cards):
         pairs = await page.evaluate("[...document.querySelectorAll('.fb-sheet .dline')].map(d => [d.querySelector('.spk').textContent, d.dataset.voice, getComputedStyle(d.querySelector('.spk')).color, !!d.querySelector('[data-testid=line-play]')])")
         want = [(l['speaker'], l['voice'], VOICE_COLOR[l['voice']]) for l in mc['media']['lines']]
         check('v2.1 two-voice mission transcript: each line labelled from content, colour follows its voice (male blue, female green), per-line replay',
-              [tuple(p[:3]) for p in pairs] == want and all(p[3] for p in pairs) and 'Play voicemail' in it and st == '3', {'pairs': pairs[:3], 'stars': st})
+              [tuple(p[:3]) for p in pairs] == want and all(p[3] for p in pairs) and 'Go to questions' in it and st == '3', {'pairs': pairs[:3], 'stars': st})
         await shot_v2(page, '09-two-voice-transcript-clinic-360x640.png')
         await page.click('[data-act=sheet-close]')
         # Try again, this time opening the header Hint on one question: same v1.1 hint panel, and no 3 stars
@@ -1788,9 +1850,18 @@ async def levels_suite(browser, base, cards):
             if q['kind'] == 'pick':
                 await page.click('[data-opt="0"]')
             else:
-                for ch in '8:00': await page.click(f'[data-key="{ch}"]')
+                for ch in '20': await page.click(f'[data-key="{ch}"]')   # an accepted alternate of "8:00"
             await page.click('[data-act=check]')
         await page.wait_for_selector('[data-screen=mission-result]')
+        tq = next(q for q in ml['questions'] if q['kind'] == 'type')
+        alt_txt = (await page.text_content(f'[data-q={tq["id"]}] .wb-given')).strip()
+        check('mission typed accepted alternate: the result says “20” works. Also common: “8:00”. (main answer only)',
+              alt_txt == f'“20” works. Also common: “{tq["answer"]}”.', alt_txt)
+        sent_l = await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 10000)
+        lrows = [r for r in fake.ok_rows() if r.get('mission_id') == ml['id']]
+        check('v2 results: message (WhatsApp) mission rows send replays 0 and skipped false',
+              sent_l and len(lrows) == len(ml['questions']) and all(r.get('replays') == 0 and r.get('skipped') is False for r in lrows),
+              [(r.get('replays'), r.get('skipped')) for r in lrows])
         await page.click('[data-act=transcript]'); await page.wait_for_selector('[data-testid=sheet]')
         tt = await page.text_content('[data-testid=sheet]')
         check('v2 text mission result: the transcript row shows the message and its English after answering', ml['media']['text_en'][:40] in tt and ml['media']['text_es'][:40] in tt)
@@ -1828,6 +1899,152 @@ async def levels_suite(browser, base, cards):
         await page.click('[data-act=next]')
     await ctx.close()
     check('v2 levels suite: no JS errors', not [e for e in errors if 'net::' not in e], errors[:3])
+
+
+# ---------------------------------------------------------------- ux-replays: no autoplay, replays, accepted alternates, focus, topic stars
+SHOTS_UX = os.environ.get('OYE_UX_SHOTS') or os.path.join(SHOTS, 'ux-replays')
+PLAYBTN_JS = """() => { const b = document.querySelector('#app .card-zone [data-testid=replay]'), a = window.__oyeAudioEl, cap = document.querySelector('#app [data-testid=listen-cap]');
+  const vis = (e) => !!e && getComputedStyle(e).display !== 'none';
+  const slow = document.querySelector('#app .card-zone [data-play=slow]');
+  return { playing: !a.paused && !a.ended, rate: a.playbackRate, dur: a.duration, cls: b.className, pressed: b.getAttribute('aria-pressed'), label: b.getAttribute('aria-label'),
+           stopIcon: vis(b.querySelector('.ic-stop')), playIcon: vis(b.querySelector('.ic-play')), cap: cap && cap.textContent,
+           anim: [b, slow].map((e) => getComputedStyle(e).animationName), slowCls: slow.className }; }"""
+TILES_JS = """() => [...document.querySelectorAll('.topic-tile')].map((t) => { const r = t.getBoundingClientRect(), n = t.querySelector('.tname'), s = t.querySelector('.stars').getBoundingClientRect();
+  const lines = Math.round(n.getBoundingClientRect().height / parseFloat(getComputedStyle(n).lineHeight));
+  return { name: n.textContent, lines, h: r.height, gap: s.top - n.getBoundingClientRect().bottom, fromBottom: r.bottom - s.bottom, starsTop: s.top - r.top }; })"""
+FOCUS_JS = """() => { const e = document.activeElement, cs = getComputedStyle(e); return { act: e && e.dataset.act, fv: e.matches(':focus-visible'), outline: cs.outlineStyle, width: cs.outlineWidth, bg: cs.backgroundColor }; }"""
+
+
+async def ux_shot(page, name):
+    os.makedirs(SHOTS_UX, exist_ok=True)
+    await page.screenshot(path=os.path.join(SHOTS_UX, name))
+
+
+async def ux_replays_suite(browser, base, cards):
+    errors = []
+    by_id = {c['id']: c for c in cards}
+    fake = FakeEndpoint('ok')
+    ctx, page = await new_page(browser, errors, viewport={'width': 390, 'height': 844}, endpoint=fake)
+    await home_fresh(page, base)
+
+    # ---- play button: silent start, playing state + tap to stop, "Play again", slow, no animation (hero and row layouts) ----
+    await start_plan(page, ['c-0010', 'c-0018', 'c-0061', 'c-0055', 'c-0061', 'c-0061', 'c-0011', 'c-0061'])
+    for cid, layout in (('c-0010', 'hero'), ('c-0018', 'row')):
+        await page.wait_for_selector(f'[data-card={cid}][data-state=question]')
+        await page.wait_for_timeout(700)
+        s0 = await page.evaluate(PLAYBTN_JS)
+        if cid == 'c-0010': await ux_shot(page, '01-card-before-play-tap-to-listen.png')
+        await page.click('#app .card-zone [data-testid=replay]'); await page.wait_for_timeout(350)
+        s1 = await page.evaluate(PLAYBTN_JS)
+        if cid == 'c-0010': await ux_shot(page, '02-card-playing-stop-state.png')
+        await page.click('#app .card-zone [data-testid=replay]'); await page.wait_for_timeout(250)
+        s2 = await page.evaluate(PLAYBTN_JS)
+        if cid == 'c-0010': await ux_shot(page, '03-card-after-play-play-again.png')
+        await page.click('#app .card-zone [data-play=slow]'); await page.wait_for_timeout(350)
+        s3 = await page.evaluate(PLAYBTN_JS)
+        await page.click('#app .card-zone [data-testid=replay]'); await page.wait_for_timeout(250)   # stops the slow clip too
+        s4 = await page.evaluate(PLAYBTN_JS)
+        plays = await page.evaluate('window.__oye.session.plays')
+        ok = (not s0['playing'] and s0['cap'] == 'Tap to listen' and s0['pressed'] == 'false' and s0['playIcon'] and not s0['stopIcon']
+              and s1['playing'] and 'is-playing' in s1['cls'] and s1['pressed'] == 'true' and s1['label'] == 'Stop' and s1['stopIcon'] and not s1['playIcon'] and s1['cap'] == 'Play again'
+              and not s2['playing'] and s2['pressed'] == 'false' and s2['label'] == 'Replay' and s2['playIcon'] and s2['cap'] == 'Play again'
+              and s3['playing'] and s3['dur'] > s1['dur'] and 'is-playing' in s3['slowCls'] and s3['pressed'] == 'true'
+              and not s4['playing'] and s4['pressed'] == 'false' and plays == 2
+              and all(x == 'none' for st in (s0, s1, s2, s3) for x in st['anim']))
+        check(f'no autoplay ({layout} play button, {cid}): opens silent with "Tap to listen"; tap plays and shows a stop icon (aria-pressed, "Stop"), caption "Play again"; '
+              'tap again stops; slow still starts slow playback on tap (play button shows playing, can stop it); no pulse/animation; 2 plays counted',
+              ok, {'before': s0, 'playing': s1, 'stopped': s2, 'slow': s3, 'stopped2': s4, 'plays': plays})
+        if cid == 'c-0010':
+            await page.click('[data-opt="1"]')
+            await page.wait_for_selector('[data-state=correct], [data-state=wrong]')
+            f = await page.evaluate(FOCUS_JS)
+            check('focus: after tapping an option, Next is focused (keyboard) but shows no focus ring; flat blue button',
+                  f['act'] == 'next' and f['outline'] == 'none' and f['bg'] == 'rgb(110, 139, 255)', f)
+        else:
+            for ch in '8:45': await page.click(f'[data-key="{ch}"]')
+            await page.click('[data-act=check]')
+            await page.wait_for_selector('[data-state=correct]')
+        await page.click('[data-act=next]')
+
+    # ---- accepted alternate: keep the user's word, "“gira” works. Also common: “dobla”." ----
+    async def fix(cid, typed):
+        await page.wait_for_selector(f'[data-card={cid}][data-state=question]')
+        await page.click('#fix-input'); await page.keyboard.type(typed)
+        await page.click('[data-act=check]')
+        await page.wait_for_selector('[data-state=correct], [data-state=wrong]')
+        return await page.evaluate("""(() => { const b = document.querySelector('[data-testid=blank]'), l = document.querySelector('[data-testid=answer-line]'), y = document.querySelector('[data-testid=you-wrote]');
+            return { state: document.querySelector('#app > .screen').dataset.state, blank: b.textContent, blankCls: b.className, line: l.textContent, you: y && y.textContent,
+                     head: document.querySelector('[data-testid=result] .title').textContent, why: !!document.querySelector('[data-sheet=why]'),
+                     underline: getComputedStyle(b).borderBottomColor, lineColor: getComputedStyle(l).color }; })()""")
+    g = await fix('c-0061', 'gira')
+    await ux_shot(page, '04-accepted-alternate-c-0061-gira.png')
+    f = await page.evaluate(FOCUS_JS)
+    check('focus: after typing an answer and tapping Check, Next shows no focus ring even though Chrome treats it as :focus-visible',
+          f['act'] == 'next' and f['outline'] == 'none', f)
+    await page.click('[data-act=next]')
+    s_ = await fix('c-0055', 'sobre'); await page.click('[data-act=next]')
+    main_ = await fix('c-0061', ' Dobla '); await page.click('[data-act=next]')
+    dv = await fix('c-0061', 'da vuelta'); await page.click('[data-act=next]')
+    # listen_type with a word alternate: money formatting of the main answer is kept ($90)
+    await page.wait_for_selector('[data-card=c-0011][data-state=question]')
+    await page.keyboard.type('noventa'); await page.click('[data-act=check]')
+    await page.wait_for_selector('[data-state=correct]')
+    lt = (await page.text_content('[data-testid=answer-line]')).strip()
+    await page.click('[data-act=next]')
+    wrong = await fix('c-0061', 'xyz'); await page.click('[data-act=next]')
+    ok_green = 'rgb(76, 195, 138)'
+    check('accepted alternate (c-0061 typed "gira"): the blank keeps "gira" (green, ok style), line is exactly “gira” works. Also common: “dobla”.; "Correct" heading and Why row stay',
+          g['state'] == 'correct' and g['blank'] == 'gira' and 'ok' in g['blankCls'].split() and g['line'] == '“gira” works. Also common: “dobla”.'
+          and g['head'] == 'Correct' and g['why'] and g['you'] is None and g['underline'] == ok_green, g)
+    check('accepted alternate (c-0055 typed "sobre"): “sobre” works. Also common: “encima de”., blank keeps "sobre"',
+          s_['blank'] == 'sobre' and s_['line'] == '“sobre” works. Also common: “encima de”.', s_)
+    check('main answer typed (" Dobla ", normalised equal): unchanged display, blank "dobla", "The answer is “dobla”."',
+          main_['state'] == 'correct' and main_['blank'] == 'dobla' and main_['line'] == 'The answer is “dobla”.', main_)
+    check('content sync: c-0061 now also accepts "da vuelta" (Gabriel\'s change) and shows “da vuelta” works. Also common: “dobla”.',
+          dv['state'] == 'correct' and dv['blank'] == 'da vuelta' and dv['line'] == '“da vuelta” works. Also common: “dobla”.', dv)
+    check('accepted alternate on listen_type (c-0011 typed "noventa"): “noventa” works. Also common: $90. (money format kept)',
+          lt == '“noventa” works. Also common: $90.', lt)
+    check('wrong answer unchanged: "The answer is “dobla”." + "You wrote: xyz", blank shows the answer',
+          wrong['state'] == 'wrong' and wrong['line'] == 'The answer is “dobla”.' and wrong['you'] == 'You wrote: xyz' and wrong['blank'] == 'dobla', wrong)
+    await page.wait_for_selector('[data-screen=summary]')
+    sent = await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 10000)
+    rows = fake.ok_rows()
+    check('results: this session\'s rows carry replays (2 plays -> 1 on c-0010 and c-0018, 0 elsewhere) and skipped false',
+          sent and [(r['card_id'], r['replays'], r['skipped']) for r in rows][:3] == [('c-0010', 1, False), ('c-0018', 1, False), ('c-0061', 0, False)]
+          and all(r['replays'] == 0 for r in rows[2:]), [(r['card_id'], r['replays'], r['skipped']) for r in rows])
+    # keyboard users still get the ring: Tab moves focus and the outline shows
+    await page.keyboard.press('Tab'); await page.keyboard.press('Tab')
+    f = await page.evaluate(FOCUS_JS)
+    check('focus: keyboard (Tab) focus still shows the focus ring', f['fv'] and f['outline'] == 'solid' and f['width'] == '2px', f)
+    await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
+
+    # ---- Medium topic grid: stars pinned to the bottom, 12px+ under the name, all lined up ----
+    await page.click('[data-act=medium]'); await page.wait_for_selector('[data-screen=topics]')
+    await page.wait_for_timeout(200)
+    tiles = await page.evaluate(TILES_JS)
+    await ux_shot(page, '05-medium-topic-grid.png')
+    two = [t for t in tiles if t['lines'] == 2]
+    ok = (tiles and len({round(t['h'], 1) for t in tiles}) == 1 and len({round(t['starsTop'], 1) for t in tiles}) == 1 and len({round(t['fromBottom'], 1) for t in tiles}) == 1
+          and all(t['gap'] >= 11.5 for t in tiles) and any(t['name'] in ('Directions & places', 'Future & conditional') for t in two))
+    check('[390x844] topic grid: two-line names ("Future & conditional") keep >= 12px above the stars; stars pinned to the bottom and lined up on every tile', ok, tiles)
+    for (w, h) in ((360, 640), (320, 640)):
+        await page.set_viewport_size({'width': w, 'height': h}); await page.wait_for_timeout(150)
+        tl = await page.evaluate(TILES_JS)
+        okw = tl and len({round(t['h'], 1) for t in tl}) == 1 and len({round(t['starsTop'], 1) for t in tl}) == 1 and all(t['gap'] >= 11.5 for t in tl) and any(t['lines'] == 2 for t in tl)
+        check(f'[{w}x{h}] topic grid: stars 12px+ below one- and two-line names, bottom-aligned, equal tile heights (grow if needed)', okw, tl)
+    await page.set_viewport_size({'width': 390, 'height': 844})
+    await page.click('[data-act=home]'); await page.wait_for_selector('[data-screen=home]')
+
+    # ---- mission question before play (screenshot) ----
+    await page.click('[data-act=hard]'); await page.click('[data-mission=m-metro-01]')
+    await page.wait_for_selector('[data-screen=mission-intro]')
+    await page.click('[data-act=begin]'); await page.wait_for_selector('[data-screen=mission-q][data-q=q1]')
+    await page.wait_for_timeout(800)
+    mq = await page.evaluate("(() => ({ paused: window.__oyeAudioEl.paused, time: document.querySelector('.pl-el').textContent }))()")
+    await ux_shot(page, '06-mission-question-before-play.png')
+    check('[390x844] mission question opens silent: player at 0:00, nothing playing', mq['paused'] and mq['time'] == '0:00', mq)
+    check('ux-replays suite: no JS errors', not errors, errors[:3])
+    await ctx.close()
 
 
 if __name__ == '__main__':

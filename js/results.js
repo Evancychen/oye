@@ -27,10 +27,18 @@ const notify = () => { const n = readQueue().length; listeners.forEach((fn) => {
 /** fn(queueLength) after every send attempt. Returns an unsubscribe function. */
 export function onQueueChange(fn) { listeners.add(fn); return () => listeners.delete(fn); }
 
-/** Mission rows: "qN" + mission_id -> "<mission_id>:qN" (the form the Sheet stores). Card rows are left alone. */
+/** replays: whole number 0-99 (plays started before answering, minus the first listen). */
+export const clampReplays = (n) => Math.min(99, Math.max(0, Math.floor(Number(n) || 0)));
+/** Mission rows: "qN" + mission_id -> "<mission_id>:qN" (the form the Sheet stores). Card rows keep their id.
+ *  v4 fields: `replays` (integer 0-99) and `skipped` (boolean, "I don't know") are coerced when present.
+ *  Rows without them (queued by an older app version) are left as they are and still send: the Apps Script
+ *  stores replays blank and skipped false for them, and the v3 script ignores both fields. */
 function normalise(r) {
   const cid = String(r.card_id ?? ''), mid = String(r.mission_id ?? '');
-  return MISSION_ID.test(mid) && QUESTION_ID.test(cid) ? { ...r, card_id: `${mid}:${cid}` } : r;
+  const out = MISSION_ID.test(mid) && QUESTION_ID.test(cid) ? { ...r, card_id: `${mid}:${cid}` } : { ...r };
+  if ('replays' in out) out.replays = clampReplays(out.replays);
+  if ('skipped' in out) out.skipped = out.skipped === true;
+  return out;
 }
 /** Would the endpoint accept this row's ids? Card: c-NNNN. Mission: level hard, mission_id m-..., card_id "<mission_id>:qN". */
 function acceptable(r) {
@@ -65,7 +73,7 @@ async function postBatch(rows) {
     // Apps Script replies with a redirect to the JSON; fetch follows it.
     const res = await fetch(RESULTS_ENDPOINT, {
       method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ results: rows.map(({ _id, ...r }) => r) }),
+      body: JSON.stringify({ results: rows.map(({ _id, ...r }) => normalise(r)) }),
       redirect: 'follow', credentials: 'omit', cache: 'no-store', signal: ctl?.signal,
     });
     if (!res.ok) return false;

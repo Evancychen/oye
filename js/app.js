@@ -5,7 +5,7 @@
 import { loadContent } from './content.js';
 import { setAudioIndex, hasAudio, hasLine, play, stop, clipInfo, playClip, clipLoaded, audioEl } from './audio.js';
 import * as levels from './levels.js';
-import { isCorrect } from './check.js';
+import { isCorrect, normalize } from './check.js';
 import * as srs from './srs.js';
 import * as results from './results.js';
 
@@ -35,6 +35,7 @@ const ICON = {
   back: svg('<path d="M14.5 6L8.5 12L14.5 18" stroke="currentColor" stroke-width="1.8"/>', { size: 20 }),
   play: svg('<path d="M8 5.5V18.5L18.5 12Z" fill="currentColor" stroke="currentColor" stroke-width="1.2"/>'),
   pause: svg('<path d="M8 5.5V18.5M16 5.5V18.5" stroke="currentColor" stroke-width="3"/>'),
+  stop: svg('<rect x="6.5" y="6.5" width="11" height="11" rx="1.5" fill="currentColor"/>'),
   backspace: svg('<path d="M9 5.5H19.5A1.5 1.5 0 0 1 21 7V17A1.5 1.5 0 0 1 19.5 18.5H9L2.5 12Z" stroke="currentColor" stroke-width="1.6"/><path d="M11.5 9.5L16.5 14.5M16.5 9.5L11.5 14.5" stroke="currentColor" stroke-width="1.6"/>', { size: 26 }),
 };
 const TYPE_LABEL = { listen_pick: 'Listen', listen_type: 'Listen and type', scene_question: 'Scene', fix_it: 'Fix it', reply: 'Your reply' };
@@ -153,8 +154,19 @@ function setupKeyboardInset() {
   S.updateKeyboardInset = upd;
 }
 
+// ---------- focus ring: keyboard only ----------
+// Next is focused from script after a tap (so Enter/Space work on a keyboard). Chrome may still treat that
+// as :focus-visible (e.g. right after the text field had focus), which draws a ring on phones. html.pointer
+// (set on any pointer/touch press, cleared by Tab or arrow keys) hides the ring until the keyboard is used.
+function setupFocusMode() {
+  const root = document.documentElement;
+  document.addEventListener('pointerdown', () => root.classList.add('pointer'), true);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Tab' || /^Arrow/.test(e.key)) root.classList.remove('pointer'); }, true);
+}
+
 // ---------- boot ----------
 async function boot() {
+  setupFocusMode();
   setupServiceWorker();
   setupKeyboardInset();
   if (history.state?.oye) history.replaceState(null, '');
@@ -355,7 +367,7 @@ function showCard(fb = null) {
   const ses = S.session;
   const card = ses.cards[ses.i];
   stop(); setKeyHandler(null);
-  if (!fb) { ses.hintUsed = false; ses.slowUsed = false; }
+  if (!fb) { ses.hintUsed = false; ses.slowUsed = false; ses.plays = 0; }
   let view;
   try { view = TEMPLATES[card.type].render(card, fb); }
   catch (e) { console.warn('[oye] template failed, skipping', card.id, e); return nextCard(true); }
@@ -380,19 +392,34 @@ function showCard(fb = null) {
   if (dk) dk.onclick = () => answer(card, false, null, true);
   view.bind?.();
   setupScrollHint($('.card-zone'));
-  // Autoplay once when a listening card appears (allowed after the tap that started the session).
-  if (!fb && card.audio_text && hasAudio(card.audio_text)) {
-    const big = $('.replay');
-    setTimeout(() => { if (S.session?.cards[S.session.i] === card && $('[data-state="question"]')) play(card.audio_text, { btn: big }); }, 350);
-  }
+  // No autoplay: every card opens silent with the question and answers visible; audio only plays on a tap.
+}
+/** Most plays counted per card / mission question (the results Sheet keeps replays as 0-99). */
+const MAX_PLAYS = 100;
+/** Replays = plays started before answering, minus the first listen (0 if never played), capped at 99. */
+const { clampReplays } = results;
+const replaysOf = (plays) => clampReplays((Number(plays) || 0) - 1);
+const LISTEN_CAP = { before: 'Tap to listen', after: 'Play again' };
+function markListened(root = $app) {
+  $$('[data-testid=listen-cap]', root).forEach((c) => { c.textContent = LISTEN_CAP.after; });
 }
 function bindAudio(card, root = $app) {
   $$('[data-play]', root).forEach((b) => {
     b.onclick = () => {
       const slow = b.dataset.play === 'slow';
-      // Slow replay before answering is recorded with the answer (used_slow in the results upload).
-      if (slow && S.session && S.view === 'session' && S.session.answered !== S.session.i) S.session.slowUsed = true;
-      play(b.dataset.text || card?.audio_text, { slow, btn: b, voice: b.dataset.voice || null });
+      // The play button is also the stop button while its clip plays (the slow button just restarts slow playback).
+      if (!slow && b.classList.contains('is-playing')) { stop(); return; }
+      // Plays before answering are recorded with the answer: used_slow, and replays (every play after the first).
+      // Plays on the feedback screen (after answering) are not counted.
+      const ses = S.session;
+      if (ses && S.view === 'session' && ses.answered !== ses.i && root === $app) {
+        if (slow) ses.slowUsed = true;
+        ses.plays = Math.min(MAX_PLAYS, (ses.plays || 0) + 1);
+        markListened();
+      }
+      // The big play button shows the playing state (and can stop) during slow playback too.
+      const main = slow ? b.closest('.audio-row, .audio-hero')?.querySelector('.replay') : null;
+      play(b.dataset.text || card?.audio_text, { slow, btn: [b, main], voice: b.dataset.voice || null });
     };
   });
 }
@@ -401,7 +428,7 @@ function answer(card, ok, given, skipped = false) {
   S.session.answered = S.session.i;
   const hint = !!S.session.hintUsed;
   srs.record(S.progress, card, ok, { hint });
-  S.session.results.push({ card, ok, given, skipped, hint, slow: !!S.session.slowUsed, at: new Date().toISOString() });
+  S.session.results.push({ card, ok, given, skipped, hint, slow: !!S.session.slowUsed, replays: replaysOf(S.session.plays), at: new Date().toISOString() });
   showCard({ ok, given, skipped });
 }
 function nextCard(skipBroken = false) {
@@ -416,19 +443,24 @@ function nextCard(skipBroken = false) {
 function eyebrow(label, sub) {
   return `<p class="eyebrow">${esc(label)}${sub ? `<span class="sub">${esc(sub)}</span>` : ''}</p>`;
 }
-const replayBtn = (size, text) => `<button class="replay r${size}" data-play="normal" ${text ? `data-text="${esc(text)}"` : ''} data-testid="replay" aria-label="Replay">${ICON.speaker}</button>`;
+/** Play button: speaker icon; while its clip plays it swaps to a stop icon (aria-pressed, "Stop") and a tap stops it. */
+const replayBtn = (size, text) => `<button class="replay r${size}" data-play="normal" ${text ? `data-text="${esc(text)}"` : ''} data-testid="replay" aria-label="Replay" data-label="Replay" data-stop-label="Stop" aria-pressed="false"><span class="ic ic-play">${ICON.speaker}</span><span class="ic ic-stop">${ICON.stop}</span></button>`;
+/** Caption under / next to the play button on a question: "Tap to listen" before the first play, then "Play again". */
+const listenCaption = () => `<span class="caption listen-cap" data-testid="listen-cap">${S.session?.plays ? LISTEN_CAP.after : LISTEN_CAP.before}</span>`;
 const slowBtn = (size, text) => `<button class="slow s${size}" data-play="slow" ${text ? `data-text="${esc(text)}"` : ''} data-testid="slow" aria-label="Replay slowly">0.75×</button>`;
 /** Big centred replay + slow (listen_pick question). */
 function audioHero(card) {
   return `<div class="audio-hero" data-testid="audio-row">
-    <div class="ctl"><div class="ring-wrap">${replayBtn(112)}</div><span class="caption">Replay</span></div>
+    <div class="ctl"><div class="ring-wrap">${replayBtn(112)}</div>${listenCaption()}</div>
     <div class="ctl"><div class="ring-wrap">${slowBtn(64)}</div><span class="caption">Slow</span></div>
   </div>`;
 }
-/** One short row: replay, slow, caption, optional thing on the right (Hint pill). Never shrinks. */
-function audioRow(card, { size = 48, slow = 48, caption = 'Replay · Slow', right = '', text = null, cls = '' } = {}) {
+/** One short row: replay, slow, caption, optional thing on the right (Hint pill). Never shrinks.
+ *  No caption given = a question screen: "Tap to listen" / "Play again". */
+function audioRow(card, { size = 48, slow = 48, caption = null, right = '', text = null, cls = '' } = {}) {
   if (!card.audio_text && !text) return right ? `<div class="audio-row ${cls}">${right}</div>` : '';
-  return `<div class="audio-row ${cls}" data-testid="audio-row">${replayBtn(size, text)}${slowBtn(slow, text)}<span class="caption">${esc(caption)}</span>${right}</div>`;
+  const cap = caption == null ? listenCaption() : `<span class="caption">${esc(caption)}</span>`;
+  return `<div class="audio-row ${cls}" data-testid="audio-row">${replayBtn(size, text)}${slowBtn(slow, text)}${cap}${right}</div>`;
 }
 function hintPill(card) {
   return hasHint(card) ? `<button type="button" class="hint-pill" data-act="hint" data-testid="hint-pill" aria-expanded="false" aria-controls="hint-box">Hint</button>` : '';
@@ -462,7 +494,20 @@ function answerText(card) {
   const plain = /^[$\d][\d.,:\s]*$/.test(a); // prices, numbers, times
   return plain ? a : `“${a}”`;
 }
+/** Same answer for display purposes: equal after normalize() (or the same digits, like isCorrect). */
+function sameAnswer(a, b) {
+  const x = normalize(a), y = normalize(b);
+  return x === y || (/^[\d ]+$/.test(x) && /^[\d ]+$/.test(y) && x.replace(/ /g, '') === y.replace(/ /g, ''));
+}
+/** A correct typed answer that is an accepted alternate, not the card's main answer: the user's own word (trimmed), else null. */
+function altAnswer(card, fb) {
+  if (!fb || !fb.ok || fb.skipped || fb.given == null || hasOptions(card) || card.answer == null) return null;
+  const g = String(fb.given).trim();
+  return g && !sameAnswer(g, card.answer) ? g : null;
+}
 function answerLine(card, fb) {
+  const alt = altAnswer(card, fb);
+  if (alt) return `<p class="answer-line alt-line" data-testid="answer-line">“${esc(alt)}” works. Also common: ${esc(answerText(card))}.</p>`;
   let you = '';
   if (!fb.ok && !fb.skipped && fb.given != null && card.type !== 'listen_pick' && !hasOptions(card)) {
     const g = card.type === 'listen_type' ? fmtAnswer(card, fb.given) : fb.given;
@@ -695,7 +740,9 @@ function renderFixIt(card, fb) {
   const chosen = hasOptions(card);
   const instruction = card.prompt_en ? `<p class="body-copy instruction" data-testid="instruction">${esc(card.prompt_en)}</p>` : '';
   if (fb) {
-    return { body: feedbackBody(card, fb, `${head}${sentenceHtml(card, card.answer, 'ok')}`), dock: chosen ? optionsDock(card, fb, { grid: false }) : btnNext, dockClass: chosen ? 'opts-dock' : '' };
+    // A correct accepted alternate ("gira" for "dobla") stays in the blank as the user typed it.
+    const fill = altAnswer(card, fb) || card.answer;
+    return { body: feedbackBody(card, fb, `${head}${sentenceHtml(card, fill, 'ok')}`), dock: chosen ? optionsDock(card, fb, { grid: false }) : btnNext, dockClass: chosen ? 'opts-dock' : '' };
   }
   const hint = hasHint(card) ? `<div class="hint-slot">${hintPill(card)}${hintBox(card)}</div>` : '';
   if (chosen) {
@@ -784,6 +831,7 @@ function showSummary() {
     answered_at: r.at, card_id: r.card.id, content_version: cv, correct: !!r.ok,
     answer_given: r.given == null ? '' : String(r.given), used_hint: !!r.hint, used_slow: !!r.slow, session_id: ses.id,
     level: ses.level || 'easy', topic: ses.topic || '', mission_id: '', stars: ses.starsResult.stars,
+    replays: clampReplays(r.replays), skipped: !!r.skipped,
   })), validCardIds());
   S.summaryRowIds = ses.rowIds;
   if (ses.level === 'medium') return showTopicSummary(ses, mins);
@@ -807,7 +855,7 @@ function showSummary() {
     </div></div>${moreHint()}</div>
     <div class="action"><button class="btn-primary" data-act="done">Done</button></div>
   </div>`);
-  $$('[data-play]').forEach((b) => { b.onclick = () => play(b.dataset.text, { btn: b }); });
+  $$('[data-play]').forEach((b) => { b.onclick = () => (b.classList.contains('is-playing') ? stop() : play(b.dataset.text, { btn: b })); });
   $('[data-act="done"]').onclick = () => goHome(true);
   setupScrollHint($('.summary-zone'));
   if (S.summaryRowIds.length) sendResults();
@@ -954,7 +1002,8 @@ function openMissions(push = true) {
 function startMission(id) {
   const m = S.missions.find((x) => x.id === id);
   if (!m) return;
-  S.mission = { m, qs: mQuestions(m), i: 0, answers: [], start: Date.now(), slow: false, hintUsed: false, id: results.newSessionId() };
+  // plays: audio plays started for the current question (plays on the intro screen count toward question 1).
+  S.mission = { m, qs: mQuestions(m), i: 0, answers: [], start: Date.now(), slow: false, hintUsed: false, plays: 0, id: results.newSessionId() };
   S.view = 'mission';
   pushView('mission');
   missionIntro();
@@ -966,7 +1015,8 @@ function bindMissionClose() { $('[data-act="close"]').onclick = () => goHome(tru
 function missionIntro() {
   const { m, qs } = S.mission;
   const audio = m.media.kind === 'audio';
-  const primary = audio ? (/voicemail/i.test(m.title_en) ? 'Play voicemail' : /call/i.test(m.title_en) ? 'Play the call' : 'Play announcement') : 'Read the message';
+  // No autoplay: the audio button opens question 1 with the player at 0:00; nothing plays until the player is tapped.
+  const primary = audio ? 'Go to questions' : 'Read the message';
   const fact = (k, v) => `<div class="fact"><span>${esc(k)}</span><span class="fv">${esc(v)}</span></div>`;
   render(`
   <div class="screen mission-screen" data-screen="mission-intro" data-mission="${esc(m.id)}">
@@ -991,7 +1041,7 @@ function missionIntro() {
   setupScrollHint($('.intro-zone'));
   $('[data-act="preview"]').onclick = () => openSimpleSheet('Questions', `<ol class="q-preview">${qs.map((q) => `<li>${esc(cleanPrompt(q.prompt_en))}</li>`).join('')}</ol>`);
   $('[data-act="begin"]').onclick = () => {
-    if (audio) { missionQuestion(); playClip(m.id, { slow: S.mission.slow }); }
+    if (audio) missionQuestion();
     else missionMessage();
   };
 }
@@ -1037,7 +1087,7 @@ function playerBar(m) {
   const info = clipInfo(m.id) || {};
   const tot = S.mission.slow ? info.slow_duration : info.duration;
   return `<div class="player" data-testid="player">
-    <button class="pl-play" data-act="pl-play" aria-label="Play">${ICON.speaker}</button>
+    <button class="pl-play" data-act="pl-play" data-testid="pl-play" aria-label="Play" aria-pressed="false">${ICON.speaker}</button>
     <div class="pl-mid">
       <div class="pl-track" data-testid="scrub" role="slider" aria-label="Position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><i class="pl-fill"></i><b class="pl-knob"></b></div>
       <div class="caption pl-time"><span class="pl-el">0:00</span> / <span class="pl-tot">${fmtClock(tot)}</span></div>
@@ -1062,24 +1112,34 @@ function bindPlayer(m) {
     elT.textContent = fmtClock(t); totT.textContent = fmtClock(d);
     const playing = mine && !el.paused && !el.ended;
     bar.classList.toggle('is-active', playing);
-    btn.innerHTML = playing ? ICON.pause : ICON.speaker;
-    btn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+    if (btn.dataset.playing !== String(playing)) {
+      btn.dataset.playing = String(playing);
+      btn.innerHTML = playing ? ICON.pause : ICON.speaker;
+      btn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+      btn.setAttribute('aria-pressed', String(playing));
+    }
   };
   if (S.playerOff) S.playerOff();
   const evs = ['timeupdate', 'play', 'pause', 'ended', 'loadedmetadata', 'seeked'];
   evs.forEach((e) => el.addEventListener(e, upd));
   S.playerOff = () => evs.forEach((e) => el.removeEventListener(e, upd));
   const frac = () => (clipLoaded(m.id) && isFinite(el.duration) && el.duration ? el.currentTime / el.duration : 0);
+  const isOn = () => clipLoaded(m.id) && !el.paused && !el.ended;
+  // Every play started from the bar (play, resume after a stop, slow or a seek while stopped) counts for this
+  // question's replays; switching speed or seeking while it plays does not.
+  const counted = () => { if (S.mission) S.mission.plays = Math.min(MAX_PLAYS, (S.mission.plays || 0) + 1); };
   btn.onclick = () => {
-    if (clipLoaded(m.id) && !el.paused && !el.ended) el.pause();
-    else if (clipLoaded(m.id) && !el.ended && el.currentTime > 0) el.play().catch(() => {});
+    if (isOn()) { el.pause(); return; }   // tap again = stop (keeps the position; the next tap goes on from there)
+    counted();
+    if (clipLoaded(m.id) && !el.ended && el.currentTime > 0) el.play().catch(() => {});
     else playClip(m.id, { slow: S.mission.slow });
   };
   $('[data-act="pl-slow"]', bar).onclick = (e) => {
     S.mission.slow = !S.mission.slow;
     if (S.mission.slow) S.mission.slowUsed = true;
     const b = e.currentTarget; b.classList.toggle('is-on', S.mission.slow); b.setAttribute('aria-pressed', String(S.mission.slow));
-    const f = frac(), wasPlaying = clipLoaded(m.id) && !el.paused && !el.ended;
+    const f = frac(), wasPlaying = isOn();
+    if (!wasPlaying) counted();
     if (wasPlaying || f > 0) playClip(m.id, { slow: S.mission.slow, at: f });
     else playClip(m.id, { slow: S.mission.slow });
   };
@@ -1089,7 +1149,7 @@ function bindPlayer(m) {
     if (clipLoaded(m.id) && isFinite(el.duration)) { el.currentTime = f * el.duration; if (el.paused) el.play().catch(() => {}); }
     else playClip(m.id, { slow: S.mission.slow, at: f });
   };
-  track.addEventListener('pointerdown', (ev) => { seek(ev); track.setPointerCapture?.(ev.pointerId); track.onpointermove = seek; });
+  track.addEventListener('pointerdown', (ev) => { if (!isOn()) counted(); seek(ev); track.setPointerCapture?.(ev.pointerId); track.onpointermove = seek; });
   track.addEventListener('pointerup', () => { track.onpointermove = null; });
   upd();
 }
@@ -1134,7 +1194,10 @@ function missionQuestion() {
   if (audio) bindPlayer(m);
   else $('[data-act="reopen"]').onclick = () => missionMessage(ms.i);
   const done = (ok, given) => {
-    ms.answers.push({ q, ok, given, hint: !!ms.hintUsed, slow: !!ms.slowUsed, at: new Date().toISOString() });
+    // replays: plays started on this question (and, for question 1, on the intro) minus the first listen.
+    // Message missions have no audio: always 0.
+    ms.answers.push({ q, ok, given, hint: !!ms.hintUsed, slow: !!ms.slowUsed, replays: audio ? replaysOf(ms.plays) : 0, at: new Date().toISOString() });
+    ms.plays = 0;
     ms.i++;
     if (ms.i >= qs.length) missionResult(); else missionQuestion();
   };
@@ -1185,13 +1248,16 @@ function missionResult() {
     answered_at: a.at, card_id: `${m.id}:${a.q.id}`, content_version: cv, correct: !!a.ok,
     answer_given: a.given == null ? '' : String(a.given), used_hint: !!a.hint, used_slow: !!a.slow, session_id: ms.id,
     level: 'hard', topic: m.topic || '', mission_id: m.id, stars: ms.starsResult.stars,
+    replays: clampReplays(a.replays), skipped: false,   // missions have no "I don't know"
   })), validCardIds());
   S.summaryRowIds = ms.rowIds;
   const statusLine = ms.rowIds.length
     ? `<p class="caption results-status mr-status" data-testid="results-status" data-state="queued" role="status">${resultsStatusHtml(false)}</p>` : '';
   const r = ms.starsResult;
   const rows = ms.answers.map((a, i) => {
-    const given = a.q.kind === 'pick' ? `You picked “${a.given}”` : `You typed ${a.given}`;
+    // A right typed answer that is an accepted alternate: "“5” works. Also common: “5:00”." (the main answer only).
+    const alt = a.q.kind === 'type' ? altAnswer(a.q, { ok: a.ok, given: a.given }) : null;
+    const given = alt ? `“${alt}” works. Also common: “${a.q.answer}”.` : a.q.kind === 'pick' ? `You picked “${a.given}”` : `You typed ${a.given}`;
     const open = !a.ok;
     return `<div class="mr-row ${a.ok ? 'ok' : 'bad'} ${open ? 'open' : ''}" data-q="${esc(a.q.id)}" data-testid="mr-row">
       <button class="mr-head" data-act="why" aria-expanded="${open}">
@@ -1234,7 +1300,7 @@ function missionResult() {
   if (ms.rowIds.length) sendResults();
   $('[data-act="done"]').onclick = () => goHome(true);
   $('[data-act="retry"]').onclick = () => {
-    Object.assign(ms, { i: 0, answers: [], start: Date.now(), starsResult: null, starsSaved: null, rowIds: null, id: results.newSessionId() });
+    Object.assign(ms, { i: 0, answers: [], plays: 0, start: Date.now(), starsResult: null, starsSaved: null, rowIds: null, id: results.newSessionId() });
     missionIntro();
   };
   setupScrollHint($('.mr-zone'));

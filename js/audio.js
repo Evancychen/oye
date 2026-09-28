@@ -29,16 +29,29 @@ async function srcFor(url) {
   }
 }
 
+// Buttons of the clip that is playing get .is-playing (static playing state, no animation) and, when they
+// have data-stop-label, aria-pressed="true" + that label ("Stop"): tapping them again stops the audio.
+function setPlaying(b, on) {
+  b.classList.toggle('is-playing', on);
+  if (b.dataset.stopLabel) {
+    b.setAttribute('aria-pressed', String(on));
+    b.setAttribute('aria-label', on ? b.dataset.stopLabel : (b.dataset.label || b.getAttribute('aria-label')));
+  }
+}
 function clearPlaying() {
-  document.querySelectorAll('.is-playing').forEach(b => b.classList.remove('is-playing'));
+  document.querySelectorAll('.is-playing').forEach(b => setPlaying(b, false));
 }
 el.addEventListener('ended', clearPlaying);
-el.addEventListener('pause', clearPlaying);
+// A pause queued by stop() can arrive after the next clip has started; only clear if we're really paused.
+el.addEventListener('pause', () => { if (el.paused) clearPlaying(); });
+/** Is the player playing right now (not paused, not ended)? */
+export const isPlaying = () => !el.paused && !el.ended;
 
 export function stop() { try { el.pause(); } catch {} clearPlaying(); }
 
 /** Play the sentence. slow = the pre-generated slow file (or 0.75x playbackRate as a fallback).
- *  voice = play the dialogue-line file recorded in that voice, when there is one. */
+ *  voice = play the dialogue-line file recorded in that voice, when there is one.
+ *  btn = the button (or buttons) that show the playing state while this clip plays. */
 export async function play(text, { slow = false, btn = null, voice = null } = {}) {
   const line = lineEntry(text, voice);
   const item = line || (index.items && index.items[text]);
@@ -51,7 +64,8 @@ export async function play(text, { slow = false, btn = null, voice = null } = {}
   el.preservesPitch = true;
   el.playbackRate = stretch ? 0.75 : 1;
   el.defaultPlaybackRate = el.playbackRate;
-  if (btn) btn.classList.add('is-playing');
+  const btns = (Array.isArray(btn) ? btn : [btn]).filter(Boolean);
+  btns.forEach((b) => setPlaying(b, true));
   try { await el.play(); return true; }
   catch { clearPlaying(); return false; } // autoplay blocked or file missing
 }
