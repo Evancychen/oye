@@ -86,7 +86,7 @@ Spec: `../design/levels-v2-spec.md` → "No autoplay".
   shows a stop icon (`aria-pressed="true"`, label "Stop") and tapping it stops the audio. No pulse or other animation
   (the old `.is-playing` pulse is gone). The slow button still starts slow playback on tap; the play button shows the
   playing state during slow playback too, so it can stop it.
-- **Missions**: the audio intro's primary button is now "Go to questions" (it used to be "Play announcement" /
+- **Missions**: the audio intro's primary button is now "Start mission" (it used to be "Play announcement" /
   "Play voicemail" and started the clip). Question 1 opens with the player bar at 0:00 and nothing playing; the bar's
   button plays, and tapping it again stops (pauses; the next tap goes on from there). A clip that was started keeps
   playing when Check moves to the next question (that is the user's own playback, not autoplay). Check never waits

@@ -1016,7 +1016,7 @@ function missionIntro() {
   const { m, qs } = S.mission;
   const audio = m.media.kind === 'audio';
   // No autoplay: the audio button opens question 1 with the player at 0:00; nothing plays until the player is tapped.
-  const primary = audio ? 'Go to questions' : 'Read the message';
+  const primary = audio ? 'Start mission' : 'Read the message';
   const fact = (k, v) => `<div class="fact"><span>${esc(k)}</span><span class="fv">${esc(v)}</span></div>`;
   render(`
   <div class="screen mission-screen" data-screen="mission-intro" data-mission="${esc(m.id)}">

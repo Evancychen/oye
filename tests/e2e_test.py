@@ -1616,9 +1616,9 @@ async def levels_suite(browser, base, cards):
         it = await page.text_content('[data-screen=mission-intro]')
         g = await page.evaluate("document.scrollingElement.scrollHeight - innerHeight")
         if main:
-            check('v2 mission intro: HARD eyebrow, title, situation, audio length "about 1 min", 4 questions, "Read the questions first" + "Go to questions" (no autoplay: nothing plays from the intro)',
+            check('v2 mission intro: HARD eyebrow, title, situation, audio length "about 1 min", 4 questions, "Read the questions first" + "Start mission" (no autoplay: nothing plays from the intro)',
                   'Real-life mission' in it and m['title_en'] in it and m['situation_en'] in it and 'about 1 min' in it and '4, one at a time' in it
-                  and 'Read the questions first' in it and 'Go to questions' in it and 'Play announcement' not in it and g <= 1, it[:200])
+                  and 'Read the questions first' in it and 'Start mission' in it and 'Play announcement' not in it and g <= 1, it[:200])
             await shot_v2(page, '05-mission-intro-360x640.png')
             await page.click('[data-act=preview]'); await page.wait_for_selector('[data-testid=sheet]')
             pv = await page.text_content('[data-testid=sheet]')
@@ -1764,7 +1764,7 @@ async def levels_suite(browser, base, cards):
         pairs = await page.evaluate("[...document.querySelectorAll('.fb-sheet .dline')].map(d => [d.querySelector('.spk').textContent, d.dataset.voice, getComputedStyle(d.querySelector('.spk')).color, !!d.querySelector('[data-testid=line-play]')])")
         want = [(l['speaker'], l['voice'], VOICE_COLOR[l['voice']]) for l in mc['media']['lines']]
         check('v2.1 two-voice mission transcript: each line labelled from content, colour follows its voice (male blue, female green), per-line replay',
-              [tuple(p[:3]) for p in pairs] == want and all(p[3] for p in pairs) and 'Go to questions' in it and st == '3', {'pairs': pairs[:3], 'stars': st})
+              [tuple(p[:3]) for p in pairs] == want and all(p[3] for p in pairs) and 'Start mission' in it and st == '3', {'pairs': pairs[:3], 'stars': st})
         await shot_v2(page, '09-two-voice-transcript-clinic-360x640.png')
         await page.click('[data-act=sheet-close]')
         # Try again, this time opening the header Hint on one question: same v1.1 hint panel, and no 3 stars
