@@ -507,6 +507,8 @@ async def main():
         await results_upload_tests(browser, base4, version)
         await levels_suite(browser, base4, cards)
         await ux_replays_suite(browser, base4, cards)
+        os.makedirs(TMP, exist_ok=True)
+        await drill_read_suite(browser, base4, cards)
         server4.terminate(); server4.wait()
 
         # ---------- v1.1: service worker update path ----------
@@ -1424,8 +1426,15 @@ async def answer_card_right(page, card):
             await page.click(f'[data-key="{ch}"]')
         await page.click('[data-act=check]')
     else:
-        await page.click(f'[data-opt="{card["options"].index(card["answer"])}"]')
+        await click_option(page, card['answer'])   # by value: Medium topics shuffle the options
     await page.wait_for_selector('[data-state=correct], [data-state=wrong]')
+
+
+async def click_option(page, value):
+    """Tap the option button whose value is `value` (options can be shuffled, so never by content position)."""
+    idx = await page.evaluate("(v) => { const b = [...document.querySelectorAll('#app [data-opt]')].find(x => x.dataset.value === v); return b ? b.dataset.opt : null; }", value)
+    assert idx is not None, f'no option {value!r} on screen'
+    await page.click(f'#app [data-opt="{idx}"]')
 
 
 MQ_GEOM = """() => {
@@ -2044,6 +2053,474 @@ async def ux_replays_suite(browser, base, cards):
     await ux_shot(page, '06-mission-question-before-play.png')
     check('[390x844] mission question opens silent: player at 0:00, nothing playing', mq['paused'] and mq['time'] == '0:00', mq)
     check('ux-replays suite: no JS errors', not errors, errors[:3])
+    await ctx.close()
+
+
+# ---------------------------------------------------------------- drill-read: shuffled topics, Verb drill, mission Read view
+SHOTS_DR = os.environ.get('OYE_DRILL_SHOTS') or os.path.join(SHOTS, 'drill-read')
+TEAM_CARDS = os.path.join(os.path.dirname(APP), 'content', 'cards.json')
+DRILL_FIXTURE = os.path.join(APP, 'tests', 'fixtures', 'drill_cards.json')
+
+
+async def dr_shot(page, name):
+    os.makedirs(SHOTS_DR, exist_ok=True)
+    await page.screenshot(path=os.path.join(SHOTS_DR, name))
+
+
+def drill_source():
+    """Drill cards for the tests: the app's own content if it has them, else the team's content file
+    (Gabriel's batch, not published yet), else the small fixture in tests/fixtures."""
+    for path in (os.path.join(APP, 'content', 'cards.json'), TEAM_CARDS, DRILL_FIXTURE):
+        try:
+            d = [c for c in json.load(open(path, encoding='utf-8')) if c.get('level') == 'drill']
+        except Exception:
+            continue
+        if d:
+            return d, path
+    return [], None
+
+
+def make_drill_site(dest):
+    """A copy of the app whose cards.json also has the drill cards (a content fixture; the real content is untouched)."""
+    shutil.rmtree(dest, ignore_errors=True)
+    os.makedirs(dest)
+    copy_current(dest)
+    drill, src = drill_source()
+    cpath = os.path.join(dest, 'content', 'cards.json')
+    cs = json.load(open(cpath, encoding='utf-8'))
+    have = {c['id'] for c in cs}
+    cs += [c for c in drill if c['id'] not in have]
+    json.dump(cs, open(cpath, 'w', encoding='utf-8'), ensure_ascii=False)
+    return cs, drill, src
+
+
+DRILL_CARD_JS = """() => { const q = (s) => document.querySelector('#app ' + s), r = (e) => e && e.getBoundingClientRect();
+  const lab = q('[data-testid=drill-label]'), sen = q('[data-testid=sentence]'), opts = [...document.querySelectorAll('#app [data-opt]')];
+  const ls = lab && getComputedStyle(lab), ss = sen && getComputedStyle(sen);
+  const cols = new Set(opts.map((o) => Math.round(r(o).left))).size, rows = new Set(opts.map((o) => Math.round(r(o).top))).size;
+  return { card: q('.screen').dataset.card, count: q('.count').textContent, label: lab && lab.textContent, labFont: ls && [ls.fontSize, ls.fontWeight, ls.textTransform, ls.color],
+           eyebrow: !!q('.card-inner > .eyebrow'), senFont: ss && [ss.fontSize, ss.fontWeight, ss.lineHeight], senLines: sen && Math.round(r(sen).height / parseFloat(ss.lineHeight)),
+           opts: opts.map((o) => o.dataset.value), cols, rows, grid: !!q('.options.grid'), input: !!q('#fix-input'), audio: !!q('[data-testid=audio-row]'), replay: !!q('[data-testid=replay]'),
+           hint: !!q('[data-act=hint]'), dontknow: !!q('[data-act=dontknow]'), docScroll: document.scrollingElement.scrollHeight - innerHeight }; }"""
+
+
+async def drill_read_suite(browser, base, cards):
+    errors = []
+    by_id = {c['id']: c for c in cards}
+    missions = json.load(open(os.path.join(APP, 'content', 'missions.json'), encoding='utf-8'))
+    mby = {m['id']: m for m in missions}
+    medium = [c for c in cards if c.get('level') == 'medium']
+
+    # ================= 1. Shuffled Medium topics (real app content) =================
+    ctx, page = await new_page(browser, errors, viewport={'width': 390, 'height': 844})
+    await home_fresh(page, base)
+    topic = 'numbers_prices'
+    pool = {c['id'] for c in medium if c.get('topic') == topic}
+    sessions = []
+    for _ in range(6):
+        await page.click('[data-act=medium]'); await page.wait_for_selector('[data-screen=topics]')
+        await page.click(f'[data-topic={topic}]'); await page.wait_for_selector('[data-screen=card][data-state=question]')
+        sessions.append(await page.evaluate("window.__oye.session.cards.map(c => ({ id: c.id, options: c.options || [] }))"))
+        await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
+    orders = {tuple(c['id'] for c in s) for s in sessions}
+    same_set = all({c['id'] for c in s} == pool and len(s) == len(pool) for s in sessions)
+    opt_cards = [(c, by_id[c['id']]) for s in sessions for c in s if by_id[c['id']].get('options')]
+    opt_same_values = all(sorted(c['options']) == sorted(o['options']) for c, o in opt_cards)
+    opt_moved = sum(1 for c, o in opt_cards if c['options'] != o['options'])
+    check(f'shuffled topics: 6 starts of "{topic}" ({len(pool)} cards) each hold every playable card once, in {len(orders)} different orders; '
+          f'option order shuffled ({opt_moved} of {len(opt_cards)} option cards moved), same option values',
+          same_set and len(orders) >= 3 and opt_cards and opt_same_values and opt_moved >= len(opt_cards) // 3, {'orders': len(orders), 'moved': opt_moved})
+    # The check uses option values, not positions: find a start where an options card's answer moved, tap by value -> right;
+    # tap the button at the answer's CONTENT position (now a different option) -> wrong.
+    proof = None
+    for attempt in range(12):
+        await page.click('[data-act=medium]'); await page.wait_for_selector('[data-screen=topics]')
+        await page.click(f'[data-topic={topic}]'); await page.wait_for_selector('[data-screen=card][data-state=question]')
+        info = await page.evaluate("(() => { const s = window.__oye.session; return s.cards.map((c, i) => ({ i, id: c.id, options: c.options || [] })); })()")
+        target = next((c for c in info if c['options'] and c['options'].index(by_id[c['id']]['answer']) != by_id[c['id']]['options'].index(by_id[c['id']]['answer'])), None)
+        if not target:
+            await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]'); continue
+        # skip ahead to that card with "I don't know"
+        for _ in range(target['i']):
+            await page.click('[data-act=dontknow]') if await page.query_selector('[data-act=dontknow]') else None
+            if not await page.query_selector('[data-act=next]'):
+                if await page.query_selector('#fix-input'):
+                    await page.fill('#fix-input', 'x'); await page.click('[data-act=check]')
+                else:
+                    await page.click('[data-key="1"]'); await page.click('[data-act=check]')
+            await page.click('[data-act=next]'); await page.wait_for_selector('[data-screen=card][data-state=question]')
+        card = by_id[target['id']]
+        content_pos = card['options'].index(card['answer'])
+        shown_at = await page.evaluate(f"document.querySelector('#app [data-opt=\"{content_pos}\"]').dataset.value")
+        await click_option(page, card['answer'])
+        await page.wait_for_selector('[data-state]:not([data-state=question])')
+        st1 = (await current(page))['state']
+        row = await page.evaluate("(() => { const r = window.__oye.session.results.at(-1); return { ok: r.ok, given: r.given }; })()")
+        proof = {'card': card['id'], 'content_pos': content_pos, 'shown_at_that_pos': shown_at, 'state_by_value': st1, 'row': row}
+        await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
+        break
+    check('shuffled topics: the answer check uses the option VALUE (right answer tapped at its new position = correct, recorded as the value)',
+          proof and proof['state_by_value'] == 'correct' and proof['row'] == {'ok': True, 'given': by_id[proof['card']]['answer']} and proof['shown_at_that_pos'] != by_id[proof['card']]['answer'], proof)
+    # Easy (Quick session) keeps its options in content order (different code path: planSession, no shuffle)
+    easy_opts = []
+    await home_fresh(page, base)
+    for _ in range(3):
+        await start_plan(page, ['c-0010', 'c-0018']); await page.wait_for_selector('[data-card=c-0010]')
+        easy_opts.append(await page.evaluate("[...document.querySelectorAll('#app [data-opt]')].map(b => b.dataset.value)"))
+        await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
+    check('Easy options are NOT shuffled (unchanged behaviour): c-0010 shows its options in content order every time',
+          all(o == by_id['c-0010']['options'] for o in easy_opts), easy_opts[:1])
+    # > 10 playable cards: 10 picked at random, weighted toward missed / due cards (srs.planTopic on 25 cards)
+    w = await page.evaluate("""import('./js/srs.js').then((srs) => {
+        const cards = Array.from({ length: 25 }, (_, i) => ({ id: 'x' + i, options: ['a', 'b', 'c', 'd'], answer: 'a' }));
+        const today = srs.todayKey(), cardsP = {};
+        for (let i = 0; i < 5; i++) cardsP['x' + i] = { box: 1, seen: 3, right: 1, wrong: 2, due: '2000-01-01', lastOk: false };      // missed + due
+        for (let i = 5; i < 10; i++) cardsP['x' + i] = { box: 3, seen: 3, right: 3, wrong: 0, due: '2000-01-01', lastOk: true };      // right, due
+        for (let i = 10; i < 25; i++) cardsP['x' + i] = { box: 5, seen: 6, right: 6, wrong: 0, due: '2999-01-01', lastOk: true };     // right, not due
+        const s = { cards: cardsP, days: {}, history: [] };
+        const cnt = {}; let sizes = new Set(), dupes = 0, firsts = new Set();
+        for (let k = 0; k < 400; k++) {
+          const p = srs.planTopic(s, cards);
+          sizes.add(p.length); if (new Set(p.map((c) => c.id)).size !== p.length) dupes++;
+          firsts.add(p[0].id); p.forEach((c) => { cnt[c.id] = (cnt[c.id] || 0) + 1; });
+        }
+        const rate = (a, b) => { let t = 0; for (let i = a; i < b; i++) t += (cnt['x' + i] || 0); return t / (400 * (b - a)); };
+        return { sizes: [...sizes], dupes, missed: rate(0, 5), due: rate(5, 10), rest: rate(10, 25), firsts: firsts.size };
+    })""")
+    check('shuffled topics: more than 10 cards -> 10 distinct picked at random, missed cards most likely, then due, then known (400 plans on 25 cards)',
+          w['sizes'] == [10] and w['dupes'] == 0 and w['missed'] > w['due'] > w['rest'] and w['missed'] > 1.5 * w['rest'] and w['firsts'] >= 10, w)
+    await ctx.close()
+
+    # ================= 2. Verb drill (content fixture: the app plus the drill cards) =================
+    site = os.path.join(TMP, 'drill-site')
+    all_cards, drill, src = make_drill_site(site)
+    dby = {c['id']: c for c in drill}
+    check(f'drill fixture: {len(drill)} level "drill" cards from {os.path.relpath(src, os.path.dirname(APP)) if src else "-"} (fix_it, 3-4 options, answer among them, no audio, verbs_* topic)',
+          drill and all(c['type'] == 'fix_it' and 3 <= len(c['options']) <= 4 and c['answer'] in c['options'] and not c.get('audio_text')
+                        and c['topic'] in ('verbs_past', 'verbs_present', 'verbs_commands', 'verbs_future') for c in drill), len(drill))
+    port = free_port()
+    server = start_server(site, port)
+    dbase = f'http://localhost:{port}/'
+    try:
+        # ---- 2a. drill cards never enter Easy or Medium ----
+        ctx, page = await new_page(browser, errors, viewport={'width': 390, 'height': 844})
+        await home_fresh(page, dbase)
+        pools = await page.evaluate("""import('./js/levels.js').then((L) => { const S = window.__oye;
+            return { easy: S.easy.map(c => c.id), medium: S.medium.map(c => c.id), drill: S.drill.map(c => c.id),
+                     lv: [L.levelOf({ level: 'drill' }), L.isEasy({ level: 'drill' }), L.isDrill({ level: 'drill' }), L.levelOf({}), L.levelOf({ level: 'weird' })] }; })""")
+        dids = set(dby)
+        check('drill filter: levelOf("drill") = "drill" (not Easy); S.easy and S.medium hold no drill card; S.drill = every drill card',
+              pools['lv'] == ['drill', False, True, 'easy', 'easy'] and not dids & set(pools['easy']) and not dids & set(pools['medium']) and set(pools['drill']) == dids, pools['lv'])
+        today = time.strftime('%Y-%m-%d')
+        lesson_tags = sorted({t for c in drill for t in (c.get('lesson_tags') or [])})
+        plans, topic_sessions = [], []
+        for scenario in ['drill-urgent', 'drill-lesson']:
+            prog = {'cards': {cid: {'box': 1, 'seen': 4, 'right': 0, 'wrong': 4, 'due': '2000-01-01', 'last': today, 'lastOk': False} for cid in dids},
+                    'days': {}, 'history': [], 'lesson': lesson_tags[0] if (scenario == 'drill-lesson' and lesson_tags) else 'all'}
+            if scenario == 'drill-urgent':   # every Easy card known and not due, so the planner has to look further
+                for c in all_cards:
+                    if c.get('level', 'easy') == 'easy':
+                        prog['cards'][c['id']] = {'box': 5, 'seen': 5, 'right': 5, 'wrong': 0, 'due': '2999-01-01', 'last': today, 'lastOk': True}
+            await page.evaluate(f"localStorage.setItem('oye.progress.v1', {json.dumps(json.dumps(prog))})")
+            for _ in range(6):
+                await page.reload(); await page.wait_for_selector('html[data-ready="1"] [data-screen=home]')
+                plans.append(await page.evaluate('window.__oye.plan.map(c => c.id)'))
+            for t in ('verbs_past', 'verbs_present', 'verbs_commands', 'verbs_future'):
+                if not await page.query_selector('[data-act=medium]:not([disabled])'): break
+                await page.click('[data-act=medium]'); await page.wait_for_selector('[data-screen=topics]')
+                if await page.query_selector(f'[data-topic={t}]'):
+                    await page.click(f'[data-topic={t}]'); await page.wait_for_selector('[data-screen=card]')
+                    topic_sessions.append(await page.evaluate('window.__oye.session.cards.map(c => c.id)'))
+                    await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
+                else:
+                    await page.click('[data-act=home]'); await page.wait_for_selector('[data-screen=home]')
+        leaked = sorted({i for pl in plans + topic_sessions for i in pl if i in dids})
+        lessons_txt = ''
+        await page.click('[data-act=lessons]'); await page.wait_for_selector('.sheet')
+        lessons_total = await page.evaluate("document.querySelector('[data-lesson=all] .caption').textContent")
+        await page.evaluate("document.querySelector('.sheet-backdrop').remove()")
+        n_easy = len([c for c in all_cards if c.get('level', 'easy') == 'easy'])
+        check(f'drill filter: no drill card in {len(plans)} Quick-session plans (drill cards all missed + overdue, Easy all known, drill lesson picked) '
+              f'or {len(topic_sessions)} verbs_* topic sessions; the lessons sheet counts Easy cards only',
+              not leaked and len(plans) == 12 and len(topic_sessions) >= 4 and lessons_total == f'{len(pools["easy"])} cards', {'leaked': leaked[:5], 'lessons': lessons_total})
+        await page.evaluate("localStorage.clear()")
+        await ctx.close()
+
+        # ---- 2b. home: Verb drill row under the Medium and Hard cards ----
+        ctx, page = await new_page(browser, errors, viewport={'width': 390, 'height': 844}, endpoint=(fake := FakeEndpoint('ok')))
+        await home_fresh(page, dbase)
+        g = await page.evaluate("""() => { const r = (s) => { const e = document.querySelector(s); if (!e) return null; const b = e.getBoundingClientRect(); return {top: b.top, bottom: b.bottom, h: b.height, left: b.left, right: b.right}; };
+            const d = document.querySelector('[data-testid=drill-row]');
+            return { med: r('[data-testid=challenge-medium]'), hard: r('[data-testid=challenge-hard]'), drill: r('[data-testid=drill-row]'), start: r('[data-act=start]'), meta: r('.meta-line'),
+                     text: d && [d.querySelector('.ch-title').textContent, d.querySelector('.caption').textContent].join(' | '), chev: !!(d && d.querySelector('.ch-chev svg')), bg: d && getComputedStyle(d).backgroundColor, radius: d && getComputedStyle(d).borderRadius,
+                     docScroll: document.scrollingElement.scrollHeight - innerHeight }; }""")
+        n20 = min(20, len(drill))
+        check(f'[390x844] home: slim "Verb drill" row right under the Hard card ("{n20} quick questions · no audio", chevron, surface card), above the EASY line and Quick session, no scrolling',
+              g['drill'] and g['hard']['bottom'] <= g['drill']['top'] <= g['hard']['bottom'] + 8.5 and g['drill']['h'] < g['hard']['h'] and g['drill']['bottom'] <= g['meta']['top']
+              and g['text'] == f'Verb drill | {n20} quick questions · no audio' and g['chev'] and g['radius'] == '12px' and g['docScroll'] <= 1, g)
+        await page.wait_for_timeout(300)
+        await dr_shot(page, '01-home-verb-drill.png')
+        for (w_, h_) in ((360, 640), (375, 667), (360, 720)):
+            await page.set_viewport_size({'width': w_, 'height': h_}); await page.wait_for_timeout(150)
+            gs = await page.evaluate("() => { const s = document.querySelector('[data-act=start]').getBoundingClientRect(), d = document.querySelector('[data-testid=drill-row]').getBoundingClientRect(); return { docScroll: document.scrollingElement.scrollHeight - innerHeight, start: s.bottom, drill: d.bottom, vh: innerHeight }; }")
+            check(f'[{w_}x{h_}] home with Verb drill still fits (no scrolling, Quick session pinned)', gs['docScroll'] <= 1 and gs['start'] <= h_ - 15.5 and gs['drill'] < gs['start'], gs)
+        await page.set_viewport_size({'width': 390, 'height': 844})
+
+        # ---- 2c. a drill session ----
+        await page.click('[data-act=drill]'); await page.wait_for_selector('[data-screen=card][data-state=question]')
+        await page.wait_for_timeout(200)
+        c1 = await page.evaluate(DRILL_CARD_JS)
+        card = dby.get(c1['card'])
+        check(f'drill card: "1 of {n20}"; prompt_en as the small label above the sentence (13px/500, normal case, gray-600, no uppercase eyebrow); sentence in title style; '
+              'one tap per answer: options in a 2 x 2 grid (4) or stacked (3), no text field, no audio, Hint + "I don\'t know"',
+              card and c1['count'] == f'1 of {n20}' and c1['label'] == card['prompt_en'] and c1['labFont'] == ['13px', '500', 'none', 'rgb(155, 155, 163)'] and not c1['eyebrow']
+              and c1['senFont'] == ['24px', '600', '32px'] and sorted(c1['opts']) == sorted(card['options'])
+              and ((len(card['options']) == 4 and c1['grid'] and c1['cols'] == 2 and c1['rows'] == 2) or (len(card['options']) == 3 and not c1['grid'] and c1['cols'] == 1))
+              and not c1['input'] and not c1['audio'] and not c1['replay'] and c1['hint'] == bool(card.get('hint_en')) and c1['dontknow'] and c1['docScroll'] <= 1, c1)
+        await dr_shot(page, '02-drill-card.png')
+        if c1['hint']:
+            await page.click('[data-act=hint]')
+            ht = await page.text_content('[data-testid=hint-box]')
+            check('drill card: hint_en behind the same Hint button as other cards', card['hint_en'].split('/')[0].strip()[:20] in ht, ht)
+        # wrong answer first (feedback screenshot), then right answers, one "I don't know"
+        wrong = next(o for o in c1['opts'] if o != card['answer'])
+        await click_option(page, wrong)
+        await page.wait_for_selector('[data-state=wrong]')
+        fb = await page.evaluate("""() => { const q = (s) => document.querySelector('#app ' + s); const why = q('[data-testid=drill-why]');
+            const opt = (v) => [...document.querySelectorAll('#app [data-opt]')].find(b => b.dataset.value === v);
+            return { blank: q('[data-testid=blank]').textContent.trim(), result: q('[data-testid=result]').textContent.trim(), why: why && why.textContent,
+                     whyColor: why && getComputedStyle(why).color, whyLines: why && Math.round(why.getBoundingClientRect().height / parseFloat(getComputedStyle(why).lineHeight)),
+                     next: !!q('[data-act=next]'), focus: document.activeElement && document.activeElement.dataset.act }; }""")
+        cls = await page.evaluate(f"(() => {{ const m = {{}}; document.querySelectorAll('#app [data-opt]').forEach(b => m[b.dataset.value] = b.className); return m; }})()")
+        check('drill feedback (wrong): right form in the blank, "Not quite", the one-sentence why in gray-600, your pick red, right answer green, Next',
+              fb['blank'] == card['answer'] and fb['result'] == 'Not quite' and fb['why'] == card['explanation_en'] and fb['whyColor'] == 'rgb(155, 155, 163)' and fb['whyLines'] <= 3
+              and 'is-wrong' in cls[wrong] and 'is-correct' in cls[card['answer']] and fb['next'] and fb['focus'] == 'next', {'fb': fb, 'cls': cls})
+        await dr_shot(page, '03-drill-feedback.png')
+        seen = [card['id']]
+        skipped_id = None
+        opt_orders_moved = int(c1['opts'] != card['options'])
+        for i in range(1, n20):
+            await page.click('[data-act=next]'); await page.wait_for_selector('[data-screen=card][data-state=question]')
+            cur = await current(page)
+            c = dby[cur['card']]; seen.append(c['id'])
+            shown = await page.evaluate("[...document.querySelectorAll('#app [data-opt]')].map(b => b.dataset.value)")
+            opt_orders_moved += int(shown != c['options'])
+            if i == 3:
+                skipped_id = c['id']; await page.click('[data-act=dontknow]')
+            else:
+                await click_option(page, c['answer'])
+            await page.wait_for_selector('[data-state=correct], [data-state=wrong]')
+            if i == 1:
+                st = await page.evaluate("(() => ({ state: document.querySelector('#app .screen').dataset.state, result: document.querySelector('#app [data-testid=result]').textContent.trim(), blank: document.querySelector('#app [data-testid=blank]').className }))()")
+                check('drill feedback (right): "Correct", the right form in a green blank, Next (same flow as other option cards)', st['state'] == 'correct' and st['result'] == 'Correct' and 'ok' in st['blank'], st)
+        check(f'drill session: {n20} cards in a row, all level "drill", no repeats; options shuffled ({opt_orders_moved} of {n20} not in content order)',
+              len(seen) == n20 and len(set(seen)) == n20 and all(s in dby for s in seen) and opt_orders_moved >= n20 // 4, opt_orders_moved)
+        await page.click('[data-act=next]')
+        await page.wait_for_selector('[data-screen=summary][data-level=drill]')
+        sent = await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 8000)
+        rows = fake.ok_rows()
+        rows_ok = sent and len(rows) == n20 and [r['card_id'] for r in rows] == seen and all(
+            r['level'] == 'drill' and r['topic'] == dby[r['card_id']]['topic'] and r['replays'] == 0 and r['mission_id'] == '' and r['stars'] == ''
+            and r['used_slow'] is False and r['skipped'] is (r['card_id'] == skipped_id) for r in rows)
+        check('drill results rows: level "drill", topic = the card\'s own verbs_* topic, replays 0, no stars (blank), skipped only on the "I don\'t know" card',
+              rows_ok and rows[0]['correct'] is False and rows[0]['answer_given'] == wrong, rows[:2])
+        sm = await page.evaluate("""() => { const q = (s) => document.querySelector('#app ' + s);
+            return { score: q('[data-testid=score]').textContent, misses: [...document.querySelectorAll('#app [data-testid=drill-miss]')].map(m => ({ id: m.dataset.card,
+                       given: m.querySelector('.dm-given').textContent, deco: getComputedStyle(m.querySelector('.dm-given')).textDecorationLine, gc: getComputedStyle(m.querySelector('.dm-given')).color,
+                       right: m.querySelector('.dm-right').textContent, rc: getComputedStyle(m.querySelector('.dm-right')).color })),
+                     another: q('[data-act=another-drill]') && q('[data-act=another-drill]').textContent, done: !!q('[data-act=done]'), stars: !!q('.stars') }; }""")
+        m0 = sm['misses'][0] if sm['misses'] else {}
+        check(f'drill end screen: "{n20 - 2} of {n20} right", missed pairs side by side (your form struck through in red, right form green; skipped shown as "skipped"), '
+              f'primary "Another {n20}" + Done, no stars',
+              sm['score'] == f'{n20 - 2} of {n20} right' and len(sm['misses']) == 2 and m0.get('given') == wrong and m0.get('deco') == 'line-through' and m0.get('gc') == 'rgb(240, 122, 106)'
+              and m0.get('right') == card['answer'] and m0.get('rc') == 'rgb(76, 195, 138)' and sm['misses'][1]['given'] == 'skipped' and sm['another'] == f'Another {n20}' and sm['done'] and not sm['stars'], sm)
+        await dr_shot(page, '08-drill-end-screen.png')
+        # missed cards are weighted up: the two just missed come back far more often than the average drill card
+        wr = await page.evaluate(f"""import('./js/srs.js').then((srs) => {{ const S = window.__oye; const p = srs.load(); const miss = {json.dumps([card['id'], skipped_id])};
+            let hit = 0, all = 0; for (let k = 0; k < 300; k++) {{ const pl = srs.planDrill(p, S.drill); hit += pl.filter(c => miss.includes(c.id)).length; all += pl.length; }}
+            return {{ missRate: hit / (300 * miss.length), avg: all / (300 * S.drill.length) }}; }})""")
+        check('drill weighting: cards missed in the last drill are much more likely in the next one (300 plans)', wr['missRate'] > 1.5 * wr['avg'], wr)
+        await page.click('[data-act=another-drill]')
+        await page.wait_for_selector('[data-screen=card][data-state=question]')
+        again = await page.evaluate("({ count: document.querySelector('#app .count').textContent, level: window.__oye.session.level })")
+        check(f'drill end screen: "Another {n20}" starts a new drill', again == {'count': f'1 of {n20}', 'level': 'drill'}, again)
+        await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
+        tot = (await page.text_content('[data-testid=stars-total]')).strip()
+        check('drill: no stars (home total unchanged at 0)', tot == '0', tot)
+        # every drill card: sentence max 3 lines (title style), options short enough for the 2 x 2 grid; the explanation
+        # should be max 2 lines (Picasso) - cards over that are listed as a content NOTE, and the longest one must still fit.
+        fit = await page.evaluate("""(cards) => { const box = document.createElement('div'); box.className = 'card-inner'; box.style.cssText = 'position:absolute;left:0;top:0;visibility:hidden';
+            document.getElementById('app').appendChild(box); const out = {};
+            const lines = (e) => Math.round(e.getBoundingClientRect().height / parseFloat(getComputedStyle(e).lineHeight));
+            for (const w of [342, 312]) {
+              box.style.width = w + 'px'; const bad = { sentence: [], why: [], opt: [] };
+              for (const c of cards) {
+                box.innerHTML = `<p class="sentence">${c.sentence.replace(/_{2,}/, '<span class="blank">' + c.answer + '</span>')}</p><p class="drill-why">${c.explanation_en || ''}</p>`;
+                if (lines(box.children[0]) > 3) bad.sentence.push(c.id); if (lines(box.children[1]) > 2) bad.why.push(c.id);
+                if (!c.options.every((o) => o.length <= 14)) bad.opt.push(c.id);
+              }
+              out[w] = bad;
+            }
+            box.remove(); return out; }""", drill)
+        check(f'drill layout (all {len(drill)} drill cards, 390 wide): sentence max 3 lines (title style), options short enough for the 2 x 2 grid',
+              not fit['342']['sentence'] and not fit['342']['opt'] and not fit['312']['opt'], fit)
+        if fit['342']['why'] or fit['312']['why'] or fit['312']['sentence']:
+            print(f"NOTE  drill content over the line limits: explanation > 2 lines at 390 wide {fit['342']['why']}, at 360 wide {fit['312']['why']}; "
+                  f"sentence > 3 lines at 360 wide {fit['312']['sentence']}", flush=True)
+        longest = max(drill, key=lambda c: len(c.get('explanation_en') or '') + len(c['sentence']))
+        await page.evaluate(f"(() => {{ const S = window.__oye; S.drill = [S.drill.find(c => c.id === {json.dumps(longest['id'])})]; }})()")
+        await page.click('[data-act=drill]'); await page.wait_for_selector(f'[data-card={longest["id"]}]')
+        await click_option(page, next(o for o in longest['options'] if o != longest['answer']))
+        await page.wait_for_selector('[data-state=wrong]')
+        lf = await page.evaluate("(() => { const sc = document.querySelector('#app .card-zone .scroller'), n = document.querySelector('#app [data-act=next]').getBoundingClientRect(); return { overflow: sc.scrollHeight - sc.clientHeight, next: n.bottom, vh: innerHeight, doc: document.scrollingElement.scrollHeight - innerHeight }; })()")
+        check(f'[390x844] drill feedback for the longest sentence + explanation ({longest["id"]}) fits: nothing scrolls, Next on screen', lf['overflow'] <= 1 and lf['doc'] <= 1 and lf['next'] <= lf['vh'], lf)
+        await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
+        # a 3-option drill card (allowed by the format; the fixture has some) is stacked full width
+        three = next(c for c in json.load(open(DRILL_FIXTURE, encoding='utf-8')) if len(c['options']) == 3)
+        await page.evaluate(f"(() => {{ window.__oye.drill = [{json.dumps(three, ensure_ascii=False)}]; }})()")
+        await page.click('[data-act=drill]'); await page.wait_for_selector(f'[data-card={three["id"]}]')
+        c3 = await page.evaluate(DRILL_CARD_JS)
+        check('drill card with 3 options: stacked full width (1 column, 3 rows), one tap per answer',
+              not c3['grid'] and c3['cols'] == 1 and c3['rows'] == 3 and sorted(c3['opts']) == sorted(three['options']) and not c3['input'], c3)
+        await click_option(page, three['answer']); await page.wait_for_selector('[data-state=correct]')
+        await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
+        check('drill suite: no JS errors', not errors, errors[:3])
+        await ctx.close()
+    finally:
+        server.terminate(); server.wait()
+        shutil.rmtree(site, ignore_errors=True)
+
+    # without drill cards (today's app content) the Verb drill row is hidden
+    ctx, page = await new_page(browser, errors, viewport={'width': 390, 'height': 844})
+    await home_fresh(page, base)
+    n_drill = await page.evaluate("window.__oye.drill.length")
+    check('home without drill cards (current content): no Verb drill row', not await page.query_selector('[data-testid=drill-row]') and n_drill == len([c for c in cards if c.get('level') == 'drill']) == 0, n_drill)
+    await ctx.close()
+
+    # ================= 3. Mission Read view (real app content) =================
+    fake = FakeEndpoint('ok')
+    ctx, page = await new_page(browser, errors, viewport={'width': 390, 'height': 844}, endpoint=fake)
+    await home_fresh(page, base)
+    await page.click('[data-act=hard]'); await page.wait_for_selector('[data-screen=missions]')
+    check('missions list: unfinished missions show no Read link', not await page.query_selector('[data-testid=read-link]'))
+    await page.evaluate("localStorage.setItem('oye.stars.v1', JSON.stringify({ topics: {}, missions: { 'm-metro-01': 2, 'm-landlord-whatsapp-01': 1 }, easy: 0, log: [] }))")
+    await home_fresh(page, base)
+    await page.click('[data-act=hard]'); await page.wait_for_selector('[data-screen=missions]')
+    ml = await page.evaluate("""() => [...document.querySelectorAll('[data-testid=mission-row]')].map((row) => {
+        const r = (e) => { const b = e.getBoundingClientRect(); return { top: b.top, bottom: b.bottom, left: b.left, right: b.right, w: b.width, h: b.height }; };
+        const link = row.querySelector('[data-testid=read-link]'), st = row.querySelector('.stars'), text = row.querySelector('.ch-text');
+        if (!link) return { id: row.dataset.mission, link: false };
+        const cs = getComputedStyle(link), lr = r(link), sr = r(st), rr = r(row), tr = r(text);
+        const label = document.createRange(); label.selectNodeContents(link); const lb = label.getBoundingClientRect();
+        return { id: row.dataset.mission, link: true, text: link.textContent, color: cs.color, font: [cs.fontSize, cs.fontWeight], hit: [lr.w, lr.h],
+                 inRow: lr.left >= rr.left && lr.right <= rr.right && lr.top >= rr.top - 0.5 && lr.bottom <= rr.bottom + 0.5,
+                 sameLine: Math.abs((lb.top + lb.bottom) / 2 - (sr.top + sr.bottom) / 2) <= 4, rightAligned: Math.abs(lb.right - tr.right) <= 1, oppositeStars: lb.left > sr.right + 100,
+                 topAtCenter: document.elementFromPoint(lr.left + lr.w / 2, lr.top + lr.h / 2) === link }; })""")
+    fin = {r['id']: r for r in ml}
+    ok_links = (not fin['m-voicemail-clinic-01']['link'] and all(fin[i]['link'] and fin[i]['text'] == 'Read' and fin[i]['color'] == 'rgb(110, 139, 255)' and fin[i]['font'] == ['13px', '500']
+                and fin[i]['hit'][0] >= 44 and fin[i]['hit'][1] >= 44 and fin[i]['inRow'] and fin[i]['sameLine'] and fin[i]['rightAligned'] and fin[i]['oppositeStars'] and fin[i]['topAtCenter']
+                for i in ('m-metro-01', 'm-landlord-whatsapp-01')))
+    check('missions list: finished missions show "Read" on the bottom line, right-aligned opposite the stars, accent blue capMed (13/500), 44x44+ tap area inside the card; unfinished: none', ok_links, ml)
+    await dr_shot(page, '04-missions-list-read.png')
+    # tapping the card anywhere else still opens the mission
+    tbox = await (await page.query_selector('[data-mission=m-metro-01] .ch-title')).bounding_box()
+    await page.mouse.click(tbox['x'] + 20, tbox['y'] + tbox['height'] / 2)
+    await page.wait_for_selector('[data-screen=mission-intro][data-mission=m-metro-01]')
+    await page.go_back(); await page.wait_for_selector('[data-screen=missions]')
+    box = await (await page.query_selector('[data-mission=m-metro-01] .stars')).bounding_box()
+    await page.mouse.click(box['x'] + 4, box['y'] + 4)
+    await page.wait_for_selector('[data-screen=mission-intro][data-mission=m-metro-01]')
+    check('missions list: a tap on the title or the stars (anywhere but Read) still opens the mission', True)
+    await page.go_back(); await page.wait_for_selector('[data-screen=missions]')
+    queue0 = await page.evaluate("localStorage.getItem('oye.resultsQueue.v1') || '[]'")
+    stars0 = await page.evaluate("localStorage.getItem('oye.stars.v1')")
+    calls0 = len(fake.calls)
+    # ---- Read view, audio mission ----
+    await page.click('[data-mission=m-metro-01] [data-testid=read-link]')
+    await page.wait_for_selector('[data-screen=mission-read][data-mission=m-metro-01]')
+    await page.wait_for_timeout(1000)
+    READ_JS = """() => { const q = (s) => document.querySelector('#app ' + s), a = window.__oyeAudioEl, pl = q('[data-testid=player]'), zone = q('.rd-zone');
+      return { from: q('.screen').dataset.from, back: q('[data-testid=read-back]').textContent.trim(), player: !!pl, playerAbove: pl ? pl.getBoundingClientRect().bottom <= zone.getBoundingClientRect().top : null,
+               time: q('.pl-el') && q('.pl-el').textContent, paused: a.paused, clip: a.dataset.clip || '', label: q('[data-act=pl-play]') && q('[data-act=pl-play]').getAttribute('aria-label'),
+               lines: [...document.querySelectorAll('#app .dline')].map((d) => ({ spk: d.querySelector('.spk').textContent, voice: d.dataset.voice, color: getComputedStyle(d.querySelector('.spk')).color,
+                  es: d.querySelector('.es').textContent, en: d.querySelector('.en') && d.querySelector('.en').textContent, enColor: d.querySelector('.en') && getComputedStyle(d.querySelector('.en')).color })),
+               questions: !!document.querySelector('#app [data-opt], #app .mopt, #app [data-act=check], #app .stars'),
+               bubble: q('[data-testid=bubble]') && q('[data-testid=bubble]').childNodes[0].textContent, en: q('[data-testid=read-en]') && q('[data-testid=read-en]').textContent }; }"""
+    rd = await page.evaluate(READ_JS)
+    m = mby['m-metro-01']
+    want = [(l['speaker'], l['voice'], VOICE_COLOR[l['voice']], l['es'], l['en'], 'rgb(155, 155, 163)') for l in m['media']['lines']]
+    got = [(l['spk'], l['voice'], l['color'], l['es'], l['en'], l['enColor']) for l in rd['lines']]
+    check('Read view (audio): player bar at the top at 0:00, nothing playing (no autoplay), the full script with speaker labels in the voice colour and each line\'s English under it in gray-600; no questions or stars; Back = "Missions"',
+          rd['from'] == 'missions' and rd['back'] == 'Missions' and rd['player'] and rd['playerAbove'] and rd['time'] == '0:00' and rd['paused'] and rd['clip'] == '' and rd['label'] == 'Play'
+          and got == want and not rd['questions'], {'rd': {k: v for k, v in rd.items() if k != 'lines'}, 'first': got[:1]})
+    await dr_shot(page, '05-read-view-audio.png')
+    await page.click('[data-act=pl-play]'); await page.wait_for_timeout(700)
+    playing = await page.evaluate("(() => { const a = window.__oyeAudioEl; return { playing: !a.paused, clip: a.dataset.clip, label: document.querySelector('[data-act=pl-play]').getAttribute('aria-label') }; })()")
+    await page.click('[data-act=pl-play]'); await page.wait_for_timeout(200)
+    stopped = await page.evaluate("window.__oyeAudioEl.paused")
+    check('Read view: the player plays the mission clip on a tap and a second tap stops it', playing == {'playing': True, 'clip': 'm-metro-01', 'label': 'Pause'} and stopped, playing)
+    await page.click('[data-act=pl-play]'); await page.wait_for_timeout(300)
+    await page.click('[data-act=read-back]'); await page.wait_for_selector('[data-screen=missions]')
+    after = await page.evaluate("(() => ({ paused: window.__oyeAudioEl.paused, queue: localStorage.getItem('oye.resultsQueue.v1') || '[]', stars: localStorage.getItem('oye.stars.v1') }))()")
+    check('Read view: Back returns to the missions list and stops the audio; nothing written to results, stars unchanged',
+          after['paused'] and after['queue'] == queue0 and after['stars'] == stars0 and len(fake.calls) == calls0, after)
+    # ---- Read view, message mission ----
+    await page.click('[data-mission=m-landlord-whatsapp-01] [data-testid=read-link]')
+    await page.wait_for_selector('[data-screen=mission-read][data-mission=m-landlord-whatsapp-01]')
+    rm = await page.evaluate(READ_JS)
+    lm = mby['m-landlord-whatsapp-01']['media']
+    check('Read view (message): the message text and its English, no player, no questions',
+          not rm['player'] and rm['bubble'] == lm['text_es'] and rm['en'] == lm['text_en'] and not rm['questions'], {k: rm[k] for k in ('player', 'questions')})
+    await dr_shot(page, '06-read-view-message.png')
+    await page.go_back(); await page.wait_for_selector('[data-screen=missions]')
+    # ---- intro of a finished mission: "Read script" under "Start mission"; the Read view's plays never count ----
+    await page.click('[data-mission=m-metro-01]'); await page.wait_for_selector('[data-screen=mission-intro]')
+    ib = await page.evaluate("(() => { const r = (s) => document.querySelector(s)?.getBoundingClientRect(); const a = r('[data-act=begin]'), b = r('[data-testid=read-script]'); return b ? { below: b.top >= a.bottom - 0.5, text: document.querySelector('[data-testid=read-script]').textContent, cls: document.querySelector('[data-testid=read-script]').className } : null; })()")
+    check('finished mission intro: a "Read script" text button under "Start mission"', ib and ib['below'] and ib['text'] == 'Read script' and 'btn-text' in ib['cls'], ib)
+    await page.click('[data-testid=read-script]'); await page.wait_for_selector('[data-screen=mission-read][data-from=intro]')
+    back_lbl = (await page.text_content('[data-testid=read-back]')).strip()
+    await page.click('[data-act=pl-play]'); await page.wait_for_timeout(500)
+    await page.click('[data-act=read-back]'); await page.wait_for_selector('[data-screen=mission-intro][data-mission=m-metro-01]')
+    await page.click('[data-act=begin]'); await page.wait_for_selector('[data-screen=mission-q][data-q=q1]')
+    await page.wait_for_timeout(400)
+    q1 = await page.evaluate("(() => ({ plays: window.__oye.mission.plays, time: document.querySelector('.pl-el').textContent, paused: window.__oyeAudioEl.paused }))()")
+    check('Read view from the intro: Back ("Mission") returns to the intro; plays in the Read view do not count toward question 1 (player back at 0:00, plays 0)',
+          back_lbl == 'Mission' and q1 == {'plays': 0, 'time': '0:00', 'paused': True}, {'back': back_lbl, 'q1': q1})
+    await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
+    # unfinished mission intro: no Read script
+    await page.click('[data-act=hard]'); await page.click('[data-mission=m-voicemail-clinic-01]'); await page.wait_for_selector('[data-screen=mission-intro]')
+    check('unfinished mission intro: no "Read script"', not await page.query_selector('[data-testid=read-script]'))
+    await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
+    # ---- result screen: "Read script" under the main button ----
+    await page.click('[data-act=hard]'); await page.click('[data-mission=m-landlord-whatsapp-01]'); await page.wait_for_selector('[data-screen=mission-intro]')
+    await page.click('[data-act=begin]'); await page.wait_for_selector('[data-screen=mission-msg]')
+    await page.click('[data-act=to-questions]')
+    for q in mby['m-landlord-whatsapp-01']['questions']:
+        await page.wait_for_selector(f'[data-screen=mission-q][data-q={q["id"]}]')
+        if q['kind'] == 'pick':
+            await page.click(f'[data-opt="{q["options"].index(q["answer"])}"]'); await page.click('[data-act=check]')
+        elif await page.query_selector('#fix-input'):
+            await page.fill('#fix-input', q['answer']); await page.click('[data-act=check]')
+        else:
+            for ch in q['answer']:
+                await page.click(f'[data-key="{ch}"]')
+            await page.click('[data-act=check]')
+    await page.wait_for_selector('[data-screen=mission-result]')
+    await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 8000)
+    n_rows = len(fake.ok_rows())
+    score = await page.text_content('[data-testid=score]')
+    rb = await page.evaluate("(() => { const d = document.querySelector('[data-act=done]').getBoundingClientRect(), b = document.querySelector('[data-testid=read-script]'); return b ? { below: b.getBoundingClientRect().top >= d.bottom - 0.5, text: b.textContent.trim(), cls: b.className, inView: b.getBoundingClientRect().bottom <= innerHeight } : null; })()")
+    check('mission result: a "Read script" text button under the main button (Done), on screen', rb and rb['below'] and rb['text'] == 'Read script' and 'btn-text' in rb['cls'] and rb['inView'], rb)
+    await page.wait_for_timeout(200)
+    await dr_shot(page, '07-mission-result-read-script.png')
+    await page.click('[data-testid=read-script]'); await page.wait_for_selector('[data-screen=mission-read][data-from=result]')
+    rl = (await page.text_content('[data-testid=read-back]')).strip()
+    await page.click('[data-act=read-back]'); await page.wait_for_selector('[data-screen=mission-result]')
+    await page.wait_for_timeout(500)
+    score2 = await page.text_content('[data-testid=score]')
+    check('Read view from the result: Back ("Results") returns to the same result; no extra results rows sent',
+          rl == 'Results' and score2 == score and len(fake.ok_rows()) == n_rows, {'back': rl, 'rows': (n_rows, len(fake.ok_rows()))})
+    check('drill-read mission suite: no JS errors', not [e for e in errors if 'net::' not in e], errors[:3])
     await ctx.close()
 
 

@@ -21,12 +21,15 @@ export const TOPICS = [
 ];
 export const topicName = (code) => (TOPICS.find((t) => t.code === code) || {}).name || String(code || '').replace(/_/g, ' ');
 
-/** A card's level. Missing (all v1 cards) means Easy. */
+/** A card's level. Missing (all v1 cards) means Easy. v2.2: "drill" = Verb drill cards (only in the Verb drill). */
 export const levelOf = (card) => {
   const l = card && card.level;
-  return l === 'medium' || l === 'hard' ? l : 'easy';
+  return l === 'medium' || l === 'hard' || l === 'drill' ? l : 'easy';
 };
 export const isEasy = (card) => levelOf(card) === 'easy';
+export const isDrill = (card) => levelOf(card) === 'drill';
+/** Verb drill topics (content-format v2.2). */
+export const DRILL_TOPICS = ['verbs_past', 'verbs_present', 'verbs_commands', 'verbs_future'];
 
 /**
  * Stars for a finished session (spec: 1 = finished, 2 = 70%+, 3 = 90%+ without hints).

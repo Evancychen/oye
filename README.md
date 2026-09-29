@@ -110,12 +110,49 @@ Spec: `../design/levels-v2-spec.md` → "No autoplay".
 - **Topic grid**: tiles are flex columns (name at the top, stars pinned to the bottom with at least 12px above them,
   `grid-auto-rows: 1fr`), so two-line names ("Future & conditional") no longer crowd the stars and every tile lines up.
 
+## drill-read: shuffled topics, Verb drill, mission Read view
+
+Spec: `../design/levels-v2-spec.md` → "Verb drill" and "Read view for finished missions"; content format v2.2.
+
+- **Shuffled Medium topics**: every topic start shuffles the card order and each option card's option order
+  (`srs.planTopic` → `shuffle` + `withShuffledOptions`, session copies of the cards). A topic with more than 10
+  playable cards gets 10 picked at random, weighted toward missed and due cards (`srs.pickWeight`: never seen 8,
+  wrong last time / low box / wrong rate up to ~15, +3 when due, known and not due 1). The answer check and the
+  feedback compare option **values** with `answer` (the buttons index the session copy's own options; they also carry
+  `data-value`). Stars work as before. **Easy (Quick session) does not shuffle options**; that is unchanged
+  (`planSession` is a separate code path).
+- **Verb drill**: cards with `level: "drill"` (content format v2.2: `fix_it`, 3-4 `options` with `answer` among them,
+  no audio, `topic` verbs_past / verbs_present / verbs_commands / verbs_future; `prompt_en` names verb, person and
+  tense) are **only** in the drill: `levelOf()` returns `"drill"` for them, so they are in neither the Easy pool
+  (Quick session, lessons, SRS plan) nor Medium (topic grid/sessions). Other unknown levels still count as Easy.
+  - Home: a slim "Verb drill" row under the Medium and Hard cards ("20 quick questions · no audio", chevron); it is
+    hidden while the content has no drill cards. On ≤700 px tall phones the home tightens a little more when the row is there.
+  - Session: 20 cards in a row (fewer if fewer exist), `srs.planDrill` (same weighting as topics, missed cards come
+    up more often), options shuffled. Card: `prompt_en` as a small capMed gray label (normal case) above the sentence
+    (title style), the usual Hint button for `hint_en`, options as one tap each (4 short options = 2 x 2 grid,
+    3 = stacked), "I don't know". Feedback: right form in the blank, Correct / Not quite, `explanation_en` in gray,
+    options marked (your pick red, right green), Next.
+  - End screen: "N of M right", missed pairs side by side (your form struck through in red → right form in green;
+    "skipped" for I don't know), primary "Another 20", text button "Done". No stars.
+  - Results rows: `level: "drill"`, `topic` = the card's own verbs_* topic, `replays: 0`, `stars` blank, `skipped`.
+  - `fix_it` cards with `options` render as tap options (this was already supported); without options they are typed.
+- **Mission Read view** (finished missions = a mission with stored stars): "Read" (accent capMed, 44 x 44 tap area) on the
+  missions list card's bottom line opposite the stars (the rest of the card still opens the mission); "Read script"
+  text button under "Start mission" on a finished mission's intro and under "Done" on the result screen. The Read view
+  (`data-screen=mission-read`) has a back link to where it was opened from ("Missions" / "Mission" / "Results"),
+  the player bar at the top (0:00, no autoplay; its own state, so plays there never count toward a question's replays),
+  then the script: speaker labels in the voice colours (Alonso blue, Paloma green) with each line's English under it
+  in gray-600, or for message missions the message and its English. No questions, stars unchanged, nothing sent.
+- Tests: `drill_read_suite` in `tests/e2e_test.py`. Drill tests run on a temporary copy of the app whose
+  `cards.json` also has drill cards (from the app content if it has them, else the team's `../content/cards.json`,
+  else `tests/fixtures/drill_cards.json`). Screenshots: `screenshots/drill-read/` (or `$OYE_DRILL_SHOTS`).
+
 ## v2: levels, topic challenges and missions
 
-- **Levels** come from each card's `level` (`easy` default, `medium`, `hard`); `js/levels.js` has the topic
+- **Levels** come from each card's `level` (`easy` default, `medium`, `hard`, and `drill` since drill-read); `js/levels.js` has the topic
   names, `levelOf()` and the star rule. Lessons, Quick session and the SRS pool use **Easy** cards only.
 - **Home**: streak + stars earned, price trend, then CHALLENGES: *Medium · Topic challenge* (topic grid →
-  10-card session drawn from that topic, `planTopic` in `js/srs.js`) and *Hard · Real-life mission*
+  10-card session drawn from that topic, `planTopic` in `js/srs.js`, shuffled since drill-read) and *Hard · Real-life mission*
   (missions list → intro → message/player → questions → result). The EASY caption above Quick session opens
   the Lessons sheet (it replaces the old Lessons row).
 - **Stars** (`oye.stars.v1` in localStorage): 1 = finished, 2 = 70%+, 3 = 90%+ with no hints; in Medium a correct
@@ -176,6 +213,10 @@ a bare `qN` is rewritten to that form), and only ids in the loaded content. The 
 so rows with the two new fields are still accepted (and simply not stored) while v3 is live. The queue coerces the
 two fields when present (replays integer 0-99, skipped boolean); rows queued by an older app version without them
 still send unchanged (v4 stores replays blank and skipped false for them). Mission rows send `skipped: false`.
+
+Verb drill rows (drill-read) send `level: "drill"`. **The deployed Apps Script v4 only keeps `easy` / `medium` / `hard`
+in the level column** (`LEVELS` in `oye-results-script.gs`), so until the script adds `drill` those rows are stored
+with a blank level (card id, topic and everything else are kept).
 
 ## How content works at runtime
 

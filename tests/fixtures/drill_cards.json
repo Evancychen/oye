@@ -1,0 +1,736 @@
+[
+ {
+  "id": "c-9101",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_commands",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "tener, tú, command",
+  "sentence": "___ cuidado con el tráfico.",
+  "options": [
+   "Ten",
+   "Tenga",
+   "Tienes",
+   "Tené"
+  ],
+  "answer": "Ten",
+  "accepted_answers": [
+   "Ten"
+  ],
+  "hint_en": "tener: tú, command",
+  "explanation_en": "Tener has a short tú command: ten.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9102",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_commands",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "venir, tú, command",
+  "sentence": "___ a mi casa el sábado.",
+  "options": [
+   "Ven",
+   "Venga",
+   "Vienes"
+  ],
+  "answer": "Ven",
+  "accepted_answers": [
+   "Ven"
+  ],
+  "hint_en": "venir: tú, command",
+  "explanation_en": "Venir has a short tú command: ven.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9103",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_commands",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "hacer, usted, command",
+  "sentence": "Por favor, ___ la tarea hoy.",
+  "options": [
+   "haga",
+   "haz",
+   "hace",
+   "hazga"
+  ],
+  "answer": "haga",
+  "accepted_answers": [
+   "haga"
+  ],
+  "hint_en": "hacer: usted, command",
+  "explanation_en": "Usted commands use the yo stem: hago → haga.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9104",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_commands",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "poner, tú, command",
+  "sentence": "___ la mesa, por favor.",
+  "options": [
+   "Pon",
+   "Ponga",
+   "Pone"
+  ],
+  "answer": "Pon",
+  "accepted_answers": [
+   "Pon"
+  ],
+  "hint_en": "poner: tú, command",
+  "explanation_en": "Poner has a short tú command: pon.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9105",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_commands",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "decir, usted, command",
+  "sentence": "___ me su nombre, por favor.",
+  "options": [
+   "Díga",
+   "Di",
+   "Dice",
+   "Diga"
+  ],
+  "answer": "Diga",
+  "accepted_answers": [
+   "Diga"
+  ],
+  "hint_en": "decir: usted, command",
+  "explanation_en": "Usted command of decir: diga (no accent).",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9106",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_commands",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "salir, tú, command",
+  "sentence": "___ temprano para no llegar tarde.",
+  "options": [
+   "Sal",
+   "Sale",
+   "Salga",
+   "Salí"
+  ],
+  "answer": "Sal",
+  "accepted_answers": [
+   "Sal"
+  ],
+  "hint_en": "salir: tú, command",
+  "explanation_en": "Salir has a short tú command: sal.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9107",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_present",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "tener, yo, present",
+  "sentence": "Yo ___ dos hermanos.",
+  "options": [
+   "tengo",
+   "teno",
+   "tiene",
+   "tienes"
+  ],
+  "answer": "tengo",
+  "accepted_answers": [
+   "tengo"
+  ],
+  "hint_en": "tener: yo, present",
+  "explanation_en": "Tener is irregular in yo: tengo, not \"teno\".",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9108",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_present",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "poder, nosotros, present",
+  "sentence": "Nosotros no ___ ir mañana.",
+  "options": [
+   "podemos",
+   "puedemos",
+   "pueden"
+  ],
+  "answer": "podemos",
+  "accepted_answers": [
+   "podemos"
+  ],
+  "hint_en": "poder: nosotros, present",
+  "explanation_en": "Poder keeps o in nosotros: podemos.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9109",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_present",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "querer, ella, present",
+  "sentence": "Ella ___ un café.",
+  "options": [
+   "quiere",
+   "quere",
+   "quieres",
+   "quero"
+  ],
+  "answer": "quiere",
+  "accepted_answers": [
+   "quiere"
+  ],
+  "hint_en": "querer: ella, present",
+  "explanation_en": "Querer changes e → ie: quiere.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9110",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_present",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "conocer, yo, present",
+  "sentence": "Yo no ___ a tu hermano.",
+  "options": [
+   "conozco",
+   "conoco",
+   "conoce"
+  ],
+  "answer": "conozco",
+  "accepted_answers": [
+   "conozco"
+  ],
+  "hint_en": "conocer: yo, present",
+  "explanation_en": "Conocer adds z in yo: conozco.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9111",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_present",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "salir, yo, present",
+  "sentence": "Yo ___ del trabajo a las seis.",
+  "options": [
+   "salgo",
+   "salo",
+   "sale",
+   "sales"
+  ],
+  "answer": "salgo",
+  "accepted_answers": [
+   "salgo"
+  ],
+  "hint_en": "salir: yo, present",
+  "explanation_en": "Salir adds g in yo: salgo.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9112",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_present",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "ir, ustedes, present",
+  "sentence": "¿A dónde ___ ustedes?",
+  "options": [
+   "van",
+   "vais",
+   "vamos"
+  ],
+  "answer": "van",
+  "accepted_answers": [
+   "van"
+  ],
+  "hint_en": "ir: ustedes, present",
+  "explanation_en": "Ustedes uses the ellos form: van.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9113",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_past",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "estar, yo, preterite",
+  "sentence": "Ayer ___ en casa todo el día.",
+  "options": [
+   "estuve",
+   "estaba",
+   "estuvo",
+   "esté"
+  ],
+  "answer": "estuve",
+  "accepted_answers": [
+   "estuve"
+  ],
+  "hint_en": "estar: yo, preterite",
+  "explanation_en": "Estar in the preterite: yo estuve.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9114",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_past",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "tener, ellos, preterite",
+  "sentence": "Ellos ___ un problema con el coche.",
+  "options": [
+   "tuvieron",
+   "tenieron",
+   "tuvo"
+  ],
+  "answer": "tuvieron",
+  "accepted_answers": [
+   "tuvieron"
+  ],
+  "hint_en": "tener: ellos, preterite",
+  "explanation_en": "Tener has the stem tuv- in the preterite.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9115",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_past",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "hacer, tú, preterite",
+  "sentence": "¿Qué ___ el fin de semana?",
+  "options": [
+   "hiciste",
+   "haciste",
+   "hizo",
+   "hacías"
+  ],
+  "answer": "hiciste",
+  "accepted_answers": [
+   "hiciste"
+  ],
+  "hint_en": "hacer: tú, preterite",
+  "explanation_en": "Hacer in the preterite: tú hiciste.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9116",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_past",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "ir, nosotros, preterite",
+  "sentence": "El viernes ___ al cine.",
+  "options": [
+   "fuimos",
+   "íbamos",
+   "fueron",
+   "vamos"
+  ],
+  "answer": "fuimos",
+  "accepted_answers": [
+   "fuimos"
+  ],
+  "hint_en": "ir: nosotros, preterite",
+  "explanation_en": "One finished trip: preterite fuimos.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9117",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_past",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "decir, ella, preterite",
+  "sentence": "Ella me ___ la verdad.",
+  "options": [
+   "dijo",
+   "dició",
+   "dije"
+  ],
+  "answer": "dijo",
+  "accepted_answers": [
+   "dijo"
+  ],
+  "hint_en": "decir: ella, preterite",
+  "explanation_en": "Decir in the preterite: ella dijo.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9118",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_past",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "poder, yo, preterite",
+  "sentence": "No ___ llamarte ayer.",
+  "options": [
+   "pude",
+   "podí",
+   "pudo",
+   "podía"
+  ],
+  "answer": "pude",
+  "accepted_answers": [
+   "pude"
+  ],
+  "hint_en": "poder: yo, preterite",
+  "explanation_en": "Poder in the preterite: yo pude.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9119",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_future",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "tener, yo, future",
+  "sentence": "Mañana ___ más tiempo.",
+  "options": [
+   "tendré",
+   "teneré",
+   "tendrá",
+   "tengo"
+  ],
+  "answer": "tendré",
+  "accepted_answers": [
+   "tendré"
+  ],
+  "hint_en": "tener: yo, future",
+  "explanation_en": "Tener has the future stem tendr-.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9120",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_future",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "salir, ellos, future",
+  "sentence": "Ellos ___ a las ocho.",
+  "options": [
+   "saldrán",
+   "salirán",
+   "saldrá"
+  ],
+  "answer": "saldrán",
+  "accepted_answers": [
+   "saldrán"
+  ],
+  "hint_en": "salir: ellos, future",
+  "explanation_en": "Salir has the future stem saldr-.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9121",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_future",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "hacer, nosotros, conditional",
+  "sentence": "¿Qué ___ nosotros sin ti?",
+  "options": [
+   "haríamos",
+   "haceríamos",
+   "haría",
+   "hacemos"
+  ],
+  "answer": "haríamos",
+  "accepted_answers": [
+   "haríamos"
+  ],
+  "hint_en": "hacer: nosotros, conditional",
+  "explanation_en": "Hacer has the stem har- in the conditional.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9122",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_future",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "poder, usted, conditional",
+  "sentence": "¿___ ayudarme, por favor?",
+  "options": [
+   "Podría",
+   "Podería",
+   "Puede"
+  ],
+  "answer": "Podría",
+  "accepted_answers": [
+   "Podría"
+  ],
+  "hint_en": "poder: usted, conditional",
+  "explanation_en": "Poder has the stem podr- in the conditional.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9123",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_future",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "decir, tú, future",
+  "sentence": "¿Qué le ___ a tu jefe?",
+  "options": [
+   "dirás",
+   "decirás",
+   "dirá",
+   "dices"
+  ],
+  "answer": "dirás",
+  "accepted_answers": [
+   "dirás"
+  ],
+  "hint_en": "decir: tú, future",
+  "explanation_en": "Decir has the future stem dir-.",
+  "transcript": null,
+  "region_note": null
+ },
+ {
+  "id": "c-9124",
+  "type": "fix_it",
+  "level": "drill",
+  "topic": "verbs_future",
+  "scene_id": null,
+  "lesson_tags": [],
+  "grammar_tags": [
+   "verb_forms"
+  ],
+  "vocab_ids": [],
+  "source": "original",
+  "difficulty": 1,
+  "audio_text": null,
+  "prompt_en": "venir, ella, future",
+  "sentence": "Ella ___ el lunes.",
+  "options": [
+   "vendrá",
+   "venirá",
+   "vendré"
+  ],
+  "answer": "vendrá",
+  "accepted_answers": [
+   "vendrá"
+  ],
+  "hint_en": "venir: ella, future",
+  "explanation_en": "Venir has the future stem vendr-.",
+  "transcript": null,
+  "region_note": null
+ }
+]

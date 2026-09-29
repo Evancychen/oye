@@ -2,8 +2,9 @@
 // v1.1: one-screen cards (header / scrolling middle / pinned dock), hints, feedback sheet, SW update flow.
 // v2 Levels: Easy (Quick session, Easy cards only), Medium (topic grid + topic sessions), Hard (missions),
 // stars, and v2.1 voices (transcript labels coloured by voice: Alonso blue, Paloma green).
+// v2.2: shuffled Medium topics, Verb drill (level "drill" cards, only in the drill), Read view for finished missions.
 import { loadContent } from './content.js';
-import { setAudioIndex, hasAudio, hasLine, play, stop, clipInfo, playClip, clipLoaded, audioEl } from './audio.js';
+import { setAudioIndex, hasAudio, hasLine, play, stop, clipInfo, playClip, clipLoaded, audioEl, unloadClip } from './audio.js';
 import * as levels from './levels.js';
 import { isCorrect, normalize } from './check.js';
 import * as srs from './srs.js';
@@ -14,7 +15,7 @@ document.documentElement.dataset.shell = SHELL_VERSION;
 
 const $app = document.getElementById('app');
 const S = {
-  content: null, playable: [], easy: [], medium: [], missions: [], scenes: new Map(), progress: srs.load(),
+  content: null, playable: [], easy: [], medium: [], drill: [], missions: [], scenes: new Map(), progress: srs.load(),
   plan: [], session: null, view: 'boot', audioStatus: null, keyHandler: null,
   shell: SHELL_VERSION, updatePending: false,
 };
@@ -129,7 +130,7 @@ function setupServiceWorker() {
   });
 }
 function maybeApplyUpdate() {
-  if (!S.updatePending || S.view === 'session' || S.view === 'mission') return false;
+  if (!S.updatePending || S.view === 'session' || S.view === 'mission' || S.view === 'read') return false;
   // Let a results upload finish first (a reload mid-request could make the retry send the rows twice).
   if (results.isSending()) { results.whenIdle().then(() => maybeApplyUpdate()); return false; }
   S.updatePending = false;
@@ -172,6 +173,7 @@ async function boot() {
   if (history.state?.oye) history.replaceState(null, '');
   window.addEventListener('popstate', () => {
     if (S.sheet) { closeSheet(); if (S.view === 'session' || S.view === 'mission') history.pushState(S.lastState || { oye: S.view }, ''); return; }
+    if (S.view === 'read') { closeRead(); return; }   // back from the Read view: to where it was opened from
     const st = history.state?.oye;
     if (st === 'topics') openTopics(false);
     else if (st === 'missions') openMissions(false);
@@ -192,6 +194,9 @@ async function boot() {
   S.playable = S.content.cards.filter(isPlayable);
   S.easy = S.playable.filter(levels.isEasy);                          // Quick session: Easy cards only
   S.medium = S.playable.filter((c) => levels.levelOf(c) === 'medium' && c.topic);
+  // v2.2 Verb drill: level "drill" fix_it cards with 3-4 options. They are in no other pool (Easy = level easy only,
+  // Medium = level medium only), so they never show up in a Quick session or a topic.
+  S.drill = S.playable.filter((c) => levels.isDrill(c) && c.type === 'fix_it' && hasOptions(c));
   S.missions = (S.content.missions || []).filter(isPlayableMission);
   const skipped = S.content.cards.length - S.playable.length;
   if (skipped) console.info(`[oye] skipped ${skipped} card(s) with unknown type or missing fields`);
@@ -325,6 +330,7 @@ function goHome(pop = true) {
     <div class="challenges">
       ${challenge('medium', 'Medium', 'Topic challenge', 'Pick a topic · about 4 min', tot.medium, S.medium.length > 0)}
       ${challenge('hard', 'Hard', 'Real-life mission', 'One longer situation · about 5 min', tot.hard, S.missions.length > 0)}
+      ${drillRow()}
     </div>
     <button class="caption meta-line" data-act="lessons" aria-label="Quick session: choose a lesson">${sessionMeta(S.plan, lesson)}<span class="meta-chev">${ICON.chevron}</span></button>
     <div class="action">
@@ -335,6 +341,17 @@ function goHome(pop = true) {
   $('[data-act="lessons"]').onclick = openLessons;
   $('[data-act="medium"]').onclick = () => openTopics(true);
   $('[data-act="hard"]').onclick = () => openMissions(true);
+  const dr = $('[data-act="drill"]');
+  if (dr) dr.onclick = startDrill;
+}
+/** v2.2 home: slim "Verb drill" row under the Medium and Hard cards (hidden while there are no drill cards). */
+function drillRow() {
+  if (!S.drill.length) return '';
+  const n = Math.min(srs.DRILL_SIZE, S.drill.length);
+  return `<button class="drill-row" data-act="drill" data-testid="drill-row">
+      <span class="ch-text"><span class="ch-title">Verb drill</span><span class="caption">${n} quick question${n === 1 ? '' : 's'} · no audio</span></span>
+      <span class="ch-chev">${ICON.chevron}</span>
+    </button>`;
 }
 
 function openLessons() {
@@ -359,6 +376,15 @@ function openLessons() {
 function startSession() {
   if (!S.plan.length) return;
   S.session = { cards: S.plan, i: 0, results: [], start: Date.now(), id: results.newSessionId(), level: 'easy', topic: null };
+  S.view = 'session';
+  pushView('session');
+  showCard();
+}
+/** v2.2 Verb drill: 20 drill cards in a row (fewer if fewer exist), weighted toward missed cards, options shuffled. */
+function startDrill() {
+  const cards = srs.planDrill(S.progress, S.drill);
+  if (!cards.length) return;
+  S.session = { cards, i: 0, results: [], start: Date.now(), id: results.newSessionId(), level: 'drill', topic: null };
   S.view = 'session';
   pushView('session');
   showCard();
@@ -648,15 +674,19 @@ function optionsBlock(card, fb, { grid } = {}) {
     }
     // Long two-line options: after answering, keep only the right answer and your pick so the feedback still fits.
     if (fb && long && cls === 'is-dim') return '';
-    return `<button class="opt ${cls}" data-opt="${i}" ${fb ? 'disabled' : ''}>${esc(o)}${dot}</button>`;
+    return `<button class="opt ${cls}" data-opt="${i}" data-value="${esc(o)}" ${fb ? 'disabled' : ''}>${esc(o)}${dot}</button>`;
   }).join('');
   return `<div class="options ${useGrid ? 'grid' : ''} ${long ? 'long' : ''}" data-testid="options">${items}</div>`;
 }
 function bindOptions(card) {
+  // Options may be shuffled (Medium topics, Verb drill): data-opt indexes this card's own options array, and the
+  // check compares the option's VALUE with card.answer, never its position.
   $$('[data-opt]').forEach((b) => {
     b.onclick = () => { const o = card.options[Number(b.dataset.opt)]; answer(card, o === card.answer, o); };
   });
 }
+/** Verb drill options (spec): 4 short options = 2 x 2 grid, 3 options = stacked full width. */
+const drillGrid = (card) => card.options.length === 4 && card.options.every((o) => String(o).length <= 14);
 const btnDontKnow = `<button class="btn-text dontknow" data-act="dontknow">I don’t know</button>`;
 const btnNext = `<button class="btn-primary" data-act="next">Next</button>`;
 const optionsDock = (card, fb, o) => `${optionsBlock(card, fb, o)}${fb ? btnNext : btnDontKnow}`;
@@ -736,17 +766,28 @@ function sentenceHtml(card, fill, state) {
 }
 function renderFixIt(card, fb) {
   const src = card.source === 'mistake' ? 'from your mistakes' : card.source === 'class_quizlet' ? 'from class' : card.source === 'scene' ? 'from a scene' : '';
-  const head = eyebrow('Fix it', src);
+  const drill = levels.isDrill(card);
+  // Verb drill (Picasso's mapping): prompt_en ("tener, tú, command") is the small label above the sentence,
+  // normal case, capMed gray (not the uppercase eyebrow). The Hint button is the same as on other cards.
+  const head = drill ? `<p class="drill-label" data-testid="drill-label">${esc(card.prompt_en || levels.topicName(card.topic))}</p>` : eyebrow('Fix it', src);
+  // fix_it cards with options (all Verb drill cards) are one tap per answer; without options they are typed.
   const chosen = hasOptions(card);
-  const instruction = card.prompt_en ? `<p class="body-copy instruction" data-testid="instruction">${esc(card.prompt_en)}</p>` : '';
+  const grid = { grid: drill ? drillGrid(card) : false };
+  const instruction = card.prompt_en && !drill ? `<p class="body-copy instruction" data-testid="instruction">${esc(card.prompt_en)}</p>` : '';
+  if (fb && drill) {
+    // Drill feedback: right form in the blank, Correct / Not quite, the one-sentence why (g600, max 2 lines), then
+    // the options (right one green, your pick red) and Next, like other option cards.
+    const why = card.explanation_en ? `<p class="drill-why" data-testid="drill-why">${esc(card.explanation_en)}</p>` : '';
+    return { body: `${head}${sentenceHtml(card, card.answer, 'ok')}${resultRow(fb.ok)}${why}`, dock: optionsDock(card, fb, grid), dockClass: 'opts-dock drill-dock' };
+  }
   if (fb) {
     // A correct accepted alternate ("gira" for "dobla") stays in the blank as the user typed it.
     const fill = altAnswer(card, fb) || card.answer;
-    return { body: feedbackBody(card, fb, `${head}${sentenceHtml(card, fill, 'ok')}`), dock: chosen ? optionsDock(card, fb, { grid: false }) : btnNext, dockClass: chosen ? 'opts-dock' : '' };
+    return { body: feedbackBody(card, fb, `${head}${sentenceHtml(card, fill, 'ok')}`), dock: chosen ? optionsDock(card, fb, grid) : btnNext, dockClass: chosen ? 'opts-dock' : '' };
   }
   const hint = hasHint(card) ? `<div class="hint-slot">${hintPill(card)}${hintBox(card)}</div>` : '';
   if (chosen) {
-    return { body: `${head}${sentenceHtml(card, '')}${instruction}${hint}`, dock: optionsDock(card, null, { grid: false }), dockClass: 'opts-dock', bind: () => bindOptions(card) };
+    return { body: `${head}${sentenceHtml(card, '')}${instruction}${hint}`, dock: optionsDock(card, null, grid), dockClass: `opts-dock${drill ? ' drill-dock' : ''}`, bind: () => bindOptions(card) };
   }
   return {
     body: `${head}${sentenceHtml(card, '')}${instruction}${hint}`,
@@ -816,8 +857,8 @@ function showSummary() {
   srs.finishSession(S.progress);
   S.progress = srs.load();
   S.view = 'summary';
-  // Stars (v2): computed and saved once per session.
-  if (!ses.starsResult) {
+  // Stars (v2): computed and saved once per session. The Verb drill has no stars.
+  if (!ses.starsResult && ses.level !== 'drill') {
     ses.starsResult = levels.starsFor(ses.results, ses.level);
     ses.starsSaved = levels.record(ses.level, ses.topic, ses.starsResult.stars);
   }
@@ -830,11 +871,14 @@ function showSummary() {
   if (!ses.rowIds) ses.rowIds = results.enqueue(ses.results.map((r) => ({
     answered_at: r.at, card_id: r.card.id, content_version: cv, correct: !!r.ok,
     answer_given: r.given == null ? '' : String(r.given), used_hint: !!r.hint, used_slow: !!r.slow, session_id: ses.id,
-    level: ses.level || 'easy', topic: ses.topic || '', mission_id: '', stars: ses.starsResult.stars,
-    replays: clampReplays(r.replays), skipped: !!r.skipped,
+    // Verb drill rows: level "drill", the card's own verbs_* topic, no stars (blank), replays 0 (no audio).
+    level: ses.level || 'easy', topic: (ses.level === 'drill' ? r.card.topic : ses.topic) || '', mission_id: '',
+    stars: ses.starsResult ? ses.starsResult.stars : '',
+    replays: ses.level === 'drill' ? 0 : clampReplays(r.replays), skipped: !!r.skipped,
   })), validCardIds());
   S.summaryRowIds = ses.rowIds;
   if (ses.level === 'medium') return showTopicSummary(ses, mins);
+  if (ses.level === 'drill') return showDrillSummary(ses, mins);
   const statusLine = S.summaryRowIds.length
     ? `<p class="caption results-status" data-testid="results-status" data-state="queued" role="status">${resultsStatusHtml(false)}</p>` : '';
   render(`
@@ -861,6 +905,35 @@ function showSummary() {
   if (S.summaryRowIds.length) sendResults();
 }
 
+
+/** v2.2 Verb drill end screen: score, missed pairs side by side (your form struck red, right form green),
+ *  "Another 20" (primary) and "Done". No stars. */
+function showDrillSummary(ses) {
+  const right = ses.results.filter((r) => r.ok).length, n = ses.results.length;
+  const misses = ses.results.filter((r) => !r.ok);
+  const statusLine = S.summaryRowIds.length
+    ? `<p class="caption results-status" data-testid="results-status" data-state="queued" role="status">${resultsStatusHtml(false)}</p>` : '';
+  const next = Math.min(srs.DRILL_SIZE, S.drill.length);
+  const pair = (r) => `<div class="drill-miss" data-testid="drill-miss" data-card="${esc(r.card.id)}">
+      <p class="caption dm-what">${esc(r.card.prompt_en || levels.topicName(r.card.topic))}</p>
+      <p class="dm-pair">${r.skipped || r.given == null ? '<span class="dm-given skipped">skipped</span>' : `<s class="dm-given">${esc(r.given)}</s>`}<span class="dm-arrow" aria-hidden="true">→</span><span class="dm-right">${esc(r.card.answer)}</span></p>
+    </div>`;
+  render(`
+  <div class="screen page summary msum dsum" data-screen="summary" data-level="drill">
+    <div class="zone summary-zone"><div class="scroll scroller"><div class="scroll-inner">
+      <p class="eyebrow lv-tag">Verb drill</p>
+      <h1 class="display msum-score" data-testid="score">${right} of ${n} right</h1>
+      <p class="body-copy msum-why">${misses.length ? `${misses.length} to practise: they come up more often in the next drills.` : 'Nothing missed. ¡Muy bien!'}</p>
+      ${statusLine}
+      ${misses.length ? `<div class="review-head"><span class="eyebrow">Missed</span></div><div class="drill-misses" data-testid="drill-misses">${misses.map(pair).join('')}</div>` : ''}
+    </div></div>${moreHint()}</div>
+    <div class="action two"><button class="btn-text" data-act="done">Done</button><button class="btn-primary" data-act="another-drill">Another ${next}</button></div>
+  </div>`);
+  $('[data-act="done"]').onclick = () => goHome(true);
+  $('[data-act="another-drill"]').onclick = startDrill;
+  setupScrollHint($('.summary-zone'));
+  if (S.summaryRowIds.length) sendResults();
+}
 
 // ======================================================================= v2 Levels
 // ---------- Medium: topic grid ----------
@@ -987,16 +1060,27 @@ function openMissions(push = true) {
     <p class="eyebrow lv-tag">Hard</p>
     <h1 class="title lv-title">Real-life missions</h1>
     <p class="caption lv-cap">One longer situation: listen or read, then answer.</p>
-    <div class="zone topics-zone"><div class="scroller"><div class="scroll-inner"><div class="mission-list">${S.missions.map((m) => `
-      <button class="mission-row" data-mission="${esc(m.id)}" data-testid="mission-row">
+    <div class="zone topics-zone"><div class="scroller"><div class="scroll-inner"><div class="mission-list">${S.missions.map((m) => {
+      // v2.2: a finished mission (stars stored) gets "Read" on the bottom line, opposite the stars. The row itself is a
+      // full-size button underneath (so a tap anywhere else opens the mission); Read is its own 44 x 44 button on top.
+      const sub = m.media.kind === 'audio' ? `Audio · ${clipMinutes(m)}` : 'Message';
+      const done = (best[m.id] || 0) > 0;
+      return `
+      <div class="mission-row" data-mission="${esc(m.id)}" data-testid="mission-row" data-finished="${done ? '1' : '0'}">
+        <button class="mr-open" data-act="open-mission" aria-label="${esc(`${m.title_en}. ${sub}. Best: ${best[m.id] || 0} of 3 stars`)}"></button>
         <span class="ch-text"><span class="ch-title">${esc(m.title_en)}</span>
-          <span class="caption mr-sub" data-testid="mission-sub">${m.media.kind === 'audio' ? `Audio · ${esc(clipMinutes(m))}` : 'Message'}</span>
-          ${starRow(best[m.id] || 0, 12)}</span>
+          <span class="caption mr-sub" data-testid="mission-sub">${esc(sub)}</span>
+          <span class="mr-bottom">${starRow(best[m.id] || 0, 12)}${done ? `<button class="read-link" data-act="read" data-testid="read-link" aria-label="Read the script: ${esc(m.title_en)}">Read</button>` : ''}</span></span>
         <span class="ch-chev">${ICON.chevron}</span>
-      </button>`).join('')}</div></div></div>${moreHint()}</div>
+      </div>`;
+    }).join('')}</div></div></div>${moreHint()}</div>
   </div>`);
   $('[data-act="home"]').onclick = () => goHome(true);
-  $$('[data-mission]').forEach((b) => { b.onclick = () => startMission(b.dataset.mission); });
+  $$('[data-mission]').forEach((row) => {
+    row.querySelector('[data-act="open-mission"]').onclick = () => startMission(row.dataset.mission);
+    const rd = row.querySelector('[data-act="read"]');
+    if (rd) rd.onclick = () => openMissionRead(row.dataset.mission, 'missions');
+  });
   setupScrollHint($('.topics-zone'));
 }
 function startMission(id) {
@@ -1035,10 +1119,13 @@ function missionIntro() {
     <div class="dock">
       <button class="btn-text" data-act="preview">Read the questions first</button>
       <button class="btn-primary" data-act="begin">${esc(primary)}</button>
+      ${missionFinished(m.id) ? '<button class="btn-text read-script" data-act="read-script" data-testid="read-script">Read script</button>' : ''}
     </div>
   </div>`);
   bindMissionClose();
   setupScrollHint($('.intro-zone'));
+  const rs = $('[data-act="read-script"]');
+  if (rs) rs.onclick = () => openMissionRead(m.id, 'intro');
   $('[data-act="preview"]').onclick = () => openSimpleSheet('Questions', `<ol class="q-preview">${qs.map((q) => `<li>${esc(cleanPrompt(q.prompt_en))}</li>`).join('')}</ol>`);
   $('[data-act="begin"]').onclick = () => {
     if (audio) missionQuestion();
@@ -1083,19 +1170,20 @@ function missionMessage(backTo = null) {
   $('[data-act="to-questions"]').onclick = () => missionQuestion();
 }
 const fmtClock = (sec) => { sec = Math.max(0, Math.floor(sec || 0)); return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`; };
-function playerBar(m) {
+/** st: the player's state ({ slow, plays, slowUsed }): the mission (S.mission) or the Read view's own (S.read). */
+function playerBar(m, st = S.mission) {
   const info = clipInfo(m.id) || {};
-  const tot = S.mission.slow ? info.slow_duration : info.duration;
+  const tot = st.slow ? info.slow_duration : info.duration;
   return `<div class="player" data-testid="player">
     <button class="pl-play" data-act="pl-play" data-testid="pl-play" aria-label="Play" aria-pressed="false">${ICON.speaker}</button>
     <div class="pl-mid">
       <div class="pl-track" data-testid="scrub" role="slider" aria-label="Position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><i class="pl-fill"></i><b class="pl-knob"></b></div>
       <div class="caption pl-time"><span class="pl-el">0:00</span> / <span class="pl-tot">${fmtClock(tot)}</span></div>
     </div>
-    <button class="slow s48 pl-slow ${S.mission.slow ? 'is-on' : ''}" data-act="pl-slow" data-testid="slow" aria-pressed="${S.mission.slow}" aria-label="Slow (0.75×)">0.75×</button>
+    <button class="slow s48 pl-slow ${st.slow ? 'is-on' : ''}" data-act="pl-slow" data-testid="slow" aria-pressed="${st.slow}" aria-label="Slow (0.75×)">0.75×</button>
   </div>`;
 }
-function bindPlayer(m) {
+function bindPlayer(m, st = S.mission) {
   const el = audioEl();
   const bar = $('.player');
   if (!bar) return;
@@ -1104,7 +1192,7 @@ function bindPlayer(m) {
   const upd = () => {
     if (!document.body.contains(bar)) return;
     const mine = clipLoaded(m.id);
-    const d = mine && isFinite(el.duration) ? el.duration : (S.mission?.slow ? clipInfo(m.id)?.slow_duration : clipInfo(m.id)?.duration) || 0;
+    const d = mine && isFinite(el.duration) ? el.duration : (st?.slow ? clipInfo(m.id)?.slow_duration : clipInfo(m.id)?.duration) || 0;
     const t = mine ? el.currentTime : 0;
     const f = d ? Math.min(1, t / d) : 0;
     fill.style.width = `${f * 100}%`; knob.style.left = `${f * 100}%`;
@@ -1127,27 +1215,27 @@ function bindPlayer(m) {
   const isOn = () => clipLoaded(m.id) && !el.paused && !el.ended;
   // Every play started from the bar (play, resume after a stop, slow or a seek while stopped) counts for this
   // question's replays; switching speed or seeking while it plays does not.
-  const counted = () => { if (S.mission) S.mission.plays = Math.min(MAX_PLAYS, (S.mission.plays || 0) + 1); };
+  const counted = () => { if (st) st.plays = Math.min(MAX_PLAYS, (st.plays || 0) + 1); };
   btn.onclick = () => {
     if (isOn()) { el.pause(); return; }   // tap again = stop (keeps the position; the next tap goes on from there)
     counted();
     if (clipLoaded(m.id) && !el.ended && el.currentTime > 0) el.play().catch(() => {});
-    else playClip(m.id, { slow: S.mission.slow });
+    else playClip(m.id, { slow: st.slow });
   };
   $('[data-act="pl-slow"]', bar).onclick = (e) => {
-    S.mission.slow = !S.mission.slow;
-    if (S.mission.slow) S.mission.slowUsed = true;
-    const b = e.currentTarget; b.classList.toggle('is-on', S.mission.slow); b.setAttribute('aria-pressed', String(S.mission.slow));
+    st.slow = !st.slow;
+    if (st.slow) st.slowUsed = true;
+    const b = e.currentTarget; b.classList.toggle('is-on', st.slow); b.setAttribute('aria-pressed', String(st.slow));
     const f = frac(), wasPlaying = isOn();
     if (!wasPlaying) counted();
-    if (wasPlaying || f > 0) playClip(m.id, { slow: S.mission.slow, at: f });
-    else playClip(m.id, { slow: S.mission.slow });
+    if (wasPlaying || f > 0) playClip(m.id, { slow: st.slow, at: f });
+    else playClip(m.id, { slow: st.slow });
   };
   const seek = (ev) => {
     const r = track.getBoundingClientRect();
     const f = Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width));
     if (clipLoaded(m.id) && isFinite(el.duration)) { el.currentTime = f * el.duration; if (el.paused) el.play().catch(() => {}); }
-    else playClip(m.id, { slow: S.mission.slow, at: f });
+    else playClip(m.id, { slow: st.slow, at: f });
   };
   track.addEventListener('pointerdown', (ev) => { if (!isOn()) counted(); seek(ev); track.setPointerCapture?.(ev.pointerId); track.onpointermove = seek; });
   track.addEventListener('pointerup', () => { track.onpointermove = null; });
@@ -1284,9 +1372,11 @@ function missionResult() {
       ${rows}
       <button class="mr-row transcript-row" data-act="transcript" data-testid="transcript-row"><span>Read the transcript</span>${ICON.chevron}</button>
     </div></div>${moreHint()}</div>
-    <div class="action two"><button class="btn-text" data-act="retry">Try again</button><button class="btn-primary" data-act="done">Done</button></div>
+    <div class="action two"><button class="btn-text" data-act="retry">Try again</button><button class="btn-primary" data-act="done">Done</button>
+      <button class="btn-text read-script" data-act="read-script" data-testid="read-script">Read script</button></div>
   </div>`);
   bindMissionClose();
+  $('[data-act="read-script"]').onclick = () => openMissionRead(m.id, 'result');
   $$('[data-act="why"]').forEach((b) => {
     b.onclick = () => {
       const row = b.closest('.mr-row'), box = row.querySelector('.why-box');
@@ -1304,6 +1394,59 @@ function missionResult() {
     missionIntro();
   };
   setupScrollHint($('.mr-zone'));
+}
+// ---------- v2.2 Read view (finished missions) ----------
+/** A mission is finished once it has stored stars (every finished attempt stores at least 1). */
+const missionFinished = (id) => (levels.load().missions[id] || 0) > 0;
+const READ_BACK = { missions: 'Missions', intro: 'Mission', result: 'Results' };
+/** The script of a finished mission: player bar at the top (0:00, no autoplay), the script with speaker labels in the
+ *  voice colours and each line's English under it (message missions: the message and its English). No questions,
+ *  stars untouched, nothing sent to results. from = 'missions' | 'intro' | 'result' (where Back returns to). */
+function openMissionRead(id, from) {
+  const m = S.missions.find((x) => x.id === id);
+  if (!m) return;
+  setKeyHandler(null);
+  if (S.playerOff) { S.playerOff(); S.playerOff = null; }
+  unloadClip();   // the player starts at 0:00 even if this clip was played in the mission
+  // Its own player state, so plays / slow here never count toward a mission question's replays or used_slow.
+  S.read = { m, from, slow: false, plays: 0, slowUsed: false };
+  S.view = 'read';
+  pushView('read');
+  const md = m.media;
+  const audio = md.kind === 'audio';
+  let script;
+  if (audio) {
+    script = `<div class="rd-script" data-testid="read-script-lines">${dialogueHtml(md.lines.map((l) => ({ ...l })), null)}</div>`;
+  } else {
+    const time = msgTime(m);
+    script = `<p class="caption sender" data-testid="sender">${esc(senderOf(m))}</p>
+      <div class="bubble ${md.text_format === 'whatsapp' ? 'wa' : ''} rd-bubble" data-testid="bubble" lang="es">${esc(md.text_es)}${time ? `<span class="btime">${esc(time)}</span>` : ''}</div>
+      ${md.text_en ? `<p class="eyebrow en-head">In English</p><p class="caption msg-en rd-en" data-testid="read-en">${esc(md.text_en)}</p>` : ''}`;
+  }
+  const region = m.region_note ? `<div class="region"><p class="eyebrow">Mexico vs Spain</p><p class="caption">${esc(m.region_note)}</p></div>` : '';
+  render(`
+  <div class="screen mission-screen read-screen" data-screen="mission-read" data-mission="${esc(m.id)}" data-from="${esc(from)}">
+    <header class="topbar mtop"><button class="back-link rd-back" data-act="read-back" data-testid="read-back">${ICON.back}<span>${esc(READ_BACK[from] || 'Back')}</span></button><span class="grow"></span><span class="count">${audio ? 'Script' : 'Message'}</span></header>
+    ${audio ? playerBar(m, S.read) : ''}
+    <div class="zone rd-zone"><div class="scroller" data-testid="read-scroll"><div class="scroll-inner">
+      <p class="eyebrow lv-tag">Hard · ${audio ? 'Script' : 'The message'}</p>
+      <h1 class="title rd-title">${esc(m.title_en)}</h1>
+      ${script}${region}
+    </div></div>${moreHint()}</div>
+  </div>`);
+  $('[data-act="read-back"]').onclick = () => history.back();   // popstate -> closeRead()
+  if (audio) bindPlayer(m, S.read);
+  bindAudio(null);   // per-line play buttons, when there is line audio
+  setupScrollHint($('.rd-zone'));
+}
+function closeRead() {
+  const r = S.read;
+  if (S.playerOff) { S.playerOff(); S.playerOff = null; }
+  unloadClip();
+  S.read = null;
+  if (!r || r.from === 'missions' || !S.mission) return openMissions(false);
+  S.view = 'mission';
+  if (r.from === 'result' && S.mission.starsResult) missionResult(); else missionIntro();
 }
 function openMissionTranscript(m) {
   const md = m.media;

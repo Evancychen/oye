@@ -76,12 +76,12 @@ function weight(c) {
   const wrongRate = c.seen ? c.wrong / c.seen : 0;
   return 1 + (c.lastOk === false ? 6 : 0) + 4 * wrongRate + (5 - (c.box || 1));
 }
-function weightedSample(items, wfn, n) {
+function weightedSample(items, wfn, n, rnd = Math.random) {
   const pool = items.map(x => ({ x, w: Math.max(0.01, wfn(x)) }));
   const out = [];
   while (out.length < n && pool.length) {
     const total = pool.reduce((a, b) => a + b.w, 0);
-    let r = Math.random() * total, i = 0;
+    let r = rnd() * total, i = 0;
     for (; i < pool.length - 1; i++) { r -= pool[i].w; if (r <= 0) break; }
     out.push(pool.splice(i, 1)[0].x);
   }
@@ -139,13 +139,37 @@ export function planSession(s, cards, { newIds = new Set(), size = SESSION_SIZE 
   return interleave(picked.slice(0, size));
 }
 
+/** Fisher-Yates shuffle (a new array). */
+export function shuffle(list, rnd = Math.random) {
+  const a = [...list];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+/** How likely a card is to be picked for a topic session or the Verb drill: never seen = 8; seen cards use
+ *  weight() (wrong last time +6, wrong rate, low box), +3 when due today or overdue. A missed card (box 1,
+ *  wrong last time) weighs 14-18, a card that is always right and not due weighs 1. */
+export function pickWeight(s, c, t = todayKey()) {
+  const st = s.cards[c.id];
+  if (!st?.seen) return 8;
+  return weight(st) + ((st.due || t) <= t ? 3 : 0);
+}
+/** A session copy of the card with its options in a random order (cards without options are returned as they are).
+ *  The answer check compares option values (card.answer), never positions, so this is safe. */
+export const withShuffledOptions = (c) => (Array.isArray(c.options) && c.options.length > 1 ? { ...c, options: shuffle(c.options) } : c);
 /**
- * v2 Medium: a topic session (8-10 cards from one topic). Never-seen cards and weak spots
- * (wrong last time, low box) are more likely; no daily cap, no due dates.
+ * v2 Medium: a topic session. Up to `size` cards: all of them when the topic has `size` or fewer, else `size`
+ * picked at random weighted toward missed and due cards (pickWeight). Every start shuffles the card order and
+ * the order of each card's options. No daily cap, no due dates.
  */
-export function planTopic(s, cards, { size = SESSION_SIZE } = {}) {
-  const w = (c) => { const st = s.cards[c.id]; return st?.seen ? weight(st) : 8; };
-  return interleave(weightedSample(cards, w, Math.min(size, cards.length)));
+export function planTopic(s, cards, { size = SESSION_SIZE, rnd = Math.random } = {}) {
+  const t = todayKey();
+  const picked = cards.length <= size ? [...cards] : weightedSample(cards, (c) => pickWeight(s, c, t), size, rnd);
+  return shuffle(picked, rnd).map(withShuffledOptions);
+}
+/** v2.2 Verb drill: `size` (20) drill cards in a row, weighted toward missed and due cards, shuffled, options shuffled. */
+export const DRILL_SIZE = 20;
+export function planDrill(s, cards, { size = DRILL_SIZE, rnd = Math.random } = {}) {
+  return planTopic(s, cards, { size, rnd });
 }
 
 // ---------- stats ----------

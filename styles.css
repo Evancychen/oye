@@ -380,6 +380,59 @@ hr, .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
 .soon { margin-top: 8px; line-height: 16px; color: var(--gray-400); }
 .mission-list { display: grid; gap: 8px; }
 .mission-row .stars { margin-top: 6px; }
+/* v2.2: the row is a container; a full-size button underneath opens the mission, and "Read" (finished missions)
+   sits on the bottom line opposite the stars as its own button with a 44 x 44 tap area. */
+.mission-row { position: relative; }
+.mission-row:has(.mr-open:active) { background: var(--gray-200); }
+.mr-open { position: absolute; inset: 0; border-radius: inherit; z-index: 0; }
+.mission-row > .ch-text, .mission-row > .ch-chev { position: relative; z-index: 1; pointer-events: none; }
+.mr-bottom { display: flex; align-items: flex-end; justify-content: space-between; min-height: 18px; }
+/* capMed (13/500) in accent blue; the 44px box overhangs the 16px line so the row keeps its height */
+.read-link { pointer-events: auto; position: relative; display: inline-flex; align-items: center; justify-content: flex-end;
+  min-width: 44px; height: 44px; margin: -13px -8px -12px 8px; padding: 0 8px; font: 500 13px/16px var(--font); color: var(--accent); }
+.read-link:active { color: var(--accent-dark); }
+
+/* v2.2 home: slim Verb drill row under the Medium and Hard cards */
+.drill-row { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 56px; padding: 8px 12px 8px 16px;
+  border-radius: var(--radius-l); background: var(--surface); text-align: left; color: var(--ink); }
+.drill-row:active { background: var(--gray-200); }
+.drill-row .ch-title { margin-top: 0; }
+.drill-row .caption { margin-top: 0; }
+/* short phones (360 x 640, 375 x 667): with the extra Verb drill row the home still fits without scrolling */
+@media (max-height: 700px) {
+  .home:has(.drill-row) .home-header .display { margin-top: 4px; }
+  .home:has(.drill-row) .stats { margin-top: 8px; padding: 10px 0 8px; }
+  .home:has(.drill-row) .trend { padding: 8px 0 8px; }
+  .home:has(.drill-row) .quiet { margin-bottom: 4px; }
+  .home:has(.drill-row) .challenge { min-height: 0; padding-top: 4px; padding-bottom: 4px; }
+  .home:has(.drill-row) .drill-row { min-height: 48px; padding-top: 4px; padding-bottom: 4px; }
+}
+
+/* v2.2 Verb drill card: 4 short options in a 2 x 2 grid of short buttons (not the big price digits) */
+.drill-dock .options.grid .opt { height: 56px; min-height: 56px; font: 600 17px/24px var(--font); }
+/* Verb drill card: prompt_en label (capMed gray, normal case), sentence in title style (max 3 lines), why in g600 */
+.card-inner > .drill-label:first-child { margin-top: 16px; }
+.drill-label { font: 500 13px/16px var(--font); color: var(--gray-600); }
+.drill-why { font: 400 17px/24px var(--font); color: var(--gray-600); margin-top: 8px; }
+/* Verb drill end screen: missed pairs side by side */
+.dsum .review-head { margin-top: 24px; }
+.drill-miss { padding: 12px 0; border-bottom: 1px solid var(--hairline); }
+.dm-pair { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-top: 4px; font: 500 17px/24px var(--font); }
+.dm-given { color: var(--wrong); text-decoration: line-through; }
+.dm-given.skipped { color: var(--gray-400); text-decoration: none; font-weight: 400; }
+.dm-arrow { color: var(--gray-400); }
+.dm-right { color: var(--correct); }
+
+/* v2.2 Read view: back link, player bar, then the script (the result screen's transcript layout) */
+.read-screen .rd-back { height: 48px; margin-left: -6px; }
+.rd-zone { margin-top: 16px; }
+.rd-zone .scroll-inner { padding-bottom: 24px; }
+.rd-title { margin-top: 8px; }
+.rd-script { margin-top: 20px; }
+.dtext .en { color: var(--gray-600); }
+.read-screen .sender { margin-top: 16px; }
+.rd-bubble { margin-top: 8px; }
+.read-script { margin-top: 0; }
 
 /* Medium summary (21:839) */
 .msum .stars-line { display: flex; align-items: center; gap: 16px; margin-top: 16px; }

@@ -94,3 +94,5 @@ export async function playClip(id, { slow = false, at = 0 } = {}) {
 }
 /** Is clip `id` the one loaded in the player? */
 export const clipLoaded = (id) => el.dataset.clip === id && !!el.src;
+/** Stop and forget the loaded mission clip, so a player bar shows 0:00 and the next play starts from the top. */
+export function unloadClip() { stop(); el.dataset.clip = ''; el.dataset.slow = ''; }
