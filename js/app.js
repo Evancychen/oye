@@ -1370,13 +1370,11 @@ function missionResult() {
     </div>
     <div class="zone mr-zone"><div class="scroller"><div class="scroll-inner">
       ${rows}
-      <button class="mr-row transcript-row" data-act="transcript" data-testid="transcript-row"><span>Read the transcript</span>${ICON.chevron}</button>
+      <button class="mr-row transcript-row" data-act="transcript" data-testid="transcript-row"><span>Read the script</span>${ICON.chevron}</button>
     </div></div>${moreHint()}</div>
-    <div class="action two"><button class="btn-text" data-act="retry">Try again</button><button class="btn-primary" data-act="done">Done</button>
-      <button class="btn-text read-script" data-act="read-script" data-testid="read-script">Read script</button></div>
+    <div class="action two"><button class="btn-text" data-act="retry">Try again</button><button class="btn-primary" data-act="done">Done</button></div>
   </div>`);
   bindMissionClose();
-  $('[data-act="read-script"]').onclick = () => openMissionRead(m.id, 'result');
   $$('[data-act="why"]').forEach((b) => {
     b.onclick = () => {
       const row = b.closest('.mr-row'), box = row.querySelector('.why-box');
@@ -1386,7 +1384,7 @@ function missionResult() {
       refreshHints();
     };
   });
-  $('[data-act="transcript"]').onclick = () => openMissionTranscript(m);
+  $('[data-act="transcript"]').onclick = () => openMissionRead(m.id, 'result');
   if (ms.rowIds.length) sendResults();
   $('[data-act="done"]').onclick = () => goHome(true);
   $('[data-act="retry"]').onclick = () => {
@@ -1426,7 +1424,7 @@ function openMissionRead(id, from) {
   const region = m.region_note ? `<div class="region"><p class="eyebrow">Mexico vs Spain</p><p class="caption">${esc(m.region_note)}</p></div>` : '';
   render(`
   <div class="screen mission-screen read-screen" data-screen="mission-read" data-mission="${esc(m.id)}" data-from="${esc(from)}">
-    <header class="topbar mtop"><button class="back-link rd-back" data-act="read-back" data-testid="read-back">${ICON.back}<span>${esc(READ_BACK[from] || 'Back')}</span></button><span class="grow"></span><span class="count">${audio ? 'Script' : 'Message'}</span></header>
+    <header class="topbar mtop"><button class="back-link rd-back" data-act="read-back" data-testid="read-back">${ICON.back}<span>${esc(READ_BACK[from] || 'Back')}</span></button><span class="grow"></span></header>
     ${audio ? playerBar(m, S.read) : ''}
     <div class="zone rd-zone"><div class="scroller" data-testid="read-scroll"><div class="scroll-inner">
       <p class="eyebrow lv-tag">Hard · ${audio ? 'Script' : 'The message'}</p>

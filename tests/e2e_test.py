@@ -1726,19 +1726,21 @@ async def levels_suite(browser, base, cards):
             wrongBg: getComputedStyle(document.querySelector('.mr-row.bad .why-box')).backgroundColor }))()""")
         q2 = next(r for r in res['rows'] if r['q'] == 'q2')
         others_closed = all(not r['open'] for r in res['rows'] if r['q'] != 'q2')
-        check('v2 mission result: 3 of 4 right -> 2 stars; the wrong answer\'s "Why" starts open (wrongTint, "You picked …" + explanation); right ones closed; last row "Read the transcript"',
+        check('v2 mission result: 3 of 4 right -> 2 stars; the wrong answer\'s "Why" starts open (wrongTint, "You picked …" + explanation); right ones closed; last row "Read the script"',
               res['stars'] == '2' and '3 of 4 right' in res['score'] and q2['bad'] and q2['open'] and 'You picked' in q2['why'] and m['questions'][1]['explanation_en'] in q2['why']
-              and others_closed and res['last'] == 'Read the transcript' and res['wrongBg'] == 'rgb(45, 23, 20)'
+              and others_closed and res['last'] == 'Read the script' and res['wrongBg'] == 'rgb(45, 23, 20)'
               and '(type it like' not in ''.join(r['prompt'] for r in res['rows']), res)
         await shot_v2(page, '08-mission-result-why-open-360x640.png')
         await page.click('[data-q=q1] [data-act=why]')
         opened = await page.is_visible('[data-q=q1] [data-testid=why-box]')
         check('v2 mission result: tapping any row opens its "Why"', opened and m['questions'][0]['explanation_en'] in (await page.text_content('[data-q=q1] [data-testid=why-box]')))
-        await page.click('[data-act=transcript]'); await page.wait_for_selector('[data-testid=sheet]'); await page.wait_for_timeout(250)
-        tr = await page.text_content('[data-testid=sheet]')
-        check('v2 mission result: "Read the transcript" opens every line of the announcement with speaker labels',
-              all(l['es'] in tr for l in m['media']['lines']) and 'Anuncio' in tr and await page.query_selector('.fb-sheet .spk.v-male'))
-        await page.click('[data-act=sheet-close]')
+        await page.get_by_role('button', name='Read the script', exact=True).click()
+        await page.wait_for_selector('[data-screen=mission-read][data-from=result]')
+        tr = await page.text_content('[data-testid=read-script-lines]')
+        check('v2 mission result: "Read the script" opens every line of the announcement with speaker labels',
+              all(l['es'] in tr for l in m['media']['lines']) and 'Anuncio' in tr and await page.query_selector('.read-screen .spk.v-male'))
+        await page.click('[data-act=read-back]')
+        await page.wait_for_selector('[data-screen=mission-result]')
         sent_ok = await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 10000)
         q = await page.evaluate(QUEUE_JS)
         mrows = fake.ok_rows()
@@ -2471,7 +2473,7 @@ async def drill_read_suite(browser, base, cards):
     await page.wait_for_selector('[data-screen=mission-read][data-mission=m-metro-01]')
     await page.wait_for_timeout(1000)
     READ_JS = """() => { const q = (s) => document.querySelector('#app ' + s), a = window.__oyeAudioEl, pl = q('[data-testid=player]'), zone = q('.rd-zone');
-      return { from: q('.screen').dataset.from, back: q('[data-testid=read-back]').textContent.trim(), player: !!pl, playerAbove: pl ? pl.getBoundingClientRect().bottom <= zone.getBoundingClientRect().top : null,
+      return { header: q('header').textContent.trim(), headerCount: !!q('header .count'), eyebrow: q('.lv-tag').textContent, from: q('.screen').dataset.from, back: q('[data-testid=read-back]').textContent.trim(), player: !!pl, playerAbove: pl ? pl.getBoundingClientRect().bottom <= zone.getBoundingClientRect().top : null,
                time: q('.pl-el') && q('.pl-el').textContent, paused: a.paused, clip: a.dataset.clip || '', label: q('[data-act=pl-play]') && q('[data-act=pl-play]').getAttribute('aria-label'),
                lines: [...document.querySelectorAll('#app .dline')].map((d) => ({ spk: d.querySelector('.spk').textContent, voice: d.dataset.voice, color: getComputedStyle(d.querySelector('.spk')).color,
                   es: d.querySelector('.es').textContent, en: d.querySelector('.en') && d.querySelector('.en').textContent, enColor: d.querySelector('.en') && getComputedStyle(d.querySelector('.en')).color })),
@@ -2484,6 +2486,8 @@ async def drill_read_suite(browser, base, cards):
     check('Read view (audio): player bar at the top at 0:00, nothing playing (no autoplay), the full script with speaker labels in the voice colour and each line\'s English under it in gray-600; no questions or stars; Back = "Missions"',
           rd['from'] == 'missions' and rd['back'] == 'Missions' and rd['player'] and rd['playerAbove'] and rd['time'] == '0:00' and rd['paused'] and rd['clip'] == '' and rd['label'] == 'Play'
           and got == want and not rd['questions'], {'rd': {k: v for k, v in rd.items() if k != 'lines'}, 'first': got[:1]})
+    check('Read view (audio): no Script/Message header labels; Hard · Script line remains',
+          rd['header'] == 'Missions' and not rd['headerCount'] and rd['eyebrow'] == 'Hard · Script', rd['header'])
     await dr_shot(page, '05-read-view-audio.png')
     await page.click('[data-act=pl-play]'); await page.wait_for_timeout(700)
     playing = await page.evaluate("(() => { const a = window.__oyeAudioEl; return { playing: !a.paused, clip: a.dataset.clip, label: document.querySelector('[data-act=pl-play]').getAttribute('aria-label') }; })()")
@@ -2502,6 +2506,8 @@ async def drill_read_suite(browser, base, cards):
     lm = mby['m-landlord-whatsapp-01']['media']
     check('Read view (message): the message text and its English, no player, no questions',
           not rm['player'] and rm['bubble'] == lm['text_es'] and rm['en'] == lm['text_en'] and not rm['questions'], {k: rm[k] for k in ('player', 'questions')})
+    check('Read view (message): no Script/Message header labels; Hard · The message line remains',
+          rm['header'] == 'Missions' and not rm['headerCount'] and rm['eyebrow'] == 'Hard · The message', rm['header'])
     await dr_shot(page, '06-read-view-message.png')
     await page.go_back(); await page.wait_for_selector('[data-screen=missions]')
     # ---- intro of a finished mission: "Read script" under "Start mission"; the Read view's plays never count ----
@@ -2522,7 +2528,7 @@ async def drill_read_suite(browser, base, cards):
     await page.click('[data-act=hard]'); await page.click('[data-mission=m-voicemail-clinic-01]'); await page.wait_for_selector('[data-screen=mission-intro]')
     check('unfinished mission intro: no "Read script"', not await page.query_selector('[data-testid=read-script]'))
     await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
-    # ---- result screen: "Read script" under the main button ----
+    # ---- result screen: "Read the script" row opens the Read view ----
     await page.click('[data-act=hard]'); await page.click('[data-mission=m-landlord-whatsapp-01]'); await page.wait_for_selector('[data-screen=mission-intro]')
     await page.click('[data-act=begin]'); await page.wait_for_selector('[data-screen=mission-msg]')
     await page.click('[data-act=to-questions]')
@@ -2540,11 +2546,14 @@ async def drill_read_suite(browser, base, cards):
     await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 8000)
     n_rows = len(fake.ok_rows())
     score = await page.text_content('[data-testid=score]')
-    rb = await page.evaluate("(() => { const d = document.querySelector('[data-act=done]').getBoundingClientRect(), b = document.querySelector('[data-testid=read-script]'); return b ? { below: b.getBoundingClientRect().top >= d.bottom - 0.5, text: b.textContent.trim(), cls: b.className, inView: b.getBoundingClientRect().bottom <= innerHeight } : null; })()")
-    check('mission result: a "Read script" text button under the main button (Done), on screen', rb and rb['below'] and rb['text'] == 'Read script' and 'btn-text' in rb['cls'] and rb['inView'], rb)
+    check('mission result: row reads "Read the script"; no "Read script" button',
+          await page.text_content('[data-testid=transcript-row]') == 'Read the script'
+          and not await page.query_selector('[data-testid=read-script]')
+          and await page.get_by_role('button', name='Read script', exact=True).count() == 0)
     await page.wait_for_timeout(200)
     await dr_shot(page, '07-mission-result-read-script.png')
-    await page.click('[data-testid=read-script]'); await page.wait_for_selector('[data-screen=mission-read][data-from=result]')
+    await page.get_by_role('button', name='Read the script', exact=True).click()
+    await page.wait_for_selector('[data-screen=mission-read][data-from=result]')
     rl = (await page.text_content('[data-testid=read-back]')).strip()
     await page.click('[data-act=read-back]'); await page.wait_for_selector('[data-screen=mission-result]')
     await page.wait_for_timeout(500)
