@@ -474,6 +474,235 @@
    "normal": "audio/13e6b99d4769fbd4.mp3",
    "slow": "audio/1fe792b1a398e4a2.mp3",
    "voice": "male"
+  },
+  "El boleto general para el festival cuesta mil ochocientos pesos.": {
+   "normal": "audio/8c22ddaca12d5f6b.mp3",
+   "slow": "audio/6045ce17a6d1ebb6.mp3",
+   "voice": "male"
+  },
+  "El vuelo a Tokio cuesta quince mil setecientos pesos.": {
+   "normal": "audio/bc9bd3bd5fd8ed9f.mp3",
+   "slow": "audio/ef179915caed0a50.mp3",
+   "voice": "male"
+  },
+  "Este año vinieron veinte mil personas al festival.": {
+   "normal": "audio/989210ae5d033b26.mp3",
+   "slow": "audio/d20f3b421d85f786.mp3",
+   "voice": "male"
+  },
+  "El matcha cuesta cien pesos y el pan cuesta ciento diez.": {
+   "normal": "audio/8c0ec10ec5f8d119.mp3",
+   "slow": "audio/75614620ccb90184.mp3",
+   "voice": "male"
+  },
+  "Son ciento cincuenta pesos por persona.": {
+   "normal": "audio/3c11c8e6f65109b2.mp3",
+   "slow": "audio/7e6be93bef45f1c0.mp3",
+   "voice": "male"
+  },
+  "Una mesa para doce personas, por favor.": {
+   "normal": "audio/6c89ac634504d925.mp3",
+   "slow": "audio/8a540151a8f754f4.mp3",
+   "voice": "male"
+  },
+  "El concierto es el trece de noviembre.": {
+   "normal": "audio/73a92ecd224f17bf.mp3",
+   "slow": "audio/1d0c93d806cdfae0.mp3",
+   "voice": "male"
+  },
+  "Me debes setenta y seis pesos.": {
+   "normal": "audio/c26caafe3ce275bf.mp3",
+   "slow": "audio/493111870bed0cbc.mp3",
+   "voice": "male"
+  },
+  "La clase de box cuesta seiscientos pesos al mes.": {
+   "normal": "audio/6557a741f34ed0a2.mp3",
+   "slow": "audio/82f4526f564a605a.mp3",
+   "voice": "male"
+  },
+  "La chamarra de mezclilla cuesta dos mil cuatrocientos pesos.": {
+   "normal": "audio/a4ab699c34e95d79.mp3",
+   "slow": "audio/9fe9024643cd4bed.mp3",
+   "voice": "male"
+  },
+  "Son novecientos cincuenta pesos con la propina.": {
+   "normal": "audio/5935904d2ac87b10.mp3",
+   "slow": "audio/42357da1a28cc9af.mp3",
+   "voice": "male"
+  },
+  "El vuelo a Río de Janeiro cuesta once mil seiscientos pesos.": {
+   "normal": "audio/3d82b9891768653a.mp3",
+   "slow": "audio/e18792cb90a9bfe2.mp3",
+   "voice": "male"
+  },
+  "El cuadro cuesta quinientos quince pesos.": {
+   "normal": "audio/cad2d866f783a1e2.mp3",
+   "slow": "audio/12cb5aa620309b09.mp3",
+   "voice": "male"
+  },
+  "¿Cuánto cuesta la playera del tour? Cuatrocientos ochenta, joven. Y la gorra, doscientos veinte.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "¿Cuánto cuesta la playera del tour?"
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Cuatrocientos ochenta, joven. Y la gorra, doscientos veinte."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "e734c8219c87572b.mp3",
+     "4556c19c8b4e6fbc.mp3"
+    ],
+    "slow": [
+     "838716e326ca5084.mp3",
+     "74507fe76b61fd23.mp3"
+    ]
+   },
+   "normal": "audio/cbfb6d064d71d996.mp3",
+   "slow": "audio/96029b12045fa82b.mp3"
+  },
+  "Son mil doscientos cincuenta por los dos boletos.": {
+   "normal": "audio/4e2a8892ea999af0.mp3",
+   "slow": "audio/803dffb660f0238d.mp3",
+   "voice": "male"
+  },
+  "El autobús a Querétaro sale a las once y diez.": {
+   "normal": "audio/f2cf2b3e625af27a.mp3",
+   "slow": "audio/2d865817db09a90e.mp3",
+   "voice": "male"
+  },
+  "La galería abre a las diez de la mañana.": {
+   "normal": "audio/74d4144b900b026c.mp3",
+   "slow": "audio/c14b028310e3a2d5.mp3",
+   "voice": "male"
+  },
+  "El set principal empieza a las doce y media de la noche.": {
+   "normal": "audio/9da994bb8d0b555a.mp3",
+   "slow": "audio/604ae6d69b3ff305.mp3",
+   "voice": "male"
+  },
+  "La clase de yoga empieza a las seis y cuarto.": {
+   "normal": "audio/186abc94160e2245.mp3",
+   "slow": "audio/92048b1b51d0c8b8.mp3",
+   "voice": "male"
+  },
+  "Le doy ciento ochenta.": {
+   "normal": "audio/a81051fce04cfff8.mp3",
+   "slow": "audio/8480091329b33a73.mp3",
+   "voice": "male"
+  },
+  "Son doscientos ochenta.": {
+   "normal": "audio/9a01dd58b9c2d708.mp3",
+   "slow": "audio/29ef575553099d44.mp3",
+   "voice": "male"
+  },
+  "Quiero dos aguas.": {
+   "normal": "audio/52f952bc9774b603.mp3",
+   "slow": "audio/f2bd4d6c4c73ff7c.mp3",
+   "voice": "male"
+  },
+  "Te lo dejo en ochenta.": {
+   "normal": "audio/d42ebfde0346142b.mp3",
+   "slow": "audio/c9fec7edcca56e13.mp3",
+   "voice": "male"
+  },
+  "Dura dos horas.": {
+   "normal": "audio/8a7b2a64c8b55205.mp3",
+   "slow": "audio/431ef7e675ce4ebe.mp3",
+   "voice": "male"
+  },
+  "A las ocho y media.": {
+   "normal": "audio/9426a62237bc8539.mp3",
+   "slow": "audio/2b8d417136e84df1.mp3",
+   "voice": "male"
+  },
+  "Va a ir mañana.": {
+   "normal": "audio/65e319aad82ee891.mp3",
+   "slow": "audio/3ac5fa48e98f4e1e.mp3",
+   "voice": "male"
+  },
+  "Son las once y cuarto.": {
+   "normal": "audio/1b602dc3e9d732be.mp3",
+   "slow": "audio/a0dabe6a2b591232.mp3",
+   "voice": "male"
+  },
+  "Voy a llegar a las dos.": {
+   "normal": "audio/a69a4077ab70647b.mp3",
+   "slow": "audio/92e64d3b9aff2249.mp3",
+   "voice": "male"
+  },
+  "Mi amiga prefirió el matcha frío.": {
+   "normal": "audio/4c024f440a4e44be.mp3",
+   "slow": "audio/943de22fb4d81c88.mp3",
+   "voice": "male"
+  },
+  "Anoche en el estudio pidieron tres pizzas.": {
+   "normal": "audio/1b777702972dce9e.mp3",
+   "slow": "audio/8a43d4b25a701cb8.mp3",
+   "voice": "male"
+  },
+  "En el vuelo a Tokio, mi hermano durmió once horas.": {
+   "normal": "audio/6b62988b59878b6c.mp3",
+   "slow": "audio/d3c6bd2302d43698.mp3",
+   "voice": "male"
+  },
+  "Los vecinos oyeron la música de la fiesta hasta las tres.": {
+   "normal": "audio/ae8f76c50e13ce56.mp3",
+   "slow": "audio/0328956efe9e3e69.mp3",
+   "voice": "male"
+  },
+  "Construyeron el escenario del festival en seis días.": {
+   "normal": "audio/8e2909673f1230f7.mp3",
+   "slow": "audio/1ef807672dddb0ac.mp3",
+   "voice": "male"
+  },
+  "El público eligió la última canción, y el concierto terminó a las doce y cuarto.": {
+   "normal": "audio/b48c79f926ed11cd.mp3",
+   "slow": "audio/411e55c21b58f6fa.mp3",
+   "voice": "male"
+  },
+  "¿Qué pidieron en el café? Yo pedí un matcha, y mis amigos pidieron dos cafés de olla.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "¿Qué pidieron en el café?"
+    },
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "Yo pedí un matcha, y mis amigos pidieron dos cafés de olla."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "72d3e00109377217.mp3",
+     "b76d597b8c1bf625.mp3"
+    ],
+    "slow": [
+     "1bf5997d294ffcc0.mp3",
+     "44ac28a94c7da512.mp3"
+    ]
+   },
+   "normal": "audio/b11a22e114966e81.mp3",
+   "slow": "audio/ba85a64740421336.mp3"
+  },
+  "Mi compañero se sintió mal y durmió todo el día.": {
+   "normal": "audio/e9a91f6b1e0159ec.mp3",
+   "slow": "audio/f917ccbfc5afd4b2.mp3",
+   "voice": "male"
+  },
+  "Leyó la reseña de la película y no quiso ir.": {
+   "normal": "audio/ad833557e278621e.mp3",
+   "slow": "audio/6498fc81940bf629.mp3",
+   "voice": "male"
   }
  },
  "lines": {
@@ -633,12 +862,28 @@
    "normal": "audio/5e4263b88af7a2ed.mp3",
    "voice": "female"
   },
+  "male|¿Cuánto cuesta la playera del tour?": {
+   "normal": "audio/e734c8219c87572b.mp3",
+   "voice": "male"
+  },
+  "female|Cuatrocientos ochenta, joven. Y la gorra, doscientos veinte.": {
+   "normal": "audio/4556c19c8b4e6fbc.mp3",
+   "voice": "female"
+  },
+  "male|¿Qué pidieron en el café?": {
+   "normal": "audio/72d3e00109377217.mp3",
+   "voice": "male"
+  },
+  "female|Yo pedí un matcha, y mis amigos pidieron dos cafés de olla.": {
+   "normal": "audio/b76d597b8c1bf625.mp3",
+   "voice": "female"
+  },
   "male|Próxima estación: Bellas Artes.": {
    "normal": "audio/25404699261bfa84.mp3",
    "voice": "male"
   },
-  "male|Estimados usuarios, les informamos que hoy domingo, por trabajos de mantenimiento, la estación Zócalo/Tenochtitlan de la Línea Dos está cerrada.": {
-   "normal": "audio/5741ede107940a7a.mp3",
+  "male|Estimados usuarios, les informamos que hoy domingo, por trabajos de mantenimiento, la estación Zócalo Tenochtitlan de la Línea Dos está cerrada.": {
+   "normal": "audio/a23fc1ea1c63c99c.mp3",
    "voice": "male"
   },
   "male|Los trenes pasan por la estación, pero no se detienen.": {
@@ -649,8 +894,8 @@
    "normal": "audio/053905f052f17061.mp3",
    "voice": "male"
   },
-  "male|La estación Zócalo/Tenochtitlan va a abrir otra vez mañana lunes a las cinco de la mañana, en su horario normal.": {
-   "normal": "audio/65195ef71e3ec96b.mp3",
+  "male|La estación Zócalo Tenochtitlan va a abrir otra vez mañana lunes a las cinco de la mañana, en su horario normal.": {
+   "normal": "audio/682b3b93ab66dc87.mp3",
    "voice": "male"
   },
   "male|Les recordamos que en horas pico los primeros vagones del tren son exclusivos para mujeres y niños menores de doce años.": {
@@ -688,6 +933,38 @@
   "female|Muchas gracias. Que tenga buen día.": {
    "normal": "audio/d8f6233dce60a47b.mp3",
    "voice": "female"
+  },
+  "female|¡Buenas noches, Ciudad de México! Bienvenidos al Festival Órbita. Tenemos cambios importantes, así que pongan atención.": {
+   "normal": "audio/29841770fca27797.mp3",
+   "voice": "female"
+  },
+  "male|Por la lluvia de esta tarde, el set principal de hoy no va a empezar a las once y media. Va a empezar a las doce y cuarto, en el escenario Luna.": {
+   "normal": "audio/2f267c5774f44d38.mp3",
+   "voice": "male"
+  },
+  "female|El escenario Sol va a cerrar a la una de la mañana, una hora antes de lo normal.": {
+   "normal": "audio/eb85403dcb656674.mp3",
+   "voice": "female"
+  },
+  "male|Si todavía no tienen su pulsera, la puerta tres está cerrada. Por favor, entren por la puerta cinco, al lado del estacionamiento.": {
+   "normal": "audio/113ef8a52dfdc342.mp3",
+   "voice": "male"
+  },
+  "female|Pueden recargar su pulsera en la taquilla con un mínimo de doscientos pesos. Los casilleros cuestan ciento cincuenta pesos por toda la noche.": {
+   "normal": "audio/57401a4a9274d97c.mp3",
+   "voice": "female"
+  },
+  "male|El agua es gratis en las estaciones de hidratación, al lado de los baños.": {
+   "normal": "audio/ed4b8c0bf295e15e.mp3",
+   "voice": "male"
+  },
+  "female|Al final, habrá camiones gratis al metro hasta las dos y media de la mañana.": {
+   "normal": "audio/12589bb305f2b215.mp3",
+   "voice": "female"
+  },
+  "male|Si pierden a sus amigos, el punto de encuentro está enfrente de la rueda de la fortuna. ¡Disfruten la noche!": {
+   "normal": "audio/9ddec77b50353f27.mp3",
+   "voice": "male"
   }
  },
  "missions": {
@@ -701,7 +978,7 @@
     {
      "speaker": "Anuncio",
      "voice": "male",
-     "es": "Estimados usuarios, les informamos que hoy domingo, por trabajos de mantenimiento, la estación Zócalo/Tenochtitlan de la Línea Dos está cerrada."
+     "es": "Estimados usuarios, les informamos que hoy domingo, por trabajos de mantenimiento, la estación Zócalo Tenochtitlan de la Línea Dos está cerrada."
     },
     {
      "speaker": "Anuncio",
@@ -716,7 +993,7 @@
     {
      "speaker": "Anuncio",
      "voice": "male",
-     "es": "La estación Zócalo/Tenochtitlan va a abrir otra vez mañana lunes a las cinco de la mañana, en su horario normal."
+     "es": "La estación Zócalo Tenochtitlan va a abrir otra vez mañana lunes a las cinco de la mañana, en su horario normal."
     },
     {
      "speaker": "Anuncio",
@@ -732,27 +1009,27 @@
    "parts": {
     "normal": [
      "25404699261bfa84.mp3",
-     "5741ede107940a7a.mp3",
+     "a23fc1ea1c63c99c.mp3",
      "e95bbd986f1d2cf0.mp3",
      "053905f052f17061.mp3",
-     "65195ef71e3ec96b.mp3",
+     "682b3b93ab66dc87.mp3",
      "3b1b269c18db19ea.mp3",
      "0b7a365fc4ad8cbc.mp3"
     ],
     "slow": [
      "712398a15f4e45b6.mp3",
-     "749e9b30cb386da9.mp3",
+     "6878d870dbf930f4.mp3",
      "da8ef979e1afdb17.mp3",
      "947d14aad8776134.mp3",
-     "e1187d09d8e77b31.mp3",
+     "e4300869b354fbfe.mp3",
      "b9bf36c376bef63e.mp3",
      "7489cd78022399cd.mp3"
     ]
    },
-   "normal": "audio/f98ca2b9b152208c.mp3",
-   "slow": "audio/08bb33daee867421.mp3",
-   "duration": 57.07,
-   "slow_duration": 75.05
+   "normal": "audio/2d6fd90d306262d3.mp3",
+   "slow": "audio/dbec07e4d1b376ac.mp3",
+   "duration": 55.49,
+   "slow_duration": 72.91
   },
   "m-voicemail-clinic-01": {
    "lines": [
@@ -816,6 +1093,76 @@
    "slow": "audio/b06436c358547e22.mp3",
    "duration": 55.78,
    "slow_duration": 73.32
+  },
+  "m-festival-cdmx-01": {
+   "lines": [
+    {
+     "speaker": "Presentadora",
+     "voice": "female",
+     "es": "¡Buenas noches, Ciudad de México! Bienvenidos al Festival Órbita. Tenemos cambios importantes, así que pongan atención."
+    },
+    {
+     "speaker": "Presentador",
+     "voice": "male",
+     "es": "Por la lluvia de esta tarde, el set principal de hoy no va a empezar a las once y media. Va a empezar a las doce y cuarto, en el escenario Luna."
+    },
+    {
+     "speaker": "Presentadora",
+     "voice": "female",
+     "es": "El escenario Sol va a cerrar a la una de la mañana, una hora antes de lo normal."
+    },
+    {
+     "speaker": "Presentador",
+     "voice": "male",
+     "es": "Si todavía no tienen su pulsera, la puerta tres está cerrada. Por favor, entren por la puerta cinco, al lado del estacionamiento."
+    },
+    {
+     "speaker": "Presentadora",
+     "voice": "female",
+     "es": "Pueden recargar su pulsera en la taquilla con un mínimo de doscientos pesos. Los casilleros cuestan ciento cincuenta pesos por toda la noche."
+    },
+    {
+     "speaker": "Presentador",
+     "voice": "male",
+     "es": "El agua es gratis en las estaciones de hidratación, al lado de los baños."
+    },
+    {
+     "speaker": "Presentadora",
+     "voice": "female",
+     "es": "Al final, habrá camiones gratis al metro hasta las dos y media de la mañana."
+    },
+    {
+     "speaker": "Presentador",
+     "voice": "male",
+     "es": "Si pierden a sus amigos, el punto de encuentro está enfrente de la rueda de la fortuna. ¡Disfruten la noche!"
+    }
+   ],
+   "parts": {
+    "normal": [
+     "29841770fca27797.mp3",
+     "2f267c5774f44d38.mp3",
+     "eb85403dcb656674.mp3",
+     "113ef8a52dfdc342.mp3",
+     "57401a4a9274d97c.mp3",
+     "ed4b8c0bf295e15e.mp3",
+     "12589bb305f2b215.mp3",
+     "9ddec77b50353f27.mp3"
+    ],
+    "slow": [
+     "263d26b99a43a751.mp3",
+     "6acc67b541a60bc9.mp3",
+     "ff4745eccd0c0067.mp3",
+     "e6d43fe0c512ba55.mp3",
+     "bc6de0977c2fef54.mp3",
+     "a3c429c487df414c.mp3",
+     "e215002abadbc538.mp3",
+     "3aee34b7055bb936.mp3"
+    ]
+   },
+   "normal": "audio/eba09a68d4123260.mp3",
+   "slow": "audio/4e83ef5f347d8342.mp3",
+   "duration": 65.59,
+   "slow_duration": 86.23
   }
  }
 }

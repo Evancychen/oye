@@ -739,8 +739,14 @@ async def layout_suite(browser, base, cards, w, h):
         g = await page.evaluate(GEOM_JS)
         probs = layout_problems(g, cid)
         body = await page.evaluate("(() => { const c = document.querySelector('.card-inner').cloneNode(true); c.querySelectorAll('.info-rows').forEach(e => e.remove()); return c.textContent; })()")
-        if 'The answer is' not in body: probs.append('no "The answer is" line')
-        if card.get('explanation_en') and card['explanation_en'] in body: probs.append('explanation shown inline instead of behind "Why"')
+        is_drill = card.get('level') == 'drill'
+        if is_drill:
+            # Verb drill cards (Phase 4 design): the right form goes in the blank and the one-sentence why is shown inline, no sheet
+            if card.get('explanation_en') and card['explanation_en'] not in body: probs.append('drill: explanation not shown inline')
+            if card['answer'] not in body: probs.append('drill: right form not shown')
+        else:
+            if 'The answer is' not in body: probs.append('no "The answer is" line')
+            if card.get('explanation_en') and card['explanation_en'] in body: probs.append('explanation shown inline instead of behind "Why"')
         if card.get('audio_text'):
             probs += replay_problems(g)
         if g['next'] and not fully_inside(g['next'], 0, g['vh']): probs.append('Next not fully visible')
@@ -750,7 +756,9 @@ async def layout_suite(browser, base, cards, w, h):
             await page.screenshot(path=shot_path(w, h, f'{pre}-d-feedback.png'))
         # ---- sheet ----
         row = await page.query_selector('[data-sheet=heard]') or await page.query_selector('[data-sheet=why]')
-        if (card.get('audio_text') or card.get('explanation_en')) and not row:
+        if is_drill and row:
+            sheet_bad.append(f'{cid}: drill card shows a What you heard / Why row')
+        elif not is_drill and (card.get('audio_text') or card.get('explanation_en')) and not row:
             sheet_bad.append(f'{cid}: no What you heard / Why row')
         if row:
             await row.click()
@@ -2123,11 +2131,14 @@ async def drill_read_suite(browser, base, cards):
         sessions.append(await page.evaluate("window.__oye.session.cards.map(c => ({ id: c.id, options: c.options || [] }))"))
         await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
     orders = {tuple(c['id'] for c in s) for s in sessions}
-    same_set = all({c['id'] for c in s} == pool and len(s) == len(pool) for s in sessions)
+    # <= 10 cards: every card once per start; > 10 cards: 10 distinct cards from the topic (weighted pick, tested below)
+    want_n = min(len(pool), 10)
+    same_set = all(len(s) == want_n and len({c['id'] for c in s}) == want_n and
+                   ({c['id'] for c in s} == pool if len(pool) <= 10 else {c['id'] for c in s} <= pool) for s in sessions)
     opt_cards = [(c, by_id[c['id']]) for s in sessions for c in s if by_id[c['id']].get('options')]
     opt_same_values = all(sorted(c['options']) == sorted(o['options']) for c, o in opt_cards)
     opt_moved = sum(1 for c, o in opt_cards if c['options'] != o['options'])
-    check(f'shuffled topics: 6 starts of "{topic}" ({len(pool)} cards) each hold every playable card once, in {len(orders)} different orders; '
+    check(f'shuffled topics: 6 starts of "{topic}" ({len(pool)} cards) each hold ' + ('every playable card once' if len(pool) <= 10 else f'{want_n} distinct cards of the topic') + f', in {len(orders)} different orders; '
           f'option order shuffled ({opt_moved} of {len(opt_cards)} option cards moved), same option values',
           same_set and len(orders) >= 3 and opt_cards and opt_same_values and opt_moved >= len(opt_cards) // 3, {'orders': len(orders), 'moved': opt_moved})
     # The check uses option values, not positions: find a start where an options card's answer moved, tap by value -> right;
@@ -2390,12 +2401,32 @@ async def drill_read_suite(browser, base, cards):
         server.terminate(); server.wait()
         shutil.rmtree(site, ignore_errors=True)
 
-    # without drill cards (today's app content) the Verb drill row is hidden
+    # the published app content: the Verb drill row shows exactly when the content has drill cards
+    want_drill = len([c for c in cards if c.get('level') == 'drill'])
     ctx, page = await new_page(browser, errors, viewport={'width': 390, 'height': 844})
     await home_fresh(page, base)
     n_drill = await page.evaluate("window.__oye.drill.length")
-    check('home without drill cards (current content): no Verb drill row', not await page.query_selector('[data-testid=drill-row]') and n_drill == len([c for c in cards if c.get('level') == 'drill']) == 0, n_drill)
+    has_row = bool(await page.query_selector('[data-testid=drill-row]'))
+    check(f'home on the current content ({want_drill} drill cards): Verb drill row ' + ('shown' if want_drill else 'hidden'),
+          n_drill == want_drill and has_row == bool(want_drill), {'drill': n_drill, 'row': has_row})
     await ctx.close()
+    # content without drill cards: no Verb drill row
+    site = os.path.join(TMP, 'nodrill-site')
+    shutil.rmtree(site, ignore_errors=True); os.makedirs(site)
+    copy_current(site)
+    cpath = os.path.join(site, 'content', 'cards.json')
+    json.dump([c for c in json.load(open(cpath, encoding='utf-8')) if c.get('level') != 'drill'], open(cpath, 'w', encoding='utf-8'), ensure_ascii=False)
+    port = free_port()
+    server = start_server(site, port)
+    try:
+        ctx, page = await new_page(browser, errors, viewport={'width': 390, 'height': 844})
+        await home_fresh(page, f'http://localhost:{port}/')
+        n_drill = await page.evaluate("window.__oye.drill.length")
+        check('home without drill cards: no Verb drill row', not await page.query_selector('[data-testid=drill-row]') and n_drill == 0, n_drill)
+        await ctx.close()
+    finally:
+        server.terminate(); server.wait()
+        shutil.rmtree(site, ignore_errors=True)
 
     # ================= 3. Mission Read view (real app content) =================
     fake = FakeEndpoint('ok')

@@ -30,8 +30,8 @@
         },
         {
           "speaker": "Anuncio",
-          "es": "Estimados usuarios, les informamos que hoy domingo, por trabajos de mantenimiento, la estación Zócalo/Tenochtitlan de la Línea Dos está cerrada.",
-          "en": "Dear passengers, today, Sunday, Zócalo/Tenochtitlan station on Line 2 is closed for maintenance work.",
+          "es": "Estimados usuarios, les informamos que hoy domingo, por trabajos de mantenimiento, la estación Zócalo Tenochtitlan de la Línea Dos está cerrada.",
+          "en": "Dear passengers, today, Sunday, Zócalo Tenochtitlan station on Line 2 is closed for maintenance work.",
           "voice": "male"
         },
         {
@@ -48,8 +48,8 @@
         },
         {
           "speaker": "Anuncio",
-          "es": "La estación Zócalo/Tenochtitlan va a abrir otra vez mañana lunes a las cinco de la mañana, en su horario normal.",
-          "en": "Zócalo/Tenochtitlan station is going to open again tomorrow, Monday, at 5 a.m., at its normal time.",
+          "es": "La estación Zócalo Tenochtitlan va a abrir otra vez mañana lunes a las cinco de la mañana, en su horario normal.",
+          "en": "Zócalo Tenochtitlan station is going to open again tomorrow, Monday, at 5 a.m., at its normal time.",
           "voice": "male"
         },
         {
@@ -72,14 +72,14 @@
         "kind": "pick",
         "prompt_en": "Which station is closed today?",
         "options": [
-          "Zócalo/Tenochtitlan",
+          "Zócalo Tenochtitlan",
           "Allende",
           "Pino Suárez",
           "Bellas Artes"
         ],
-        "answer": "Zócalo/Tenochtitlan",
+        "answer": "Zócalo Tenochtitlan",
         "hint_en": "Listen for the station that comes before 'está cerrada'.",
-        "explanation_en": "'La estación Zócalo/Tenochtitlan de la Línea Dos está cerrada' = Zócalo/Tenochtitlan station is closed. Allende and Pino Suárez are where you can get off instead, and Bellas Artes is just the next stop."
+        "explanation_en": "'La estación Zócalo Tenochtitlan de la Línea Dos está cerrada' = Zócalo Tenochtitlan station is closed. Allende and Pino Suárez are where you can get off instead, and Bellas Artes is just the next stop."
       },
       {
         "id": "q2",
@@ -369,5 +369,255 @@
       }
     ],
     "region_note": "Mexico: 'depa' (short for departamento), 'plomero' (Spain: fontanero), 'cubeta' (Spain: cubo), 'porfa' = casual please. The message uses tú commands (deja, saca, llena, contéstame)."
+  },
+  {
+    "id": "m-festival-cdmx-01",
+    "title_en": "Festival announcement: new set times and gates",
+    "situation_en": "You're arriving at an electronic music festival in Mexico City on a rainy night. The hosts make an announcement on the big screens.",
+    "topic": "time_schedules",
+    "lesson_tags": [
+      "A1-L12",
+      "A1-L19",
+      "A2-L07",
+      "A1-L35"
+    ],
+    "vocab_ids": [
+      "v-escenario",
+      "v-pulsera",
+      "v-taquilla",
+      "v-recargar",
+      "v-estacionamiento",
+      "v-punto-de-encuentro",
+      "v-rueda-de-la-fortuna",
+      "v-camion"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Presentadora",
+          "voice": "female",
+          "es": "¡Buenas noches, Ciudad de México! Bienvenidos al Festival Órbita. Tenemos cambios importantes, así que pongan atención.",
+          "en": "Good evening, Mexico City! Welcome to the Órbita Festival. We have important changes, so pay attention."
+        },
+        {
+          "speaker": "Presentador",
+          "voice": "male",
+          "es": "Por la lluvia de esta tarde, el set principal de hoy no va a empezar a las once y media. Va a empezar a las doce y cuarto, en el escenario Luna.",
+          "en": "Because of this afternoon's rain, tonight's main set is not going to start at eleven thirty. It's going to start at twelve fifteen, on the Luna stage."
+        },
+        {
+          "speaker": "Presentadora",
+          "voice": "female",
+          "es": "El escenario Sol va a cerrar a la una de la mañana, una hora antes de lo normal.",
+          "en": "The Sol stage is going to close at one in the morning, one hour earlier than usual."
+        },
+        {
+          "speaker": "Presentador",
+          "voice": "male",
+          "es": "Si todavía no tienen su pulsera, la puerta tres está cerrada. Por favor, entren por la puerta cinco, al lado del estacionamiento.",
+          "en": "If you don't have your wristband yet, gate three is closed. Please come in through gate five, next to the parking lot."
+        },
+        {
+          "speaker": "Presentadora",
+          "voice": "female",
+          "es": "Pueden recargar su pulsera en la taquilla con un mínimo de doscientos pesos. Los casilleros cuestan ciento cincuenta pesos por toda la noche.",
+          "en": "You can top up your wristband at the box office with a minimum of two hundred pesos. Lockers cost one hundred fifty pesos for the whole night."
+        },
+        {
+          "speaker": "Presentador",
+          "voice": "male",
+          "es": "El agua es gratis en las estaciones de hidratación, al lado de los baños.",
+          "en": "Water is free at the hydration stations, next to the restrooms."
+        },
+        {
+          "speaker": "Presentadora",
+          "voice": "female",
+          "es": "Al final, habrá camiones gratis al metro hasta las dos y media de la mañana.",
+          "en": "At the end, there will be free buses to the metro until two thirty in the morning."
+        },
+        {
+          "speaker": "Presentador",
+          "voice": "male",
+          "es": "Si pierden a sus amigos, el punto de encuentro está enfrente de la rueda de la fortuna. ¡Disfruten la noche!",
+          "en": "If you lose your friends, the meeting point is across from the Ferris wheel. Enjoy the night!"
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "type",
+        "prompt_en": "What time does the main set start now? (type it like 7:15)",
+        "answer": "12:15",
+        "accepted_answers": [
+          "12:15",
+          "12.15",
+          "0:15",
+          "00:15"
+        ],
+        "hint_en": "Listen for 'va a empezar'. The first time you hear is the old one.",
+        "explanation_en": "It was going to be at 11:30 ('no va a empezar a las once y media'); now it starts 'a las doce y cuarto' = 12:15. Doce (12), not dos (2)."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "You don't have your wristband yet. Which gate do you use?",
+        "options": [
+          "Gate 5, next to the restrooms",
+          "Gate 5, next to the parking lot",
+          "Gate 2, across from the Ferris wheel",
+          "Gate 3, next to the parking lot"
+        ],
+        "answer": "Gate 5, next to the parking lot",
+        "hint_en": "Listen for 'puerta'.",
+        "explanation_en": "'La puerta tres está cerrada... entren por la puerta cinco, al lado del estacionamiento' = gate 3 is closed, so go in through gate 5, next to the parking lot."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "How much is a locker for the night?",
+        "options": [
+          "$150",
+          "$250",
+          "$115",
+          "$200"
+        ],
+        "answer": "$150",
+        "hint_en": "Listen for 'casilleros'. Two amounts are said close together.",
+        "explanation_en": "'Los casilleros cuestan ciento cincuenta pesos por toda la noche' = 150. The 200 is the minimum to top up your wristband."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "What changes for the Sol stage?",
+        "options": [
+          "The main set moves there",
+          "It closes at 1 a.m., an hour early",
+          "It closes at 2 a.m., as usual",
+          "It closes at 1 a.m., an hour late"
+        ],
+        "answer": "It closes at 1 a.m., an hour early",
+        "hint_en": "Listen for 'escenario Sol' and 'antes de lo normal'.",
+        "explanation_en": "'El escenario Sol va a cerrar a la una de la mañana, una hora antes de lo normal' = it closes at 1 a.m., an hour earlier than usual. The main set is on the Luna stage."
+      },
+      {
+        "id": "q5",
+        "kind": "type",
+        "prompt_en": "Until what time are there free buses to the metro? (type it like 7:15)",
+        "answer": "2:30",
+        "accepted_answers": [
+          "2:30",
+          "2.30",
+          "02:30"
+        ],
+        "hint_en": "Listen for 'camiones gratis'. Type it like 7:15.",
+        "explanation_en": "'Habrá camiones gratis al metro hasta las dos y media de la mañana' = free buses until 2:30 a.m."
+      }
+    ],
+    "region_note": "Mexico: 'camión' = bus, 'rueda de la fortuna' = Ferris wheel (Spain: 'noria'). The ustedes commands (pongan, entren, disfruten) are there for realism; the questions don't depend on them."
+  },
+  {
+    "id": "m-cafe-whatsapp-01",
+    "title_en": "WhatsApp from a café: your matcha workshop moved",
+    "situation_en": "You signed up for a matcha workshop at a small café in the Roma neighborhood. This afternoon the café sends you a WhatsApp.",
+    "topic": "phone_reservations",
+    "lesson_tags": [
+      "A2-L07",
+      "A1-L12",
+      "A1-L31",
+      "A1-L35",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-taller",
+      "v-anticipo",
+      "v-una-disculpa",
+      "v-pagar-en-efectivo"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "whatsapp",
+      "text_es": "¡Hola! 🍵 Te escribimos de Café Hoja, sobre el taller de matcha.\n\nUna disculpa: el sábado 10 no vamos a poder abrir, porque van a arreglar la luz en todo el edificio. Por eso cambiamos el taller al domingo 11, a las 11:30 de la mañana. Va a durar dos horas.\n\nEl taller cuesta $480 y ya pagaste $200 de anticipo, entonces te faltan $280. Puedes pagar en efectivo o con transferencia el mismo día.\n\nIncluye tu propio batidor de bambú y una bolsa de matcha de 30 gramos para llevar. Ese día también vas a tener 15 por ciento de descuento en todas las bebidas.\n\nSi el domingo no puedes, te regresamos tu anticipo completo, sin problema.\n\nPor favor, confírmanos antes del viernes a las 6 de la tarde. ¡Te esperamos! 💚",
+      "text_en": "Hi! 🍵 We're writing from Café Hoja about the matcha workshop.\n\nOur apologies: on Saturday the 10th we won't be able to open, because they're going to fix the electricity in the whole building. So we moved the workshop to Sunday the 11th, at 11:30 in the morning. It will last two hours.\n\nThe workshop costs $480 and you already paid a $200 deposit, so you still owe $280. You can pay in cash or by bank transfer on the day.\n\nIt includes your own bamboo whisk and a 30-gram bag of matcha to take home. That day you'll also get 15 percent off all drinks.\n\nIf you can't make it on Sunday, we'll give you your whole deposit back, no problem.\n\nPlease confirm before Friday at 6 p.m. See you there! 💚",
+      "sender_en": "Café Hoja (matcha workshop)",
+      "time": "17:40"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "When is the workshop now?",
+        "options": [
+          "Sunday the 11th at 11:30 p.m.",
+          "Saturday the 10th at 11:30 a.m.",
+          "Sunday the 11th at 11:30 a.m.",
+          "Sunday the 11th at 10:30 a.m."
+        ],
+        "answer": "Sunday the 11th at 11:30 a.m.",
+        "hint_en": "Look for 'cambiamos el taller al...'.",
+        "explanation_en": "'Cambiamos el taller al domingo 11, a las 11:30 de la mañana' = moved to Sunday the 11th at 11:30 a.m. Saturday the 10th is the day they can't open."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "How much do you still have to pay? Type the number.",
+        "answer": "280",
+        "accepted_answers": [
+          "280",
+          "$280",
+          "doscientos ochenta"
+        ],
+        "hint_en": "Take the price and subtract what you already paid.",
+        "explanation_en": "It costs $480 and you already paid a $200 deposit ('anticipo'), so 'te faltan $280' = you still owe 280."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What do you take home?",
+        "options": [
+          "A bamboo whisk and 13 g of matcha",
+          "A cup and 30 g of matcha",
+          "A bamboo whisk and 30 g of matcha",
+          "Only a discount on drinks"
+        ],
+        "answer": "A bamboo whisk and 30 g of matcha",
+        "hint_en": "Look for 'Incluye'.",
+        "explanation_en": "'Incluye tu propio batidor de bambú y una bolsa de matcha de 30 gramos para llevar' = your own bamboo whisk and a 30-gram bag of matcha to take home. The 15 percent discount is only for drinks that day."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "You can't go on Sunday. What happens?",
+        "options": [
+          "You go on Saturday instead",
+          "They give back your whole deposit",
+          "You lose your deposit",
+          "You still pay the $280"
+        ],
+        "answer": "They give back your whole deposit",
+        "hint_en": "Look for 'Si el domingo no puedes'.",
+        "explanation_en": "'Si el domingo no puedes, te regresamos tu anticipo completo' = if you can't on Sunday, they give you your whole deposit back."
+      },
+      {
+        "id": "q5",
+        "kind": "type",
+        "prompt_en": "You must confirm before Friday at what time? (type it like 7:15)",
+        "answer": "6:00",
+        "accepted_answers": [
+          "6:00",
+          "6",
+          "18:00",
+          "18"
+        ],
+        "hint_en": "Look for 'confírmanos'. Type it like 7:15.",
+        "explanation_en": "'Confírmanos antes del viernes a las 6 de la tarde' = confirm before Friday at 6 p.m. (18:00)."
+      }
+    ],
+    "region_note": "Mexico: 'una disculpa' = our apologies, 'anticipo' = deposit, 'la luz' = the electricity. 'Confírmanos' is a tú command with 'nos' attached."
   }
 ]
