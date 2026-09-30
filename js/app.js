@@ -399,14 +399,14 @@ function showCard(fb = null) {
   catch (e) { console.warn('[oye] template failed, skipping', card.id, e); return nextCard(true); }
   const n = ses.cards.length;
   render(`
-  <div class="screen card-screen" data-screen="card" data-type="${esc(card.type)}" data-card="${esc(card.id)}" data-state="${fb ? (fb.ok ? 'correct' : 'wrong') : 'question'}">
+  <div class="screen card-screen ${levels.isDrill(card) ? 'drill-screen' : ''}" data-screen="card" data-type="${esc(card.type)}" data-card="${esc(card.id)}" data-state="${fb ? (fb.ok ? 'correct' : 'wrong') : 'question'}">
     <header class="topbar">
       <button class="close" data-act="close" aria-label="End session">${ICON.close}</button>
       <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${ses.i + 1}"><i style="width:${((ses.i + 1) / n) * 100}%"></i></div>
-      <span class="count">${ses.i + 1} of ${n}</span>
+      <span class="count">${ses.i + 1}${levels.isDrill(card) ? ' / ' : ' of '}${n}</span>
     </header>
     <div class="zone card-zone"><div class="card-body scroller" data-testid="card-body"><div class="card-inner">${view.body}</div></div>${moreHint()}</div>
-    <div class="dock ${view.dockClass || ''}" data-testid="dock">${view.dock}</div>
+    ${levels.isDrill(card) ? '' : `<div class="dock ${view.dockClass || ''}" data-testid="dock">${view.dock}</div>`}
   </div>`);
   $('[data-act="close"]').onclick = () => goHome(true);
   bindAudio(card);
@@ -761,24 +761,28 @@ function renderSceneQuestion(card, fb) {
 function sentenceHtml(card, fill, state) {
   const parts = String(card.sentence).split(/_{2,}/);
   if (parts.length < 2) return `<p class="sentence" data-testid="sentence">${esc(card.sentence)}</p>`;
-  const blank = `<span class="blank ${state || ''}" data-testid="blank">${fill ? esc(fill) : '&nbsp;'}</span>`;
+  const blank = `<span class="blank ${state || ''}" data-testid="blank">${state === 'drill-empty' ? `<span aria-hidden="true" style="visibility:hidden">${esc(fill)}</span>` : fill ? esc(fill) : '&nbsp;'}</span>`;
   return `<p class="sentence" data-testid="sentence">${esc(parts[0])}${blank}${parts.slice(1).map(esc).join(blank)}</p>`;
+}
+function drillLabel(card) {
+  const [verb, ...details] = (card.prompt_en || levels.topicName(card.topic)).split(', ');
+  return `<p class="drill-label" data-testid="drill-label"><strong>${esc(verb)}</strong> <span>${esc(details.join(' · '))}</span></p>`;
 }
 function renderFixIt(card, fb) {
   const src = card.source === 'mistake' ? 'from your mistakes' : card.source === 'class_quizlet' ? 'from class' : card.source === 'scene' ? 'from a scene' : '';
   const drill = levels.isDrill(card);
-  // Verb drill (Picasso's mapping): prompt_en ("tener, tú, command") is the small label above the sentence,
-  // normal case, capMed gray (not the uppercase eyebrow). The Hint button is the same as on other cards.
-  const head = drill ? `<p class="drill-label" data-testid="drill-label">${esc(card.prompt_en || levels.topicName(card.topic))}</p>` : eyebrow('Fix it', src);
+  const head = drill ? drillLabel(card) : eyebrow('Fix it', src);
   // fix_it cards with options (all Verb drill cards) are one tap per answer; without options they are typed.
   const chosen = hasOptions(card);
   const grid = { grid: drill ? drillGrid(card) : false };
   const instruction = card.prompt_en && !drill ? `<p class="body-copy instruction" data-testid="instruction">${esc(card.prompt_en)}</p>` : '';
-  if (fb && drill) {
-    // Drill feedback: right form in the blank, Correct / Not quite, the one-sentence why (g600, max 2 lines), then
-    // the options (right one green, your pick red) and Next, like other option cards.
-    const why = card.explanation_en ? `<p class="drill-why" data-testid="drill-why">${esc(card.explanation_en)}</p>` : '';
-    return { body: `${head}${sentenceHtml(card, card.answer, 'ok')}${resultRow(fb.ok)}${why}`, dock: optionsDock(card, fb, grid), dockClass: 'opts-dock drill-dock' };
+  if (drill) {
+    const why = fb && card.explanation_en ? `<p class="drill-why" data-testid="drill-why">${esc(card.explanation_en)}</p>` : '';
+    const sentence = sentenceHtml(card, card.answer, fb ? 'ok' : 'drill-empty');
+    return { body: `<div class="drill-block">${head}${sentence}${!fb ? hintBox(card) : ''}
+      ${optionsBlock(card, fb, grid)}
+      ${fb ? `${resultRow(fb.ok)}${why}${btnNext}` : `<div class="drill-tools">${hintPill(card)}${btnDontKnow}</div>`}</div>`,
+      dock: '', bind: () => { if (!fb) bindOptions(card); } };
   }
   if (fb) {
     // A correct accepted alternate ("gira" for "dobla") stays in the blank as the user typed it.
@@ -907,7 +911,7 @@ function showSummary() {
 
 
 /** v2.2 Verb drill end screen: score, missed pairs side by side (your form struck red, right form green),
- *  "Another 20" (primary) and "Done". No stars. */
+ *  Equal "Another 20" and "Done" buttons. No stars. */
 function showDrillSummary(ses) {
   const right = ses.results.filter((r) => r.ok).length, n = ses.results.length;
   const misses = ses.results.filter((r) => !r.ok);
@@ -915,7 +919,7 @@ function showDrillSummary(ses) {
     ? `<p class="caption results-status" data-testid="results-status" data-state="queued" role="status">${resultsStatusHtml(false)}</p>` : '';
   const next = Math.min(srs.DRILL_SIZE, S.drill.length);
   const pair = (r) => `<div class="drill-miss" data-testid="drill-miss" data-card="${esc(r.card.id)}">
-      <p class="caption dm-what">${esc(r.card.prompt_en || levels.topicName(r.card.topic))}</p>
+      ${drillLabel(r.card)}
       <p class="dm-pair">${r.skipped || r.given == null ? '<span class="dm-given skipped">skipped</span>' : `<s class="dm-given">${esc(r.given)}</s>`}<span class="dm-arrow" aria-hidden="true">→</span><span class="dm-right">${esc(r.card.answer)}</span></p>
     </div>`;
   render(`
@@ -923,11 +927,11 @@ function showDrillSummary(ses) {
     <div class="zone summary-zone"><div class="scroll scroller"><div class="scroll-inner">
       <p class="eyebrow lv-tag">Verb drill</p>
       <h1 class="display msum-score" data-testid="score">${right} of ${n} right</h1>
-      <p class="body-copy msum-why">${misses.length ? `${misses.length} to practise: they come up more often in the next drills.` : 'Nothing missed. ¡Muy bien!'}</p>
+      <p class="body-copy msum-why">${misses.length ? `${misses.length} to practice. They come back more often in your next drills.` : 'Nothing missed. ¡Muy bien!'}</p>
       ${statusLine}
       ${misses.length ? `<div class="review-head"><span class="eyebrow">Missed</span></div><div class="drill-misses" data-testid="drill-misses">${misses.map(pair).join('')}</div>` : ''}
     </div></div>${moreHint()}</div>
-    <div class="action two"><button class="btn-text" data-act="done">Done</button><button class="btn-primary" data-act="another-drill">Another ${next}</button></div>
+    <div class="action two"><button class="btn-secondary" data-act="done">Done</button><button class="btn-secondary" data-act="another-drill">Another ${next}</button></div>
   </div>`);
   $('[data-act="done"]').onclick = () => goHome(true);
   $('[data-act="another-drill"]').onclick = startDrill;

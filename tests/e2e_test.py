@@ -687,7 +687,7 @@ async def layout_suite(browser, base, cards, w, h):
             if card['hint_en'] not in box_txt.replace('\u200b', ''):
                 hint_bad.append(f'{cid}: hint_en not shown after tapping')
             g2 = await page.evaluate(GEOM_JS)
-            hp = layout_problems(g2, cid, allow_overflow_with_pill=False)
+            hp = layout_problems(g2, cid, allow_overflow_with_pill=card.get('level') == 'drill')
             if g2['hintBox'] and g2['dock'] and g2['hintBox']['bottom'] > g2['dock']['top'] + 0.5:
                 hp.append('hint box runs under the dock')
             if card.get('audio_text'):
@@ -749,7 +749,16 @@ async def layout_suite(browser, base, cards, w, h):
             if card.get('explanation_en') and card['explanation_en'] in body: probs.append('explanation shown inline instead of behind "Why"')
         if card.get('audio_text'):
             probs += replay_problems(g)
-        if g['next'] and not fully_inside(g['next'], 0, g['vh']): probs.append('Next not fully visible')
+        if is_drill and g['next'] and not fully_inside(g['next'], 0, g['vh']):
+            # Drill feedback flows below the options; long explanations can scroll on short phones.
+            await page.locator('[data-act=next]').scroll_into_view_if_needed()
+            scrolled = await page.evaluate(GEOM_JS)
+            if not fully_inside(scrolled['next'], scrolled['topbar']['bottom'], scrolled['vh']):
+                probs.append('drill: Next not reachable below the header')
+            if not fully_inside(scrolled['topbar'], 0, scrolled['vh']):
+                probs.append('drill: header scrolled off screen')
+        elif g['next'] and not fully_inside(g['next'], 0, g['vh']):
+            probs.append('Next not fully visible')
         if g['overflow'] > 1: fb_overflow.append(f'{cid}:{g["overflow"]}px' + ('+pill' if g['pill'] else ''))
         if probs: fb_bad.append(f'{cid}: {"; ".join(probs)}')
         if first:
@@ -1779,13 +1788,13 @@ async def levels_suite(browser, base, cards):
             await page.click('[data-act=check]')
         await page.wait_for_selector('[data-screen=mission-result]')
         st = await page.get_attribute('.mission-result .stars', 'data-stars')
-        await page.click('[data-act=transcript]'); await page.wait_for_selector('[data-testid=sheet]'); await page.wait_for_timeout(250)
-        pairs = await page.evaluate("[...document.querySelectorAll('.fb-sheet .dline')].map(d => [d.querySelector('.spk').textContent, d.dataset.voice, getComputedStyle(d.querySelector('.spk')).color, !!d.querySelector('[data-testid=line-play]')])")
+        await page.click('[data-act=transcript]'); await page.wait_for_selector('[data-screen=mission-read]'); await page.wait_for_timeout(250)
+        pairs = await page.evaluate("[...document.querySelectorAll('.read-screen .dline')].map(d => [d.querySelector('.spk').textContent, d.dataset.voice, getComputedStyle(d.querySelector('.spk')).color, !!d.querySelector('[data-testid=line-play]')])")
         want = [(l['speaker'], l['voice'], VOICE_COLOR[l['voice']]) for l in mc['media']['lines']]
         check('v2.1 two-voice mission transcript: each line labelled from content, colour follows its voice (male blue, female green), per-line replay',
               [tuple(p[:3]) for p in pairs] == want and all(p[3] for p in pairs) and 'Start mission' in it and st == '3', {'pairs': pairs[:3], 'stars': st})
         await shot_v2(page, '09-two-voice-transcript-clinic-360x640.png')
-        await page.click('[data-act=sheet-close]')
+        await page.click('[data-act=read-back]')
         # Try again, this time opening the header Hint on one question: same v1.1 hint panel, and no 3 stars
         await page.click('[data-act=retry]'); await page.wait_for_selector('[data-screen=mission-intro]')
         await page.click('[data-act=begin]')
@@ -1881,11 +1890,11 @@ async def levels_suite(browser, base, cards):
         check('v2 results: message (WhatsApp) mission rows send replays 0 and skipped false',
               sent_l and len(lrows) == len(ml['questions']) and all(r.get('replays') == 0 and r.get('skipped') is False for r in lrows),
               [(r.get('replays'), r.get('skipped')) for r in lrows])
-        await page.click('[data-act=transcript]'); await page.wait_for_selector('[data-testid=sheet]')
-        tt = await page.text_content('[data-testid=sheet]')
+        await page.click('[data-act=transcript]'); await page.wait_for_selector('[data-screen=mission-read]')
+        tt = await page.text_content('[data-screen=mission-read]')
         check('v2 text mission result: the transcript row shows the message and its English after answering', ml['media']['text_en'][:40] in tt and ml['media']['text_es'][:40] in tt)
         check('v2 text mission: the last question (keypad) also reads "See results"', ll == ['Check'] * (len(ml['questions']) - 1) + ['See results'], ll)
-        await page.click('[data-act=sheet-close]')
+        await page.click('[data-act=read-back]')
         await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
         # Fallbacks: no sender_en -> title_en; a time that isn't 24-hour HH:MM is not shown
         await page.evaluate("""(() => { const m = window.__oye.missions.find(x => x.id === 'm-landlord-whatsapp-01');
@@ -2284,17 +2293,27 @@ async def drill_read_suite(browser, base, cards):
         await page.wait_for_timeout(200)
         c1 = await page.evaluate(DRILL_CARD_JS)
         card = dby.get(c1['card'])
-        check(f'drill card: "1 of {n20}"; prompt_en as the small label above the sentence (13px/500, normal case, gray-600, no uppercase eyebrow); sentence in title style; '
+        check(f'drill card: "1 / {n20}"; split verb label above the sentence (13px/500, normal case, gray-600, no uppercase eyebrow); sentence in title style; '
               'one tap per answer: options in a 2 x 2 grid (4) or stacked (3), no text field, no audio, Hint + "I don\'t know"',
-              card and c1['count'] == f'1 of {n20}' and c1['label'] == card['prompt_en'] and c1['labFont'] == ['13px', '500', 'none', 'rgb(155, 155, 163)'] and not c1['eyebrow']
+              card and c1['count'] == f'1 / {n20}' and c1['label'] == card['prompt_en'].replace(', ', ' ', 1).replace(', ', ' · ') and c1['labFont'] == ['13px', '500', 'none', 'rgb(155, 155, 163)'] and not c1['eyebrow']
               and c1['senFont'] == ['24px', '600', '32px'] and sorted(c1['opts']) == sorted(card['options'])
               and ((len(card['options']) == 4 and c1['grid'] and c1['cols'] == 2 and c1['rows'] == 2) or (len(card['options']) == 3 and not c1['grid'] and c1['cols'] == 1))
               and not c1['input'] and not c1['audio'] and not c1['replay'] and c1['hint'] == bool(card.get('hint_en')) and c1['dontknow'] and c1['docScroll'] <= 1, c1)
+        geom = await page.evaluate("""() => { const r = s => document.querySelector(s).getBoundingClientRect(); const v = document.querySelector('.drill-label strong');
+            return { gap: r('.options').top - r('.sentence').bottom, top: r('.options').top, verb: v.textContent, font: getComputedStyle(v).fontSize, weight: getComputedStyle(v).fontWeight }; }""")
+        check('drill v2: 96px sentence/options gap and bold 17px verb', abs(geom['gap'] - 96) < 1 and geom['verb'] == card['prompt_en'].split(', ')[0] and geom['font'] == '17px' and geom['weight'] == '600', geom)
+        await page.set_viewport_size({'width': 360, 'height': 640})
+        await page.evaluate("document.querySelector('.card-body').scrollTop = 10000")
+        header = await page.evaluate("() => { const h = document.querySelector('.topbar').getBoundingClientRect(); return { top: h.top, bottom: h.bottom, count: document.querySelector('.count').textContent }; }")
+        check('drill v2: header stays visible when content scrolls at 360x640', header['top'] >= 0 and header['bottom'] <= 640 and header['count'] == f'1 / {n20}', header)
+        await page.set_viewport_size({'width': 390, 'height': 844})
+        await page.evaluate("document.querySelector('.card-body').scrollTop = 0")
         await dr_shot(page, '02-drill-card.png')
         if c1['hint']:
             await page.click('[data-act=hint]')
             ht = await page.text_content('[data-testid=hint-box]')
             check('drill card: hint_en behind the same Hint button as other cards', card['hint_en'].split('/')[0].strip()[:20] in ht, ht)
+            await page.click('[data-act=hint-hide]')
         # wrong answer first (feedback screenshot), then right answers, one "I don't know"
         wrong = next(o for o in c1['opts'] if o != card['answer'])
         await click_option(page, wrong)
@@ -2308,12 +2327,16 @@ async def drill_read_suite(browser, base, cards):
         check('drill feedback (wrong): right form in the blank, "Not quite", the one-sentence why in gray-600, your pick red, right answer green, Next',
               fb['blank'] == card['answer'] and fb['result'] == 'Not quite' and fb['why'] == card['explanation_en'] and fb['whyColor'] == 'rgb(155, 155, 163)' and fb['whyLines'] <= 3
               and 'is-wrong' in cls[wrong] and 'is-correct' in cls[card['answer']] and fb['next'] and fb['focus'] == 'next', {'fb': fb, 'cls': cls})
+        wrong_top = await page.locator('.options').evaluate('(e) => e.getBoundingClientRect().top')
+        check('drill v2: wrong answer keeps options in place', abs(wrong_top - geom['top']) < 1, [geom['top'], wrong_top])
         await dr_shot(page, '03-drill-feedback.png')
         seen = [card['id']]
         skipped_id = None
         opt_orders_moved = int(c1['opts'] != card['options'])
         for i in range(1, n20):
             await page.click('[data-act=next]'); await page.wait_for_selector('[data-screen=card][data-state=question]')
+            if i == 1:
+                check('drill v2: counter advances to 2 / 20', await page.text_content('.count') == f'2 / {n20}')
             cur = await current(page)
             c = dby[cur['card']]; seen.append(c['id'])
             shown = await page.evaluate("[...document.querySelectorAll('#app [data-opt]')].map(b => b.dataset.value)")
@@ -2344,9 +2367,14 @@ async def drill_read_suite(browser, base, cards):
                      another: q('[data-act=another-drill]') && q('[data-act=another-drill]').textContent, done: !!q('[data-act=done]'), stars: !!q('.stars') }; }""")
         m0 = sm['misses'][0] if sm['misses'] else {}
         check(f'drill end screen: "{n20 - 2} of {n20} right", missed pairs side by side (your form struck through in red, right form green; skipped shown as "skipped"), '
-              f'primary "Another {n20}" + Done, no stars',
+              f'equal "Another {n20}" + Done, no stars',
               sm['score'] == f'{n20 - 2} of {n20} right' and len(sm['misses']) == 2 and m0.get('given') == wrong and m0.get('deco') == 'line-through' and m0.get('gc') == 'rgb(240, 122, 106)'
               and m0.get('right') == card['answer'] and m0.get('rc') == 'rgb(76, 195, 138)' and sm['misses'][1]['given'] == 'skipped' and sm['another'] == f'Another {n20}' and sm['done'] and not sm['stars'], sm)
+        end = await page.evaluate("""() => { const buttons = [...document.querySelectorAll('.dsum .action button')];
+            return { buttons: buttons.map(b => { const r = b.getBoundingClientRect(), s = getComputedStyle(b); return { width: r.width, top: r.top, height: r.height, bg: s.backgroundColor }; }),
+                copy: document.querySelector('.msum-why').textContent, verbs: [...document.querySelectorAll('.drill-miss .drill-label strong')].map(v => [v.textContent, getComputedStyle(v).fontSize]) }; }""")
+        a, b = end['buttons']
+        check('drill v2 end: equal side-by-side 56px surface buttons, copy, and 15px verbs', abs(a['width'] - b['width']) < 1 and a['top'] == b['top'] and a['height'] == b['height'] == 56 and a['bg'] == b['bg'] == 'rgb(24, 24, 27)' and end['copy'] == '2 to practice. They come back more often in your next drills.' and end['verbs'][0] == [card['prompt_en'].split(', ')[0], '15px'], end)
         await dr_shot(page, '08-drill-end-screen.png')
         # missed cards are weighted up: the two just missed come back far more often than the average drill card
         wr = await page.evaluate(f"""import('./js/srs.js').then((srs) => {{ const S = window.__oye; const p = srs.load(); const miss = {json.dumps([card['id'], skipped_id])};
@@ -2356,7 +2384,7 @@ async def drill_read_suite(browser, base, cards):
         await page.click('[data-act=another-drill]')
         await page.wait_for_selector('[data-screen=card][data-state=question]')
         again = await page.evaluate("({ count: document.querySelector('#app .count').textContent, level: window.__oye.session.level })")
-        check(f'drill end screen: "Another {n20}" starts a new drill', again == {'count': f'1 of {n20}', 'level': 'drill'}, again)
+        check(f'drill end screen: "Another {n20}" starts a new drill', again == {'count': f'1 / {n20}', 'level': 'drill'}, again)
         await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
         tot = (await page.text_content('[data-testid=stars-total]')).strip()
         check('drill: no stars (home total unchanged at 0)', tot == '0', tot)

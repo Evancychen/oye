@@ -5220,7 +5220,7 @@
     "explanation_en": "No + tengas for tú; 'no tenga' is usted.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Negative tú commands swap the ending vowel and add -s.",
+    "hint_en": "Start from yo (tengo), drop the -o and add -as.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -5255,7 +5255,7 @@
     "explanation_en": "Ir: ve, but in the negative it's no vayas.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Negative tú commands swap the ending vowel and add -s.",
+    "hint_en": "Ir doesn't come from yo (voy). Its stem is vay-.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -5290,7 +5290,7 @@
     "explanation_en": "Hacer: haz, but no hagas.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Negative tú commands swap the ending vowel and add -s.",
+    "hint_en": "Start from yo (hago), drop the -o and add -as.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -5325,7 +5325,7 @@
     "explanation_en": "Poner: pon, but no pongas.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Negative tú commands swap the ending vowel and add -s.",
+    "hint_en": "Start from yo (pongo), drop the -o and add -as.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -5360,7 +5360,7 @@
     "explanation_en": "Salir: sal, but no salgas.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Negative tú commands swap the ending vowel and add -s.",
+    "hint_en": "Start from yo (salgo), drop the -o and add -as.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -5395,7 +5395,7 @@
     "explanation_en": "Venir: ven, but no vengas.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Negative tú commands swap the ending vowel and add -s.",
+    "hint_en": "Start from yo (vengo), drop the -o and add -as.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -5430,7 +5430,7 @@
     "explanation_en": "Decir: di, but no digas.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Negative tú commands swap the ending vowel and add -s.",
+    "hint_en": "Start from yo (digo), drop the -o and add -as.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -5465,7 +5465,7 @@
     "explanation_en": "Ser: sé, but no seas.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Negative tú commands swap the ending vowel and add -s.",
+    "hint_en": "Ser doesn't come from yo (soy). It's short: se- plus -as.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -5497,10 +5497,10 @@
     "accepted_answers": [
       "abras"
     ],
-    "explanation_en": "-ir verbs take -as in the negative tú command: no abras ('abres' is the present).",
+    "explanation_en": "-er and -ir verbs take -as in negative tú commands: no abras.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Negative tú commands swap the ending vowel and add -s.",
+    "hint_en": "Start from yo and drop the -o: -ar verbs take -es, -er/-ir verbs take -as.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -5535,7 +5535,7 @@
     "explanation_en": "-ar verbs take -es in the negative tú command: no cierres.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Negative tú commands swap the ending vowel and add -s.",
+    "hint_en": "Start from yo (cierro), drop the -o and add -es.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -5570,7 +5570,7 @@
     "explanation_en": "-ar verb, negative tú: no tomes ('tomas' is the present).",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Negative tú commands swap the ending vowel and add -s.",
+    "hint_en": "Start from yo and drop the -o: -ar verbs take -es, -er/-ir verbs take -as.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -5605,7 +5605,7 @@
     "explanation_en": "Negative tú of hablar is no hables; 'no hable' is usted.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Negative tú commands swap the ending vowel and add -s.",
+    "hint_en": "Start from yo and drop the -o: -ar verbs take -es, -er/-ir verbs take -as.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -5640,7 +5640,7 @@
     "explanation_en": "Negative tú of comprar is no compres.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Negative tú commands swap the ending vowel and add -s.",
+    "hint_en": "Start from yo and drop the -o: -ar verbs take -es, -er/-ir verbs take -as.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -5675,7 +5675,7 @@
     "explanation_en": "-er verbs take -as in the negative tú command: no comas.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Negative tú commands swap the ending vowel and add -s.",
+    "hint_en": "Start from yo and drop the -o: -ar verbs take -es, -er/-ir verbs take -as.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -5808,12 +5808,12 @@
     "difficulty": 2,
     "audio_text": null,
     "prompt_en": "levantarse, tú, command",
-    "sentence": "___ temprano mañana, el tour a Teotihuacán sale a las seis.",
+    "sentence": "___ temprano, el tour sale a las seis.",
     "options": [
       "levántese",
-      "levanta",
+      "levántate",
       "te levantas",
-      "levántate"
+      "levanta"
     ],
     "answer": "levántate",
     "accepted_answers": [
@@ -5930,7 +5930,7 @@
     "explanation_en": "Tener → tenga for usted; 'ten' is for tú.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Usted commands swap the vowel: -ar verbs take -e, -er/-ir verbs take -a.",
+    "hint_en": "Start from yo (tengo), drop the -o and add -a.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -5965,7 +5965,7 @@
     "explanation_en": "Seguir → siga for usted (tú: sigue); the stem is sig-.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Usted commands swap the vowel: -ar verbs take -e, -er/-ir verbs take -a.",
+    "hint_en": "Start from yo (sigo), drop the -o and add -a.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -6000,7 +6000,7 @@
     "explanation_en": "Tomar → tome for usted; 'toma' is the tú command.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Usted commands swap the vowel: -ar verbs take -e, -er/-ir verbs take -a.",
+    "hint_en": "Start from yo and drop the -o: -ar verbs take -e, -er/-ir verbs take -a.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -6035,7 +6035,7 @@
     "explanation_en": "Ir → vaya for usted; 've' is for tú.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Usted commands swap the vowel: -ar verbs take -e, -er/-ir verbs take -a.",
+    "hint_en": "Ir doesn't come from yo (voy). Its usted stem is vay-.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -6070,7 +6070,7 @@
     "explanation_en": "Hacer → haga for usted; 'haz' is for tú.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Usted commands swap the vowel: -ar verbs take -e, -er/-ir verbs take -a.",
+    "hint_en": "Start from yo (hago), drop the -o and add -a.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -6105,7 +6105,7 @@
     "explanation_en": "Poner → ponga for usted; 'pon' is for tú.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Usted commands swap the vowel: -ar verbs take -e, -er/-ir verbs take -a.",
+    "hint_en": "Start from yo (pongo), drop the -o and add -a.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -6140,7 +6140,7 @@
     "explanation_en": "Salir → salga for usted; 'sal' is for tú.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Usted commands swap the vowel: -ar verbs take -e, -er/-ir verbs take -a.",
+    "hint_en": "Start from yo (salgo), drop the -o and add -a.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -6175,7 +6175,7 @@
     "explanation_en": "Venir → venga for usted; 'ven' is for tú.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Usted commands swap the vowel: -ar verbs take -e, -er/-ir verbs take -a.",
+    "hint_en": "Start from yo (vengo), drop the -o and add -a.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -6210,7 +6210,7 @@
     "explanation_en": "Decir → diga for usted; 'di' is for tú.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Usted commands swap the vowel: -ar verbs take -e, -er/-ir verbs take -a.",
+    "hint_en": "Start from yo (digo), drop the -o and add -a.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -6245,7 +6245,7 @@
     "explanation_en": "Ser → sea for usted; 'sé' is for tú.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Usted commands swap the vowel: -ar verbs take -e, -er/-ir verbs take -a.",
+    "hint_en": "Ser doesn't come from yo (soy). Its usted form is short: se- plus -a.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -6281,7 +6281,7 @@
     "explanation_en": "Sentarse → siéntese for usted; 'siéntate' is for tú.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Usted commands swap the vowel: -ar verbs take -e, -er/-ir verbs take -a.",
+    "hint_en": "Start from yo (me siento), swap -o for -e, and glue on se.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -6318,7 +6318,7 @@
     "explanation_en": "Negative usted: no se preocupe; the pronoun goes before the verb.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Usted commands swap the vowel: -ar verbs take -e, -er/-ir verbs take -a.",
+    "hint_en": "Start from yo and drop the -o: -ar verbs take -e, -er/-ir verbs take -a.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -6354,7 +6354,7 @@
     "explanation_en": "Negative usted of hablar is no hable; 'no hables' is tú.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Usted commands swap the vowel: -ar verbs take -e, -er/-ir verbs take -a.",
+    "hint_en": "Start from yo and drop the -o: -ar verbs take -e, -er/-ir verbs take -a.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -6389,7 +6389,7 @@
     "explanation_en": "Esperar → espere for usted; 'espera' is for tú.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Usted commands swap the vowel: -ar verbs take -e, -er/-ir verbs take -a.",
+    "hint_en": "Start from yo and drop the -o: -ar verbs take -e, -er/-ir verbs take -a.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -6425,7 +6425,7 @@
     "explanation_en": "Negative usted of abrir is no abra; 'no abras' is tú.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Usted commands swap the vowel: -ar verbs take -e, -er/-ir verbs take -a.",
+    "hint_en": "Start from yo and drop the -o: -ar verbs take -e, -er/-ir verbs take -a.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -6460,7 +6460,7 @@
     "explanation_en": "Oír → oiga for usted to get a stranger's attention; 'oye' is for tú.",
     "transcript": null,
     "region_note": null,
-    "hint_en": "Usted commands swap the vowel: -ar verbs take -e, -er/-ir verbs take -a.",
+    "hint_en": "Start from yo (oigo), drop the -o and add -a.",
     "level": "drill",
     "topic": "verbs_commands"
   },
@@ -8381,7 +8381,7 @@
     "accepted_answers": [
       "eran"
     ],
-    "explanation_en": "Clock time as background is imperfect, and plural for hours: eran las once.",
+    "explanation_en": "Past clock time uses the imperfect: eran las once.",
     "transcript": null,
     "region_note": null,
     "hint_en": "Background, description or habit: imperfect. One finished event: preterite.",
