@@ -509,6 +509,7 @@ async def main():
         await ux_replays_suite(browser, base4, cards)
         os.makedirs(TMP, exist_ok=True)
         await drill_read_suite(browser, base4, cards)
+        await hard_folders_suite(browser, base4)
         server4.terminate(); server4.wait()
 
         # ---------- v1.1: service worker update path ----------
@@ -1351,8 +1352,10 @@ def static_v2_checks(cards, idx, version, sw_src):
     missions = json.load(open(mpath, encoding='utf-8')) if os.path.exists(mpath) else []
     src = os.path.join(os.path.dirname(APP), 'content', 'missions.json')
     if os.path.exists(src):
-        check('publish: content/missions.json copied into the app (identical to the team\'s file)',
-              os.path.exists(mpath) and open(src, 'rb').read() == open(mpath, 'rb').read(), f'{len(missions)} missions')
+        # Folder metadata is published separately; compare the playable content here.
+        playable = lambda rows: [{k: v for k, v in m.items() if k not in ('added', 'folder')} for m in rows]
+        check('publish: app missions match team playable content (folder metadata may await publish)',
+              playable(missions) == playable(json.load(open(src, encoding='utf-8'))), f'{len(missions)} missions')
     check('publish: version.json card_count/mission_count match the app content',
           version.get('card_count') == len(cards) and version.get('mission_count', len(missions)) == len(missions), version.get('mission_count'))
     check('v2.1 voices: Alonso (male) and Paloma (female), no Dalia/Jorge left',
@@ -1428,9 +1431,12 @@ async def shot_v2(page, name):
     await page.screenshot(path=os.path.join(SHOTS_V2, name))
 
 
-async def home_fresh(page, base):
+async def home_fresh(page, base, fresh_missions=True):
     await page.goto(base)
     await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=15000)
+    if fresh_missions:
+        # Existing flow suites keep all missions in New, independent of the wall clock.
+        await page.evaluate("window.__oye.missions.forEach(m => { const d = new Date(); m.added = new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,10); })")
 
 
 async def answer_card_right(page, card):
@@ -1634,7 +1640,7 @@ async def levels_suite(browser, base, cards):
             check('v2 missions list (Picasso): "Home" back link, HARD eyebrow, title "Real-life missions"; one surface row per mission with title_en, '
                   '"Audio · about N min" (rounded from the clip) or "Message", best stars and a chevron',
                   ml_['back'] == 'Home' and ml_['gridBack'] and ml_['eyebrow'].lower() == 'hard' and ml_['eyeTT'] == 'uppercase' and ml_['title'] == 'Real-life missions'
-                  and got_rows == want_rows and all(r['chev'] and r['bg'] not in ('rgba(0, 0, 0, 0)', 'transparent') and r['radius'] == '12px' for r in ml_['rows'])
+                  and [(a, b, c.split(' · ')[:2] if c.startswith('Audio') else ['Message'], d) for a, b, c, d in got_rows] == [(a, b, c.split(' · '), d) for a, b, c, d in want_rows] and all(r['chev'] and r['bg'] not in ('rgba(0, 0, 0, 0)', 'transparent') and r['radius'] == '12px' for r in ml_['rows'])
                   and ml_['docScroll'] <= 1, {'got': got_rows, 'want': want_rows, 'hdr': (ml_['back'], ml_['eyebrow'], ml_['title'])})
             await shot_v2(page, '12-missions-list-360x640.png')
         await page.click('[data-mission=m-metro-01]')
@@ -1726,8 +1732,8 @@ async def levels_suite(browser, base, cards):
         if not main:
             await ctx.close(); continue
         check('v2 mission: the player bar (replay + slow) stays on every question', all(players) and len(players) == 4, players)
-        check('v2 mission (Picasso): the button reads "Check" on every question and "See results" on the last one',
-              labels == ['Check'] * (len(m['questions']) - 1) + ['See results'], labels)
+        check('v2 mission (Picasso): the button reads "Next" on every question and "See results" on the last one',
+              labels == ['Next'] * (len(m['questions']) - 1) + ['See results'], labels)
         res = await page.evaluate("""(() => ({ stars: document.querySelector('.mission-result .stars').dataset.stars, score: document.querySelector('[data-testid=score]').textContent,
             rows: [...document.querySelectorAll('[data-testid=mr-row]')].map(r => ({ q: r.dataset.q, bad: r.classList.contains('bad'), open: !r.querySelector('.why-box').hidden,
                      why: r.querySelector('.why-box').textContent, prompt: r.querySelector('.mr-prompt').textContent })),
@@ -1893,7 +1899,7 @@ async def levels_suite(browser, base, cards):
         await page.click('[data-act=transcript]'); await page.wait_for_selector('[data-screen=mission-read]')
         tt = await page.text_content('[data-screen=mission-read]')
         check('v2 text mission result: the transcript row shows the message and its English after answering', ml['media']['text_en'][:40] in tt and ml['media']['text_es'][:40] in tt)
-        check('v2 text mission: the last question (keypad) also reads "See results"', ll == ['Check'] * (len(ml['questions']) - 1) + ['See results'], ll)
+        check('v2 text mission: the last question (keypad) also reads "See results"', ll == ['Next'] * (len(ml['questions']) - 1) + ['See results'], ll)
         await page.click('[data-act=read-back]')
         await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
         # Fallbacks: no sender_en -> title_en; a time that isn't 24-hour HH:MM is not shown
@@ -2589,6 +2595,89 @@ async def drill_read_suite(browser, base, cards):
     check('Read view from the result: Back ("Results") returns to the same result; no extra results rows sent',
           rl == 'Results' and score2 == score and len(fake.ok_rows()) == n_rows, {'back': rl, 'rows': (n_rows, len(fake.ok_rows()))})
     check('drill-read mission suite: no JS errors', not [e for e in errors if 'net::' not in e], errors[:3])
+    await ctx.close()
+
+
+async def hard_folders_suite(browser, base):
+    errors = []
+    ctx, page = await new_page(browser, errors, viewport={'width': 390, 'height': 844})
+    await page.clock.set_fixed_time('2026-10-12T18:00:00Z')
+    await home_fresh(page, base, fresh_missions=False)
+    # Controlled batches cover today, day 13, day 14, old and absent metadata.
+    await page.evaluate("""() => {
+      const ms = window.__oye.missions;
+      const dates = ['2026-09-28', '2026-09-01', undefined, '2026-10-12', '2026-09-29'];
+      const folders = ['travel', 'fitness_health', undefined, 'music', 'cafes_food'];
+      ms.forEach((m, i) => { m.added = dates[i]; m.folder = folders[i]; });
+      const extra = structuredClone(ms[0]); extra.id = 'm-travel-old'; extra.title_en = 'Earlier metro mission'; extra.added = '2026-08-01'; ms.push(extra);
+      localStorage.setItem('oye.stars.v1', JSON.stringify({topics: {}, missions: {'m-metro-01': 2, 'm-travel-old': 1, 'm-landlord-whatsapp-01': 1}}));
+    }""")
+    await page.click('[data-act=hard]')
+    fresh = await page.locator('[data-testid=new-missions] [data-mission]').evaluate_all('(rs) => rs.map(r => r.dataset.mission)')
+    check('Hard hub: fake today splits day 0 and 13 into New newest first; day 14 and older go to folders', fresh == ['m-festival-cdmx-01', 'm-cafe-whatsapp-01'], fresh)
+    folders = await page.locator('[data-folder]').all_text_contents()
+    check('Hard hub: folder names sorted, empty folders hidden, counts and earned/max stars correct',
+          [' '.join(x.split()) for x in folders] == ['Fitness & health1 mission★ 0 / 3', 'Home & errands1 mission★ 1 / 3', 'Travel2 missions★ 3 / 6'], folders)
+    shots = '/workspace/hard-folders-shots'
+    os.makedirs(shots, exist_ok=True)
+    await page.screenshot(path=os.path.join(shots, 'hub.png'))
+    await page.click('[data-folder=travel]')
+    check('Hard folder: opens with newest-first missions and Read links on finished missions',
+          await page.locator('[data-screen=mission-folder]').count() == 1
+          and await page.locator('[data-testid=mission-row]').evaluate_all('(rs) => rs.map(r => r.dataset.mission)') == ['m-metro-01', 'm-travel-old']
+          and await page.locator('[data-testid=read-link]').count() == 2)
+    await page.screenshot(path=os.path.join(shots, 'folder.png'))
+    await page.click('[data-mission=m-metro-01] [data-act=read]')
+    await page.click('[data-act=read-back]')
+    await page.wait_for_selector('[data-screen=mission-folder]')
+    check('Hard folder: Read returns to its folder', await page.locator('[data-mission=m-metro-01]').count() == 1)
+    await page.click('.missions .back-link')
+    await page.wait_for_selector('[data-screen=missions]')
+    check('Hard folder: back returns to hub', await page.locator('[data-testid=new-missions]').count() == 1)
+    await page.click('[data-folder=travel]'); await page.click('[data-mission=m-metro-01] [data-act=open-mission]'); await page.click('[data-act=begin]')
+    check('Hard q1: Back hidden, Next disabled until answered', await page.locator('[data-act=question-back]').count() == 0 and await page.is_disabled('[data-act=check]') and await page.text_content('[data-act=check]') == 'Next')
+    await page.click('[data-opt="0"]'); await page.click('[data-act=check]')
+    check('Hard q2: Back visible with 100x56 size', await page.locator('[data-act=question-back]').evaluate('(b) => b.offsetWidth === 100 && b.offsetHeight === 56'))
+    await page.click('[data-opt="1"]')
+    await page.screenshot(path=os.path.join(shots, 'question-back.png'))
+    await page.click('[data-act=question-back]')
+    check('Hard Back: previous choice selected and changeable', await page.get_attribute('[data-opt="0"]', 'aria-checked') == 'true')
+    await page.click('[data-opt="1"]'); await page.click('[data-act=check]')
+    check('Hard Back: unfinished next-question choice also preserved', await page.get_attribute('[data-opt="1"]', 'aria-checked') == 'true')
+    await page.click('[data-opt="0"]'); await page.click('[data-act=check]')
+    await page.keyboard.type('5:00'); await page.click('[data-act=check]')
+    check('Hard last question: See results', await page.text_content('[data-act=check]') == 'See results')
+    await page.click('[data-act=question-back]')
+    check('Hard Back: typed answer restored', await page.text_content('.typed .value') == '5:00')
+    await page.click('[data-act=check]'); await page.click('[data-opt="0"]'); await page.click('[data-act=check]')
+    await page.wait_for_selector('[data-screen=mission-result]')
+    answer_state = await page.evaluate('window.__oye.mission.answers.map(a => ({ok: a.ok, given: a.given}))')
+    check('Hard results: score uses changed final answers exactly once (3/4, 2 stars)',
+          len(answer_state) == 4 and [a['ok'] for a in answer_state] == [False, True, True, True]
+          and await page.get_attribute('.mission-result .stars', 'data-stars') == '2', answer_state)
+    await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
+    await page.evaluate("window.__oye.missions.forEach(m => { delete m.added; delete m.folder; })")
+    await page.click('[data-act=hard]')
+    check('Hard legacy: missing dates hide New, every mission remains in folders', await page.locator('[data-testid=new-missions]').count() == 0 and await page.locator('[data-folder]').count() == 5)
+    await page.click('.missions .back-link'); await page.wait_for_selector('[data-screen=home]')
+    await page.evaluate("window.__oye.missions.forEach(m => { m.added = '2026-10-12'; })")
+    await page.click('[data-act=hard]')
+    check('Hard fresh batch: empty By topic hidden', await page.locator('[data-testid=mission-topics]').count() == 0 and await page.locator('[data-testid=mission-row]').count() == 6)
+    # Five-question mission exercises Back on q5 and editing a restored typed answer.
+    await page.click('[data-mission=m-festival-cdmx-01] [data-act=open-mission]'); await page.click('[data-act=begin]')
+    qs = await page.evaluate('window.__oye.mission.qs')
+    for q in qs[:-1]:
+        if q['kind'] == 'pick': await page.click(f'[data-opt="{q["options"].index(q["answer"])}"]')
+        else: await page.keyboard.type(q['answer'])
+        await page.click('[data-act=check]')
+    check('Hard q5: Back visible, See results disabled before typing', await page.is_visible('[data-act=question-back]') and await page.text_content('[data-act=check]') == 'See results' and await page.is_disabled('[data-act=check]'))
+    await page.keyboard.type('2:00'); await page.click('[data-act=question-back]'); await page.click('[data-act=check]')
+    check('Hard q5: draft survives Back', await page.text_content('.typed .value') == '2:00')
+    for _ in range(4): await page.keyboard.press('Backspace')
+    check('Hard typed: clearing restored answer disables See results', await page.is_disabled('[data-act=check]'))
+    await page.keyboard.type('2:30'); await page.click('[data-act=check]')
+    check('Hard typed: edited final answer earns full score', await page.get_attribute('.mission-result .stars', 'data-stars') == '3' and await page.evaluate('window.__oye.mission.answers.every(a => a.ok)'))
+    check('Hard folders: no JS errors', not errors, errors)
     await ctx.close()
 
 

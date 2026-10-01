@@ -569,3 +569,17 @@ hr, .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
 .drill-tools .dontknow { width: auto; font: 500 13px/16px var(--font); }
 .drill-tools .hint-pill { width: auto; min-width: 44px; height: 44px; border: 0; text-align: left; }
 .drill-block .drill-empty { border-bottom-color: var(--ink); }
+
+/* Hard mission hub and question navigation. */
+.mission-section { margin: 8px 6px; color: var(--gray-600); }
+.missions section + section { margin-top: 24px; }
+.mission-row.is-new { padding-left: 30px; }
+.mission-row.is-new::before { content: ''; position: absolute; left: 16px; top: 23px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.folder-row { display: flex; align-items: center; gap: 16px; width: 100%; min-height: 68px; padding: 12px 0; border-top: 1px solid var(--gray-300); text-align: left; color: var(--ink); }
+.folder-row:last-child { border-bottom: 1px solid var(--gray-300); }
+.folder-stars, .folder-row > svg { flex-shrink: 0; }
+.folder-note { margin: 20px 6px; color: var(--gray-600); }
+.mission-nav { display: flex; gap: 8px; width: 100%; }
+.mission-nav .btn-primary { flex: 1; min-width: 0; }
+.mission-back { flex: 0 0 100px; height: 56px; border: 1px solid var(--gray-300); border-radius: var(--radius-l); background: var(--surface); color: var(--ink); font: 600 17px/24px var(--font); }
+.mission-screen .fix-dock > .text-input { width: 100%; margin-bottom: 8px; }

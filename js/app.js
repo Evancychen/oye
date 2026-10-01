@@ -177,6 +177,7 @@ async function boot() {
     const st = history.state?.oye;
     if (st === 'topics') openTopics(false);
     else if (st === 'missions') openMissions(false);
+    else if (st === 'mission-folder') openMissions(false, history.state.folder);
     else if (S.view !== 'home') goHome(false);
   });
   try {
@@ -1053,37 +1054,64 @@ function msgRowLabel(m) {
   return `Message from ${/^(your|the|a|an)\b/i.test(who) ? who.replace(/^./, (c) => c.toLowerCase()) : who}`;
 }
 const FORMAT_LABEL = { whatsapp: 'WhatsApp', sign: 'Sign', menu: 'Menu', receipt: 'Receipt', email: 'Email', label: 'Label' };
-function openMissions(push = true) {
-  stop(); setKeyHandler(null);
-  if (push) pushView('missions');
-  S.view = 'missions'; S.mission = null;
+const FOLDERS = { music: 'Music', cafes_food: 'Cafés & food', travel: 'Travel', city_life: 'City life', design_art: 'Design & art', fashion: 'Fashion', fitness_health: 'Fitness & health', scifi_tech: 'Sci-fi & tech', lgbtq_culture: 'LGBTQ+ culture', home_errands: 'Home & errands' };
+// Legacy batches remain reachable before the next content publish.
+const LEGACY_FOLDERS = { 'm-metro-01': 'travel', 'm-voicemail-clinic-01': 'fitness_health', 'm-landlord-whatsapp-01': 'home_errands', 'm-festival-cdmx-01': 'music', 'm-cafe-whatsapp-01': 'cafes_food' };
+const missionFolder = (m) => Object.hasOwn(FOLDERS, m.folder) ? m.folder : LEGACY_FOLDERS[m.id] || 'home_errands';
+function missionDate(m) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(m.added || '')) return null;
+  const t = Date.parse(m.added + 'T00:00:00Z');
+  return Number.isFinite(t) && new Date(t).toISOString().slice(0, 10) === m.added ? t : null;
+}
+function newMission(m) {
+  const now = new Date();
+  const today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  const added = missionDate(m);
+  return added != null && today >= added && today - added < 14 * 86400000;
+}
+const newestMissions = (ms) => [...ms].sort((a, b) => (missionDate(b) ?? -Infinity) - (missionDate(a) ?? -Infinity));
+function missionRows(ms, fresh = false) {
   const best = levels.load().missions;
-  render(`
-  <div class="screen page topics missions" data-screen="missions">
-    <button class="back-link" data-act="home">${ICON.back}<span>Home</span></button>
-    <p class="eyebrow lv-tag">Hard</p>
-    <h1 class="title lv-title">Real-life missions</h1>
-    <p class="caption lv-cap">One longer situation: listen or read, then answer.</p>
-    <div class="zone topics-zone"><div class="scroller"><div class="scroll-inner"><div class="mission-list">${S.missions.map((m) => {
-      // v2.2: a finished mission (stars stored) gets "Read" on the bottom line, opposite the stars. The row itself is a
-      // full-size button underneath (so a tap anywhere else opens the mission); Read is its own 44 x 44 button on top.
-      const sub = m.media.kind === 'audio' ? `Audio · ${clipMinutes(m)}` : 'Message';
+  return `<div class="mission-list">${ms.map((m) => {
+      const sub = [m.media.kind === 'audio' ? `Audio · ${clipMinutes(m)}` : 'Message', fresh ? FOLDERS[missionFolder(m)] : '', missionDate(m) == null ? '' : new Date(m.added + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })].filter(Boolean).join(' · ');
       const done = (best[m.id] || 0) > 0;
       return `
-      <div class="mission-row" data-mission="${esc(m.id)}" data-testid="mission-row" data-finished="${done ? '1' : '0'}">
+      <div class="mission-row ${fresh ? 'is-new' : ''}" data-mission="${esc(m.id)}" data-testid="mission-row" data-finished="${done ? '1' : '0'}">
         <button class="mr-open" data-act="open-mission" aria-label="${esc(`${m.title_en}. ${sub}. Best: ${best[m.id] || 0} of 3 stars`)}"></button>
         <span class="ch-text"><span class="ch-title">${esc(m.title_en)}</span>
           <span class="caption mr-sub" data-testid="mission-sub">${esc(sub)}</span>
           <span class="mr-bottom">${starRow(best[m.id] || 0, 12)}${done ? `<button class="read-link" data-act="read" data-testid="read-link" aria-label="Read the script: ${esc(m.title_en)}">Read</button>` : ''}</span></span>
         <span class="ch-chev">${ICON.chevron}</span>
       </div>`;
-    }).join('')}</div></div></div>${moreHint()}</div>
-  </div>`);
-  $('[data-act="home"]').onclick = () => goHome(true);
-  $$('[data-mission]').forEach((row) => {
+
+  }).join('')}</div>`;
+}
+function openMissions(push = true, folder = null) {
+  stop(); setKeyHandler(null);
+  if (push) { pushView(folder ? 'mission-folder' : 'missions'); history.replaceState({ ...history.state, folder }, ''); }
+  S.view = folder ? 'mission-folder' : 'missions'; S.mission = null; S.folder = folder;
+  const best = levels.load().missions;
+  const fresh = newestMissions(S.missions.filter(newMission));
+  const older = newestMissions(S.missions.filter((m) => !newMission(m)));
+  const groups = Object.keys(FOLDERS).sort((a, b) => FOLDERS[a].localeCompare(FOLDERS[b], 'en')).map((id) => ({ id, ms: older.filter((m) => missionFolder(m) === id) })).filter((g) => g.ms.length);
+  const members = older.filter((m) => missionFolder(m) === folder);
+  const count = (n) => `${n} mission${n === 1 ? '' : 's'}`;
+  render(`<div class="screen page topics missions" data-screen="${S.view}">
+    <button class="back-link" data-act="${folder ? 'hub-back' : 'home'}">${ICON.back}<span>${folder ? 'Missions' : 'Home'}</span></button>
+    <p class="eyebrow lv-tag">${folder ? 'Hard · Topic' : 'Hard'}</p>
+    <h1 class="title lv-title">${folder ? esc(FOLDERS[folder]) : 'Real-life missions'}</h1>
+    ${folder ? `<p class="caption lv-cap">${count(members.length)} · newest first</p>` : ''}
+    <div class="zone topics-zone"><div class="scroller"><div class="scroll-inner">
+    ${folder ? missionRows(members) + '<p class="caption folder-note">New missions in this topic land under New first, then move here after 2 weeks.</p>' : `
+      ${fresh.length ? `<section data-testid="new-missions"><h2 class="eyebrow mission-section">New · Last 14 days</h2>${missionRows(fresh, true)}</section>` : ''}
+      ${groups.length ? `<section data-testid="mission-topics"><h2 class="eyebrow mission-section">By topic</h2>${groups.map(({ id, ms }) => `<button class="folder-row" data-folder="${id}"><span class="ch-text"><span class="ch-title">${esc(FOLDERS[id])}</span><span class="caption">${count(ms.length)}</span></span><span class="caption folder-stars">★ ${ms.reduce((n, m) => n + (best[m.id] || 0), 0)} / ${3 * ms.length}</span>${ICON.chevron}</button>`).join('')}</section>` : ''}`}
+    </div></div>${moreHint()}</div></div>`);
+  $('.missions .back-link').onclick = () => folder ? history.back() : goHome(true);
+  $$('[data-folder]').forEach((row) => { row.onclick = () => openMissions(true, row.dataset.folder); });
+  $$('[data-testid="mission-row"]').forEach((row) => {
     row.querySelector('[data-act="open-mission"]').onclick = () => startMission(row.dataset.mission);
     const rd = row.querySelector('[data-act="read"]');
-    if (rd) rd.onclick = () => openMissionRead(row.dataset.mission, 'missions');
+    if (rd) rd.onclick = () => openMissionRead(row.dataset.mission, folder ? 'folder' : 'missions');
   });
   setupScrollHint($('.topics-zone'));
 }
@@ -1255,7 +1283,10 @@ function missionQuestion() {
   const ms = S.mission;
   const { m, qs } = ms;
   const q = qs[ms.i];
-  ms.hintUsed = false; ms.selected = null; ms.slowUsed = !!ms.slow;
+  const saved = ms.answers[ms.i];
+  ms.hintUsed = !!saved?.hint; ms.selected = null; ms.slowUsed = !!saved?.slow || !!ms.slow; ms.plays = saved?.plays || 0;
+  let draft = saved?.given ?? '';
+  const save = () => { ms.answers[ms.i] = { q, given: draft, hint: !!ms.hintUsed, slow: !!ms.slowUsed, plays: ms.plays, replays: m.media.kind === 'audio' ? replaysOf(ms.plays) : 0, at: new Date().toISOString() }; };
   setKeyHandler(null);
   const audio = m.media.kind === 'audio';
   const media = audio ? playerBar(m)
@@ -1263,12 +1294,16 @@ function missionQuestion() {
   const pick = q.kind === 'pick';
   const letters = !pick && wordAnswer(q);
   let dock, dockClass = '';
-  const last = ms.i === qs.length - 1;
-  const checkLabel = last ? 'See results' : 'Check';   // no per-question feedback, so the last one says where it goes
-  if (pick) dock = `<button class="btn-primary" data-act="check" disabled>${checkLabel}</button>`;
-  else if (letters) { dock = textInputRow(checkLabel); dockClass = 'fix-dock'; }
-  else { dock = `<div class="typed" data-testid="typed" aria-live="polite"><span class="value"></span><span class="caret"></span></div>
-      <button class="btn-primary" data-act="check" disabled>${checkLabel}</button><div class="keypad" data-testid="keypad">${keypadHtml()}</div>`; dockClass = 'type-dock'; }
+  const checkLabel = ms.i === qs.length - 1 ? 'See results' : 'Next';
+  const nav = `<div class="mission-nav">${ms.i ? '<button class="mission-back" data-act="question-back">Back</button>' : ''}<button class="btn-primary" data-act="check" disabled>${checkLabel}</button></div>`;
+  if (pick) dock = nav;
+  else if (letters) {
+    dock = `<input id="fix-input" class="text-input" type="text" aria-label="Your answer" placeholder="Your answer" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" lang="es">${nav}`;
+    dockClass = 'fix-dock';
+  } else {
+    dock = `<div class="typed" data-testid="typed" aria-live="polite"><span class="value"></span><span class="caret"></span></div>${nav}<div class="keypad" data-testid="keypad">${keypadHtml()}</div>`;
+    dockClass = 'type-dock';
+  }
   const opts = pick ? `<div class="moptions" data-testid="options" role="radiogroup">${q.options.map((o, i) => `<button class="mopt" data-opt="${i}" role="radio" aria-checked="false">${esc(o)}</button>`).join('')}</div>` : '';
   render(`
   <div class="screen card-screen mission-screen" data-screen="mission-q" data-mission="${esc(m.id)}" data-q="${esc(q.id)}" data-kind="${esc(q.kind)}">
@@ -1284,11 +1319,9 @@ function missionQuestion() {
   bindMissionClose();
   bindHint(q);
   if (audio) bindPlayer(m);
-  else $('[data-act="reopen"]').onclick = () => missionMessage(ms.i);
-  const done = (ok, given) => {
-    // replays: plays started on this question (and, for question 1, on the intro) minus the first listen.
-    // Message missions have no audio: always 0.
-    ms.answers.push({ q, ok, given, hint: !!ms.hintUsed, slow: !!ms.slowUsed, replays: audio ? replaysOf(ms.plays) : 0, at: new Date().toISOString() });
+  else $('[data-act="reopen"]').onclick = () => { save(); missionMessage(ms.i); };
+  const done = (given) => {
+    draft = given; save();
     ms.plays = 0;
     ms.i++;
     if (ms.i >= qs.length) missionResult(); else missionQuestion();
@@ -1299,19 +1332,23 @@ function missionQuestion() {
       b.onclick = () => {
         $$('[data-opt]').forEach((x) => { x.classList.remove('is-selected'); x.setAttribute('aria-checked', 'false'); });
         b.classList.add('is-selected'); b.setAttribute('aria-checked', 'true');
-        ms.selected = Number(b.dataset.opt); check.disabled = false;
+        ms.selected = Number(b.dataset.opt); draft = q.options[ms.selected]; check.disabled = false;
       };
     });
-    check.onclick = () => { if (ms.selected == null) return; const o = q.options[ms.selected]; done(o === q.answer, o); };
+    if (draft !== '') { const i = q.options.indexOf(draft); if (i >= 0) $(`[data-opt="${i}"]`).click(); }
+    check.onclick = () => { if (ms.selected == null) return; const o = q.options[ms.selected]; done(o); };
   } else if (letters) {
-    bindTextInput(q, (v) => done(isCorrect(q, v), v));
+    bindTextInput(q, (v) => done(v));
+    const input = $('#fix-input'); input.value = draft; input.oninput();
+    input.addEventListener('input', () => { draft = input.value; });
   } else {
-    let val = '';
+    let val = draft;
     const box = $('.typed');
-    const upd = () => { box.innerHTML = `<span class="value ${/[a-z]/i.test(val) ? 'words' : ''}">${esc(val)}</span><span class="caret"></span>`; check.disabled = !val.trim(); };
+    const upd = () => { box.innerHTML = `<span class="value ${/[a-z]/i.test(val) ? 'words' : ''}">${esc(val)}</span><span class="caret"></span>`; check.disabled = !val.trim(); draft = val; };
+    upd();
     const press = (k) => { if (k === 'del') val = val.slice(0, -1); else if (val.length < 24) val += k; upd(); };
     $$('[data-key]').forEach((b) => { b.onclick = () => press(b.dataset.key); });
-    check.onclick = () => { if (val.trim()) done(isCorrect(q, val), val.trim()); };
+    check.onclick = () => { if (val.trim()) done(val.trim()); };
     setKeyHandler((e) => {
       if (e.metaKey || e.ctrlKey || e.altKey || S.sheet) return;
       if (e.key === 'Enter') { e.preventDefault(); check.click(); }
@@ -1319,6 +1356,8 @@ function missionQuestion() {
       else if (/^[0-9:.a-zA-Záéíóúñü ]$/.test(e.key)) { e.preventDefault(); press(e.key); }
     });
   }
+  const back = $('[data-act="question-back"]');
+  if (back) back.onclick = () => { save(); ms.i--; missionQuestion(); };
   setupScrollHint($('.mq-zone'));
 }
 function missionResult() {
@@ -1327,6 +1366,7 @@ function missionResult() {
   stop(); setKeyHandler(null);
   if (S.playerOff) { S.playerOff(); S.playerOff = null; }
   if (!ms.starsResult) {
+    ms.answers.forEach((a) => { a.ok = a.q.kind === 'pick' ? a.given === a.q.answer : isCorrect(a.q, a.given); });
     ms.starsResult = levels.starsFor(ms.answers, 'hard');
     ms.starsSaved = levels.record('hard', m.id, ms.starsResult.stars);
     srs.recordActivity(S.progress, ms.answers.length);   // a finished mission counts for the streak
@@ -1400,10 +1440,10 @@ function missionResult() {
 // ---------- v2.2 Read view (finished missions) ----------
 /** A mission is finished once it has stored stars (every finished attempt stores at least 1). */
 const missionFinished = (id) => (levels.load().missions[id] || 0) > 0;
-const READ_BACK = { missions: 'Missions', intro: 'Mission', result: 'Results' };
+const READ_BACK = { folder: 'Missions', missions: 'Missions', intro: 'Mission', result: 'Results' };
 /** The script of a finished mission: player bar at the top (0:00, no autoplay), the script with speaker labels in the
  *  voice colours and each line's English under it (message missions: the message and its English). No questions,
- *  stars untouched, nothing sent to results. from = 'missions' | 'intro' | 'result' (where Back returns to). */
+ *  stars untouched, nothing sent to results. from = 'missions' | 'folder' | 'intro' | 'result' (where Back returns to). */
 function openMissionRead(id, from) {
   const m = S.missions.find((x) => x.id === id);
   if (!m) return;
@@ -1446,6 +1486,7 @@ function closeRead() {
   if (S.playerOff) { S.playerOff(); S.playerOff = null; }
   unloadClip();
   S.read = null;
+  if (r?.from === 'folder') return openMissions(false, S.folder);
   if (!r || r.from === 'missions' || !S.mission) return openMissions(false);
   S.view = 'mission';
   if (r.from === 'result' && S.mission.starsResult) missionResult(); else missionIntro();
