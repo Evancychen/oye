@@ -123,7 +123,9 @@
         "explanation_en": "'En horas pico los primeros vagones del tren son exclusivos para mujeres y niños menores de doce años' = at rush hour the first cars are only for women and children under 12."
       }
     ],
-    "region_note": "In the CDMX Metro, directions are named after the last station of the line (dirección Tasqueña). 'Horas pico' = rush hour (Spain: 'hora punta'). The ustedes commands at the end ('no se recarguen', 'dejen salir') are just for realism; no question depends on them."
+    "region_note": "In the CDMX Metro, directions are named after the last station of the line (dirección Tasqueña). 'Horas pico' = rush hour (Spain: 'hora punta'). The ustedes commands at the end ('no se recarguen', 'dejen salir') are just for realism; no question depends on them.",
+    "added": "2026-09-28",
+    "folder": "travel"
   },
   {
     "id": "m-voicemail-clinic-01",
@@ -264,7 +266,9 @@
         "explanation_en": "'Para confirmar, nada más tiene que mandar un WhatsApp a este mismo número' = to confirm, you just have to send a WhatsApp to this same number."
       }
     ],
-    "region_note": "'Le hablo de...' is the usual Mexican way to say 'I'm calling from...'. An 'identificación oficial' in Mexico is usually the INE card or a passport. 'Que tenga buen día' is a set phrase; no question depends on it."
+    "region_note": "'Le hablo de...' is the usual Mexican way to say 'I'm calling from...'. An 'identificación oficial' in Mexico is usually the INE card or a passport. 'Que tenga buen día' is a set phrase; no question depends on it.",
+    "added": "2026-09-28",
+    "folder": "fitness_health"
   },
   {
     "id": "m-landlord-whatsapp-01",
@@ -368,7 +372,9 @@
         "explanation_en": "'Contéstame hoy antes de las 8 de la noche' = reply today before 8 p.m. (20:00)."
       }
     ],
-    "region_note": "Mexico: 'depa' (short for departamento), 'plomero' (Spain: fontanero), 'cubeta' (Spain: cubo), 'porfa' = casual please. The message uses tú commands (deja, saca, llena, contéstame)."
+    "region_note": "Mexico: 'depa' (short for departamento), 'plomero' (Spain: fontanero), 'cubeta' (Spain: cubo), 'porfa' = casual please. The message uses tú commands (deja, saca, llena, contéstame).",
+    "added": "2026-09-28",
+    "folder": "home_errands"
   },
   {
     "id": "m-festival-cdmx-01",
@@ -518,12 +524,14 @@
         "explanation_en": "'Habrá camiones gratis al metro hasta las dos y media de la mañana' = free buses until 2:30 a.m."
       }
     ],
-    "region_note": "Mexico: 'camión' = bus, 'rueda de la fortuna' = Ferris wheel (Spain: 'noria'). The ustedes commands (pongan, entren, disfruten) are there for realism; the questions don't depend on them."
+    "region_note": "Mexico: 'camión' = bus, 'rueda de la fortuna' = Ferris wheel (Spain: 'noria'). The ustedes commands (pongan, entren, disfruten) are there for realism; the questions don't depend on them.",
+    "added": "2026-09-28",
+    "folder": "music"
   },
   {
     "id": "m-cafe-whatsapp-01",
     "title_en": "WhatsApp from a café: your matcha workshop moved",
-    "situation_en": "You signed up for a matcha workshop at a small café in the Roma neighborhood. This afternoon the café sends you a WhatsApp.",
+    "situation_en": "You signed up for a matcha workshop at a small café downtown. This afternoon the café sends you a WhatsApp.",
     "topic": "phone_reservations",
     "lesson_tags": [
       "A2-L07",
@@ -618,6 +626,256 @@
         "explanation_en": "'Confírmanos antes del viernes a las 6 de la tarde' = confirm before Friday at 6 p.m. (18:00)."
       }
     ],
-    "region_note": "Mexico: 'una disculpa' = our apologies, 'anticipo' = deposit, 'la luz' = the electricity. 'Confírmanos' is a tú command with 'nos' attached."
+    "region_note": "Mexico: 'una disculpa' = our apologies, 'anticipo' = deposit, 'la luz' = the electricity. 'Confírmanos' is a tú command with 'nos' attached.",
+    "added": "2026-09-28",
+    "folder": "cafes_food"
+  },
+  {
+    "id": "m-gallery-whatsapp-01",
+    "title_en": "WhatsApp from a gallery: weekend exhibition hours",
+    "situation_en": "You bought a ticket to a small design exhibition. The gallery sends you a WhatsApp with schedule changes.",
+    "topic": "time_schedules",
+    "lesson_tags": [
+      "A1-L12",
+      "A2-L07",
+      "A1-L31",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-galeria",
+      "v-exhibicion",
+      "v-boleto-entrada",
+      "v-una-disculpa",
+      "v-taquilla"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "whatsapp",
+      "text_es": "¡Hola! Te escribe Galería Nómada, cerca del metro.\n\nUna disculpa por el mensaje tarde. La exhibición \"Luz de Ciudad\" cambia de horario este fin de semana:\n\n- Viernes: abrimos de 4 de la tarde a 9 de la noche\n- Sábado: de 11 de la mañana a 8 de la noche\n- Domingo: solo de 12 del día a 5 de la tarde\n\nTu boleto ya está pagado: ciento veinte pesos. Trae tu código QR en el celular. Si vienes con un amigo, la segunda entrada cuesta ochenta pesos en taquilla.\n\nEl café de la galería va a tener matcha y pan de masa madre ese día. No hace falta reservar mesa.\n\nSi no puedes venir, avísanos antes del jueves a las 6 de la tarde y te regresamos el dinero completo.\n\n¡Te esperamos!\nEquipo Nómada",
+      "text_en": "Hi! This is Galería Nómada, near the metro.\n\nSorry for the late message. The \"City Light\" exhibition has new hours this weekend:\n\n- Friday: we open from 4 p.m. to 9 p.m.\n- Saturday: from 11 a.m. to 8 p.m.\n- Sunday: only from 12 noon to 5 p.m.\n\nYour ticket is already paid: one hundred twenty pesos. Bring your QR code on your phone. If you come with a friend, the second ticket costs eighty pesos at the box office.\n\nThe gallery café will have matcha and sourdough that day. No need to reserve a table.\n\nIf you can't come, tell us before Thursday at 6 p.m. and we'll refund your money in full.\n\nSee you there!\nNómada team",
+      "sender_en": "Galería Nómada",
+      "time": "18:22"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "What are Friday hours now?",
+        "options": [
+          "11 a.m. to 8 p.m.",
+          "12 noon to 5 p.m.",
+          "4 p.m. to 9 p.m.",
+          "4 p.m. to 8 p.m."
+        ],
+        "answer": "4 p.m. to 9 p.m.",
+        "hint_en": "Look for 'Viernes'.",
+        "explanation_en": "'Viernes: abrimos de 4 de la tarde a 9 de la noche' = Friday 4 p.m. to 9 p.m. Saturday is 11–8."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "How much did you already pay for your ticket? Type the number.",
+        "answer": "120",
+        "accepted_answers": [
+          "120",
+          "$120",
+          "ciento veinte"
+        ],
+        "hint_en": "Look for 'Tu boleto ya está pagado'.",
+        "explanation_en": "'Tu boleto ya está pagado: ciento veinte pesos' = your ticket is paid, 120 pesos."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "A friend comes with you. What do they pay at the door?",
+        "options": [
+          "$100",
+          "$120",
+          "$80",
+          "$40"
+        ],
+        "answer": "$80",
+        "hint_en": "Look for 'segunda entrada'.",
+        "explanation_en": "'La segunda entrada cuesta ochenta pesos en taquilla' = the second ticket is 80 at the box office."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "Sunday hours are…",
+        "options": [
+          "11 a.m. to 8 p.m.",
+          "Closed all day",
+          "4 p.m. to 9 p.m.",
+          "12 noon to 5 p.m. only"
+        ],
+        "answer": "12 noon to 5 p.m. only",
+        "hint_en": "Look for 'Domingo'.",
+        "explanation_en": "'Domingo: solo de 12 del día a 5 de la tarde' = Sunday only noon to 5 p.m."
+      },
+      {
+        "id": "q5",
+        "kind": "type",
+        "prompt_en": "Refund deadline: before Thursday at what time? (type like 7:15)",
+        "answer": "6:00",
+        "accepted_answers": [
+          "6:00",
+          "6",
+          "18:00",
+          "18"
+        ],
+        "hint_en": "Look for 'antes del jueves'.",
+        "explanation_en": "'Avísanos antes del jueves a las 6 de la tarde' = tell us before Thursday at 6 p.m."
+      }
+    ],
+    "region_note": "Mexico: 'taquilla' = box office, 'una disculpa' = our apologies.",
+    "added": "2026-10-01",
+    "folder": "design_art"
+  },
+  {
+    "id": "m-popup-roma-01",
+    "title_en": "Streetwear pop-up: thrift jacket and discount",
+    "situation_en": "You walk into a streetwear pop-up downtown. A clerk greets you and you ask about a jacket.",
+    "topic": "shopping",
+    "lesson_tags": [
+      "A2-L07",
+      "A1-L22",
+      "A1-L12",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-popup",
+      "v-segunda-mano",
+      "v-probador",
+      "v-talla",
+      "v-rebaja",
+      "v-me-das",
+      "v-cambio-ropa",
+      "v-chamarra"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Hola, bienvenido al pop-up de Mezclilla Local. Hoy todo lo de segunda mano tiene veinte por ciento de descuento.",
+          "en": "Hi, welcome to the Mezclilla Local pop-up. Today everything second-hand has a twenty percent discount."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Gracias. Busco una chamarra negra, talla mediana. ¿Me das una para probarme?",
+          "en": "Thanks. I am looking for a black jacket, medium size. Could you give me one to try on?"
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Claro. El probador está al fondo, a la izquierda. Esta está en cuatrocientos ochenta, y con el descuento queda en trescientos ochenta y cuatro.",
+          "en": "Sure. The fitting room is in the back, on the left. This one is four hundred eighty, and with the discount it comes to three hundred eighty-four."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Perfecto. ¿Hasta qué hora abren hoy?",
+          "en": "Perfect. Until what time are you open today?"
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Hoy cerramos a las ocho y media. Si no te queda, puedes hacer un cambio en siete días con tu ticket.",
+          "en": "Today we close at eight thirty. If it does not fit, you can exchange it within seven days with your receipt."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Va, me la llevo. ¿Aceptan tarjeta?",
+          "en": "Okay, I will take it. Do you take cards?"
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Sí, y también efectivo. La caja está junto a la entrada. ¡Se te va a ver genial!",
+          "en": "Yes, and cash too. The register is next to the entrance. It is going to look great on you!"
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "What discount is on second-hand items today?",
+        "options": [
+          "15%",
+          "25%",
+          "20%",
+          "10%"
+        ],
+        "answer": "20%",
+        "hint_en": "Listen for 'por ciento de descuento'.",
+        "explanation_en": "'Todo lo de segunda mano tiene veinte por ciento de descuento' = 20% off second-hand."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "Where is the fitting room?",
+        "options": [
+          "In the back, on the left",
+          "In the back, on the right",
+          "Upstairs",
+          "Next to the entrance"
+        ],
+        "answer": "In the back, on the left",
+        "hint_en": "Listen for 'probador'.",
+        "explanation_en": "'El probador está al fondo, a la izquierda' = fitting room in the back, on the left."
+      },
+      {
+        "id": "q3",
+        "kind": "type",
+        "prompt_en": "Price after the discount? Type the number.",
+        "answer": "384",
+        "accepted_answers": [
+          "384",
+          "$384",
+          "trescientos ochenta y cuatro"
+        ],
+        "hint_en": "You hear the original price and the final price.",
+        "explanation_en": "Original 480, with discount it becomes 384 (trescientos ochenta y cuatro)."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "What time do they close today? Type like 7:15.",
+        "answer": "8:30",
+        "accepted_answers": [
+          "8:30",
+          "8.30",
+          "20:30",
+          "ocho y media"
+        ],
+        "hint_en": "Listen for 'cerramos a las'.",
+        "explanation_en": "'Hoy cerramos a las ocho y media' = today we close at 8:30."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "If it does not fit, what can you do?",
+        "options": [
+          "No exchanges on sale items",
+          "Exchange within 7 days, no ticket needed",
+          "Exchange within 7 days with your ticket",
+          "Return for cash only today"
+        ],
+        "answer": "Exchange within 7 days with your ticket",
+        "hint_en": "Listen for 'cambio' and 'siete días'.",
+        "explanation_en": "'Puedes hacer un cambio en siete días con tu ticket' = exchange within 7 days with your receipt."
+      }
+    ],
+    "region_note": "Mexico: 'playera', 'chamarra', 'probador', 'segunda mano'. '¿Me das…?' is a soft request common in shops.",
+    "added": "2026-10-01",
+    "folder": "fashion"
   }
 ]

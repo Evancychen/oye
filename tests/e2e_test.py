@@ -1330,11 +1330,12 @@ TYPES = ['listen_pick', 'listen_type', 'scene_question', 'fix_it', 'reply']
 
 # ---------------------------------------------------------------- v2 Levels + v2.1 voices
 SHOTS_V2 = os.environ.get('OYE_V2_SHOTS') or os.path.join(SHOTS, 'v2')
-TOPIC_ORDER = ['numbers_prices', 'time_schedules', 'directions', 'verbs_past', 'verbs_present', 'verbs_commands', 'verbs_future']
 TOPIC_NAMES = {'numbers_prices': 'Numbers & prices', 'time_schedules': 'Time & schedules', 'directions': 'Directions & places',
                'verbs_past': 'Past tense', 'verbs_present': 'Present tense', 'verbs_commands': 'Commands', 'verbs_future': 'Future & conditional',
                'weather_plans': 'Weather & plans', 'food_ordering': 'Food & ordering', 'shopping': 'Shopping & sizes',
                'health_pharmacy': 'Health & pharmacy', 'phone_reservations': 'Calls & bookings', 'home_errands': 'Home & errands', 'small_talk': 'Small talk'}
+# Full design order: topics move from Coming soon into the grid as content arrives.
+TOPIC_ORDER = list(TOPIC_NAMES)
 
 
 def load_build_audio():
@@ -2605,7 +2606,9 @@ async def hard_folders_suite(browser, base):
     await home_fresh(page, base, fresh_missions=False)
     # Controlled batches cover today, day 13, day 14, old and absent metadata.
     await page.evaluate("""() => {
-      const ms = window.__oye.missions;
+      // Isolate the boundary fixture from future published batches.
+      const ids = ['m-metro-01', 'm-voicemail-clinic-01', 'm-landlord-whatsapp-01', 'm-festival-cdmx-01', 'm-cafe-whatsapp-01'];
+      const ms = window.__oye.missions = ids.map(id => window.__oye.missions.find(m => m.id === id));
       const dates = ['2026-09-28', '2026-09-01', undefined, '2026-10-12', '2026-09-29'];
       const folders = ['travel', 'fitness_health', undefined, 'music', 'cafes_food'];
       ms.forEach((m, i) => { m.added = dates[i]; m.folder = folders[i]; });

@@ -8802,10 +8802,10 @@
     "difficulty": 3,
     "audio_text": null,
     "prompt_en": "ir, nosotros, past",
-    "sentence": "Cuando vivíamos en la Roma, todos los sábados ___ a bailar.",
+    "sentence": "Cuando vivíamos en Puebla, todos los sábados ___ a bailar.",
     "options": [
-      "vamos",
       "fuimos",
+      "vamos",
       "íbamos",
       "iremos"
     ],
@@ -10486,6 +10486,2940 @@
       "dirías"
     ],
     "explanation_en": "Decir uses the stem dir-; tú adds -s: dirías.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Conditional = future stem + -ía endings; tú adds -s, ellos adds -n.",
+    "level": "drill",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0310",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-chamarra",
+      "v-rebaja"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Esta chamarra de mezclilla está en rebaja: cuesta trescientos noventa pesos.",
+    "prompt_en": "How much is the denim jacket on sale?",
+    "sentence": null,
+    "options": [
+      "$390",
+      "$319",
+      "$490",
+      "$309"
+    ],
+    "answer": "$390",
+    "accepted_answers": [],
+    "explanation_en": "Trescientos noventa = 390. Noventa (90) is not diecinueve (19).",
+    "transcript": "Esta chamarra de mezclilla está en rebaja: cuesta trescientos noventa pesos.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "shopping"
+  },
+  {
+    "id": "c-0311",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-playera",
+      "v-etiqueta"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "La etiqueta de la playera negra dice cuatrocientos cincuenta pesos.",
+    "prompt_en": "How much does the black T-shirt cost? Type the number.",
+    "sentence": null,
+    "options": [],
+    "answer": "450",
+    "accepted_answers": [
+      "450",
+      "$450",
+      "cuatrocientos cincuenta"
+    ],
+    "explanation_en": "Cuatrocientos cincuenta = 400 + 50 = 450.",
+    "transcript": "La etiqueta de la playera negra dice cuatrocientos cincuenta pesos.",
+    "region_note": null,
+    "hint_en": "Catch the hundreds word, then the tens. Type digits only.",
+    "level": "medium",
+    "topic": "shopping"
+  },
+  {
+    "id": "c-0312",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L22"
+    ],
+    "grammar_tags": [
+      "shopping",
+      "sizes"
+    ],
+    "vocab_ids": [
+      "v-talla",
+      "v-probador"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Solo nos queda la talla mediana en el probador.",
+    "prompt_en": "What size is left?",
+    "sentence": null,
+    "options": [
+      "Large",
+      "Medium",
+      "Extra large",
+      "Small"
+    ],
+    "answer": "Medium",
+    "accepted_answers": [],
+    "explanation_en": "'Talla mediana' = medium size; They only have that one left in the fitting room.",
+    "transcript": "Solo nos queda la talla mediana en el probador.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "shopping"
+  },
+  {
+    "id": "c-0313",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices",
+      "connected_speech",
+      "unglue_it"
+    ],
+    "vocab_ids": [
+      "v-rebaja"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Te lo dejo en doscientos ochenta.",
+    "prompt_en": "Type the separate words you heard (no digits).",
+    "sentence": null,
+    "options": [],
+    "answer": "te lo dejo en doscientos ochenta",
+    "accepted_answers": [
+      "te lo dejo en doscientos ochenta",
+      "Te lo dejo en doscientos ochenta"
+    ],
+    "explanation_en": "'Te lo dejo en…' = I'll let you have it for… Doscientos ochenta = 280.",
+    "transcript": "Te lo dejo en doscientos ochenta.",
+    "region_note": null,
+    "hint_en": "Four chunks: te lo · dejo · en · doscientos ochenta.",
+    "level": "medium",
+    "topic": "shopping"
+  },
+  {
+    "id": "c-0314",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12",
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "time_schedules"
+    ],
+    "vocab_ids": [
+      "v-popup"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "El pop-up abre de once a ocho, menos el lunes.",
+    "prompt_en": "When is the pop-up closed?",
+    "sentence": null,
+    "options": [
+      "Weekends",
+      "After 11",
+      "Mondays",
+      "Sundays"
+    ],
+    "answer": "Mondays",
+    "accepted_answers": [],
+    "explanation_en": "'Menos el lunes' = except Monday, so it is closed on Mondays; Open 11 to 8 otherwise.",
+    "transcript": "El pop-up abre de once a ocho, menos el lunes.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "shopping"
+  },
+  {
+    "id": "c-0315",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "commands",
+      "shopping"
+    ],
+    "vocab_ids": [
+      "v-me-das",
+      "v-talla"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Hola, ¿me das la sudadera azul en talla mediana? Claro, te la traigo del almacén.",
+    "prompt_en": "What does the customer ask for?",
+    "sentence": null,
+    "options": [
+      "The blue jacket, size M",
+      "The black hoodie, size L",
+      "The blue hoodie, size M",
+      "A fitting room"
+    ],
+    "answer": "The blue hoodie, size M",
+    "accepted_answers": [],
+    "explanation_en": "'¿Me das la sudadera azul en talla mediana?' = Could you give me the blue hoodie in medium.",
+    "transcript": "Cliente: Hola, ¿me das la sudadera azul en talla mediana? / Vendedora: Claro, te la traigo del almacén.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "shopping",
+    "audio_lines": [
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "Hola, ¿me das la sudadera azul en talla mediana?"
+      },
+      {
+        "speaker": "Vendedora",
+        "voice": "female",
+        "es": "Claro, te la traigo del almacén."
+      }
+    ]
+  },
+  {
+    "id": "c-0316",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-descuento",
+      "v-segunda-mano"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Con el descuento de segunda mano, la chamarra queda en seiscientos setenta y cinco.",
+    "prompt_en": "Final price after the thrift discount? Type the number.",
+    "sentence": null,
+    "options": [],
+    "answer": "675",
+    "accepted_answers": [
+      "675",
+      "$675",
+      "seiscientos setenta y cinco"
+    ],
+    "explanation_en": "Seiscientos = 600, setenta y cinco = 75, so 675.",
+    "transcript": "Con el descuento de segunda mano, la chamarra queda en seiscientos setenta y cinco.",
+    "region_note": null,
+    "hint_en": "Hundreds, then seventy-five. Type digits only.",
+    "level": "medium",
+    "topic": "shopping"
+  },
+  {
+    "id": "c-0317",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L22"
+    ],
+    "grammar_tags": [
+      "shopping",
+      "requests"
+    ],
+    "vocab_ids": [
+      "v-me-das"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Disculpa, ¿me das la playera blanca en talla chica, por favor?",
+    "prompt_en": "Fill the blank: polite way to ask for something in a shop.",
+    "sentence": "¿___ la playera blanca en talla chica, por favor?",
+    "options": [
+      "Me dan",
+      "Te doy",
+      "Me das",
+      "Les das"
+    ],
+    "answer": "Me das",
+    "accepted_answers": [
+      "Me das",
+      "me das"
+    ],
+    "explanation_en": "'¿Me das…?' is a natural soft ask in Mexican shops, often preferred over '¿Me regalas…?'.",
+    "transcript": "Disculpa, ¿me das la playera blanca en talla chica, por favor?",
+    "region_note": null,
+    "hint_en": "Soft Mexican request: blank after ¿",
+    "level": "medium",
+    "topic": "shopping"
+  },
+  {
+    "id": "c-0318",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-galeria",
+      "v-boleto-entrada"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "La entrada a la galería cuesta ciento veinte pesos los fines de semana.",
+    "prompt_en": "Weekend gallery ticket price?",
+    "sentence": null,
+    "options": [
+      "$20",
+      "$220",
+      "$112",
+      "$120"
+    ],
+    "answer": "$120",
+    "accepted_answers": [],
+    "explanation_en": "Ciento veinte = 120. Cien is only for exactly 100.",
+    "transcript": "La entrada a la galería cuesta ciento veinte pesos los fines de semana.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "shopping"
+  },
+  {
+    "id": "c-0319",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12"
+    ],
+    "grammar_tags": [
+      "time_schedules"
+    ],
+    "vocab_ids": [
+      "v-exhibicion",
+      "v-galeria"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "La exhibición cierra a las nueve y media de la noche.",
+    "prompt_en": "What time does the exhibition close? Type like 7:15.",
+    "sentence": null,
+    "options": [],
+    "answer": "9:30",
+    "accepted_answers": [
+      "9:30",
+      "9.30",
+      "21:30",
+      "21.30",
+      "nueve y media"
+    ],
+    "explanation_en": "'A las nueve y media' = 9:30; Media = half, not cuarto (quarter).",
+    "transcript": "La exhibición cierra a las nueve y media de la noche.",
+    "region_note": null,
+    "hint_en": "Listen for 'cierra a las'. Type like 7:15.",
+    "level": "medium",
+    "topic": "shopping"
+  },
+  {
+    "id": "c-0320",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices",
+      "quinientos"
+    ],
+    "vocab_ids": [
+      "v-mil"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "La renta del estudio sale en cinco mil quinientos pesos al mes.",
+    "prompt_en": "Monthly studio rent?",
+    "sentence": null,
+    "options": [
+      "$550",
+      "$5100",
+      "$1500",
+      "$5500"
+    ],
+    "answer": "$5500",
+    "accepted_answers": [],
+    "explanation_en": "Cinco mil = 5,000 and quinientos = 500, so 5,500. Quinientos is not ciento.",
+    "transcript": "La renta del estudio sale en cinco mil quinientos pesos al mes.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "numbers_prices"
+  },
+  {
+    "id": "c-0321",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "cien_ciento"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "El poster firmado cuesta cien pesos; el libro, ciento noventa.",
+    "prompt_en": "How much is the book? Type the number.",
+    "sentence": null,
+    "options": [],
+    "answer": "190",
+    "accepted_answers": [
+      "190",
+      "$190",
+      "ciento noventa"
+    ],
+    "explanation_en": "'Cien' = exactly 100 (the poster); 'Ciento noventa' = 190 (the book).",
+    "transcript": "El poster firmado cuesta cien pesos; el libro, ciento noventa.",
+    "region_note": null,
+    "hint_en": "'Cien' vs 'ciento': which one has more after it? Type digits only.",
+    "level": "medium",
+    "topic": "numbers_prices"
+  },
+  {
+    "id": "c-0322",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices",
+      "big_numbers",
+      "connected_speech",
+      "unglue_it"
+    ],
+    "vocab_ids": [
+      "v-mil"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Son mil doscientos cincuenta.",
+    "prompt_en": "Type the separate words you heard (no digits).",
+    "sentence": null,
+    "options": [],
+    "answer": "son mil doscientos cincuenta",
+    "accepted_answers": [
+      "son mil doscientos cincuenta",
+      "Son mil doscientos cincuenta"
+    ],
+    "explanation_en": "Mil doscientos cincuenta = 1,250. Unglue each word.",
+    "transcript": "Son mil doscientos cincuenta.",
+    "region_note": null,
+    "hint_en": "Three number chunks after son.",
+    "level": "medium",
+    "topic": "numbers_prices"
+  },
+  {
+    "id": "c-0323",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-cambio"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Son cuatrocientos. Con quinientos, tu cambio es de cien.",
+    "prompt_en": "You pay with 500. How much change?",
+    "sentence": null,
+    "options": [
+      "$400",
+      "$150",
+      "$100",
+      "$50"
+    ],
+    "answer": "$100",
+    "accepted_answers": [],
+    "explanation_en": "400 from 500 leaves 100. Cambio = change (money).",
+    "transcript": "Son cuatrocientos. Con quinientos, tu cambio es de cien.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "numbers_prices"
+  },
+  {
+    "id": "c-0324",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12"
+    ],
+    "grammar_tags": [
+      "time",
+      "cuarto"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "La cita es a las cuatro y cuarto de la tarde.",
+    "prompt_en": "What time is the appointment?",
+    "sentence": null,
+    "options": [
+      "4:00 p.m.",
+      "3:15 p.m.",
+      "4:15 p.m.",
+      "4:45 p.m."
+    ],
+    "answer": "4:15 p.m.",
+    "accepted_answers": [],
+    "explanation_en": "'Cuatro y cuarto' = 4:15; Cuarto = quarter hour; cuatro = four o'clock.",
+    "transcript": "La cita es a las cuatro y cuarto de la tarde.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "time_schedules"
+  },
+  {
+    "id": "c-0325",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12"
+    ],
+    "grammar_tags": [
+      "time",
+      "cuarto"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "El metro cierra a la una menos cuarto.",
+    "prompt_en": "What time does the metro close? Type like 7:15.",
+    "sentence": null,
+    "options": [],
+    "answer": "12:45",
+    "accepted_answers": [
+      "12:45",
+      "12.45",
+      "una menos cuarto"
+    ],
+    "explanation_en": "'Una menos cuarto' = a quarter to one = 12:45.",
+    "transcript": "El metro cierra a la una menos cuarto.",
+    "region_note": null,
+    "hint_en": "'Menos cuarto' means a quarter before the hour.",
+    "level": "medium",
+    "topic": "time_schedules"
+  },
+  {
+    "id": "c-0326",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12"
+    ],
+    "grammar_tags": [
+      "time"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Nos vemos a las siete en punto frente a la galería.",
+    "prompt_en": "When do they meet?",
+    "sentence": null,
+    "options": [
+      "7:30",
+      "7:00 sharp",
+      "7:15",
+      "6:00"
+    ],
+    "answer": "7:00 sharp",
+    "accepted_answers": [],
+    "explanation_en": "'En punto' = on the dot / sharp; Siete en punto = 7:00 exactly.",
+    "transcript": "Nos vemos a las siete en punto frente a la galería.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "time_schedules"
+  },
+  {
+    "id": "c-0327",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Señor, no abra esa puerta; use la de enfrente.",
+    "prompt_en": "Which command did you hear?",
+    "sentence": null,
+    "options": [
+      "no abra (usted)",
+      "no abras (tú)",
+      "abra (usted)",
+      "abres (present)"
+    ],
+    "answer": "no abra (usted)",
+    "accepted_answers": [],
+    "explanation_en": "'No abra' is the negative usted form; 'No abras' would be tú.",
+    "transcript": "Señor, no abra esa puerta; use la de enfrente.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0328",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Siga derecho dos cuadras y ahí está la tienda.",
+    "prompt_en": "Which form is used?",
+    "sentence": null,
+    "options": [
+      "sigue (tú)",
+      "siga (usted)",
+      "sigues (present)",
+      "seguí (past)"
+    ],
+    "answer": "siga (usted)",
+    "accepted_answers": [],
+    "explanation_en": "'Siga' = usted command of seguir; 'Sigue' is the tú command or él present.",
+    "transcript": "Siga derecho dos cuadras y ahí está la tienda.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0329",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "imperative_irregular"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Ve al OXXO y trae agua fría, porfa. Va, en cinco minutos regreso.",
+    "prompt_en": "What does the friend tell you to do?",
+    "sentence": null,
+    "options": [
+      "Stay and wait",
+      "Go and bring water",
+      "Open the door",
+      "Come and buy water"
+    ],
+    "answer": "Go and bring water",
+    "accepted_answers": [],
+    "explanation_en": "'Ve' means go (ir); 'trae' means bring, not 'ven' (come).",
+    "transcript": "Amiga: Ve al OXXO y trae agua fría, porfa. / Amigo: Va, en cinco minutos regreso.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "verbs_commands",
+    "audio_lines": [
+      {
+        "speaker": "Amiga",
+        "voice": "female",
+        "es": "Ve al OXXO y trae agua fría, porfa."
+      },
+      {
+        "speaker": "Amigo",
+        "voice": "male",
+        "es": "Va, en cinco minutos regreso."
+      }
+    ]
+  },
+  {
+    "id": "c-0330",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Ten tu boleto listo; no cierres la aplicación todavía.",
+    "prompt_en": "Negative tú of cerrar.",
+    "sentence": "Ten tu boleto listo; no ___ la aplicación todavía.",
+    "options": [
+      "cierre",
+      "cierra",
+      "cierras",
+      "cierres"
+    ],
+    "answer": "cierres",
+    "accepted_answers": [
+      "cierres"
+    ],
+    "explanation_en": "Affirmative tú is 'cierra'; negative is 'no cierres'.",
+    "transcript": "Ten tu boleto listo; no cierres la aplicación todavía.",
+    "region_note": null,
+    "hint_en": "Negative tú of an -ar verb: from yo, drop -o, add -es.",
+    "level": "medium",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0331",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L22"
+    ],
+    "grammar_tags": [
+      "ordering"
+    ],
+    "vocab_ids": [
+      "v-me-das",
+      "v-cafe-americano"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Hola, ¿me das un americano para llevar? Claro, son cuarenta y cinco pesos.",
+    "prompt_en": "What does the customer order?",
+    "sentence": null,
+    "options": [
+      "Just water",
+      "A latte here",
+      "An americano to go",
+      "Two americanos"
+    ],
+    "answer": "An americano to go",
+    "accepted_answers": [],
+    "explanation_en": "'¿Me das un americano para llevar?' = Could you give me an americano to go.",
+    "transcript": "Cliente: Hola, ¿me das un americano para llevar? / Barista: Claro, son cuarenta y cinco pesos.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "food_ordering",
+    "audio_lines": [
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "Hola, ¿me das un americano para llevar?"
+      },
+      {
+        "speaker": "Barista",
+        "voice": "female",
+        "es": "Claro, son cuarenta y cinco pesos."
+      }
+    ]
+  },
+  {
+    "id": "c-0332",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices",
+      "connected_speech",
+      "unglue_it"
+    ],
+    "vocab_ids": [
+      "v-la-cuenta"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Le doy setenta y cinco.",
+    "prompt_en": "Type the separate words you heard (no digits).",
+    "sentence": null,
+    "options": [],
+    "answer": "le doy setenta y cinco",
+    "accepted_answers": [
+      "le doy setenta y cinco",
+      "Le doy setenta y cinco"
+    ],
+    "explanation_en": "'Le doy…' = here's… Setenta y cinco = 75.",
+    "transcript": "Le doy setenta y cinco.",
+    "region_note": null,
+    "hint_en": "Paying: le doy + the amount in words.",
+    "level": "medium",
+    "topic": "food_ordering"
+  },
+  {
+    "id": "c-0333",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L22"
+    ],
+    "grammar_tags": [
+      "ordering",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-concha",
+      "v-cafe-de-olla"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Un café de olla y una concha: son cincuenta y ocho pesos.",
+    "prompt_en": "Total for coffee and a concha?",
+    "sentence": null,
+    "options": [
+      "$48",
+      "$58",
+      "$68",
+      "$85"
+    ],
+    "answer": "$58",
+    "accepted_answers": [],
+    "explanation_en": "Cincuenta y ocho = 58. Not ochenta y cinco (85).",
+    "transcript": "Un café de olla y una concha: son cincuenta y ocho pesos.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "food_ordering"
+  },
+  {
+    "id": "c-0334",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12",
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "phone",
+      "time"
+    ],
+    "vocab_ids": [
+      "v-cita"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Para qué día quiere la mesa? Para el jueves a las siete y media de la noche.",
+    "prompt_en": "When is the reservation?",
+    "sentence": null,
+    "options": [
+      "Thursday at 7:30 p.m.",
+      "Thursday at 8:30 p.m.",
+      "Thursday at 7:00 p.m.",
+      "Tuesday at 7:30 p.m."
+    ],
+    "answer": "Thursday at 7:30 p.m.",
+    "accepted_answers": [],
+    "explanation_en": "'El jueves a las siete y media de la noche' = Thursday at 7:30 p.m.",
+    "transcript": "Recepcionista: ¿Para qué día quiere la mesa? / Cliente: Para el jueves a las siete y media de la noche.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "phone_reservations",
+    "audio_lines": [
+      {
+        "speaker": "Recepcionista",
+        "voice": "female",
+        "es": "¿Para qué día quiere la mesa?"
+      },
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "Para el jueves a las siete y media de la noche."
+      }
+    ]
+  },
+  {
+    "id": "c-0335",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-cuanto-es"
+    ],
+    "source": "original",
+    "difficulty": 1,
+    "audio_text": "Son noventa y cinco pesos.",
+    "prompt_en": "How much is it?",
+    "sentence": null,
+    "options": [
+      "$59",
+      "$95",
+      "$19",
+      "$85"
+    ],
+    "answer": "$95",
+    "accepted_answers": [],
+    "explanation_en": "Noventa y cinco = 95. Not cincuenta y nueve (59).",
+    "transcript": "Son noventa y cinco pesos.",
+    "region_note": null,
+    "hint_en": null
+  },
+  {
+    "id": "c-0336",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-cambio"
+    ],
+    "source": "original",
+    "difficulty": 1,
+    "audio_text": "Tu cambio es de veinte pesos.",
+    "prompt_en": "How much change? Type the number.",
+    "sentence": null,
+    "options": [],
+    "answer": "20",
+    "accepted_answers": [
+      "20",
+      "$20",
+      "veinte"
+    ],
+    "explanation_en": "'Tu cambio es de veinte pesos' = your change is 20 pesos.",
+    "transcript": "Tu cambio es de veinte pesos.",
+    "region_note": null,
+    "hint_en": "A round amount of change. Type digits only."
+  },
+  {
+    "id": "c-0337",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12"
+    ],
+    "grammar_tags": [
+      "time"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 1,
+    "audio_text": "Son las tres y cuarto.",
+    "prompt_en": "What time is it?",
+    "sentence": null,
+    "options": [
+      "3:15",
+      "3:00",
+      "3:45",
+      "4:15"
+    ],
+    "answer": "3:15",
+    "accepted_answers": [],
+    "explanation_en": "'Tres y cuarto' = 3:15; Cuarto = a quarter past.",
+    "transcript": "Son las tres y cuarto.",
+    "region_note": null,
+    "hint_en": null
+  },
+  {
+    "id": "c-0338",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L12"
+    ],
+    "grammar_tags": [
+      "time"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 1,
+    "audio_text": "La clase empieza a las seis en punto.",
+    "prompt_en": "When does class start?",
+    "sentence": null,
+    "options": [
+      "6:30",
+      "6:15",
+      "6:00",
+      "5:00"
+    ],
+    "answer": "6:00",
+    "accepted_answers": [],
+    "explanation_en": "'En punto' means exactly on the hour: 6:00.",
+    "transcript": "La clase empieza a las seis en punto.",
+    "region_note": null,
+    "hint_en": null
+  },
+  {
+    "id": "c-0339",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L22"
+    ],
+    "grammar_tags": [
+      "ordering"
+    ],
+    "vocab_ids": [
+      "v-me-das",
+      "v-para-llevar"
+    ],
+    "source": "original",
+    "difficulty": 1,
+    "audio_text": "¿Me das un matcha para llevar, por favor?",
+    "prompt_en": "What is the customer asking for?",
+    "sentence": null,
+    "options": [
+      "A matcha here",
+      "Two matchas",
+      "The check",
+      "A matcha to go"
+    ],
+    "answer": "A matcha to go",
+    "accepted_answers": [],
+    "explanation_en": "'¿Me das…?' = could you give me… 'Para llevar' = to go.",
+    "transcript": "¿Me das un matcha para llevar, por favor?",
+    "region_note": null,
+    "hint_en": null
+  },
+  {
+    "id": "c-0340",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L22"
+    ],
+    "grammar_tags": [
+      "ordering"
+    ],
+    "vocab_ids": [
+      "v-me-das"
+    ],
+    "source": "original",
+    "difficulty": 1,
+    "audio_text": "¿Qué se va a ofrecer?",
+    "prompt_en": "You want a café de olla. What do you say?",
+    "sentence": null,
+    "options": [
+      "Dame el café ya.",
+      "Quiero café, órale.",
+      "¿Te doy un café de olla?",
+      "¿Me das un café de olla?"
+    ],
+    "answer": "¿Me das un café de olla?",
+    "accepted_answers": [],
+    "explanation_en": "Soft and clear: '¿Me das un café de olla?', avoiding the hard rolled r in 'regalas'.",
+    "transcript": "¿Qué se va a ofrecer?",
+    "region_note": null,
+    "hint_en": null
+  },
+  {
+    "id": "c-0341",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "imperative_irregular"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 1,
+    "audio_text": null,
+    "prompt_en": "Ir, tú, command: ___ al café de la esquina.",
+    "sentence": "Si quieres buen pan, ___ al café de la esquina.",
+    "options": [
+      "vas",
+      "ve",
+      "va",
+      "vaya"
+    ],
+    "answer": "ve",
+    "accepted_answers": [
+      "ve"
+    ],
+    "explanation_en": "Ir → ve for tú; 'Va' is the present (he/she goes).",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Short irregular tú command of ir."
+  },
+  {
+    "id": "c-0342",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 1,
+    "audio_text": null,
+    "prompt_en": "Tener, usted, command: Señor, ___ su identificación.",
+    "sentence": "Señor, ___ su identificación, por favor.",
+    "options": [
+      "tengas",
+      "tiene",
+      "tenga",
+      "ten"
+    ],
+    "answer": "tenga",
+    "accepted_answers": [
+      "tenga"
+    ],
+    "explanation_en": "Tener → tenga for usted; 'Ten' is the tú command.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Usted command of tener."
+  },
+  {
+    "id": "c-0343",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 1,
+    "audio_text": "Son doscientos pesos.",
+    "prompt_en": "Type the number you heard.",
+    "sentence": null,
+    "options": [],
+    "answer": "200",
+    "accepted_answers": [
+      "200",
+      "$200",
+      "doscientos"
+    ],
+    "explanation_en": "Doscientos = 200.",
+    "transcript": "Son doscientos pesos.",
+    "region_note": null,
+    "hint_en": "A round hundreds amount. Type digits only."
+  },
+  {
+    "id": "c-0344",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 1,
+    "audio_text": "No abras la puerta de emergencia.",
+    "prompt_en": "Which form did you hear?",
+    "sentence": null,
+    "options": [
+      "abre (tú+)",
+      "no abra (usted)",
+      "abres (present)",
+      "no abras (tú)"
+    ],
+    "answer": "no abras (tú)",
+    "accepted_answers": [],
+    "explanation_en": "'No abras' is negative tú; 'No abra' would be usted.",
+    "transcript": "No abras la puerta de emergencia.",
+    "region_note": null,
+    "hint_en": null
+  },
+  {
+    "id": "c-0345",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L22"
+    ],
+    "grammar_tags": [
+      "ordering",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-cuanto-es"
+    ],
+    "source": "original",
+    "difficulty": 1,
+    "audio_text": "Son sesenta pesos.",
+    "prompt_en": "You didn't catch the price. What do you say?",
+    "sentence": null,
+    "options": [
+      "No importa.",
+      "Habla más fuerte.",
+      "¿Qué?",
+      "¿Me lo puede repetir, por favor?"
+    ],
+    "answer": "¿Me lo puede repetir, por favor?",
+    "accepted_answers": [],
+    "explanation_en": "Polite: ask them to repeat it. Usted form fits a shop or café.",
+    "transcript": "Son sesenta pesos.",
+    "region_note": null,
+    "hint_en": null
+  },
+  {
+    "id": "c-0346",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "usted_command",
+      "imperative",
+      "tu_vs_usted",
+      "imperative_negative"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "abrir, usted, negative command",
+    "sentence": "Disculpe, no ___ esa caja; es frágil.",
+    "options": [
+      "abres",
+      "abras",
+      "abra",
+      "abre"
+    ],
+    "answer": "abra",
+    "accepted_answers": [
+      "abra"
+    ],
+    "explanation_en": "Negative usted of abrir is no abra; 'no abras' is tú.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Regular -ir: from yo (abro), drop -o and add -a.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0347",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "usted_command",
+      "imperative",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "abrir, usted, command",
+    "sentence": "Señor, ___ su maleta para la revisión, por favor.",
+    "options": [
+      "abres",
+      "abre",
+      "abra",
+      "abras"
+    ],
+    "answer": "abra",
+    "accepted_answers": [
+      "abra"
+    ],
+    "explanation_en": "Abrir → abra for usted; 'abras' is only for negative tú.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Regular -ir: from yo (abro), drop -o and add -a.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0348",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "usted_command",
+      "imperative",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "cerrar, usted, command",
+    "sentence": "Por favor, ___ la puerta al salir del estudio.",
+    "options": [
+      "cierras",
+      "cierre",
+      "cierres",
+      "cierra"
+    ],
+    "answer": "cierre",
+    "accepted_answers": [
+      "cierre"
+    ],
+    "explanation_en": "Cerrar → cierre for usted (stem cie- + -e).",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "From yo (cierro), drop -o and add -e.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0349",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "usted_command",
+      "imperative",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "seguir, usted, command",
+    "sentence": "___ recto hasta el semáforo y cruce la calle.",
+    "options": [
+      "sega",
+      "sigues",
+      "sigue",
+      "siga"
+    ],
+    "answer": "siga",
+    "accepted_answers": [
+      "siga"
+    ],
+    "explanation_en": "Seguir → siga for usted; 'sigue' is tú or él present.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Start from yo (sigo), drop the -o and add -a.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0350",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "usted_command",
+      "imperative",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "tener, usted, command",
+    "sentence": "Doctora, ___ paciencia; el resultado sale en una hora.",
+    "options": [
+      "tenga",
+      "ten",
+      "tengas",
+      "tiene"
+    ],
+    "answer": "tenga",
+    "accepted_answers": [
+      "tenga"
+    ],
+    "explanation_en": "Tener → tenga for usted; 'ten' is for tú.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Start from yo (tengo), drop the -o and add -a.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0351",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "usted_command",
+      "imperative",
+      "tu_vs_usted",
+      "imperative_negative"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "hacer, usted, negative command",
+    "sentence": "No ___ ruido en la sala de exhibición, por favor.",
+    "options": [
+      "haz",
+      "hace",
+      "haga",
+      "hagas"
+    ],
+    "answer": "haga",
+    "accepted_answers": [
+      "haga"
+    ],
+    "explanation_en": "Negative usted of hacer is no haga; 'no hagas' is tú.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Start from yo (hago), drop the -o and add -a.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0352",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "usted_command",
+      "imperative",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "venir, usted, command",
+    "sentence": "___ mañana a las once; la diseñadora la espera.",
+    "options": [
+      "vengas",
+      "venga",
+      "ven",
+      "viene"
+    ],
+    "answer": "venga",
+    "accepted_answers": [
+      "venga"
+    ],
+    "explanation_en": "Venir → venga for usted; 'ven' is for tú.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Start from yo (vengo), drop the -o and add -a.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0353",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "usted_command",
+      "imperative",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "decir, usted, command",
+    "sentence": "___ su talla en voz alta para el inventario.",
+    "options": [
+      "di",
+      "digas",
+      "diga",
+      "dice"
+    ],
+    "answer": "diga",
+    "accepted_answers": [
+      "diga"
+    ],
+    "explanation_en": "Decir → diga for usted; 'di' is for tú.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Start from yo (digo), drop the -o and add -a.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0354",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "tu_command_negative",
+      "imperative",
+      "imperative_negative"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "abrir, tú, negative command",
+    "sentence": "No ___ el paquete todavía; es sorpresa.",
+    "options": [
+      "abre",
+      "abres",
+      "abras",
+      "abra"
+    ],
+    "answer": "abras",
+    "accepted_answers": [
+      "abras"
+    ],
+    "explanation_en": "Negative tú of abrir is no abras; 'no abra' is usted.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "From yo (abro), drop -o and add -as.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0355",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "tu_command_negative",
+      "imperative",
+      "imperative_negative"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "abrir, tú, negative command",
+    "sentence": "No ___ WhatsApp en la fila del pop-up; avanza.",
+    "options": [
+      "abre",
+      "abres",
+      "abra",
+      "abras"
+    ],
+    "answer": "abras",
+    "accepted_answers": [
+      "abras"
+    ],
+    "explanation_en": "-er/-ir negative tú takes -as: no abras.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "From yo (abro), drop -o and add -as.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0356",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "tu_command_negative",
+      "imperative",
+      "imperative_negative"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "tener, tú, negative command",
+    "sentence": "No ___ prisa; la rebaja dura toda la semana.",
+    "options": [
+      "tienes",
+      "tenga",
+      "tengas",
+      "ten"
+    ],
+    "answer": "tengas",
+    "accepted_answers": [
+      "tengas"
+    ],
+    "explanation_en": "No + tengas for tú; 'no tenga' is usted.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Start from yo (tengo), drop the -o and add -as.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0357",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "tu_command_negative",
+      "imperative",
+      "imperative_negative"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "hacer, tú, negative command",
+    "sentence": "No ___ fila dos veces; ya tienes tu boleto.",
+    "options": [
+      "haces",
+      "hagas",
+      "haz",
+      "haga"
+    ],
+    "answer": "hagas",
+    "accepted_answers": [
+      "hagas"
+    ],
+    "explanation_en": "Hacer: haz, but no hagas.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Start from yo (hago), drop the -o and add -as.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0358",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "tu_command_negative",
+      "imperative",
+      "imperative_negative"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "ir, tú, negative command",
+    "sentence": "No ___ sin probarte la chamarra primero.",
+    "options": [
+      "ve",
+      "vaya",
+      "vas",
+      "vayas"
+    ],
+    "answer": "vayas",
+    "accepted_answers": [
+      "vayas"
+    ],
+    "explanation_en": "Ir: ve, but in the negative it's no vayas.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Ir doesn't come from yo (voy). Its stem is vay-.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0359",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "tu_command_negative",
+      "imperative",
+      "imperative_negative"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "poner, tú, negative command",
+    "sentence": "No ___ esa sudadera en la lavadora caliente.",
+    "options": [
+      "pon",
+      "pongas",
+      "pones",
+      "ponga"
+    ],
+    "answer": "pongas",
+    "accepted_answers": [
+      "pongas"
+    ],
+    "explanation_en": "Poner: pon, but no pongas.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Start from yo (pongo), drop the -o and add -as.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0360",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "tu_command_irregular",
+      "imperative",
+      "imperative_irregular",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "tener, tú, command",
+    "sentence": "___ listo el efectivo; este puesto no acepta tarjeta.",
+    "options": [
+      "tengas",
+      "tenga",
+      "tiene",
+      "ten"
+    ],
+    "answer": "ten",
+    "accepted_answers": [
+      "ten"
+    ],
+    "explanation_en": "Tener → ten for tú; 'tenga' is usted.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "One of the eight short irregular tú commands.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0361",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "tu_command_irregular",
+      "imperative",
+      "imperative_irregular",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "ir, tú, command",
+    "sentence": "___ a la tienda de segunda mano en la esquina.",
+    "options": [
+      "vaya",
+      "va",
+      "vas",
+      "ve"
+    ],
+    "answer": "ve",
+    "accepted_answers": [
+      "ve"
+    ],
+    "explanation_en": "Ir → ve for tú; 'va' means he/she goes.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "One of the eight short irregular tú commands.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0362",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "tu_command_irregular",
+      "imperative",
+      "imperative_irregular",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "ir, tú, command",
+    "sentence": "Si te gusta el streetwear, ___ al pop-up del centro.",
+    "options": [
+      "vaya",
+      "va",
+      "ve",
+      "ven"
+    ],
+    "answer": "ve",
+    "accepted_answers": [
+      "ve"
+    ],
+    "explanation_en": "Ve = go (ir); 'ven' = come (venir).",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "One of the eight short irregular tú commands.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0363",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "tu_command_irregular",
+      "imperative",
+      "imperative_irregular",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "hacer, tú, command",
+    "sentence": "___ una foto del look para tu cliente.",
+    "options": [
+      "haz",
+      "haga",
+      "has",
+      "hace"
+    ],
+    "answer": "haz",
+    "accepted_answers": [
+      "haz"
+    ],
+    "explanation_en": "Hacer → haz with z; 'has' is from haber.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "One of the eight short irregular tú commands.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0364",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "tu_command_irregular",
+      "imperative",
+      "imperative_irregular",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "hacer, tú, command",
+    "sentence": "___ el cambio en la caja, no en el probador.",
+    "options": [
+      "hagas",
+      "haga",
+      "haz",
+      "haces"
+    ],
+    "answer": "haz",
+    "accepted_answers": [
+      "haz"
+    ],
+    "explanation_en": "The tú command of hacer is haz.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "One of the eight short irregular tú commands.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0365",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "tu_command_irregular",
+      "imperative",
+      "imperative_irregular",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "decir, tú, command",
+    "sentence": "___ la verdad sobre el presupuesto del proyecto.",
+    "options": [
+      "dices",
+      "digas",
+      "di",
+      "diga"
+    ],
+    "answer": "di",
+    "accepted_answers": [
+      "di"
+    ],
+    "explanation_en": "Decir → di for tú.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "One of the eight short irregular tú commands.",
+    "level": "drill",
+    "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0366",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite_irregular",
+      "preterite",
+      "person_endings"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "saber, yo, preterite",
+    "sentence": "Ayer ___ que el pop-up cierra el domingo.",
+    "options": [
+      "supe",
+      "supo",
+      "sabí",
+      "sé"
+    ],
+    "answer": "supe",
+    "accepted_answers": [
+      "supe"
+    ],
+    "explanation_en": "Saber has the stem sup-: yo supe = I found out.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Irregular preterite stem, and no written accent on the ending.",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0367",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite_irregular",
+      "preterite",
+      "person_endings"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "saber, yo, preterite",
+    "sentence": "Cuando ___ el precio, decidí esperar la rebaja.",
+    "options": [
+      "supo",
+      "sabía",
+      "sabí",
+      "supe"
+    ],
+    "answer": "supe",
+    "accepted_answers": [
+      "supe"
+    ],
+    "explanation_en": "Yo supe (not 'sabí'); Irregular stem, no accent on the ending.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Irregular preterite stem, and no written accent on the ending.",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0368",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite_irregular",
+      "preterite",
+      "person_endings"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "saber, él, preterite",
+    "sentence": "Nadie ___ cuánto costaba la pieza original.",
+    "options": [
+      "sabió",
+      "sabe",
+      "supo",
+      "supe"
+    ],
+    "answer": "supo",
+    "accepted_answers": [
+      "supo"
+    ],
+    "explanation_en": "Saber, él/ella: supo (yo supe).",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Irregular preterite stem, and no written accent on the ending.",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0369",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite_irregular",
+      "preterite",
+      "person_endings"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "decir, yo, preterite",
+    "sentence": "Le ___ a la vendedora que buscaba talla chica.",
+    "options": [
+      "decí",
+      "dije",
+      "digo",
+      "dijo"
+    ],
+    "answer": "dije",
+    "accepted_answers": [
+      "dije"
+    ],
+    "explanation_en": "Decir has the stem dij-: yo dije.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Irregular preterite stem, and no written accent on the ending.",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0370",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite_irregular",
+      "preterite",
+      "person_endings"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "poder, yo, preterite",
+    "sentence": "No ___ encontrar la talla grande en el pop-up.",
+    "options": [
+      "podí",
+      "pudo",
+      "pude",
+      "puedo"
+    ],
+    "answer": "pude",
+    "accepted_answers": [
+      "pude"
+    ],
+    "explanation_en": "Poder has the stem pud-: yo pude.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Irregular preterite stem, and no written accent on the ending.",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0371",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite_irregular",
+      "preterite",
+      "person_endings"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "venir, yo, preterite",
+    "sentence": "___ a esta galería por primera vez el mes pasado.",
+    "options": [
+      "vení",
+      "vino",
+      "vine",
+      "vengo"
+    ],
+    "answer": "vine",
+    "accepted_answers": [
+      "vine"
+    ],
+    "explanation_en": "Venir has the stem vin-: yo vine.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Irregular preterite stem, and no written accent on the ending.",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0372",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite_irregular",
+      "preterite",
+      "person_endings"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "traer, yo, preterite",
+    "sentence": "___ el ticket de la compra por si hay cambio.",
+    "options": [
+      "trajo",
+      "traigo",
+      "traje",
+      "traí"
+    ],
+    "answer": "traje",
+    "accepted_answers": [
+      "traje"
+    ],
+    "explanation_en": "Traer has the stem traj-: yo traje.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Irregular preterite stem, and no written accent on the ending.",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0373",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite_irregular",
+      "preterite",
+      "person_endings"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "querer, yo, preterite",
+    "sentence": "___ comprar las dos playeras, pero solo llevaba efectivo para una.",
+    "options": [
+      "querí",
+      "quiero",
+      "quise",
+      "quiso"
+    ],
+    "answer": "quise",
+    "accepted_answers": [
+      "quise"
+    ],
+    "explanation_en": "Querer has the stem quis-: yo quise.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Irregular preterite stem, and no written accent on the ending.",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0374",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L19"
+    ],
+    "grammar_tags": [
+      "preterite_stem_change",
+      "preterite"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "elegir, él, preterite",
+    "sentence": "El director de arte ___ la tipografía más limpia.",
+    "options": [
+      "elegí",
+      "elegió",
+      "elige",
+      "eligió"
+    ],
+    "answer": "eligió",
+    "accepted_answers": [
+      "eligió"
+    ],
+    "explanation_en": "Elegir changes e→i in the él form: eligió.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Only the él/ella and ellos forms change (e→i, o→u, i→y).",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0375",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L19"
+    ],
+    "grammar_tags": [
+      "preterite_stem_change",
+      "preterite"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "elegir, ella, preterite",
+    "sentence": "Mi amiga ___ la chamarra negra en vez de la azul.",
+    "options": [
+      "elige",
+      "eligió",
+      "elegió",
+      "elegimos"
+    ],
+    "answer": "eligió",
+    "accepted_answers": [
+      "eligió"
+    ],
+    "explanation_en": "Elegir, él/ella: eligió (not elegió).",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Only the él/ella and ellos forms change (e→i, o→u, i→y).",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0376",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L19"
+    ],
+    "grammar_tags": [
+      "preterite_stem_change",
+      "preterite",
+      "person_endings"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "elegir, ellos, preterite",
+    "sentence": "Los clientes ___ el logo más simple.",
+    "options": [
+      "eligió",
+      "elegieron",
+      "eligen",
+      "eligieron"
+    ],
+    "answer": "eligieron",
+    "accepted_answers": [
+      "eligieron"
+    ],
+    "explanation_en": "Elegir, ellos: eligieron (e→i).",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Only the él/ella and ellos forms change (e→i, o→u, i→y).",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0377",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L19"
+    ],
+    "grammar_tags": [
+      "preterite_stem_change",
+      "preterite"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "preferir, él, preterite",
+    "sentence": "Él ___ pagar en efectivo en la tienda.",
+    "options": [
+      "preferió",
+      "preferí",
+      "prefirió",
+      "prefiere"
+    ],
+    "answer": "prefirió",
+    "accepted_answers": [
+      "prefirió"
+    ],
+    "explanation_en": "Preferir changes e→i: prefirió.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Only the él/ella and ellos forms change (e→i, o→u, i→y).",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0378",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L19"
+    ],
+    "grammar_tags": [
+      "preterite_stem_change",
+      "preterite"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "leer, él, preterite",
+    "sentence": "___ la etiqueta y vio el precio en rebaja.",
+    "options": [
+      "leí",
+      "leyó",
+      "lee",
+      "leió"
+    ],
+    "answer": "leyó",
+    "accepted_answers": [
+      "leyó"
+    ],
+    "explanation_en": "Leer: i between vowels becomes y, leyó.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Only the él/ella and ellos forms change (e→i, o→u, i→y).",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0379",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L19"
+    ],
+    "grammar_tags": [
+      "preterite_stem_change",
+      "preterite"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "oír, ella, preterite",
+    "sentence": "___ el anuncio de la rebaja por el altavoz.",
+    "options": [
+      "oye",
+      "oí",
+      "oyó",
+      "oió"
+    ],
+    "answer": "oyó",
+    "accepted_answers": [
+      "oyó"
+    ],
+    "explanation_en": "Oír: i between vowels becomes y, oyó.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Only the él/ella and ellos forms change (e→i, o→u, i→y).",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0380",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L19"
+    ],
+    "grammar_tags": [
+      "preterite_stem_change",
+      "preterite"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "sentirse, él, preterite",
+    "sentence": "Se ___ mejor después de probarse otra talla.",
+    "options": [
+      "sentí",
+      "sentió",
+      "siente",
+      "sintió"
+    ],
+    "answer": "sintió",
+    "accepted_answers": [
+      "sintió"
+    ],
+    "explanation_en": "Sentir changes e→i: sintió.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Only the él/ella and ellos forms change (e→i, o→u, i→y).",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0381",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L15",
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite_vs_imperfect",
+      "preterite",
+      "imperfect"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 3,
+    "audio_text": null,
+    "prompt_en": "estar, yo, past",
+    "sentence": "___ en el pop-up cuando empezó a llover.",
+    "options": [
+      "estoy",
+      "estuvo",
+      "estaba",
+      "estuve"
+    ],
+    "answer": "estaba",
+    "accepted_answers": [
+      "estaba"
+    ],
+    "explanation_en": "What was going on when something happened is imperfect: estaba.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Background, description or habit: imperfect. One finished event: preterite.",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0382",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L15",
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite_vs_imperfect",
+      "preterite",
+      "imperfect"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 3,
+    "audio_text": null,
+    "prompt_en": "estar, yo, past",
+    "sentence": "Ayer ___ cuarenta minutos en la fila de la galería.",
+    "options": [
+      "estaba",
+      "estaré",
+      "estuve",
+      "estuvo"
+    ],
+    "answer": "estuve",
+    "accepted_answers": [
+      "estuve"
+    ],
+    "explanation_en": "A stay with a set length is preterite: estuve.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Background, description or habit: imperfect. One finished event: preterite.",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0383",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L15",
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite_vs_imperfect",
+      "preterite",
+      "imperfect"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 3,
+    "audio_text": null,
+    "prompt_en": "ir, yo, past",
+    "sentence": "El sábado ___ al pop-up de streetwear del centro.",
+    "options": [
+      "fui",
+      "voy",
+      "fue",
+      "iba"
+    ],
+    "answer": "fui",
+    "accepted_answers": [
+      "fui"
+    ],
+    "explanation_en": "One finished trip is preterite: fui.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Background, description or habit: imperfect. One finished event: preterite.",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0384",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L15",
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite_vs_imperfect",
+      "preterite",
+      "imperfect"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 3,
+    "audio_text": null,
+    "prompt_en": "ser, past (telling time)",
+    "sentence": "___ las cuatro cuando cerró la tienda.",
+    "options": [
+      "eran",
+      "era",
+      "son",
+      "fueron"
+    ],
+    "answer": "eran",
+    "accepted_answers": [
+      "eran"
+    ],
+    "explanation_en": "Past clock time uses the imperfect: eran las cuatro.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Background, description or habit: imperfect. One finished event: preterite.",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0385",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L15",
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite_vs_imperfect",
+      "preterite",
+      "imperfect"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 3,
+    "audio_text": null,
+    "prompt_en": "haber (hay), past",
+    "sentence": "Cuando llegué, ___ mucha gente en el probador.",
+    "options": [
+      "hay",
+      "habrá",
+      "hubo",
+      "había"
+    ],
+    "answer": "había",
+    "accepted_answers": [
+      "había"
+    ],
+    "explanation_en": "Describing the scene is imperfect: había.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Background, description or habit: imperfect. One finished event: preterite.",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0386",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L15",
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite_vs_imperfect",
+      "preterite",
+      "imperfect"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 3,
+    "audio_text": null,
+    "prompt_en": "comprar, yo, past",
+    "sentence": "Ayer ___ dos posters en la galería.",
+    "options": [
+      "compra",
+      "compré",
+      "compraba",
+      "compraré"
+    ],
+    "answer": "compré",
+    "accepted_answers": [
+      "compré"
+    ],
+    "explanation_en": "One finished purchase yesterday is preterite: compré.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Background, description or habit: imperfect. One finished event: preterite.",
+    "level": "drill",
+    "topic": "verbs_past"
+  },
+  {
+    "id": "c-0387",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "future_irregular",
+      "future",
+      "person_endings"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "venir, él, future",
+    "sentence": "El pedido ___ mañana por la tarde.",
+    "options": [
+      "venirá",
+      "vendrán",
+      "vendrá",
+      "vendré"
+    ],
+    "answer": "vendrá",
+    "accepted_answers": [
+      "vendrá"
+    ],
+    "explanation_en": "Venir, él: vendrá; no -n on él.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Some verbs use a short irregular stem plus the future ending.",
+    "level": "drill",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0388",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "future_irregular",
+      "future",
+      "person_endings"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "venir, ellos, future",
+    "sentence": "Mis amigos ___ al pop-up el viernes.",
+    "options": [
+      "vendrá",
+      "vendrán",
+      "venirán",
+      "vendré"
+    ],
+    "answer": "vendrán",
+    "accepted_answers": [
+      "vendrán"
+    ],
+    "explanation_en": "Venir, ellos: vendrán; ellos needs the -n.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Some verbs use a short irregular stem plus the future ending.",
+    "level": "drill",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0389",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "future_irregular",
+      "future",
+      "person_endings"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "tener, yo, future",
+    "sentence": "La próxima semana ___ más tiempo para ir a galerías.",
+    "options": [
+      "tendrá",
+      "teneré",
+      "tendrás",
+      "tendré"
+    ],
+    "answer": "tendré",
+    "accepted_answers": [
+      "tendré"
+    ],
+    "explanation_en": "Tener uses the stem tendr-: yo tendré.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Some verbs use a short irregular stem plus the future ending.",
+    "level": "drill",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0390",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "future_irregular",
+      "future",
+      "person_endings"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "haber (hay), future",
+    "sentence": "___ descuentos en toda la tienda el sábado.",
+    "options": [
+      "habrá",
+      "habría",
+      "habrán",
+      "haberá"
+    ],
+    "answer": "habrá",
+    "accepted_answers": [
+      "habrá"
+    ],
+    "explanation_en": "'Hay' in the future is always habrá.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Some verbs use a short irregular stem plus the future ending.",
+    "level": "drill",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0391",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "conditional",
+      "person_endings"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "poder, tú, conditional",
+    "sentence": "¿___ venir conmigo a la exhibición el jueves?",
+    "options": [
+      "podrías",
+      "podría",
+      "podrían",
+      "poderías"
+    ],
+    "answer": "podrías",
+    "accepted_answers": [
+      "podrías"
+    ],
+    "explanation_en": "Tú needs the -s: podrías (podría is yo or usted).",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Conditional = future stem + -ía endings; tú adds -s, ellos adds -n.",
+    "level": "drill",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0392",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "conditional",
+      "person_endings"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "poder, usted, conditional",
+    "sentence": "¿___ mostrarme otra talla, por favor?",
+    "options": [
+      "poderías",
+      "podrías",
+      "podría",
+      "podrían"
+    ],
+    "answer": "podría",
+    "accepted_answers": [
+      "podría"
+    ],
+    "explanation_en": "Usted takes the él form: podría, with no -s.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Conditional = future stem + -ía endings; tú adds -s, ellos adds -n.",
+    "level": "drill",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0393",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "conditional",
+      "person_endings"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "gustar, conditional",
+    "sentence": "Me ___ un cambio de color en este logo.",
+    "options": [
+      "gustará",
+      "gustarías",
+      "gustarían",
+      "gustaría"
+    ],
+    "answer": "gustaría",
+    "accepted_answers": [
+      "gustaría"
+    ],
+    "explanation_en": "'Me gustaría' stays singular with an infinitive or noun phrase.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Conditional = future stem + -ía endings; tú adds -s, ellos adds -n.",
+    "level": "drill",
+    "topic": "verbs_future"
+  },
+  {
+    "id": "c-0394",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [],
+    "grammar_tags": [
+      "conditional",
+      "person_endings",
+      "future_irregular"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "tener, ellos, conditional",
+    "sentence": "Con otra semana, ellos ___ listo el catálogo.",
+    "options": [
+      "tendrán",
+      "tenerían",
+      "tendría",
+      "tendrían"
+    ],
+    "answer": "tendrían",
+    "accepted_answers": [
+      "tendrían"
+    ],
+    "explanation_en": "Tener uses the stem tendr-; ellos: tendrían.",
     "transcript": null,
     "region_note": null,
     "hint_en": "Conditional = future stem + -ía endings; tú adds -s, ellos adds -n.",

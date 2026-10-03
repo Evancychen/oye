@@ -703,6 +703,264 @@
    "normal": "audio/ad833557e278621e.mp3",
    "slow": "audio/6498fc81940bf629.mp3",
    "voice": "male"
+  },
+  "Esta chamarra de mezclilla está en rebaja: cuesta trescientos noventa pesos.": {
+   "normal": "audio/78a8cfbe27a2d867.mp3",
+   "slow": "audio/f06bce51b3a4e6cf.mp3",
+   "voice": "male"
+  },
+  "La etiqueta de la playera negra dice cuatrocientos cincuenta pesos.": {
+   "normal": "audio/bc808c1f162544fc.mp3",
+   "slow": "audio/61861ee5bbeda089.mp3",
+   "voice": "male"
+  },
+  "Solo nos queda la talla mediana en el probador.": {
+   "normal": "audio/8c57109c4a4b2490.mp3",
+   "slow": "audio/3d820dec68150914.mp3",
+   "voice": "male"
+  },
+  "Te lo dejo en doscientos ochenta.": {
+   "normal": "audio/abe3c8fd46fe1ebb.mp3",
+   "slow": "audio/ee9257ee25b8ef0d.mp3",
+   "voice": "male"
+  },
+  "El pop-up abre de once a ocho, menos el lunes.": {
+   "normal": "audio/ca99ad7dc0660dd9.mp3",
+   "slow": "audio/621e69112e6a3536.mp3",
+   "voice": "male"
+  },
+  "Hola, ¿me das la sudadera azul en talla mediana? Claro, te la traigo del almacén.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Hola, ¿me das la sudadera azul en talla mediana?"
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Claro, te la traigo del almacén."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "bf9422d81b1e08b8.mp3",
+     "58d16c952f0f0aec.mp3"
+    ],
+    "slow": [
+     "2407b189a0cf81b5.mp3",
+     "0eda40e00f6bdb9b.mp3"
+    ]
+   },
+   "normal": "audio/29aae98ce3054df9.mp3",
+   "slow": "audio/6e03196ada0b78f3.mp3"
+  },
+  "Con el descuento de segunda mano, la chamarra queda en seiscientos setenta y cinco.": {
+   "normal": "audio/76ffcd207291a40d.mp3",
+   "slow": "audio/1fcc036140b3af2c.mp3",
+   "voice": "male"
+  },
+  "Disculpa, ¿me das la playera blanca en talla chica, por favor?": {
+   "normal": "audio/09746643607f23cc.mp3",
+   "slow": "audio/f3fb4edde6ab70c8.mp3",
+   "voice": "male"
+  },
+  "La entrada a la galería cuesta ciento veinte pesos los fines de semana.": {
+   "normal": "audio/8112e4ff789958b9.mp3",
+   "slow": "audio/942e1614eeeec161.mp3",
+   "voice": "male"
+  },
+  "La exhibición cierra a las nueve y media de la noche.": {
+   "normal": "audio/f638b13eea18ea26.mp3",
+   "slow": "audio/2349b43817f61998.mp3",
+   "voice": "male"
+  },
+  "La renta del estudio sale en cinco mil quinientos pesos al mes.": {
+   "normal": "audio/b48e280abf2d493c.mp3",
+   "slow": "audio/1f7de35952fd860f.mp3",
+   "voice": "male"
+  },
+  "El poster firmado cuesta cien pesos; el libro, ciento noventa.": {
+   "normal": "audio/f56aa2a13b4ead30.mp3",
+   "slow": "audio/e32001f377e8fd00.mp3",
+   "voice": "male"
+  },
+  "Son mil doscientos cincuenta.": {
+   "normal": "audio/a6eec7875bcb8ddf.mp3",
+   "slow": "audio/2b4f3c49b12182e3.mp3",
+   "voice": "male"
+  },
+  "Son cuatrocientos. Con quinientos, tu cambio es de cien.": {
+   "normal": "audio/1aa30d4e479bbf1c.mp3",
+   "slow": "audio/12657cbf95aa72b1.mp3",
+   "voice": "male"
+  },
+  "La cita es a las cuatro y cuarto de la tarde.": {
+   "normal": "audio/541c3749fd609f61.mp3",
+   "slow": "audio/cab253e79fea7150.mp3",
+   "voice": "male"
+  },
+  "El metro cierra a la una menos cuarto.": {
+   "normal": "audio/e1b34778dfd00da7.mp3",
+   "slow": "audio/062e561f008e2697.mp3",
+   "voice": "male"
+  },
+  "Nos vemos a las siete en punto frente a la galería.": {
+   "normal": "audio/7e4c664a5cb846fd.mp3",
+   "slow": "audio/40f4f6929bc0ee13.mp3",
+   "voice": "male"
+  },
+  "Señor, no abra esa puerta; use la de enfrente.": {
+   "normal": "audio/6187c269bdf18243.mp3",
+   "slow": "audio/339fe2e635f5154d.mp3",
+   "voice": "male"
+  },
+  "Siga derecho dos cuadras y ahí está la tienda.": {
+   "normal": "audio/f6ea93d0c6765005.mp3",
+   "slow": "audio/1376b0702e4fa7ca.mp3",
+   "voice": "male"
+  },
+  "Ve al OXXO y trae agua fría, porfa. Va, en cinco minutos regreso.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "Ve al OXXO y trae agua fría, porfa."
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "Va, en cinco minutos regreso."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "7d2df343992e1f3d.mp3",
+     "043f2139a4d80139.mp3"
+    ],
+    "slow": [
+     "ff9ace2905045bf8.mp3",
+     "c838069c822fa15a.mp3"
+    ]
+   },
+   "normal": "audio/7cb33941f0363117.mp3",
+   "slow": "audio/74a7ba3342423f51.mp3"
+  },
+  "Ten tu boleto listo; no cierres la aplicación todavía.": {
+   "normal": "audio/66a94465b2562096.mp3",
+   "slow": "audio/f1df022e67748db9.mp3",
+   "voice": "male"
+  },
+  "Hola, ¿me das un americano para llevar? Claro, son cuarenta y cinco pesos.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Hola, ¿me das un americano para llevar?"
+    },
+    {
+     "speaker": "Barista",
+     "voice": "female",
+     "es": "Claro, son cuarenta y cinco pesos."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "334105e3f2de1346.mp3",
+     "ab557a6f195bf23a.mp3"
+    ],
+    "slow": [
+     "8954bacd3e56b603.mp3",
+     "47047fb6dfcd0f0f.mp3"
+    ]
+   },
+   "normal": "audio/0b95961b10ab3cb7.mp3",
+   "slow": "audio/e885fad0888365df.mp3"
+  },
+  "Le doy setenta y cinco.": {
+   "normal": "audio/30df3ce24b875311.mp3",
+   "slow": "audio/c5d61b5263c9daee.mp3",
+   "voice": "male"
+  },
+  "Un café de olla y una concha: son cincuenta y ocho pesos.": {
+   "normal": "audio/a0c72bf028516811.mp3",
+   "slow": "audio/23d9a3ece0f258bc.mp3",
+   "voice": "male"
+  },
+  "¿Para qué día quiere la mesa? Para el jueves a las siete y media de la noche.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "¿Para qué día quiere la mesa?"
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Para el jueves a las siete y media de la noche."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "4a7bc4f8553691fe.mp3",
+     "375de268bfc6b29a.mp3"
+    ],
+    "slow": [
+     "ec9a7c23b5a6246e.mp3",
+     "de5f4c17fe9755c1.mp3"
+    ]
+   },
+   "normal": "audio/9ec1357d3c7d81b1.mp3",
+   "slow": "audio/ff4768b222bc84c9.mp3"
+  },
+  "Son noventa y cinco pesos.": {
+   "normal": "audio/95cd8778056c3d39.mp3",
+   "slow": "audio/39c76170a57bd6fe.mp3",
+   "voice": "female"
+  },
+  "Tu cambio es de veinte pesos.": {
+   "normal": "audio/87e1c9f22ce9f714.mp3",
+   "slow": "audio/19c27f79a9b0306b.mp3",
+   "voice": "female"
+  },
+  "Son las tres y cuarto.": {
+   "normal": "audio/5a6fe16e75984a33.mp3",
+   "slow": "audio/bd84b2da2a5e96a9.mp3",
+   "voice": "female"
+  },
+  "La clase empieza a las seis en punto.": {
+   "normal": "audio/a5c5ecba5df005df.mp3",
+   "slow": "audio/35daefb2de4904c6.mp3",
+   "voice": "female"
+  },
+  "¿Me das un matcha para llevar, por favor?": {
+   "normal": "audio/b30846019392d464.mp3",
+   "slow": "audio/e37d22e47a381601.mp3",
+   "voice": "female"
+  },
+  "¿Qué se va a ofrecer?": {
+   "normal": "audio/5b45b34237e74f57.mp3",
+   "slow": "audio/159512e76f4b6a9a.mp3",
+   "voice": "female"
+  },
+  "Son doscientos pesos.": {
+   "normal": "audio/6b4a79ce9fced165.mp3",
+   "slow": "audio/07885e759a2d982f.mp3",
+   "voice": "female"
+  },
+  "No abras la puerta de emergencia.": {
+   "normal": "audio/4355806c6406be3e.mp3",
+   "slow": "audio/4de6fb35939eb3ce.mp3",
+   "voice": "female"
+  },
+  "Son sesenta pesos.": {
+   "normal": "audio/13d8e8a57357f381.mp3",
+   "slow": "audio/794b698f9859c6e5.mp3",
+   "voice": "female"
   }
  },
  "lines": {
@@ -878,6 +1136,38 @@
    "normal": "audio/b76d597b8c1bf625.mp3",
    "voice": "female"
   },
+  "male|Hola, ¿me das la sudadera azul en talla mediana?": {
+   "normal": "audio/bf9422d81b1e08b8.mp3",
+   "voice": "male"
+  },
+  "female|Claro, te la traigo del almacén.": {
+   "normal": "audio/58d16c952f0f0aec.mp3",
+   "voice": "female"
+  },
+  "female|Ve al OXXO y trae agua fría, porfa.": {
+   "normal": "audio/7d2df343992e1f3d.mp3",
+   "voice": "female"
+  },
+  "male|Va, en cinco minutos regreso.": {
+   "normal": "audio/043f2139a4d80139.mp3",
+   "voice": "male"
+  },
+  "male|Hola, ¿me das un americano para llevar?": {
+   "normal": "audio/334105e3f2de1346.mp3",
+   "voice": "male"
+  },
+  "female|Claro, son cuarenta y cinco pesos.": {
+   "normal": "audio/ab557a6f195bf23a.mp3",
+   "voice": "female"
+  },
+  "female|¿Para qué día quiere la mesa?": {
+   "normal": "audio/4a7bc4f8553691fe.mp3",
+   "voice": "female"
+  },
+  "male|Para el jueves a las siete y media de la noche.": {
+   "normal": "audio/375de268bfc6b29a.mp3",
+   "voice": "male"
+  },
   "male|Próxima estación: Bellas Artes.": {
    "normal": "audio/25404699261bfa84.mp3",
    "voice": "male"
@@ -965,6 +1255,34 @@
   "male|Si pierden a sus amigos, el punto de encuentro está enfrente de la rueda de la fortuna. ¡Disfruten la noche!": {
    "normal": "audio/9ddec77b50353f27.mp3",
    "voice": "male"
+  },
+  "female|Hola, bienvenido al pop-up de Mezclilla Local. Hoy todo lo de segunda mano tiene veinte por ciento de descuento.": {
+   "normal": "audio/f15d1d7dfff8c925.mp3",
+   "voice": "female"
+  },
+  "male|Gracias. Busco una chamarra negra, talla mediana. ¿Me das una para probarme?": {
+   "normal": "audio/f370e5ba01797b5e.mp3",
+   "voice": "male"
+  },
+  "female|Claro. El probador está al fondo, a la izquierda. Esta está en cuatrocientos ochenta, y con el descuento queda en trescientos ochenta y cuatro.": {
+   "normal": "audio/fb0e5892cc258975.mp3",
+   "voice": "female"
+  },
+  "male|Perfecto. ¿Hasta qué hora abren hoy?": {
+   "normal": "audio/58661765e35f9a67.mp3",
+   "voice": "male"
+  },
+  "female|Hoy cerramos a las ocho y media. Si no te queda, puedes hacer un cambio en siete días con tu ticket.": {
+   "normal": "audio/ea2227016458ef92.mp3",
+   "voice": "female"
+  },
+  "male|Va, me la llevo. ¿Aceptan tarjeta?": {
+   "normal": "audio/1f71b47302da8b1d.mp3",
+   "voice": "male"
+  },
+  "female|Sí, y también efectivo. La caja está junto a la entrada. ¡Se te va a ver genial!": {
+   "normal": "audio/c127bdfc584ec17b.mp3",
+   "voice": "female"
   }
  },
  "missions": {
@@ -1163,6 +1481,69 @@
    "slow": "audio/4e83ef5f347d8342.mp3",
    "duration": 65.59,
    "slow_duration": 86.23
+  },
+  "m-popup-roma-01": {
+   "lines": [
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Hola, bienvenido al pop-up de Mezclilla Local. Hoy todo lo de segunda mano tiene veinte por ciento de descuento."
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Gracias. Busco una chamarra negra, talla mediana. ¿Me das una para probarme?"
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Claro. El probador está al fondo, a la izquierda. Esta está en cuatrocientos ochenta, y con el descuento queda en trescientos ochenta y cuatro."
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Perfecto. ¿Hasta qué hora abren hoy?"
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Hoy cerramos a las ocho y media. Si no te queda, puedes hacer un cambio en siete días con tu ticket."
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Va, me la llevo. ¿Aceptan tarjeta?"
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Sí, y también efectivo. La caja está junto a la entrada. ¡Se te va a ver genial!"
+    }
+   ],
+   "parts": {
+    "normal": [
+     "f15d1d7dfff8c925.mp3",
+     "f370e5ba01797b5e.mp3",
+     "fb0e5892cc258975.mp3",
+     "58661765e35f9a67.mp3",
+     "ea2227016458ef92.mp3",
+     "1f71b47302da8b1d.mp3",
+     "c127bdfc584ec17b.mp3"
+    ],
+    "slow": [
+     "9ae030c676abf4e6.mp3",
+     "1356b59fe0413623.mp3",
+     "f8fd0d665d4d82d0.mp3",
+     "7cd9f80d32ac82c2.mp3",
+     "66ff8d920bdb1bc0.mp3",
+     "6208545758fa56cc.mp3",
+     "90ab0b05eb38a8d1.mp3"
+    ]
+   },
+   "normal": "audio/daf8bc6b50f59b63.mp3",
+   "slow": "audio/8c78f31a97dd6992.mp3",
+   "duration": 50.57,
+   "slow_duration": 66.36
   }
  }
 }

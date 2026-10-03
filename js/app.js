@@ -792,10 +792,10 @@ function renderFixIt(card, fb) {
   }
   const hint = hasHint(card) ? `<div class="hint-slot">${hintPill(card)}${hintBox(card)}</div>` : '';
   if (chosen) {
-    return { body: `${head}${sentenceHtml(card, '')}${instruction}${hint}`, dock: optionsDock(card, null, grid), dockClass: `opts-dock${drill ? ' drill-dock' : ''}`, bind: () => bindOptions(card) };
+    return { body: `${head}${sentenceHtml(card, '')}${instruction}${audioRow(card)}${hint}`, dock: optionsDock(card, null, grid), dockClass: `opts-dock${drill ? ' drill-dock' : ''}`, bind: () => bindOptions(card) };
   }
   return {
-    body: `${head}${sentenceHtml(card, '')}${instruction}${hint}`,
+    body: `${head}${sentenceHtml(card, '')}${instruction}${audioRow(card)}${hint}`,
     dockClass: 'fix-dock',
     dock: textInputRow(),
     bind: () => bindTextInput(card, (v) => answer(card, isCorrect(card, v), v)),
