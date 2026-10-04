@@ -235,17 +235,26 @@ function updateResultsStatus() {
   el.innerHTML = resultsStatusHtml(sent);
 }
 // ---------- home ----------
+function batchLine() {
+  const v = S.content?.version;
+  if (!v) return '';
+  const day = v.published ? new Date(`${v.published}T12:00:00`).toLocaleDateString('en-US', { weekday: 'long' }) : '';
+  return `New batch${day ? ` ${day}` : ''} · ${v.new_cards || 0} new cards`;
+}
+function bestScore(level, key) {
+  const s = levels.load(), score = s.scores?.[level]?.[key];
+  const done = (level === 'medium' ? s.topics : s.missions)[key];
+  return score ? `✓ ${score.right}/${score.n}` : done ? '✓ Done' : 'Not tried';
+}
+function scoreRow(level, key) {
+  const label = bestScore(level, key);
+  return label === 'Not tried' ? '<span class="best-score untried">Not tried</span>'
+    : `<span class="best-score"><span class="score-check">✓</span> ${esc(label.slice(2))}</span>`;
+}
 function quietLine() {
   const a = S.audioStatus;
   if (a && !a.finished && a.total > 0 && a.done < a.total) return `Saving audio for offline… ${a.done} of ${a.total}`;
-  const v = S.content?.version;
-  if (!v || !v.new_cards) return '';
-  let recent = true;
-  if (v.published) {
-    const age = (Date.now() - new Date(`${v.published}T12:00:00`).getTime()) / 86400000;
-    recent = age < 7.5;
-  }
-  return recent ? `${v.new_cards} new card${v.new_cards === 1 ? '' : 's'} this week` : '';
+  return '';
 }
 /** Quick session pool: Easy cards only (v2: Medium cards never appear here), optionally one lesson. */
 function lessonPool() {
@@ -256,14 +265,6 @@ function lessonName(tag) {
   const m = /^(A\d)-L(\d+)$/.exec(tag || '');
   return m ? `${m[1]} · Lesson ${Number(m[2])}` : tag;
 }
-function sessionMeta(plan, lesson = 'all') {
-  if (!plan.length) return `<span class="meta-txt">${['EASY', 'No cards for this lesson yet'].map(esc).join('<span class="sep">·</span>')}</span>`;
-  const mins = Math.max(1, Math.round(plan.length * 0.3));
-  const prices = plan.filter(srs.isPriceByEar).length;
-  const focus = lesson !== 'all' ? lessonName(lesson) : prices >= plan.length * 0.6 ? 'mostly prices' : 'mixed review';
-  return `<span class="meta-txt">${['EASY', `${plan.length} cards`, `about ${mins} min`, focus].map(esc).join('<span class="sep">·</span>')}</span>`;
-}
-const starsInline = (n, cls = '') => `<span class="star-n ${cls}">${ICON.star(12)}<span>${n}</span></span>`;
 function starRow(n, size = 12, label = '') {
   return `<span class="stars s${size}" data-stars="${n}" role="img" aria-label="${label || `${n} of 3 stars`}">${[1, 2, 3].map((i) => `<i class="${i <= n ? 'on' : ''}">${ICON.star(size)}</i>`).join('')}</span>`;
 }
@@ -281,62 +282,31 @@ function goHome(pop = true) {
   S.progress = srs.load();
   const newIds = new Set(S.content.version?.new_card_ids || []);
   S.plan = srs.planSession(S.progress, lessonPool(), { newIds });
-  const st = srs.streak(S.progress);
-  const pe = srs.pricesByEar(S.progress);
-  let trendNote = 'Answer a few price cards to see this';
-  if (pe.now != null && pe.twoWeeksAgo != null) {
-    trendNote = pe.now > pe.twoWeeksAgo ? `up from ${pe.twoWeeksAgo}% two weeks ago` : pe.now < pe.twoWeeksAgo ? `down from ${pe.twoWeeksAgo}% two weeks ago` : 'same as two weeks ago';
-  } else if (pe.now != null) trendNote = `last 7 days · ${pe.answers} answer${pe.answers === 1 ? '' : 's'}`;
-  const maxH = 46;
-  const bars = pe.bars.map((p, i) => {
-    const cls = i === 6 ? 'now' : '';
-    if (p == null) return `<i class="empty ${cls === 'now' ? 'now-empty' : ''}" style="height:4px"></i>`;
-    return `<i class="${cls}" style="height:${Math.max(6, Math.round((p / 100) * maxH))}px"></i>`;
-  }).join('');
-  const lesson = S.progress.lesson || 'all';
-  const tot = levels.totals();
-  const challenge = (act, tag, title, sub, n, ok) => `
+  const challenge = (act, tag, title, sub, ok) => `
     <button class="challenge" data-act="${act}" data-testid="challenge-${act}" ${ok ? '' : 'disabled'}>
       <span class="ch-text"><span class="eyebrow ch-tag">${esc(tag)}</span><span class="ch-title">${esc(title)}</span><span class="caption">${esc(sub)}</span></span>
-      ${starsInline(n, 'ch-stars')}<span class="ch-chev">${ICON.chevron}</span>
+      <span class="ch-chev">${ICON.chevron}</span>
     </button>`;
   render(`
   <div class="screen page home" data-screen="home">
     <header class="home-header">
       <p class="eyebrow">${esc(fmtDate())}</p>
       <h1 class="display">Oye</h1>
+      <p class="caption batch-line">${esc(batchLine())}</p>
     </header>
-    <section class="stats" aria-label="Today">
-      <div class="col">
-        <div class="value" data-testid="streak">${st}</div>
-        <p class="caption">day streak</p>
-      </div>
-      <div class="divider"></div>
-      <div class="col">
-        <div class="value star-total" data-testid="stars-total">${tot.all} ${ICON.star(24)}</div>
-        <p class="caption">stars earned</p>
-      </div>
-    </section>
-    <section class="trend" aria-label="Prices by ear">
-      <div>
-        <p class="eyebrow">Prices by ear</p>
-        <p class="title">${pe.now == null ? '–' : `${pe.now}%`}</p>
-        <p class="caption">${esc(trendNote)}</p>
-      </div>
-      <div class="bars" aria-hidden="true">${bars}</div>
-    </section>
-    <div class="spacer"></div>
-    <p class="caption quiet" id="quiet" data-testid="quiet">${esc(quietLine())}</p>
     <p class="eyebrow challenges-head">Challenges</p>
     <div class="challenges">
-      ${challenge('medium', 'Medium', 'Topic challenge', 'Pick a topic · about 4 min', tot.medium, S.medium.length > 0)}
-      ${challenge('hard', 'Hard', 'Real-life mission', 'One longer situation · about 5 min', tot.hard, S.missions.length > 0)}
+      <div class="easy-row">
+        ${challenge('start', 'Easy', 'Quick session', S.plan.length ? `${S.plan.length} cards · about ${Math.max(1, Math.round(S.plan.length * 0.3))} min` : 'No cards for this lesson yet', S.plan.length > 0)}
+        <button class="easy-mix" data-act="lessons" aria-label="Quick session: choose a lesson">Mix</button>
+      </div>
+      ${challenge('medium', 'Medium', 'Topic challenge', 'Pick a topic · about 4 min', S.medium.length > 0)}
+      ${challenge('hard', 'Hard', 'Real-life mission', 'One longer situation · about 5 min', S.missions.length > 0)}
       ${drillRow()}
     </div>
-    <button class="caption meta-line" data-act="lessons" aria-label="Quick session: choose a lesson">${sessionMeta(S.plan, lesson)}<span class="meta-chev">${ICON.chevron}</span></button>
-    <div class="action">
-      <button class="btn-primary" data-act="start" ${S.plan.length ? '' : 'disabled'}>Quick session</button>
-    </div>
+    <div class="spacer"></div>
+    <p class="caption quiet" id="quiet" data-testid="quiet">${esc(quietLine())}</p>
+
   </div>`);
   $('[data-act="start"]').onclick = startSession;
   $('[data-act="lessons"]').onclick = openLessons;
@@ -345,11 +315,11 @@ function goHome(pop = true) {
   const dr = $('[data-act="drill"]');
   if (dr) dr.onclick = startDrill;
 }
-/** v2.2 home: slim "Verb drill" row under the Medium and Hard cards (hidden while there are no drill cards). */
+/** v2.2 home: "Verb drill" challenge row under the Medium and Hard cards (hidden while there are no drill cards). */
 function drillRow() {
   if (!S.drill.length) return '';
   const n = Math.min(srs.DRILL_SIZE, S.drill.length);
-  return `<button class="drill-row" data-act="drill" data-testid="drill-row">
+  return `<button class="challenge drill-row" data-act="drill" data-testid="drill-row">
       <span class="ch-text"><span class="ch-title">Verb drill</span><span class="caption">${n} quick question${n === 1 ? '' : 's'} · no audio</span></span>
       <span class="ch-chev">${ICON.chevron}</span>
     </button>`;
@@ -865,7 +835,7 @@ function showSummary() {
   // Stars (v2): computed and saved once per session. The Verb drill has no stars.
   if (!ses.starsResult && ses.level !== 'drill') {
     ses.starsResult = levels.starsFor(ses.results, ses.level);
-    ses.starsSaved = levels.record(ses.level, ses.topic, ses.starsResult.stars);
+    ses.starsSaved = levels.record(ses.level, ses.topic, ses.starsResult.stars, ses.starsResult);
   }
   const right = ses.results.filter((r) => r.ok).length;
   const mins = Math.max(1, Math.round((Date.now() - ses.start) / 60000));
@@ -947,7 +917,6 @@ function openTopics(push = true) {
   stop(); setKeyHandler(null);
   if (push) pushView('topics');
   S.view = 'topics'; S.session = null;
-  const best = levels.load().topics;
   const withCards = levels.TOPICS.filter((t) => topicCards(t.code).length);
   const soon = levels.TOPICS.filter((t) => !topicCards(t.code).length);
   render(`
@@ -959,7 +928,7 @@ function openTopics(push = true) {
     <div class="zone topics-zone"><div class="scroller"><div class="scroll-inner">
       <div class="topic-grid" data-testid="topic-grid">${withCards.map((t) => `
         <button class="topic-tile" data-topic="${esc(t.code)}" data-testid="topic-tile">
-          <span class="tname">${esc(t.name)}</span>${starRow(best[t.code] || 0, 12, `Best: ${best[t.code] || 0} of 3 stars`)}
+          <span class="tname">${esc(t.name)}</span>${scoreRow('medium', t.code)}
         </button>`).join('')}</div>
       ${soon.length ? `<p class="eyebrow soon-head">Coming soon</p><p class="caption soon" data-testid="coming-soon">${soon.map((t) => esc(t.name)).join(' · ')}</p>` : ''}
     </div></div>${moreHint()}</div>
@@ -1077,10 +1046,10 @@ function missionRows(ms, fresh = false) {
       const done = (best[m.id] || 0) > 0;
       return `
       <div class="mission-row ${fresh ? 'is-new' : ''}" data-mission="${esc(m.id)}" data-testid="mission-row" data-finished="${done ? '1' : '0'}">
-        <button class="mr-open" data-act="open-mission" aria-label="${esc(`${m.title_en}. ${sub}. Best: ${best[m.id] || 0} of 3 stars`)}"></button>
+        <button class="mr-open" data-act="open-mission" aria-label="${esc(`${m.title_en}. ${sub}. ${bestScore('hard', m.id)}`)}"></button>
         <span class="ch-text"><span class="ch-title">${esc(m.title_en)}</span>
           <span class="caption mr-sub" data-testid="mission-sub">${esc(sub)}</span>
-          <span class="mr-bottom">${starRow(best[m.id] || 0, 12)}${done ? `<button class="read-link" data-act="read" data-testid="read-link" aria-label="Read the script: ${esc(m.title_en)}">Read</button>` : ''}</span></span>
+          <span class="mr-bottom">${scoreRow('hard', m.id)}${done ? `<button class="read-link" data-act="read" data-testid="read-link" aria-label="Read the script: ${esc(m.title_en)}">Read</button>` : ''}</span></span>
         <span class="ch-chev">${ICON.chevron}</span>
       </div>`;
 
@@ -1104,7 +1073,7 @@ function openMissions(push = true, folder = null) {
     <div class="zone topics-zone"><div class="scroller"><div class="scroll-inner">
     ${folder ? missionRows(members) + '<p class="caption folder-note">New missions in this topic land under New first, then move here after 2 weeks.</p>' : `
       ${fresh.length ? `<section data-testid="new-missions"><h2 class="eyebrow mission-section">New · Last 14 days</h2>${missionRows(fresh, true)}</section>` : ''}
-      ${groups.length ? `<section data-testid="mission-topics"><h2 class="eyebrow mission-section">By topic</h2>${groups.map(({ id, ms }) => `<button class="folder-row" data-folder="${id}"><span class="ch-text"><span class="ch-title">${esc(FOLDERS[id])}</span><span class="caption">${count(ms.length)}</span></span><span class="caption folder-stars">★ ${ms.reduce((n, m) => n + (best[m.id] || 0), 0)} / ${3 * ms.length}</span>${ICON.chevron}</button>`).join('')}</section>` : ''}`}
+      ${groups.length ? `<section data-testid="mission-topics"><h2 class="eyebrow mission-section">By topic</h2>${groups.map(({ id, ms }) => `<button class="folder-row" data-folder="${id}"><span class="ch-text"><span class="ch-title">${esc(FOLDERS[id])}</span><span class="caption">${count(ms.length)} · ${ms.every(m => best[m.id]) ? 'done' : ms.some(m => best[m.id]) ? `${ms.filter(m => best[m.id]).length} done` : 'not tried'}</span></span>${ICON.chevron}</button>`).join('')}</section>` : ''}`}
     </div></div>${moreHint()}</div></div>`);
   $('.missions .back-link').onclick = () => folder ? history.back() : goHome(true);
   $$('[data-folder]').forEach((row) => { row.onclick = () => openMissions(true, row.dataset.folder); });
@@ -1368,7 +1337,7 @@ function missionResult() {
   if (!ms.starsResult) {
     ms.answers.forEach((a) => { a.ok = a.q.kind === 'pick' ? a.given === a.q.answer : isCorrect(a.q, a.given); });
     ms.starsResult = levels.starsFor(ms.answers, 'hard');
-    ms.starsSaved = levels.record('hard', m.id, ms.starsResult.stars);
+    ms.starsSaved = levels.record('hard', m.id, ms.starsResult.stars, ms.starsResult);
     srs.recordActivity(S.progress, ms.answers.length);   // a finished mission counts for the streak
     S.progress = srs.load();
     ms.end = Date.now();

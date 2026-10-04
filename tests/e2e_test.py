@@ -180,7 +180,7 @@ async def main():
     check('no root-absolute paths in app files (works under a subpath)', not abs_refs, abs_refs[:3])
     audio_texts = {c['audio_text'] for c in cards if c.get('audio_text')}
     check('audio.json covers every card audio_text', audio_texts <= set(audio_idx['items']), f'{len(audio_texts)} sentences')
-    NEW_LINE = f"{version.get('new_cards')} new card{'' if version.get('new_cards') == 1 else 's'} this week"
+    NEW_LINE = f"New batch {__import__('datetime').date.fromisoformat(version['published']).strftime('%A')} · {version.get('new_cards')} new cards"
     check(f"version.json: version {version.get('version')}, new_cards {version.get('new_cards')} (= new_card_ids), card_count {len(cards)}",
           version.get('version', 0) >= 1 and version.get('new_cards') == len(version.get('new_card_ids', [])) and version.get('card_count') == len(cards))
     need_hint = [c['id'] for c in cards if c['type'] in ('fix_it', 'listen_type')]
@@ -204,11 +204,11 @@ async def main():
         # ---------- first load ----------
         await page.goto(base)
         await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=15000)
-        quiet = (await page.text_content('#quiet')) or ''
+        quiet = (await page.text_content('.batch-line')) or ''
         n_synced = await wait_audio_synced(page, len(audio_files))
         check('content + all audio stored for offline (Cache Storage)', n_synced == len(audio_files), f'{n_synced}/{len(audio_files)} audio files')
         await page.wait_for_timeout(300)
-        quiet = (await page.text_content('#quiet')) or ''
+        quiet = (await page.text_content('.batch-line')) or ''
         check(f'home shows "{NEW_LINE}"', quiet.strip() == NEW_LINE, quiet)
 
         scope = await page.evaluate('navigator.serviceWorker.ready.then(r => r.scope)')
@@ -367,13 +367,9 @@ async def main():
         await page.screenshot(path=os.path.join(SHOTS, '05-summary.png'))
         await page.click('[data-act=done]')
         await page.wait_for_selector('[data-screen=home]')
-        streak = (await page.text_content('[data-testid=streak]')).strip()
-        check('home streak = 1 after the first session', streak == '1', streak)
-        # v2 design: the second home stat is "stars earned" (was "cards today"); cards answered today still live in progress.
-        stars_home = (await page.text_content('[data-testid=stars-total]')).strip()
-        today_n = await page.evaluate("(() => { const p = JSON.parse(localStorage.getItem('oye.progress.v1')); const d = new Date(); const k = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); return p.days[k].answered; })()")
-        check(f'home: cards answered today = {len(seen_types)} (progress) and "stars earned" counts the session (1-3)',
-              today_n == len(seen_types) and stars_home.isdigit() and 1 <= int(stars_home) <= 3, {'today': today_n, 'stars': stars_home})
+        await assert_no_home_stats(page)
+        today_n = await page.evaluate("Object.values(JSON.parse(localStorage.getItem('oye.progress.v1')).days).reduce((n,d) => n+d.answered, 0)")
+        check('home: answered progress preserved', today_n == len(seen_types), today_n)
         await page.screenshot(path=os.path.join(SHOTS, '01b-home-after-session.png'))
         prog = await page.evaluate("JSON.parse(localStorage.getItem('oye.progress.v1'))")
         wrong_ids = [cid for cid, s in prog['cards'].items() if s['lastOk'] is False]
@@ -404,7 +400,7 @@ async def main():
         check('app loads with the network offline (server stopped too)', ok)
         if ok:
             await page.screenshot(path=os.path.join(SHOTS, '06-offline-home.png'))
-            q = (await page.text_content('#quiet')).strip()
+            q = (await page.text_content('.batch-line')).strip()
             check('offline home still shows the new-cards line (stored version.json)', q == NEW_LINE, q)
             await page.click('[data-act=start]')
             await page.wait_for_selector('[data-screen=card]')
@@ -465,11 +461,11 @@ async def main():
         await page2.wait_for_selector('html[data-ready="1"] [data-screen=home]')
         await page2.wait_for_timeout(500)
         info = await page2.evaluate('({n: window.__oye.content.cards.length, playable: window.__oye.playable.map(c => c.id), v: window.__oye.content.version.version, updated: window.__oye.content.updated})')
-        q2 = (await page2.text_content('#quiet')).strip()
+        q2 = (await page2.text_content('.batch-line')).strip()
         check('new version.json -> app downloads the new content', info['v'] == version['version'] + 1 and info['updated'] and info['n'] == len(cards) + EXTRA, info['n'])
         check('unknown type (speak_aloud) and a broken card are skipped silently',
               'c-9001' not in info['playable'] and 'c-9003' not in info['playable'] and 'c-9002' in info['playable'] and 'c-9004' in info['playable'] and len(info['playable']) == len(cards) + 2)
-        check('home new-cards line follows version.json', q2 == '3 new cards this week', q2)
+        check('home new-cards line follows version.json', q2.endswith(' · 3 new cards'), q2)
         # a card without the hint_en field (old format) renders with no Hint tap
         await page2.evaluate("(() => { const S = window.__oye; S.plan = [S.playable.find(c => c.id === 'c-9004')]; })()")
         await page2.click('[data-act=start]')
@@ -942,8 +938,7 @@ async def update_path_test(browser):
         check('update test: new content version downloaded, hints present', info['ver'] == json.load(open(os.path.join(APP, 'content', 'version.json')))['version'] and info['hints'] > 0, info)
         prog_after = await page.evaluate("localStorage.getItem('oye.progress.v1')")
         check("update test: Evan's progress (oye.progress.v1) is untouched by the update", prog_after == prog_before)
-        st = (await page.text_content('[data-testid=streak]')).strip()
-        check('update test: streak/stats read the old progress', st == '1', st)
+        await assert_no_home_stats(page)
         await page.screenshot(path=os.path.join(SHOTS11, 'update-2-after-v1.1.png'))
 
         # ---- v1.1 -> a newer build while mid-session: waits until the session ends ----
@@ -1510,20 +1505,21 @@ async def levels_suite(browser, base, cards):
     await page.evaluate("localStorage.clear()")
     await ctx.close()
 
-    # ---- 2. Home at small phones: two challenge cards above Quick session, fits without scrolling ----
+    # ---- 2. Home: equal challenge rows in flow, Easy launches the same session ----
     for (w, h) in [(360, 640), (375, 667), (360, 720)]:
         ctx, page = await new_page(browser, errors, viewport={'width': w, 'height': h})
         await home_fresh(page, base)
-        g = await page.evaluate("""() => { const r = (s) => { const e = document.querySelector(s); if (!e) return null; const b = e.getBoundingClientRect(); return {top: b.top, bottom: b.bottom, h: b.height, w: b.width}; };
-            return { docScroll: document.scrollingElement.scrollHeight - innerHeight, med: r('[data-testid=challenge-medium]'), hard: r('[data-testid=challenge-hard]'),
-                     start: r('[data-act=start]'), head: document.querySelector('.challenges-head')?.textContent, meta: document.querySelector('.meta-line')?.textContent.trim(),
-                     medText: document.querySelector('[data-testid=challenge-medium]')?.textContent.replace(/\\s+/g, ' ').trim(),
-                     hardText: document.querySelector('[data-testid=challenge-hard]')?.textContent.replace(/\\s+/g, ' ').trim() }; }""")
-        ok = (g['docScroll'] <= 1 and g['med'] and g['hard'] and g['med']['bottom'] <= g['hard']['top'] and g['hard']['bottom'] < g['start']['top']
-              and g['start']['bottom'] <= h - 15.5 and 'Topic challenge' in g['medText'] and 'Real-life mission' in g['hardText'] and g['meta'].startswith('EASY'))
-        check(f'[{w}x{h}] v2 home: Medium then Hard challenge cards above the pinned Quick session, EASY caption, no scrolling', ok, g)
+        await assert_home_challenges(page, f'[{w}x{h}]')
         if (w, h) == (360, 640):
             await shot_v2(page, '01-home-360x640.png')
+        await page.click('.easy-row [data-act=lessons]')
+        await page.wait_for_selector('.sheet [data-lesson=all]')
+        await page.click('.sheet [data-lesson=all]')
+        check('Easy Mix keeps lesson settings reachable without starting a session', await page.locator('[data-screen=home]').count() == 1)
+        await page.click('.challenges [data-act=start]')
+        await page.wait_for_selector('[data-screen=card][data-state=question]')
+        check('Easy row starts the planned Quick session with Easy cards only',
+              await page.evaluate("window.__oye.session.cards.length > 0 && window.__oye.session.cards.every(c => (c.level || 'easy') === 'easy')"))
         await ctx.close()
 
     # ---- 3. Topic grid + a Medium topic session (stars, results rows, letter keyboard) ----
@@ -1532,11 +1528,11 @@ async def levels_suite(browser, base, cards):
     await home_fresh(page, base)
     await page.click('[data-act=medium]')
     await page.wait_for_selector('[data-screen=topics]')
-    tiles = await page.evaluate("[...document.querySelectorAll('[data-topic]')].map(b => { const r = b.getBoundingClientRect(); return {code: b.dataset.topic, name: b.querySelector('.tname').textContent, w: r.width, h: r.height, stars: b.querySelector('.stars').dataset.stars}; })")
+    tiles = await page.evaluate("[...document.querySelectorAll('[data-topic]')].map(b => { const r = b.getBoundingClientRect(); return {code: b.dataset.topic, name: b.querySelector('.tname').textContent, w: r.width, h: r.height, score: b.querySelector('.best-score').textContent}; })")
     soon = (await page.text_content('[data-testid=coming-soon]')).strip()
     have = [t for t in TOPIC_ORDER if any(c.get('topic') == t for c in medium)]
-    check('v2 topic grid: one tile per topic that has cards, in design order, 152x84, 0 stars to start',
-          [t['code'] for t in tiles] == have and all(t['name'] == TOPIC_NAMES[t['code']] and abs(t['w'] - 152) <= 1 and abs(t['h'] - 84) <= 0.5 and t['stars'] == '0' for t in tiles), tiles)
+    check('v2 topic grid: one tile per topic that has cards, in design order, 152 wide, 84+ tall and equal (grows for two-line names), Not tried to start',
+          [t['code'] for t in tiles] == have and all(t['name'] == TOPIC_NAMES[t['code']] and abs(t['w'] - 152) <= 1 and t['h'] >= 83.5 and abs(t['h'] - tiles[0]['h']) <= 0.5 and t['score'] == 'Not tried' for t in tiles), tiles)
     rest = [TOPIC_NAMES[k] for k in TOPIC_NAMES if k not in have]
     check('v2 topic grid: the other topics are listed under "Coming soon" (not tappable)', soon.split(' · ') == rest and not await page.query_selector('.soon [data-topic]'), soon)
     await shot_v2(page, '02-topic-grid-360x640.png')
@@ -1568,8 +1564,8 @@ async def levels_suite(browser, base, cards):
     await shot_v2(page, '04-medium-summary-360x640.png')
     await page.click('[data-act=another]')
     await page.wait_for_selector('[data-screen=topics]')
-    st = await page.get_attribute('[data-topic=numbers_prices] .stars', 'data-stars')
-    check('v2 topic grid: "Another topic" goes back to the grid, which shows the best stars (3) for the topic', st == '3', st)
+    st = await page.text_content('[data-topic=numbers_prices] .best-score')
+    check('v2 topic grid: "Another topic" goes back to the grid, which shows the best score for the topic', st == f'✓ {n}/{n}', st)
     # Hint caps a card at half: all right, one hint -> not 3 stars; best stays 3 (no "New best")
     await page.click('[data-topic=verbs_past]')
     await page.wait_for_selector('[data-screen=card][data-state=question]')
@@ -1606,9 +1602,7 @@ async def levels_suite(browser, base, cards):
     check('v2 stars rule: 1 = finished, 2 = 70%+, 3 = 90%+ without hints', stars_js == [3, 2, 1, 3, 2, 1], stars_js)
     await page.click('[data-act=done]')
     await page.wait_for_selector('[data-screen=home]')
-    tot = (await page.text_content('[data-testid=stars-total]')).strip()
-    med = (await page.text_content('[data-testid=challenge-medium] .star-n')).strip()
-    check('v2 home: stars earned = best per topic (3 + 2); Medium card shows ★ 5; Done returns straight Home', tot == '5' and med == '5', (tot, med))
+    await assert_no_home_stats(page)
     await ctx.close()
 
     # ---- 4. Hard missions: intro, player bar on every question, keypad, result + Why, transcript ----
@@ -1628,7 +1622,7 @@ async def levels_suite(browser, base, cards):
                   eyeTT: getComputedStyle(s.querySelector('.lv-tag')).textTransform, title: s.querySelector('.lv-title').textContent.trim(),
                   gridBack: !!s.querySelector('.back-link[data-act=home]'),
                   rows: [...s.querySelectorAll('[data-testid=mission-row]')].map(r => ({ id: r.dataset.mission, title: r.querySelector('.ch-title').textContent.trim(),
-                     sub: r.querySelector('[data-testid=mission-sub]').textContent.trim(), stars: r.querySelector('.stars') ? r.querySelector('.stars').dataset.stars : null,
+                     sub: r.querySelector('[data-testid=mission-sub]').textContent.trim(), stars: r.querySelector('.best-score').textContent,
                      chev: !!r.querySelector('.ch-chev svg'), bg: getComputedStyle(r).backgroundColor, radius: getComputedStyle(r).borderRadius, h: r.getBoundingClientRect().height })),
                   surface: getComputedStyle(document.documentElement).getPropertyValue('--surface').trim(),
                   docScroll: document.scrollingElement.scrollHeight - innerHeight }; })()""")
@@ -1636,10 +1630,10 @@ async def levels_suite(browser, base, cards):
                 if mm['media']['kind'] != 'audio': return 'Message'
                 d = audio_index['missions'][mm['id']]['duration']
                 return f'Audio · about {max(1, round(d / 60))} min'
-            want_rows = [(mm['id'], mm['title_en'], want_sub(mm), '0') for mm in missions]
+            want_rows = [(mm['id'], mm['title_en'], want_sub(mm), 'Not tried') for mm in missions]
             got_rows = [(r['id'], r['title'], r['sub'], r['stars']) for r in ml_['rows']]
             check('v2 missions list (Picasso): "Home" back link, HARD eyebrow, title "Real-life missions"; one surface row per mission with title_en, '
-                  '"Audio · about N min" (rounded from the clip) or "Message", best stars and a chevron',
+                  '"Audio · about N min" (rounded from the clip) or "Message", best score and a chevron',
                   ml_['back'] == 'Home' and ml_['gridBack'] and ml_['eyebrow'].lower() == 'hard' and ml_['eyeTT'] == 'uppercase' and ml_['title'] == 'Real-life missions'
                   and [(a, b, c.split(' · ')[:2] if c.startswith('Audio') else ['Message'], d) for a, b, c, d in got_rows] == [(a, b, c.split(' · '), d) for a, b, c, d in want_rows] and all(r['chev'] and r['bg'] not in ('rgba(0, 0, 0, 0)', 'transparent') and r['radius'] == '12px' for r in ml_['rows'])
                   and ml_['docScroll'] <= 1, {'got': got_rows, 'want': want_rows, 'hdr': (ml_['back'], ml_['eyebrow'], ml_['title'])})
@@ -1777,9 +1771,7 @@ async def levels_suite(browser, base, cards):
               [r.get('replays') for r in mrows] == [1, 0, 0, 0] and all(r.get('skipped') is False for r in mrows),
               [(r.get('replays'), r.get('skipped')) for r in mrows])
         await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
-        hs = (await page.text_content('[data-testid=challenge-hard] .star-n')).strip()
-        streak = (await page.text_content('[data-testid=streak]')).strip()
-        check('v2 home after a mission: Hard card shows its stars (★ 2); the mission counts for the streak (1)', hs == '2' and streak == '1', (hs, streak))
+        await assert_no_home_stats(page)
 
         # ---- clinic voicemail: two voices, label colour follows the voice ----
         mc = mby['m-voicemail-clinic-01']
@@ -1944,7 +1936,7 @@ PLAYBTN_JS = """() => { const b = document.querySelector('#app .card-zone [data-
   return { playing: !a.paused && !a.ended, rate: a.playbackRate, dur: a.duration, cls: b.className, pressed: b.getAttribute('aria-pressed'), label: b.getAttribute('aria-label'),
            stopIcon: vis(b.querySelector('.ic-stop')), playIcon: vis(b.querySelector('.ic-play')), cap: cap && cap.textContent,
            anim: [b, slow].map((e) => getComputedStyle(e).animationName), slowCls: slow.className }; }"""
-TILES_JS = """() => [...document.querySelectorAll('.topic-tile')].map((t) => { const r = t.getBoundingClientRect(), n = t.querySelector('.tname'), s = t.querySelector('.stars').getBoundingClientRect();
+TILES_JS = """() => [...document.querySelectorAll('.topic-tile')].map((t) => { const r = t.getBoundingClientRect(), n = t.querySelector('.tname'), s = t.querySelector('.best-score').getBoundingClientRect();
   const lines = Math.round(n.getBoundingClientRect().height / parseFloat(getComputedStyle(n).lineHeight));
   return { name: n.textContent, lines, h: r.height, gap: s.top - n.getBoundingClientRect().bottom, fromBottom: r.bottom - s.bottom, starsTop: s.top - r.top }; })"""
 FOCUS_JS = """() => { const e = document.activeElement, cs = getComputedStyle(e); return { act: e && e.dataset.act, fv: e.matches(':focus-visible'), outline: cs.outlineStyle, width: cs.outlineWidth, bg: cs.backgroundColor }; }"""
@@ -2061,12 +2053,12 @@ async def ux_replays_suite(browser, base, cards):
     two = [t for t in tiles if t['lines'] == 2]
     ok = (tiles and len({round(t['h'], 1) for t in tiles}) == 1 and len({round(t['starsTop'], 1) for t in tiles}) == 1 and len({round(t['fromBottom'], 1) for t in tiles}) == 1
           and all(t['gap'] >= 11.5 for t in tiles) and any(t['name'] in ('Directions & places', 'Future & conditional') for t in two))
-    check('[390x844] topic grid: two-line names ("Future & conditional") keep >= 12px above the stars; stars pinned to the bottom and lined up on every tile', ok, tiles)
+    check('[390x844] topic grid: two-line names ("Future & conditional") keep >= 12px above the scores; scores pinned to the bottom and lined up on every tile', ok, tiles)
     for (w, h) in ((360, 640), (320, 640)):
         await page.set_viewport_size({'width': w, 'height': h}); await page.wait_for_timeout(150)
         tl = await page.evaluate(TILES_JS)
         okw = tl and len({round(t['h'], 1) for t in tl}) == 1 and len({round(t['starsTop'], 1) for t in tl}) == 1 and all(t['gap'] >= 11.5 for t in tl) and any(t['lines'] == 2 for t in tl)
-        check(f'[{w}x{h}] topic grid: stars 12px+ below one- and two-line names, bottom-aligned, equal tile heights (grow if needed)', okw, tl)
+        check(f'[{w}x{h}] topic grid: scores 12px+ below one- and two-line names, bottom-aligned, equal tile heights (grow if needed)', okw, tl)
     await page.set_viewport_size({'width': 390, 'height': 844})
     await page.click('[data-act=home]'); await page.wait_for_selector('[data-screen=home]')
 
@@ -2278,21 +2270,14 @@ async def drill_read_suite(browser, base, cards):
         # ---- 2b. home: Verb drill row under the Medium and Hard cards ----
         ctx, page = await new_page(browser, errors, viewport={'width': 390, 'height': 844}, endpoint=(fake := FakeEndpoint('ok')))
         await home_fresh(page, dbase)
-        g = await page.evaluate("""() => { const r = (s) => { const e = document.querySelector(s); if (!e) return null; const b = e.getBoundingClientRect(); return {top: b.top, bottom: b.bottom, h: b.height, left: b.left, right: b.right}; };
-            const d = document.querySelector('[data-testid=drill-row]');
-            return { med: r('[data-testid=challenge-medium]'), hard: r('[data-testid=challenge-hard]'), drill: r('[data-testid=drill-row]'), start: r('[data-act=start]'), meta: r('.meta-line'),
-                     text: d && [d.querySelector('.ch-title').textContent, d.querySelector('.caption').textContent].join(' | '), chev: !!(d && d.querySelector('.ch-chev svg')), bg: d && getComputedStyle(d).backgroundColor, radius: d && getComputedStyle(d).borderRadius,
-                     docScroll: document.scrollingElement.scrollHeight - innerHeight }; }""")
         n20 = min(20, len(drill))
-        check(f'[390x844] home: slim "Verb drill" row right under the Hard card ("{n20} quick questions · no audio", chevron, surface card), above the EASY line and Quick session, no scrolling',
-              g['drill'] and g['hard']['bottom'] <= g['drill']['top'] <= g['hard']['bottom'] + 8.5 and g['drill']['h'] < g['hard']['h'] and g['drill']['bottom'] <= g['meta']['top']
-              and g['text'] == f'Verb drill | {n20} quick questions · no audio' and g['chev'] and g['radius'] == '12px' and g['docScroll'] <= 1, g)
+        await assert_home_challenges(page, '[390x844]', require_drill=True)
+        check('Verb drill retains its session description', await page.text_content('[data-testid=drill-row] .caption') == f'{n20} quick questions · no audio')
         await page.wait_for_timeout(300)
         await dr_shot(page, '01-home-verb-drill.png')
         for (w_, h_) in ((360, 640), (375, 667), (360, 720)):
             await page.set_viewport_size({'width': w_, 'height': h_}); await page.wait_for_timeout(150)
-            gs = await page.evaluate("() => { const s = document.querySelector('[data-act=start]').getBoundingClientRect(), d = document.querySelector('[data-testid=drill-row]').getBoundingClientRect(); return { docScroll: document.scrollingElement.scrollHeight - innerHeight, start: s.bottom, drill: d.bottom, vh: innerHeight }; }")
-            check(f'[{w_}x{h_}] home with Verb drill still fits (no scrolling, Quick session pinned)', gs['docScroll'] <= 1 and gs['start'] <= h_ - 15.5 and gs['drill'] < gs['start'], gs)
+            await assert_home_challenges(page, f'[{w_}x{h_}]', require_drill=True)
         await page.set_viewport_size({'width': 390, 'height': 844})
 
         # ---- 2c. a drill session ----
@@ -2393,8 +2378,7 @@ async def drill_read_suite(browser, base, cards):
         again = await page.evaluate("({ count: document.querySelector('#app .count').textContent, level: window.__oye.session.level })")
         check(f'drill end screen: "Another {n20}" starts a new drill', again == {'count': f'1 / {n20}', 'level': 'drill'}, again)
         await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
-        tot = (await page.text_content('[data-testid=stars-total]')).strip()
-        check('drill: no stars (home total unchanged at 0)', tot == '0', tot)
+        await assert_no_home_stats(page)
         # every drill card: sentence max 3 lines (title style), options short enough for the 2 x 2 grid; the explanation
         # should be max 2 lines (Picasso) - cards over that are listed as a content NOTE, and the longest one must still fit.
         fit = await page.evaluate("""(cards) => { const box = document.createElement('div'); box.className = 'card-inner'; box.style.cssText = 'position:absolute;left:0;top:0;visibility:hidden';
@@ -2476,7 +2460,7 @@ async def drill_read_suite(browser, base, cards):
     await page.click('[data-act=hard]'); await page.wait_for_selector('[data-screen=missions]')
     ml = await page.evaluate("""() => [...document.querySelectorAll('[data-testid=mission-row]')].map((row) => {
         const r = (e) => { const b = e.getBoundingClientRect(); return { top: b.top, bottom: b.bottom, left: b.left, right: b.right, w: b.width, h: b.height }; };
-        const link = row.querySelector('[data-testid=read-link]'), st = row.querySelector('.stars'), text = row.querySelector('.ch-text');
+        const link = row.querySelector('[data-testid=read-link]'), st = row.querySelector('.best-score'), text = row.querySelector('.ch-text');
         if (!link) return { id: row.dataset.mission, link: false };
         const cs = getComputedStyle(link), lr = r(link), sr = r(st), rr = r(row), tr = r(text);
         const label = document.createRange(); label.selectNodeContents(link); const lb = label.getBoundingClientRect();
@@ -2488,17 +2472,17 @@ async def drill_read_suite(browser, base, cards):
     ok_links = (not fin['m-voicemail-clinic-01']['link'] and all(fin[i]['link'] and fin[i]['text'] == 'Read' and fin[i]['color'] == 'rgb(110, 139, 255)' and fin[i]['font'] == ['13px', '500']
                 and fin[i]['hit'][0] >= 44 and fin[i]['hit'][1] >= 44 and fin[i]['inRow'] and fin[i]['sameLine'] and fin[i]['rightAligned'] and fin[i]['oppositeStars'] and fin[i]['topAtCenter']
                 for i in ('m-metro-01', 'm-landlord-whatsapp-01')))
-    check('missions list: finished missions show "Read" on the bottom line, right-aligned opposite the stars, accent blue capMed (13/500), 44x44+ tap area inside the card; unfinished: none', ok_links, ml)
+    check('missions list: finished missions show "Read" on the bottom line, right-aligned opposite the score, accent blue capMed (13/500), 44x44+ tap area inside the card; unfinished: none', ok_links, ml)
     await dr_shot(page, '04-missions-list-read.png')
     # tapping the card anywhere else still opens the mission
     tbox = await (await page.query_selector('[data-mission=m-metro-01] .ch-title')).bounding_box()
     await page.mouse.click(tbox['x'] + 20, tbox['y'] + tbox['height'] / 2)
     await page.wait_for_selector('[data-screen=mission-intro][data-mission=m-metro-01]')
     await page.go_back(); await page.wait_for_selector('[data-screen=missions]')
-    box = await (await page.query_selector('[data-mission=m-metro-01] .stars')).bounding_box()
+    box = await (await page.query_selector('[data-mission=m-metro-01] .best-score')).bounding_box()
     await page.mouse.click(box['x'] + 4, box['y'] + 4)
     await page.wait_for_selector('[data-screen=mission-intro][data-mission=m-metro-01]')
-    check('missions list: a tap on the title or the stars (anywhere but Read) still opens the mission', True)
+    check('missions list: a tap on the title or the score (anywhere but Read) still opens the mission', True)
     await page.go_back(); await page.wait_for_selector('[data-screen=missions]')
     queue0 = await page.evaluate("localStorage.getItem('oye.resultsQueue.v1') || '[]'")
     stars0 = await page.evaluate("localStorage.getItem('oye.stars.v1')")
@@ -2599,6 +2583,58 @@ async def drill_read_suite(browser, base, cards):
     await ctx.close()
 
 
+async def assert_home_challenges(page, tag, require_drill=False):
+    g = await page.evaluate("""() => {
+        const rows = [...document.querySelectorAll('.challenges .challenge')];
+        const rect = e => { const r = e.getBoundingClientRect(), c = getComputedStyle(e); return {
+            top: r.top, bottom: r.bottom, width: r.width, height: r.height,
+            bg: c.backgroundColor, radius: c.borderRadius, padding: c.paddingTop,
+            position: c.position, title: e.querySelector('.ch-title').textContent }; };
+        const batch = document.querySelector('.batch-line').getBoundingClientRect();
+        const head = document.querySelector('.challenges-head').getBoundingClientRect();
+        return {rows: rows.map(rect), batch: batch.bottom, head: head.top,
+            subtitle: rows[0].querySelector('.caption').textContent,
+            label: rows[0].querySelector('.ch-tag').textContent.toUpperCase(),
+            oldDock: !!document.querySelector('.home .action, .home .meta-line'),
+            starts: document.querySelectorAll('.home [data-act=start]').length,
+            scroll: document.scrollingElement.scrollHeight - innerHeight, height: innerHeight};
+    }""")
+    rows = g['rows']
+    expected = ['Quick session', 'Topic challenge', 'Real-life mission']
+    if require_drill or await page.locator('[data-testid=drill-row]').count(): expected.append('Verb drill')
+    check(f'{tag} home: equal cards in Easy, Medium, Hard, Verb drill order; free bottom, no pinned button',
+          [r['title'] for r in rows] == expected and g['label'] == 'EASY'
+          and g['subtitle'] == '10 cards · about 3 min' and not g['oldDock'] and g['starts'] == 1
+          and g['scroll'] <= 1 and 0 <= g['head'] - g['batch'] <= 24
+          and rows[-1]['bottom'] < g['height'] - 32
+          and all(abs(r['height'] - rows[0]['height']) <= 1 and r['width'] == rows[0]['width']
+                  and r['bg'] == rows[0]['bg'] and r['radius'] == rows[0]['radius']
+                  and r['padding'] == rows[0]['padding'] and r['position'] not in ['fixed', 'absolute'] for r in rows)
+          and all(7.5 <= b['top'] - a['bottom'] <= 8.5 for a, b in zip(rows, rows[1:])), g)
+
+
+async def assert_no_home_stats(page):
+    text = (await page.text_content('[data-screen=home]')).lower()
+    check('home: no streak, Prices by ear, or star totals',
+          not any(x in text for x in ('streak', 'prices by ear', 'stars', '★'))
+          and await page.locator('.home .stats, .home .trend, .home .star-n').count() == 0)
+    check('home: latest batch under Oye', await page.locator('.home-header .batch-line').count() == 1
+          and 'New batch' in await page.text_content('.batch-line'))
+
+
+async def assert_mission_nav(page, typed=False):
+    g = await page.evaluate("""() => {
+      const r = s => {const b = document.querySelector(s).getBoundingClientRect(); return {top:b.top,bottom:b.bottom,height:b.height};};
+      return {back:r('[data-act=question-back]'), next:r('[data-act=check]'), box:document.querySelector('.typed') ? r('.typed') : null};
+    }""")
+    a, b = g['back'], g['next']
+    check(f'Hard question 2+: {"typed" if typed else "pick"} Back/Next aligned and 56px tall',
+          abs(a['top']-b['top']) <= 1 and abs(a['bottom']-b['bottom']) <= 1
+          and abs(a['height']-56) <= 1 and abs(b['height']-56) <= 1, g)
+    if typed:
+        check('Hard typed: 12px gap below answer box', abs(a['top']-g['box']['bottom']-12) <= 1, g)
+
+
 async def hard_folders_suite(browser, base):
     errors = []
     ctx, page = await new_page(browser, errors, viewport={'width': 390, 'height': 844})
@@ -2615,12 +2651,32 @@ async def hard_folders_suite(browser, base):
       const extra = structuredClone(ms[0]); extra.id = 'm-travel-old'; extra.title_en = 'Earlier metro mission'; extra.added = '2026-08-01'; ms.push(extra);
       localStorage.setItem('oye.stars.v1', JSON.stringify({topics: {}, missions: {'m-metro-01': 2, 'm-travel-old': 1, 'm-landlord-whatsapp-01': 1}}));
     }""")
+    scores = await page.evaluate("""async () => {
+      const L = await import('./js/levels.js'), before = localStorage.getItem('oye.stars.v1');
+      L.record('medium', 'test-topic', 2, {right:8,n:10});
+      L.record('medium', 'test-topic', 1, {right:2,n:10});
+      L.record('hard', 'm-metro-01', 2, {right:3,n:4});
+      L.record('hard', 'm-metro-01', 1, {right:0,n:4});
+      L.record('hard', 'm-festival-cdmx-01', 1, {right:0,n:5});
+      const saved = L.load();
+      return {topic:saved.scores.medium['test-topic'], mission:saved.scores.hard['m-metro-01'],
+        legacy:saved.missions['m-travel-old'], zero:saved.scores.hard['m-festival-cdmx-01']};
+    }""")
+    check('best scores: lower attempts never replace best; zero correct is played; legacy progress retained',
+          scores == {'topic': {'right':8,'n':10}, 'mission':{'right':3,'n':4}, 'legacy':1, 'zero':{'right':0,'n':5}}, scores)
     await page.click('[data-act=hard]')
+    labels = await page.locator('[data-testid=new-missions] .best-score').all_text_contents()
+    check('New mission rows: zero score and Not tried', labels == ['✓ 0/5', 'Not tried'], labels)
+    colors = await page.evaluate("""() => ({check:getComputedStyle(document.querySelector('.score-check')).color,
+      score:getComputedStyle(document.querySelector('.best-score')).color,
+      untried:getComputedStyle(document.querySelector('.untried')).color})""")
+    check('best score: green check, g600 score and g400 Not tried',
+          colors == {'check':'rgb(76, 195, 138)', 'score':'rgb(155, 155, 163)', 'untried':'rgb(107, 107, 115)'}, colors)
     fresh = await page.locator('[data-testid=new-missions] [data-mission]').evaluate_all('(rs) => rs.map(r => r.dataset.mission)')
     check('Hard hub: fake today splits day 0 and 13 into New newest first; day 14 and older go to folders', fresh == ['m-festival-cdmx-01', 'm-cafe-whatsapp-01'], fresh)
     folders = await page.locator('[data-folder]').all_text_contents()
-    check('Hard hub: folder names sorted, empty folders hidden, counts and earned/max stars correct',
-          [' '.join(x.split()) for x in folders] == ['Fitness & health1 mission★ 0 / 3', 'Home & errands1 mission★ 1 / 3', 'Travel2 missions★ 3 / 6'], folders)
+    check('Hard hub: folder names sorted, empty folders hidden, completion counts correct',
+          [' '.join(x.split()) for x in folders] == ['Fitness & health1 mission · not tried', 'Home & errands1 mission · done', 'Travel2 missions · done'], folders)
     shots = '/workspace/hard-folders-shots'
     os.makedirs(shots, exist_ok=True)
     await page.screenshot(path=os.path.join(shots, 'hub.png'))
@@ -2629,6 +2685,7 @@ async def hard_folders_suite(browser, base):
           await page.locator('[data-screen=mission-folder]').count() == 1
           and await page.locator('[data-testid=mission-row]').evaluate_all('(rs) => rs.map(r => r.dataset.mission)') == ['m-metro-01', 'm-travel-old']
           and await page.locator('[data-testid=read-link]').count() == 2)
+    check('folder mission rows: exact best score and legacy completion', await page.locator('.mission-row .best-score').all_text_contents() == ['✓ 3/4', '✓ Done'])
     await page.screenshot(path=os.path.join(shots, 'folder.png'))
     await page.click('[data-mission=m-metro-01] [data-act=read]')
     await page.click('[data-act=read-back]')
@@ -2640,6 +2697,7 @@ async def hard_folders_suite(browser, base):
     await page.click('[data-folder=travel]'); await page.click('[data-mission=m-metro-01] [data-act=open-mission]'); await page.click('[data-act=begin]')
     check('Hard q1: Back hidden, Next disabled until answered', await page.locator('[data-act=question-back]').count() == 0 and await page.is_disabled('[data-act=check]') and await page.text_content('[data-act=check]') == 'Next')
     await page.click('[data-opt="0"]'); await page.click('[data-act=check]')
+    await assert_mission_nav(page)
     check('Hard q2: Back visible with 100x56 size', await page.locator('[data-act=question-back]').evaluate('(b) => b.offsetWidth === 100 && b.offsetHeight === 56'))
     await page.click('[data-opt="1"]')
     await page.screenshot(path=os.path.join(shots, 'question-back.png'))
@@ -2648,6 +2706,7 @@ async def hard_folders_suite(browser, base):
     await page.click('[data-opt="1"]'); await page.click('[data-act=check]')
     check('Hard Back: unfinished next-question choice also preserved', await page.get_attribute('[data-opt="1"]', 'aria-checked') == 'true')
     await page.click('[data-opt="0"]'); await page.click('[data-act=check]')
+    await assert_mission_nav(page, typed=True)
     await page.keyboard.type('5:00'); await page.click('[data-act=check]')
     check('Hard last question: See results', await page.text_content('[data-act=check]') == 'See results')
     await page.click('[data-act=question-back]')

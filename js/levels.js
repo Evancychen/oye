@@ -58,12 +58,20 @@ function save(s) {
 }
 
 /** Save a finished session's stars. Medium/Hard keep the best per topic/mission; Easy adds up. */
-export function record(level, key, stars) {
+export function record(level, key, stars, score = null) {
   const s = load();
   let prev = 0;
   if (level === 'medium') { prev = s.topics[key] || 0; s.topics[key] = Math.max(prev, stars); }
   else if (level === 'hard') { prev = s.missions[key] || 0; s.missions[key] = Math.max(prev, stars); }
   else s.easy += stars;
+  // Add exact scores without changing legacy star values or their consumers.
+  if (score && ['medium', 'hard'].includes(level)) {
+    s.scores ||= {}; s.scores[level] ||= {};
+    const old = s.scores[level][key];
+    if (!old || score.right / score.n > old.right / old.n) {
+      s.scores[level][key] = { right: score.right, n: score.n };
+    }
+  }
   s.log.push({ at: new Date().toISOString(), level, key: key || null, stars });
   save(s);
   return { prev, best: Math.max(prev, stars), newBest: level !== 'easy' && stars > prev };
