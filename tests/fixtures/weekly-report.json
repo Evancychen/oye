@@ -1,0 +1,198 @@
+{
+  "id": "r-2026-10-05",
+  "week_start": "2026-09-28",
+  "week_end": "2026-10-04",
+  "added": "2026-10-05",
+  "totals": {
+    "done": 120,
+    "correct": 104,
+    "wrong": 16
+  },
+  "summary_en": "You practised steadily. Focus on commands and prices.",
+  "focus_next_week": [
+    {
+      "title_en": "Usted commands",
+      "detail_en": "Practise abra, ponga and salga."
+    },
+    {
+      "title_en": "Prices",
+      "detail_en": "Listen for the final number."
+    }
+  ],
+  "by_challenge": [
+    {
+      "challenge": "easy",
+      "label": "Easy",
+      "done": 30,
+      "correct": 27,
+      "wrong": 3
+    },
+    {
+      "challenge": "medium",
+      "label": "Medium",
+      "done": 40,
+      "correct": 33,
+      "wrong": 7,
+      "topics": [
+        {
+          "topic": "numbers_prices",
+          "label": "Numbers and prices",
+          "done": 20,
+          "correct": 18,
+          "wrong": 2
+        }
+      ]
+    },
+    {
+      "challenge": "hard",
+      "label": "Hard",
+      "done": 10,
+      "correct": 8,
+      "wrong": 2
+    },
+    {
+      "challenge": "drill",
+      "label": "Verb drill",
+      "done": 40,
+      "correct": 36,
+      "wrong": 4
+    }
+  ],
+  "mistakes": [
+    {
+      "card_id": "c-9201",
+      "challenge": "drill",
+      "prompt_en": "abrir, usted, command",
+      "question": "1. ___ la puerta, por favor.",
+      "your_answer": "abre",
+      "right_answer": "abra",
+      "note_en": "Usted commands end in -a."
+    },
+    {
+      "card_id": "c-9202",
+      "challenge": "drill",
+      "prompt_en": "abrir, usted, command",
+      "question": "2. ___ la puerta, por favor.",
+      "your_answer": "abre",
+      "right_answer": "abra",
+      "note_en": ""
+    },
+    {
+      "card_id": "c-9203",
+      "challenge": "drill",
+      "prompt_en": "abrir, usted, command",
+      "question": "3. ___ la puerta, por favor.",
+      "your_answer": "abre",
+      "right_answer": "abra",
+      "note_en": "Usted commands end in -a."
+    },
+    {
+      "card_id": "c-9204",
+      "challenge": "drill",
+      "prompt_en": "abrir, usted, command",
+      "question": "4. ___ la puerta, por favor.",
+      "your_answer": "abre",
+      "right_answer": "abra",
+      "note_en": ""
+    },
+    {
+      "card_id": "c-9205",
+      "challenge": "drill",
+      "prompt_en": "abrir, usted, command",
+      "question": "5. ___ la puerta, por favor.",
+      "your_answer": "abre",
+      "right_answer": "abra",
+      "note_en": "Usted commands end in -a."
+    },
+    {
+      "card_id": "c-9206",
+      "challenge": "drill",
+      "prompt_en": "abrir, usted, command",
+      "question": "6. ___ la puerta, por favor.",
+      "your_answer": "abre",
+      "right_answer": "abra",
+      "note_en": ""
+    },
+    {
+      "card_id": "c-9207",
+      "challenge": "drill",
+      "prompt_en": "abrir, usted, command",
+      "question": "7. ___ la puerta, por favor.",
+      "your_answer": "abre",
+      "right_answer": "abra",
+      "note_en": "Usted commands end in -a."
+    },
+    {
+      "card_id": "c-9208",
+      "challenge": "drill",
+      "prompt_en": "abrir, usted, command",
+      "question": "8. ___ la puerta, por favor.",
+      "your_answer": "abre",
+      "right_answer": "abra",
+      "note_en": ""
+    },
+    {
+      "card_id": "c-9209",
+      "challenge": "drill",
+      "prompt_en": "abrir, usted, command",
+      "question": "9. ___ la puerta, por favor.",
+      "your_answer": "abre",
+      "right_answer": "abra",
+      "note_en": "Usted commands end in -a."
+    },
+    {
+      "card_id": "c-9210",
+      "challenge": "drill",
+      "prompt_en": "abrir, usted, command",
+      "question": "10. ___ la puerta, por favor.",
+      "your_answer": "abre",
+      "right_answer": "abra",
+      "note_en": ""
+    },
+    {
+      "card_id": "c-9211",
+      "challenge": "drill",
+      "prompt_en": "abrir, usted, command",
+      "question": "11. ___ la puerta, por favor.",
+      "your_answer": "abre",
+      "right_answer": "abra",
+      "note_en": "Usted commands end in -a."
+    },
+    {
+      "card_id": "c-9212",
+      "challenge": "drill",
+      "prompt_en": "abrir, usted, command",
+      "question": "12. ___ la puerta, por favor.",
+      "your_answer": "abre",
+      "right_answer": "abra",
+      "note_en": ""
+    },
+    {
+      "card_id": "c-9213",
+      "challenge": "drill",
+      "prompt_en": "abrir, usted, command",
+      "question": "13. ___ la puerta, por favor.",
+      "your_answer": "abre",
+      "right_answer": "abra",
+      "note_en": "Usted commands end in -a."
+    },
+    {
+      "card_id": "c-9214",
+      "challenge": "drill",
+      "prompt_en": "abrir, usted, command",
+      "question": "14. ___ la puerta, por favor.",
+      "your_answer": "abre",
+      "right_answer": "abra",
+      "note_en": ""
+    },
+    {
+      "card_id": "c-9215",
+      "challenge": "drill",
+      "prompt_en": "abrir, usted, command",
+      "question": "15. ___ la puerta, por favor.",
+      "your_answer": "abre",
+      "right_answer": "abra",
+      "note_en": "Usted commands end in -a."
+    }
+  ]
+}

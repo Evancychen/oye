@@ -5,7 +5,8 @@
 2. Compares the new cards.json with the app's current app/content/cards.json to find
    new card ids.
 3. Copies content/*.json (cards, scenes, vocab, and missions.json for the Hard level
-   since v2; missions.json is optional) into app/content/.
+   since v2; missions.json is optional) into app/content/. Also copies reports/*.json
+   when present, including reports/index.json.
 4. Bumps app/content/version.json (version + 1, published date, new_cards, new_card_ids).
 5. Runs tools/build_audio.py --prune (only missing audio is generated; files no card,
    dialogue line or mission uses any more are deleted).
@@ -17,6 +18,7 @@ bumped (use --force to bump anyway); audio and sw.js are still refreshed.
 Usage:  python3 tools/publish_content.py [--force] [--source DIR] [--validator PATH]
 """
 import argparse, datetime, glob, hashlib, json, os, re, shutil, subprocess, sys
+from pathlib import Path
 
 APP = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT = os.path.dirname(APP)
@@ -53,11 +55,35 @@ def validate(validator):
 def update_sw(content_version):
     sw = os.path.join(APP, 'sw.js')
     h = hashlib.sha256()
+    h.update(Path(__file__).read_bytes())  # worker-generation changes also invalidate the shell
     for pat in SHELL_FILES:
         for p in sorted(glob.glob(os.path.join(APP, pat))):
             h.update(p.encode()); h.update(open(p, 'rb').read())
     tag = f'oye-v{content_version}-{h.hexdigest()[:8]}'
     src = open(sw, encoding='utf-8').read()
+    if "  'js/reports.js'," not in src:
+        src = src.replace("  'js/content.js',", "  'js/content.js',\n  'js/reports.js',")
+    # Reports refresh online and fall back to the shared content cache offline.
+    marker = '  // Always ask the network for the version file;'
+    report_handler = """  if (rel.startsWith('content/reports/')) {
+    event.respondWith((async () => {
+      const cache = await caches.open(CONTENT_CACHE);
+      try {
+        const res = await fetch(req, { cache: 'no-store' });
+        if (res.ok) await cache.put(req, res.clone());
+        else if (res.status === 404) await cache.delete(req);
+        else throw new Error('Report unavailable');
+        return res;
+      } catch {
+        const isIndex = rel === 'content/reports/index.json';
+        return (await cache.match(req)) || new Response(isIndex ? '[]' : 'null', { status: isIndex ? 200 : 503, headers: { 'Content-Type': 'application/json' } });
+      }
+    })());
+    return;
+  }
+"""
+    src = re.sub(r"  if \(rel\.startsWith\('content/reports/'\)\) \{.*?(?=  // Always ask the network for the version file;)", '', src, flags=re.S)
+    src = src.replace(marker, report_handler + '\n' + marker)
     new = re.sub(r"const CACHE_VERSION = '[^']*';", f"const CACHE_VERSION = '{tag}';", src, count=1)
     if new == src and tag not in src:
         sys.exit('ABORT: could not find CACHE_VERSION in sw.js')
@@ -77,6 +103,7 @@ def main():
 
     os.makedirs(APP_CONTENT, exist_ok=True)
     files = FILES + [f for f in OPTIONAL_FILES if os.path.exists(os.path.join(args.source, f))]
+    files += [os.path.relpath(p, args.source) for p in sorted(glob.glob(os.path.join(args.source, 'reports', '*.json')))]
     changed = [f for f in files
                if not os.path.exists(os.path.join(APP_CONTENT, f))
                or sha(os.path.join(APP_CONTENT, f)) != sha(os.path.join(args.source, f))]
@@ -101,6 +128,7 @@ def main():
             carried = [i for i in (old_version or {}).get('new_card_ids', []) if i in current and i not in new_ids]
             new_ids = carried + new_ids
         for f in files:
+            os.makedirs(os.path.dirname(os.path.join(APP_CONTENT, f)), exist_ok=True)
             shutil.copyfile(os.path.join(args.source, f), os.path.join(APP_CONTENT, f))
             print(f'copied {f}')
         version = {

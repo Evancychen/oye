@@ -1,0 +1,155 @@
+[
+  {
+    "id": "c-9101",
+    "type": "scene_question",
+    "scene_id": "s-cafe-01",
+    "lesson_tags": [
+      "A1-L22"
+    ],
+    "grammar_tags": [
+      "listening"
+    ],
+    "vocab_ids": [
+      "v-para-llevar"
+    ],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "¿Para aquí o para llevar? Para llevar.",
+    "prompt_en": "Is the coffee for here or to go?",
+    "sentence": null,
+    "options": [
+      "For here",
+      "To go",
+      "The customer doesn't say"
+    ],
+    "answer": "To go",
+    "accepted_answers": [],
+    "explanation_en": "'Para llevar' = to go. 'Para aquí' = for here.",
+    "transcript": "Barista: ¿Para aquí o para llevar? / Cliente: Para llevar.",
+    "region_note": null,
+    "hint_en": null,
+    "audio_lines": [
+      {
+        "speaker": "Barista",
+        "voice": "female",
+        "es": "¿Para aquí o para llevar?"
+      },
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "Para llevar."
+      }
+    ]
+  },
+  {
+    "id": "c-9102",
+    "type": "scene_question",
+    "scene_id": "s-taqueria-01",
+    "lesson_tags": [],
+    "grammar_tags": [
+      "listening"
+    ],
+    "vocab_ids": [
+      "v-nomas-efectivo"
+    ],
+    "source": "scene",
+    "difficulty": 1,
+    "audio_text": "¿Aceptan tarjeta? No, joven, nomás efectivo.",
+    "prompt_en": "Why can't the customer pay by card?",
+    "sentence": null,
+    "options": [
+      "They only take cash",
+      "The card machine is broken",
+      "The card was declined"
+    ],
+    "answer": "They only take cash",
+    "accepted_answers": [],
+    "explanation_en": "'Nomás efectivo' = cash only. 'Nomás' is Mexican for 'solo'.",
+    "transcript": "Cliente: ¿Aceptan tarjeta? / Taquera: No, joven, nomás efectivo.",
+    "region_note": null,
+    "hint_en": null,
+    "audio_lines": [
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "¿Aceptan tarjeta?"
+      },
+      {
+        "speaker": "Taquera",
+        "voice": "female",
+        "es": "No, joven, nomás efectivo."
+      }
+    ]
+  },
+  {
+    "id": "c-9103",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L08",
+      "A1-L09"
+    ],
+    "grammar_tags": [
+      "location",
+      "prepositions"
+    ],
+    "vocab_ids": [
+      "v-encima-de",
+      "v-junto-a"
+    ],
+    "source": "class_quizlet",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Your keys are ON the table. Fill in the location (two words).",
+    "sentence": "Tus llaves están ___ la mesa, junto a la lámpara.",
+    "options": [],
+    "answer": "encima de",
+    "accepted_answers": [
+      "encima de",
+      "arriba de",
+      "sobre"
+    ],
+    "explanation_en": "'Encima de' = on top of. Mexicans very often say 'arriba de la mesa'; 'sobre la mesa' works too. 'Junto a' means next to.",
+    "transcript": null,
+    "region_note": "Mexico often says 'arriba de' / 'abajo de' where textbooks say 'encima de' / 'debajo de'.",
+    "hint_en": "A two-word location phrase meaning 'on top of'.",
+    "level": "medium",
+    "topic": "directions"
+  },
+  {
+    "id": "c-9104",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L19",
+      "A1-L23"
+    ],
+    "grammar_tags": [
+      "directions",
+      "imperative"
+    ],
+    "vocab_ids": [
+      "v-doblar",
+      "v-esquina"
+    ],
+    "source": "scene",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Tell a friend (tú) to turn left at the corner.",
+    "sentence": "Sal del metro y en la esquina ___ a la izquierda.",
+    "options": [],
+    "answer": "dobla",
+    "accepted_answers": [
+      "dobla",
+      "voltea",
+      "gira",
+      "da vuelta"
+    ],
+    "explanation_en": "'Dobla a la izquierda' = turn left. Regular tú commands look like the él form: doblar → dobla. You'll also hear 'da vuelta' and 'voltea'.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "A verb meaning 'to turn' at a corner, tú command.",
+    "level": "medium",
+    "topic": "directions"
+  }
+]

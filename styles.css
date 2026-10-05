@@ -102,7 +102,7 @@ hr, .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
    Three zones: header 48 / middle (the only part that may scroll) / dock pinned to the bottom.
    Everything in the middle and the dock is flex: none, so nothing gets squashed; free space
    just disappears first, then the middle scrolls and shows the "More below" pill. */
-.screen.card-screen { padding: var(--safe-top) var(--space-3) 0; }
+.screen.card-screen { min-height: 0; overflow: hidden; padding: var(--safe-top) var(--space-3) 0; }
 .topbar { flex: none; height: 48px; display: flex; align-items: center; }
 .close { width: 48px; height: 48px; margin-left: -12px; display: grid; place-items: center; }
 .progress { flex: 1; height: 4px; border-radius: var(--radius-s); background: var(--gray-200); margin: 0 18px 0 12px; overflow: hidden; }
@@ -187,6 +187,9 @@ hr, .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
 .opts-dock { padding-top: 0; }
 .opts-dock .btn-primary { margin-top: 24px; }
 .opts-dock .options:not(.grid) + .btn-primary { margin-top: 16px; }
+/* Answer feedback yields space to the pinned options and navigation. */
+.card-screen:not([data-state="question"]) .opts-dock .options.grid .opt { height: 56px; min-height: 56px; }
+.card-screen:not([data-state="question"]) .opts-dock .btn-primary { margin-top: 16px; }
 .opts-dock .dontknow { height: 48px; margin-top: 8px; }
 
 /* feedback */
@@ -369,14 +372,12 @@ hr, .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
 .lv-cap { flex: none; margin-top: 4px; }
 .topics-zone { margin-top: 16px; }
 .topic-grid { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 8px; }
-/* Name at the top, scores pinned to the bottom (at y 64 in an 84px tile) with at least 12px above them;
-   a tile grows if it needs more room and every row stretches to its tallest tile, so the scores line up. */
-.topic-tile { display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 12px; min-height: 84px;
-  border-radius: var(--radius-l); background: var(--surface); text-align: left; padding: 12px 12px 8px; color: var(--ink); }
+/* Name-only tiles retain equal 72px minimum tap targets. */
+.topic-tile { display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; min-height: 72px;
+  border-radius: var(--radius-l); background: var(--surface); text-align: left; padding: 12px; color: var(--ink); }
 .topic-tile .tname { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font: 500 15px/20px var(--font); flex: none; }
-.topic-tile .best-score { margin-top: auto; flex: none; }
 .soon-head { margin-top: 24px; }
-.soon { margin-top: 8px; line-height: 16px; color: var(--gray-400); }
+.soon { margin-top: 6px; line-height: 16px; color: var(--gray-400); }
 .mission-list { display: grid; gap: 8px; }
 .mission-row .best-score { margin-top: 6px; }
 /* v2.2: the row is a container; a full-size button underneath opens the mission, and "Read" (finished missions)
@@ -577,3 +578,52 @@ hr, .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
 .mission-nav .btn-primary { margin-top: 0; }
 .type-dock .mission-nav { margin-top: 12px; }
 .opts-dock .mission-nav { margin-top: 24px; }
+
+/* Topic names + weekly reports (v2.4). */
+.your-week { flex: none; margin-top: 24px; }
+.your-week > .eyebrow { margin-bottom: 8px; }
+.home .weekly-row { width: 100%; min-height: 64px; padding: 12px 12px 12px 16px; }
+.report-new { color: var(--accent); font: 500 13px/16px var(--font); }
+.screen.report-page { display: block; overflow-y: auto; padding: var(--safe-top) 24px calc(40px + var(--safe-bottom)); }
+.report-header { height: 52px; position: sticky; top: 0; z-index: 2; background: var(--bg); display: flex; align-items: center; justify-content: space-between; margin: 0 -24px 8px; padding: 0 24px; }
+.report-header.scrolled { box-shadow: 0 1px var(--hairline); }
+.report-header .back-link { height: 52px; font: 500 17px/24px var(--font); color: var(--ink); }
+.report-sticky-range { visibility: hidden; font-weight: 500; }
+.past-title .report-sticky-range { visibility: visible; }
+.report-page h1 { margin-top: 4px; }
+.report-byline { margin-top: 4px; }
+.report-list { margin-top: 20px; border-top: 1px solid var(--hairline); }
+.report-list-row { display: flex; gap: 8px; align-items: center; width: 100%; min-height: 68px; border-bottom: 1px solid var(--hairline); text-align: left; }
+.report-list-row > span:first-child { flex: 1; }
+.report-row-title { display: block; font: 500 17px/24px var(--font); }
+.report-row-total { display: block; margin-top: 4px; }
+.report-footnote { margin-top: 24px; color: var(--gray-400); }
+.report-empty { margin-top: 24px; border-top: 1px solid var(--hairline); padding-top: 24px; }
+.report-empty .caption { margin-top: 12px; }
+.report-summary { margin: 32px 0 24px; }
+.report-page section { margin-bottom: 32px; }
+.report-page section:last-child { margin-bottom: 0; }
+.report-page h2 { margin: 0 0 8px; }
+.report-numbers { display: grid; grid-template-columns: repeat(3, 1fr); }
+.report-numbers .caption { margin-top: 4px; }
+.report-correct { color: var(--correct); }
+.report-wrong { color: var(--wrong); }
+.report-bar { height: 4px; border-radius: 2px; background: var(--gray-200); overflow: hidden; margin: 16px 0 8px; }
+.report-bar i { display: block; height: 100%; background: var(--correct); }
+.report-focus ol { list-style: none; counter-reset: focus; margin: 12px 0 0; padding: 0; }
+.report-focus li { display: flex; margin-top: 16px; counter-increment: focus; }
+.report-focus li:first-child { margin-top: 0; }
+.report-focus li::before { content: counter(focus); flex: 0 0 24px; color: var(--gray-400); font-weight: 500; }
+.report-focus li .caption { margin-top: 4px; }
+.report-split { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.report-count { white-space: nowrap; color: var(--gray-600); font-variant-numeric: tabular-nums; }
+.report-challenge { padding: 12px 0; border-bottom: 1px solid var(--hairline); font-weight: 500; }
+.report-challenge:nth-child(2) { border-top: 1px solid var(--hairline); }
+.report-challenge .report-bar { height: 2px; margin: 8px 0 0; }
+.report-topics { margin: 6px 0 -6px 16px; }
+.report-topics .report-split { min-height: 24px; color: var(--gray-700); }
+.report-mistake { padding: 12px 0; border-top: 1px solid var(--hairline); overflow-wrap: anywhere; }
+.report-mistake:last-child { border-bottom: 1px solid var(--hairline); }
+.mistake-meta { font-weight: 500; }
+.report-mistake p + p { margin-top: 4px; }
+.answer-pair { font-weight: 500; }

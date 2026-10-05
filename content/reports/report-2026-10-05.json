@@ -1,0 +1,272 @@
+{
+  "id": "r-2026-10-05",
+  "week_start": "2026-09-28",
+  "week_end": "2026-10-04",
+  "added": "2026-10-05",
+  "totals": {
+    "done": 183,
+    "correct": 154,
+    "wrong": 29
+  },
+  "by_challenge": [
+    {
+      "challenge": "easy",
+      "label": "Easy",
+      "done": 20,
+      "correct": 20,
+      "wrong": 0
+    },
+    {
+      "challenge": "medium",
+      "label": "Medium",
+      "done": 54,
+      "correct": 45,
+      "wrong": 9,
+      "topics": [
+        {
+          "topic": "numbers_prices",
+          "label": "Numbers and prices",
+          "done": 10,
+          "correct": 9,
+          "wrong": 1
+        },
+        {
+          "topic": "time_schedules",
+          "label": "Time and schedules",
+          "done": 10,
+          "correct": 8,
+          "wrong": 2
+        },
+        {
+          "topic": "directions",
+          "label": "Directions and places",
+          "done": 10,
+          "correct": 7,
+          "wrong": 3
+        },
+        {
+          "topic": "verbs_commands",
+          "label": "Commands",
+          "done": 10,
+          "correct": 9,
+          "wrong": 1
+        },
+        {
+          "topic": "food_ordering",
+          "label": "Food and ordering",
+          "done": 3,
+          "correct": 3,
+          "wrong": 0
+        },
+        {
+          "topic": "shopping",
+          "label": "Shopping and sizes",
+          "done": 10,
+          "correct": 8,
+          "wrong": 2
+        },
+        {
+          "topic": "phone_reservations",
+          "label": "Calls and bookings",
+          "done": 1,
+          "correct": 1,
+          "wrong": 0
+        }
+      ]
+    },
+    {
+      "challenge": "hard",
+      "label": "Hard",
+      "done": 29,
+      "correct": 24,
+      "wrong": 5
+    },
+    {
+      "challenge": "drill",
+      "label": "Verb drill",
+      "done": 80,
+      "correct": 65,
+      "wrong": 15
+    }
+  ],
+  "mistakes": [
+    {
+      "card_id": "c-0192",
+      "challenge": "drill",
+      "prompt_en": "abrir, usted, negative command",
+      "question": "No ___ la puerta de emergencia.",
+      "your_answer": "abras",
+      "right_answer": "abra",
+      "note_en": "Usted commands of -ir verbs end in -a: no abra. 'No abras' is for tú."
+    },
+    {
+      "card_id": "c-0305",
+      "challenge": "drill",
+      "prompt_en": "poder, usted, conditional",
+      "question": "¿___ repetir el precio, por favor?",
+      "your_answer": "poderías, podrían",
+      "right_answer": "podría",
+      "note_en": "Conditional stem podr- plus -ía; usted uses the él form: podría."
+    },
+    {
+      "card_id": "c-0304",
+      "challenge": "drill",
+      "prompt_en": "querer, ellos, conditional",
+      "question": "Ellos ___ vivir en Tokio, pero es muy caro.",
+      "your_answer": "quererían",
+      "right_answer": "querrían",
+      "note_en": "Querer drops the e in the conditional: querr- plus -ían."
+    },
+    {
+      "card_id": "c-0387",
+      "challenge": "drill",
+      "prompt_en": "venir, él, future",
+      "question": "El pedido ___ mañana por la tarde.",
+      "your_answer": "vendré",
+      "right_answer": "vendrá",
+      "note_en": "Venir uses vendr- in the future, and él takes -á: vendrá."
+    },
+    {
+      "card_id": "c-0225",
+      "challenge": "drill",
+      "prompt_en": "venir, tú, preterite",
+      "question": "¿Por qué no ___ a la fiesta el sábado?",
+      "your_answer": "veniste",
+      "right_answer": "viniste",
+      "note_en": "Venir has the stem vin- in the preterite: viniste."
+    },
+    {
+      "card_id": "c-0211",
+      "challenge": "drill",
+      "prompt_en": "poner, él, preterite",
+      "question": "El barista le ___ canela a mi café.",
+      "your_answer": "ponió",
+      "right_answer": "puso",
+      "note_en": "Poner has the stem pus- in the preterite: puso."
+    },
+    {
+      "card_id": "c-0268",
+      "challenge": "drill",
+      "prompt_en": "romper, participle",
+      "question": "¡Ay no! Se me ha ___ el celular.",
+      "your_answer": "rompido",
+      "right_answer": "roto",
+      "note_en": "Romper has an irregular participle: roto."
+    },
+    {
+      "card_id": "c-0265",
+      "challenge": "drill",
+      "prompt_en": "poner, participle",
+      "question": "¿Dónde has ___ mis audífonos?",
+      "your_answer": "puso",
+      "right_answer": "puesto",
+      "note_en": "The participle of poner is puesto; puso is the preterite."
+    },
+    {
+      "card_id": "c-0248",
+      "challenge": "drill",
+      "prompt_en": "ser, past (telling time)",
+      "question": "___ las once cuando empezó el set.",
+      "your_answer": "fueron",
+      "right_answer": "eran",
+      "note_en": "Clock time in the past is background, so imperfect: eran las once."
+    },
+    {
+      "card_id": "c-0165",
+      "challenge": "drill",
+      "prompt_en": "ser, tú, negative command",
+      "question": "No ___ tan duro contigo mismo.",
+      "your_answer": "sé",
+      "right_answer": "seas",
+      "note_en": "Negative tú of ser is no seas; sé is only affirmative."
+    },
+    {
+      "card_id": "c-0311",
+      "challenge": "medium",
+      "prompt_en": "How much does the black T-shirt cost? Type the number.",
+      "question": "La etiqueta de la playera negra dice cuatrocientos cincuenta pesos.",
+      "your_answer": "350",
+      "right_answer": "450",
+      "note_en": "Cuatrocientos is 400 and trescientos is 300."
+    },
+    {
+      "card_id": "c-0313",
+      "challenge": "medium",
+      "prompt_en": "Type the separate words you heard (no digits).",
+      "question": "Te lo dejo en doscientos ochenta.",
+      "your_answer": "doscientos ochenta",
+      "right_answer": "te lo dejo en doscientos ochenta",
+      "note_en": "Type every word: te lo dejo en is how sellers offer a price."
+    },
+    {
+      "card_id": "c-0131",
+      "challenge": "medium",
+      "prompt_en": "Unglue it: type each word you hear, separately.",
+      "question": "Son las once y cuarto.",
+      "your_answer": "Son las once y cuatro",
+      "right_answer": "son las once y cuarto",
+      "note_en": "Cuarto is a quarter hour; cuatro is the number four."
+    },
+    {
+      "card_id": "c-0057",
+      "challenge": "medium",
+      "prompt_en": "Where is the bus stop?",
+      "question": "La parada del camión está detrás del mercado.",
+      "your_answer": "Next to the market",
+      "right_answer": "Behind the market",
+      "note_en": "Detrás de means behind; al lado de means next to."
+    },
+    {
+      "card_id": "m-popup-roma-01:q3",
+      "challenge": "hard",
+      "prompt_en": "Streetwear pop-up: thrift jacket and discount",
+      "question": "Price after the discount? Type the number.",
+      "your_answer": "380",
+      "right_answer": "384",
+      "note_en": "Trescientos ochenta y cuatro: listen to the end of the number."
+    }
+  ],
+  "focus_next_week": [
+    {
+      "title_en": "Irregular future and conditional stems",
+      "detail_en": "podr-, querr-, vendr-, har-, dir- and saldr- were the most missed. New drill cards practise podría, podrías, querrían, vendrá, haría, dirán and saldremos.",
+      "card_ids": [
+        "c-0594",
+        "c-0598",
+        "c-0592",
+        "c-0593",
+        "c-0599",
+        "c-0600",
+        "c-0601"
+      ]
+    },
+    {
+      "title_en": "Irregular past forms",
+      "detail_en": "Participles roto, puesto, hecho, escrito and visto, and the preterite forms puso, viniste, di and supe. Each one has a new drill card.",
+      "card_ids": [
+        "c-0588",
+        "c-0589",
+        "c-0602",
+        "c-0603",
+        "c-0604",
+        "c-0590",
+        "c-0595",
+        "c-0591",
+        "c-0586"
+      ]
+    },
+    {
+      "title_en": "Prices and times at full speed",
+      "detail_en": "Hundreds like cuatrocientos and trescientos, and cuarto versus cuatro. New Shopping cards also practise quedar and the price patterns cuesta, está en and son.",
+      "card_ids": [
+        "c-0436",
+        "c-0437",
+        "c-0457",
+        "c-0438",
+        "c-0439",
+        "c-0443"
+      ]
+    }
+  ],
+  "summary_en": "You answered 183 questions this week and got 154 right (84%). Easy was perfect and Medium went well; most slips were irregular verb stems in the Verb drill, plus a few prices and times heard at full speed. You missed 26 different questions, and the 15 most useful are below."
+}

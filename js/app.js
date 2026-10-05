@@ -3,6 +3,7 @@
 // v2 Levels: Easy (Quick session, Easy cards only), Medium (topic grid + topic sessions), Hard (missions),
 // stars, and v2.1 voices (transcript labels coloured by voice: Alonso blue, Paloma green).
 // v2.2: shuffled Medium topics, Verb drill (level "drill" cards, only in the drill), Read view for finished missions.
+import { loadReportsIndex, loadReport } from './reports.js';
 import { loadContent } from './content.js';
 import { setAudioIndex, hasAudio, hasLine, play, stop, clipInfo, playClip, clipLoaded, audioEl, unloadClip } from './audio.js';
 import * as levels from './levels.js';
@@ -50,6 +51,7 @@ function render(html) {
   disposeHints($app);
   $app.innerHTML = html;
   $app.scrollTop = 0;
+  S.updateKeyboardInset?.();
 }
 function setKeyHandler(fn) {
   if (S.keyHandler) document.removeEventListener('keydown', S.keyHandler);
@@ -143,7 +145,10 @@ function setupKeyboardInset() {
   if (!window.visualViewport) return;
   const upd = () => {
     const vv = window.visualViewport;
-    const kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+    // Browser chrome and a closing keyboard can leave a viewport gap after an
+    // answer. Reserve keyboard space only while an editable field has focus.
+    const editing = document.activeElement?.matches('input, textarea, [contenteditable="true"]');
+    const kb = editing ? Math.max(0, window.innerHeight - vv.height - vv.offsetTop) : 0;
     document.documentElement.style.setProperty('--kb', kb > 80 ? `${Math.round(kb)}px` : '0px');
     document.documentElement.classList.toggle('kb-open', kb > 80);
     if (kb > 80 && (window.scrollY || document.documentElement.scrollTop)) window.scrollTo(0, 0);
@@ -151,7 +156,9 @@ function setupKeyboardInset() {
   };
   visualViewport.addEventListener('resize', upd);
   visualViewport.addEventListener('scroll', upd);
-  window.addEventListener('resize', () => refreshHints());
+  window.addEventListener('resize', upd);
+  document.addEventListener('focusin', upd);
+  document.addEventListener('focusout', () => queueMicrotask(upd));
   S.updateKeyboardInset = upd;
 }
 
@@ -176,6 +183,8 @@ async function boot() {
     if (S.view === 'read') { closeRead(); return; }   // back from the Read view: to where it was opened from
     const st = history.state?.oye;
     if (st === 'topics') openTopics(false);
+    else if (st === 'reports') openReports(false);
+    else if (st === 'report') openReport(S.reports.find(r => r.id === history.state.reportId), false);
     else if (st === 'missions') openMissions(false);
     else if (st === 'mission-folder') openMissions(false, history.state.folder);
     else if (S.view !== 'home') goHome(false);
@@ -202,6 +211,7 @@ async function boot() {
   const skipped = S.content.cards.length - S.playable.length;
   if (skipped) console.info(`[oye] skipped ${skipped} card(s) with unknown type or missing fields`);
   S.content.audioSync.then((r) => { S.audioStatus = { ...S.audioStatus, finished: true, ...r }; const q = document.getElementById('quiet'); if (q) q.textContent = quietLine(); });
+  S.reports = await loadReportsIndex();
   goHome(false);
   document.documentElement.dataset.ready = '1';
   setupResultsRetry();
@@ -304,10 +314,14 @@ function goHome(pop = true) {
       ${challenge('hard', 'Hard', 'Real-life mission', 'One longer situation · about 5 min', S.missions.length > 0)}
       ${drillRow()}
     </div>
+    <section class="your-week"><p class="eyebrow">Your week</p>
+      <button class="challenge weekly-row" data-act="reports"><span class="ch-text"><span class="ch-title">Weekly report</span><span class="caption">${reportCaption()}</span></span><span class="ch-chev">${ICON.chevron}</span></button>
+    </section>
     <div class="spacer"></div>
     <p class="caption quiet" id="quiet" data-testid="quiet">${esc(quietLine())}</p>
 
   </div>`);
+  $('[data-act="reports"]').onclick = () => openReports();
   $('[data-act="start"]').onclick = startSession;
   $('[data-act="lessons"]').onclick = openLessons;
   $('[data-act="medium"]').onclick = () => openTopics(true);
@@ -910,6 +924,63 @@ function showDrillSummary(ses) {
   if (S.summaryRowIds.length) sendResults();
 }
 
+// ---------- Weekly reports ----------
+const reportDate = (iso) => new Date(`${iso}T12:00:00`);
+const monthDay = (iso) => reportDate(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+function weekRange(r) {
+  const a = reportDate(r.week_start), b = reportDate(r.week_end), year = new Date().getFullYear();
+  const start = monthDay(r.week_start) + (a.getFullYear() !== b.getFullYear() ? `, ${a.getFullYear()}` : '');
+  const end = a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear() ? b.getDate() : monthDay(r.week_end);
+  return `${start} – ${end}${b.getFullYear() !== year || a.getFullYear() !== b.getFullYear() ? `, ${b.getFullYear()}` : ''}`;
+}
+const isReportNew = (r) => r.id === S.reports[0]?.id && r.id !== srs.load().reportSeen;
+const newBadge = (r) => isReportNew(r) ? '<span class="report-new">New</span>' : '';
+function reportCaption() {
+  const r = S.reports?.[0];
+  return r ? `Week of ${esc(monthDay(r.week_start))}${isReportNew(r) ? ` · ${newBadge(r)}` : ''}` : 'First report arrives Monday';
+}
+function reportShell(screen, back, body, range = '') {
+  render(`<div class="screen report-page" data-screen="${screen}"><header class="report-header"><button class="back-link" data-act="report-back">${ICON.back}<span>${back}</span></button><span class="caption report-sticky-range">${esc(range)}</span></header><main>${body}</main></div>`);
+  $('[data-act="report-back"]').onclick = () => history.back();
+  const page = $('.report-page'), header = $('.report-header');
+  page.onscroll = () => {
+    header.classList.toggle('scrolled', page.scrollTop > 0);
+    header.classList.toggle('past-title', !!$('h1') && $('h1').getBoundingClientRect().bottom <= header.getBoundingClientRect().bottom);
+  };
+}
+function openReports(push = true) {
+  stop(); setKeyHandler(null); S.view = 'reports';
+  if (push) pushView('reports');
+  const entries = S.reports || [];
+  reportShell('reports', 'Home', `<p class="eyebrow">Your week</p><h1 class="title">Weekly reports</h1>
+    ${entries.length ? `<p class="caption report-byline">From Gabriel · newest first</p><div class="report-list">${entries.map((r, i) => `<button class="report-list-row" data-report="${i}"><span><span class="report-row-title">${esc(weekRange(r))}</span><span class="caption report-row-total"></span></span>${newBadge(r)}${ICON.chevron}</button>`).join('')}</div><p class="caption report-footnote">A new report arrives with each Monday batch.</p>` : `<div class="report-empty"><p class="body-copy">Your first report arrives with Monday's batch.</p><p class="caption">Gabriel looks at your week: what you did, what you missed, and what to focus on next.</p></div>`}`);
+  $$('[data-report]').forEach(b => {
+    const r = entries[Number(b.dataset.report)];
+    b.onclick = () => openReport(r);
+    loadReport(r).then(data => { if (b.isConnected && data) $('.report-row-total', b).textContent = data.totals.done ? `${data.totals.done} tests · ${data.totals.correct} correct` : 'No tests this week'; });
+  });
+}
+async function openReport(entry, push = true) {
+  if (!entry) return openReports(false);
+  S.view = 'report';
+  if (push) { pushView('report'); history.replaceState({ ...history.state, reportId: entry.id }, ''); }
+  reportShell('report', 'Reports', '<p class="caption">Loading report…</p>');
+  const page = $('.report-page'), r = await loadReport(entry);
+  if (!page.isConnected) return;
+  if (!r) { reportShell('report', 'Reports', '<h1 class="title">Report unavailable</h1><p class="body-copy">Connect to the internet to load this report.</p>'); return; }
+  const progress = srs.load(); progress.reportSeen = entry.id; srs.save(progress);
+  const played = r.totals.done > 0;
+  const percent = (x) => x.done ? Math.round(x.correct / x.done * 100) : 0;
+  const bar = (x) => `<div class="report-bar"><i style="width:${percent(x)}%"></i></div>`;
+  const count = (x) => `<span class="report-count"><span class="report-correct">${esc(x.correct)}</span> / ${esc(x.done)}</span>`;
+  reportShell('report', 'Reports', `<p class="eyebrow">Weekly report</p><h1 class="title">${esc(weekRange(r))}</h1><p class="caption report-byline">From Gabriel · added ${esc(monthDay(r.added))}</p>
+    <p class="body-copy report-summary">${esc(r.summary_en)}</p>
+    ${played ? `<section class="report-totals"><div class="report-numbers">${[['done','tests',''],['correct','correct','report-correct'],['wrong','wrong','report-wrong']].map(([key,label,cls]) => `<div><p class="display ${cls}">${esc(r.totals[key])}</p><p class="caption">${label}</p></div>`).join('')}</div>${bar(r.totals)}<p class="caption">${percent(r.totals)}% correct</p></section>` : ''}
+    <section class="report-focus"><h2 class="eyebrow">Focus next week</h2><ol>${r.focus_next_week.map(f => `<li><div><p class="report-row-title">${esc(f.title_en)}</p><p class="caption">${esc(f.detail_en)}</p></div></li>`).join('')}</ol></section>
+    ${played ? `<section class="report-challenges"><h2 class="eyebrow">By challenge</h2>${r.by_challenge.filter(c => c.done > 0).map(c => `<div class="report-challenge"><div class="report-split"><span>${esc(c.label)}</span>${count(c)}</div>${bar(c)}${c.challenge === 'medium' && c.topics?.length ? `<div class="report-topics">${c.topics.map(t => `<div class="report-split caption"><span>${esc(t.label)}</span>${count(t)}</div>`).join('')}</div>` : ''}</div>`).join('')}</section>` : ''}
+    ${played && r.mistakes.length ? `<section class="report-mistakes"><div class="report-split"><h2 class="eyebrow">Mistakes</h2><span class="caption">${r.mistakes.length} · most useful first</span></div>${r.mistakes.map((m,i) => `<article class="report-mistake"><p class="caption mistake-meta"><span class="dim">${i+1}</span> · ${esc(r.by_challenge.find(c => c.challenge === m.challenge)?.label || m.challenge)}${m.prompt_en ? ` · ${esc(m.prompt_en)}` : ''}</p><p lang="es">${esc(m.question)}</p><p class="answer-pair" lang="es"><s class="report-wrong">${esc(m.your_answer)}</s><span class="dim"> → </span><span class="report-correct">${esc(m.right_answer)}</span></p>${m.note_en ? `<p class="caption">${esc(m.note_en)}</p>` : ''}</article>`).join('')}</section>` : ''}`, weekRange(r));
+}
+
 // ======================================================================= v2 Levels
 // ---------- Medium: topic grid ----------
 const topicCards = (code) => S.medium.filter((c) => c.topic === code);
@@ -928,7 +999,7 @@ function openTopics(push = true) {
     <div class="zone topics-zone"><div class="scroller"><div class="scroll-inner">
       <div class="topic-grid" data-testid="topic-grid">${withCards.map((t) => `
         <button class="topic-tile" data-topic="${esc(t.code)}" data-testid="topic-tile">
-          <span class="tname">${esc(t.name)}</span>${scoreRow('medium', t.code)}
+          <span class="tname">${esc(t.name)}</span>
         </button>`).join('')}</div>
       ${soon.length ? `<p class="eyebrow soon-head">Coming soon</p><p class="caption soon" data-testid="coming-soon">${soon.map((t) => esc(t.name)).join(' · ')}</p>` : ''}
     </div></div>${moreHint()}</div>

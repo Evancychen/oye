@@ -877,5 +877,787 @@
     "region_note": "Mexico: 'playera', 'chamarra', 'probador', 'segunda mano'. '¿Me das…?' is a soft request common in shops.",
     "added": "2026-10-01",
     "folder": "fashion"
+  },
+  {
+    "id": "m-interview-design-01",
+    "title_en": "Job interview at a design studio",
+    "situation_en": "You are at a job interview for a junior art director role. Listen to the interviewer and the candidate.",
+    "topic": "small_talk",
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "vocab_ids": [
+      "v-entrevista",
+      "v-puesto"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Entrevistadora",
+          "voice": "female",
+          "es": "Buenos días, gracias por venir. Cuénteme un poco de usted. ¿Qué ha estudiado?",
+          "en": "Good morning, thanks for coming. Tell me a little about yourself. What have you studied?"
+        },
+        {
+          "speaker": "Candidato",
+          "voice": "male",
+          "es": "Buenos días. Soy licenciado en diseño gráfico. Terminé mis estudios hace cuatro años, y el año pasado hice un curso de animación en línea.",
+          "en": "Good morning. I have a degree in graphic design. I finished my studies four years ago, and last year I did an online animation course."
+        },
+        {
+          "speaker": "Entrevistadora",
+          "voice": "female",
+          "es": "Muy bien. ¿Y su experiencia laboral?",
+          "en": "Very good. And your work experience?"
+        },
+        {
+          "speaker": "Candidato",
+          "voice": "male",
+          "es": "Trabajé dos años en una agencia de publicidad. Ahora trabajo por mi cuenta con marcas de ropa y de música.",
+          "en": "I worked two years at an advertising agency. Now I work freelance with clothing and music brands."
+        },
+        {
+          "speaker": "Entrevistadora",
+          "voice": "female",
+          "es": "Perfecto. El puesto es de lunes a viernes, de nueve a seis, y dos días a la semana puede trabajar desde casa.",
+          "en": "Perfect. The job is Monday to Friday, nine to six, and two days a week you can work from home."
+        },
+        {
+          "speaker": "Candidato",
+          "voice": "male",
+          "es": "Me parece muy bien. ¿Cuál es el sueldo?",
+          "en": "Sounds great. What is the salary?"
+        },
+        {
+          "speaker": "Entrevistadora",
+          "voice": "female",
+          "es": "Empieza en veintidós mil pesos al mes. La próxima entrevista será el jueves a las once, con la directora de arte.",
+          "en": "It starts at twenty-two thousand pesos a month. The next interview will be on Thursday at eleven, with the art director."
+        },
+        {
+          "speaker": "Candidato",
+          "voice": "male",
+          "es": "Muchas gracias. Ahí estaré el jueves.",
+          "en": "Thank you very much. I will be there on Thursday."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "When did he finish his studies?",
+        "options": [
+          "Last year",
+          "Two years ago",
+          "Four years ago",
+          "Fourteen years ago"
+        ],
+        "answer": "Four years ago",
+        "hint_en": "Listen for 'terminé mis estudios'.",
+        "explanation_en": "'Terminé mis estudios hace cuatro años' = I finished four years ago."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "What did he do last year?",
+        "options": [
+          "An online animation course",
+          "A photography course",
+          "A master's in design",
+          "Two years at an agency"
+        ],
+        "answer": "An online animation course",
+        "hint_en": "Listen for 'el año pasado'.",
+        "explanation_en": "'El año pasado hice un curso de animación en línea' = last year I did an online animation course."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "How many days a week can you work from home?",
+        "options": [
+          "None",
+          "Three",
+          "Two",
+          "Five"
+        ],
+        "answer": "Two",
+        "hint_en": "Listen for 'desde casa'.",
+        "explanation_en": "'Dos días a la semana puede trabajar desde casa' = two days a week from home."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "What is the starting monthly salary? Type the number.",
+        "answer": "22000",
+        "accepted_answers": [
+          "22000",
+          "$22000",
+          "22,000",
+          "$22,000",
+          "veintidós mil"
+        ],
+        "hint_en": "Listen for 'empieza en'.",
+        "explanation_en": "'Empieza en veintidós mil pesos al mes' = it starts at 22,000 a month."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "When is the next interview?",
+        "options": [
+          "Thursday at 1",
+          "Friday at 11",
+          "Thursday at 11",
+          "Tuesday at 11"
+        ],
+        "answer": "Thursday at 11",
+        "hint_en": "Listen for 'la próxima entrevista'.",
+        "explanation_en": "'Será el jueves a las once' = it will be Thursday at eleven."
+      }
+    ],
+    "region_note": "Spain-based class books often say 'el currículum'; in Mexico you also hear 'el CV' and 'la chamba' for work.",
+    "added": "2026-10-05",
+    "folder": "design_art"
+  },
+  {
+    "id": "m-cinema-taquilla-01",
+    "title_en": "Cinema box office: the new superhero movie",
+    "situation_en": "You go to the movies with a friend to see the new superhero film. Listen at the box office.",
+    "topic": "numbers_prices",
+    "lesson_tags": [
+      "A2-L07",
+      "A1-L12"
+    ],
+    "vocab_ids": [
+      "v-taquilla"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Taquillera",
+          "voice": "female",
+          "es": "Buenas noches. ¿Para qué película?",
+          "en": "Good evening. For which movie?"
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Dos boletos para la nueva de superhéroes, la de las nueve y media, por favor.",
+          "en": "Two tickets for the new superhero one, the nine thirty, please."
+        },
+        {
+          "speaker": "Taquillera",
+          "voice": "female",
+          "es": "Esa función ya está llena. Tengo la de las diez y cuarto en la sala cuatro, o la de las once en la sala especial, con asientos que se mueven.",
+          "en": "That showing is already full. I have the ten fifteen in room four, or the eleven in the special room, with moving seats."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "¿Cuánto cuesta cada una?",
+          "en": "How much is each one?"
+        },
+        {
+          "speaker": "Taquillera",
+          "voice": "female",
+          "es": "En la sala cuatro, el boleto está en noventa y cinco. En la sala especial, son ciento ochenta por persona.",
+          "en": "In room four, a ticket is ninety-five. In the special room, it is one hundred eighty per person."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Mejor la de las diez y cuarto. ¿Hay dos asientos juntos en el centro?",
+          "en": "The ten fifteen is better. Are there two seats together in the middle?"
+        },
+        {
+          "speaker": "Taquillera",
+          "voice": "female",
+          "es": "Sí, en la fila doce, asientos ocho y nueve. Son ciento noventa en total. Si compra palomitas grandes, el refresco es gratis.",
+          "en": "Yes, in row twelve, seats eight and nine. It is one hundred ninety in total. If you buy large popcorn, the soda is free."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Perfecto. Aquí tiene doscientos.",
+          "en": "Perfect. Here is two hundred."
+        },
+        {
+          "speaker": "Taquillera",
+          "voice": "female",
+          "es": "Su cambio, diez pesos. La sala abre quince minutos antes.",
+          "en": "Your change, ten pesos. The room opens fifteen minutes before."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "Why can't they see the 9:30 showing?",
+        "options": [
+          "It is too expensive",
+          "It's sold out",
+          "It was cancelled",
+          "It already started"
+        ],
+        "answer": "It's sold out",
+        "hint_en": "Listen right after he asks for nine thirty.",
+        "explanation_en": "'Esa función ya está llena' = that showing is already full."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "What time is the showing he picks? (type it like 9:15)",
+        "answer": "10:15",
+        "accepted_answers": [
+          "10:15",
+          "22:15",
+          "10 15"
+        ],
+        "hint_en": "Listen for 'mejor la de las…'.",
+        "explanation_en": "'La de las diez y cuarto' = the 10:15 showing."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "How much is one ticket in the special room?",
+        "options": [
+          "$95",
+          "$180",
+          "$80",
+          "$190"
+        ],
+        "answer": "$180",
+        "hint_en": "Listen for 'sala especial'.",
+        "explanation_en": "'Son ciento ochenta por persona' = 180 per person in the special room."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "How much change does he get? Type the number.",
+        "answer": "10",
+        "accepted_answers": [
+          "10",
+          "$10",
+          "diez"
+        ],
+        "hint_en": "Total 190, he pays 200.",
+        "explanation_en": "Two tickets at 95 = 190. He pays 200, so 'su cambio, diez pesos'."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What is free if you buy large popcorn?",
+        "options": [
+          "Candy",
+          "Another ticket",
+          "Nachos",
+          "The soda"
+        ],
+        "answer": "The soda",
+        "hint_en": "Listen for 'gratis'.",
+        "explanation_en": "'Si compra palomitas grandes, el refresco es gratis' = the soda is free."
+      }
+    ],
+    "region_note": "Mexico: 'palomitas' = popcorn, 'refresco' = soda, 'la taquilla' = box office.",
+    "added": "2026-10-05",
+    "folder": "scifi_tech"
+  },
+  {
+    "id": "m-gym-membership-01",
+    "title_en": "Gym front desk: membership and classes",
+    "situation_en": "You walk into a gym near your place and ask about a membership.",
+    "topic": "time_schedules",
+    "lesson_tags": [
+      "A2-L07",
+      "A1-L12"
+    ],
+    "vocab_ids": [
+      "v-membresia"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Recepcionista",
+          "voice": "male",
+          "es": "Hola, bienvenida. ¿Te puedo ayudar en algo?",
+          "en": "Hi, welcome. Can I help you with something?"
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "Hola. Quiero información sobre la membresía, por favor.",
+          "en": "Hi. I would like information about the membership, please."
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "male",
+          "es": "Claro. La membresía mensual cuesta setecientos cincuenta pesos. Si pagas seis meses, te sale en tres mil novecientos.",
+          "en": "Sure. The monthly membership costs seven hundred fifty pesos. If you pay six months, it comes to three thousand nine hundred."
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "¿A qué hora abren?",
+          "en": "What time do you open?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "male",
+          "es": "Entre semana abrimos de seis de la mañana a once de la noche. Los sábados y domingos, de ocho a tres.",
+          "en": "On weekdays we are open from six in the morning to eleven at night. Saturdays and Sundays, from eight to three."
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "¿Las clases de yoga están incluidas?",
+          "en": "Are the yoga classes included?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "male",
+          "es": "Sí, todas las clases están incluidas. La de yoga es los martes y jueves a las siete de la noche. Trae una toalla y un candado para tu casillero.",
+          "en": "Yes, all classes are included. Yoga is on Tuesdays and Thursdays at seven in the evening. Bring a towel and a padlock for your locker."
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "Perfecto. ¿Puedo probar un día gratis?",
+          "en": "Perfect. Can I try one day for free?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "male",
+          "es": "Sí, hoy mismo. Nada más necesito una identificación.",
+          "en": "Yes, today. I just need an ID."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "type",
+        "prompt_en": "How much is the monthly membership? Type the number.",
+        "answer": "750",
+        "accepted_answers": [
+          "750",
+          "$750",
+          "setecientos cincuenta"
+        ],
+        "hint_en": "Listen for 'la membresía mensual'.",
+        "explanation_en": "'Setecientos cincuenta' = 750. Setecientos is irregular (not sietecientos)."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "How much for six months?",
+        "options": [
+          "$3,750",
+          "$4,500",
+          "$3,090",
+          "$3,900"
+        ],
+        "answer": "$3,900",
+        "hint_en": "Listen for 'seis meses'.",
+        "explanation_en": "'Te sale en tres mil novecientos' = it comes to 3,900."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What are the weekend hours?",
+        "options": [
+          "8 a.m. to 3 p.m.",
+          "8 a.m. to 11 p.m.",
+          "Closed on weekends",
+          "6 a.m. to 11 p.m."
+        ],
+        "answer": "8 a.m. to 3 p.m.",
+        "hint_en": "Listen for 'sábados y domingos'.",
+        "explanation_en": "'Los sábados y domingos, de ocho a tres' = weekends 8 to 3."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "When is the yoga class?",
+        "options": [
+          "Every day, 6 a.m.",
+          "Mon and Wed, 7 p.m.",
+          "Tue and Thu, 7 p.m.",
+          "Tue and Thu, 7 a.m."
+        ],
+        "answer": "Tue and Thu, 7 p.m.",
+        "hint_en": "Listen for 'la de yoga'.",
+        "explanation_en": "'Los martes y jueves a las siete de la noche' = Tuesday and Thursday at 7 p.m."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What does she need for the free trial day?",
+        "options": [
+          "A photo",
+          "An ID",
+          "Cash",
+          "A doctor's note"
+        ],
+        "answer": "An ID",
+        "hint_en": "Listen to the last line.",
+        "explanation_en": "'Nada más necesito una identificación' = I just need an ID."
+      }
+    ],
+    "region_note": null,
+    "added": "2026-10-05",
+    "folder": "fitness_health"
+  },
+  {
+    "id": "m-bus-terminal-01",
+    "title_en": "Bus terminal: a ticket to Oaxaca",
+    "situation_en": "You are at the bus terminal buying a ticket for a weekend trip. Listen to the ticket seller.",
+    "topic": "directions",
+    "lesson_tags": [
+      "A1-L38",
+      "A1-L12",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-anden"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Pasajera",
+          "voice": "female",
+          "es": "Buenas tardes. ¿A qué hora sale el próximo camión a Oaxaca?",
+          "en": "Good afternoon. What time does the next bus to Oaxaca leave?"
+        },
+        {
+          "speaker": "Taquillero",
+          "voice": "male",
+          "es": "Sale a las cuatro y veinte, pero ya no hay lugares. El siguiente es a las seis menos cuarto.",
+          "en": "It leaves at four twenty, but there are no seats left. The next one is at a quarter to six."
+        },
+        {
+          "speaker": "Pasajera",
+          "voice": "female",
+          "es": "Está bien, el de las seis menos cuarto. ¿Cuánto cuesta?",
+          "en": "Okay, the quarter to six. How much is it?"
+        },
+        {
+          "speaker": "Taquillero",
+          "voice": "male",
+          "es": "El boleto sencillo cuesta ochocientos sesenta. Con credencial de estudiante tiene cincuenta por ciento de descuento.",
+          "en": "A one-way ticket costs eight hundred sixty. With a student card it is fifty percent off."
+        },
+        {
+          "speaker": "Pasajera",
+          "voice": "female",
+          "es": "No soy estudiante. Un boleto sencillo, por favor. ¿Cuánto tiempo dura el viaje?",
+          "en": "I am not a student. One one-way ticket, please. How long is the trip?"
+        },
+        {
+          "speaker": "Taquillero",
+          "voice": "male",
+          "es": "Más o menos seis horas y media. Llega como a las doce y cuarto de la noche.",
+          "en": "About six and a half hours. It arrives around a quarter past midnight."
+        },
+        {
+          "speaker": "Pasajera",
+          "voice": "female",
+          "es": "¿De qué andén sale?",
+          "en": "Which platform does it leave from?"
+        },
+        {
+          "speaker": "Taquillero",
+          "voice": "male",
+          "es": "Del andén once. Las maletas grandes van abajo; llegue al andén veinte minutos antes.",
+          "en": "From platform eleven. Big suitcases go underneath; get to the platform twenty minutes early."
+        },
+        {
+          "speaker": "Pasajera",
+          "voice": "female",
+          "es": "Muchas gracias.",
+          "en": "Thank you very much."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "Why doesn't she take the 4:20 bus?",
+        "options": [
+          "It's full",
+          "It already left",
+          "It's too expensive",
+          "It's cancelled"
+        ],
+        "answer": "It's full",
+        "hint_en": "Listen right after 'cuatro y veinte'.",
+        "explanation_en": "'Ya no hay lugares' = there are no seats left."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "What time does her bus leave? (type it like 9:15)",
+        "answer": "5:45",
+        "accepted_answers": [
+          "5:45",
+          "17:45",
+          "5 45"
+        ],
+        "hint_en": "'Menos cuarto' = fifteen minutes before the hour.",
+        "explanation_en": "'Las seis menos cuarto' = 5:45."
+      },
+      {
+        "id": "q3",
+        "kind": "type",
+        "prompt_en": "How much does she pay for her ticket? Type the number.",
+        "answer": "860",
+        "accepted_answers": [
+          "860",
+          "$860",
+          "ochocientos sesenta"
+        ],
+        "hint_en": "She is not a student.",
+        "explanation_en": "'El boleto sencillo cuesta ochocientos sesenta' = 860. No student discount for her."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "About what time does she arrive?",
+        "options": [
+          "11:15 p.m.",
+          "12:15 a.m.",
+          "12:45 a.m.",
+          "6:30 p.m."
+        ],
+        "answer": "12:15 a.m.",
+        "hint_en": "Listen for 'llega como a las…'.",
+        "explanation_en": "'Como a las doce y cuarto de la noche' = around 12:15 a.m."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "Which platform does the bus leave from?",
+        "options": [
+          "Platform 11",
+          "Platform 1",
+          "Platform 12",
+          "Platform 20"
+        ],
+        "answer": "Platform 11",
+        "hint_en": "Listen for 'andén'.",
+        "explanation_en": "'Del andén once' = from platform 11. Twenty is the minutes before."
+      }
+    ],
+    "region_note": "Mexico: 'el camión' = bus, 'boleto sencillo' = one-way ticket, 'el andén' = platform.",
+    "added": "2026-10-05",
+    "folder": "travel"
+  },
+  {
+    "id": "m-colectivo-whatsapp-01",
+    "title_en": "WhatsApp from a collective: anniversary party",
+    "situation_en": "A community collective you follow sends a WhatsApp about its anniversary party this Saturday.",
+    "topic": "time_schedules",
+    "lesson_tags": [
+      "A1-L12",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-exhibicion",
+      "v-boleto-entrada"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "whatsapp",
+      "text_es": "¡Hola! Te escribe el Colectivo Arcoíris 🌈\n\nEste sábado celebramos cinco años del colectivo con una fiesta en el centro cultural, a dos cuadras del metro.\n\n- 7:00 p.m. Exposición de fotografía de artistas locales (entrada libre)\n- 9:00 p.m. Espectáculo drag\n- 10:30 p.m. Fiesta con música pop y electrónica hasta las 2\n\nLa entrada al espectáculo y a la fiesta cuesta 150 pesos. Si compras tu boleto antes del jueves, cuesta 120.\n\nTrae tu identificación: es un evento para mayores de 18 años. En la barra habrá bebidas sin alcohol.\n\n¿Quieres ayudar como voluntario? Contesta este mensaje y te mandamos los detalles.\n\n¡Todos son bienvenidos!",
+      "text_en": "Hi! This is the Colectivo Arcoíris (Rainbow Collective) 🌈\n\nThis Saturday we're celebrating the collective's five years with a party at the cultural center, two blocks from the metro.\n\n- 7:00 p.m. Photo exhibition by local artists (free entry)\n- 9:00 p.m. Drag show\n- 10:30 p.m. Party with pop and electronic music until 2\n\nEntry to the show and the party costs 150 pesos. If you buy your ticket before Thursday, it costs 120.\n\nBring your ID: it's an 18+ event. There will be alcohol-free drinks at the bar.\n\nWant to help as a volunteer? Reply to this message and we'll send you the details.\n\nEveryone is welcome!",
+      "sender_en": "Colectivo Arcoíris",
+      "time": "12:40"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "What time does the drag show start?",
+        "options": [
+          "2 a.m.",
+          "7 p.m.",
+          "9 p.m.",
+          "10:30 p.m."
+        ],
+        "answer": "9 p.m.",
+        "hint_en": "Look for 'Espectáculo drag'.",
+        "explanation_en": "'9:00 p.m. Espectáculo drag' = the show is at 9."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "Which part is free?",
+        "options": [
+          "The photo exhibition",
+          "The whole night",
+          "The drag show",
+          "The party"
+        ],
+        "answer": "The photo exhibition",
+        "hint_en": "Look for 'entrada libre'.",
+        "explanation_en": "'Exposición de fotografía (entrada libre)' = the photo show is free."
+      },
+      {
+        "id": "q3",
+        "kind": "type",
+        "prompt_en": "How much is a ticket if you buy it before Thursday? Type the number.",
+        "answer": "120",
+        "accepted_answers": [
+          "120",
+          "$120",
+          "ciento veinte"
+        ],
+        "hint_en": "Look for 'antes del jueves'.",
+        "explanation_en": "'Si compras tu boleto antes del jueves, cuesta 120' = 120 before Thursday."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "What must you bring?",
+        "options": [
+          "Cash only",
+          "Your ID",
+          "A costume",
+          "A printed ticket"
+        ],
+        "answer": "Your ID",
+        "hint_en": "Look for 'Trae'.",
+        "explanation_en": "'Trae tu identificación' = bring your ID; it's an 18+ event."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "How do you sign up as a volunteer?",
+        "options": [
+          "Reply to the message",
+          "Call the center",
+          "Send an email",
+          "Arrive early on Saturday"
+        ],
+        "answer": "Reply to the message",
+        "hint_en": "Look for 'voluntario'.",
+        "explanation_en": "'Contesta este mensaje' = reply to this message."
+      }
+    ],
+    "region_note": "'Entrada libre' = free entry. 'Mayores de 18' = 18 and over.",
+    "added": "2026-10-05",
+    "folder": "lgbtq_culture"
+  },
+  {
+    "id": "m-matcha-menu-01",
+    "title_en": "Menu at a matcha café",
+    "situation_en": "You sit down at a small Japanese-style café and read the menu before ordering.",
+    "topic": "food_ordering",
+    "lesson_tags": [
+      "A1-L22",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-me-das"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "menu",
+      "text_es": "CAFÉ HOJA VERDE\nBebidas y postres\n\nBEBIDAS CALIENTES\nMatcha latte ........ $75\nTé verde japonés .... $45\nAmericano ........... $40\n\nBEBIDAS FRÍAS\nMatcha frío con leche de avena ... $85\nLimonada con matcha .............. $70\n\nPOSTRES\nMochi de fresa (2 piezas) ........ $60\nPastel de matcha (rebanada) ...... $68\n\nCambio a leche de avena o de almendra: +$10\nPromoción de lunes a jueves: bebida + postre con 15% de descuento.\nAceptamos tarjeta. La propina no está incluida.",
+      "text_en": "HOJA VERDE CAFÉ (Green Leaf Café)\nDrinks and desserts\n\nHOT DRINKS\nMatcha latte ........ $75\nJapanese green tea .. $45\nAmericano ........... $40\n\nCOLD DRINKS\nIced matcha with oat milk ... $85\nMatcha lemonade ............. $70\n\nDESSERTS\nStrawberry mochi (2 pieces) ... $60\nMatcha cake (slice) ........... $68\n\nSwitch to oat or almond milk: +$10\nMonday to Thursday deal: drink + dessert, 15% off.\nWe take cards. Tip not included."
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "type",
+        "prompt_en": "You want a hot matcha latte with almond milk. How much is it? Type the number.",
+        "answer": "85",
+        "accepted_answers": [
+          "85",
+          "$85",
+          "ochenta y cinco"
+        ],
+        "hint_en": "Add the milk change to the latte price.",
+        "explanation_en": "Matcha latte 75 plus 10 for almond milk = 85."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "Which drink already comes with oat milk?",
+        "options": [
+          "The green tea",
+          "The matcha lemonade",
+          "The hot matcha latte",
+          "The iced matcha"
+        ],
+        "answer": "The iced matcha",
+        "hint_en": "Look for 'leche de avena'.",
+        "explanation_en": "'Matcha frío con leche de avena' = iced matcha with oat milk."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "How many mochis come in one order?",
+        "options": [
+          "4",
+          "1",
+          "3",
+          "2"
+        ],
+        "answer": "2",
+        "hint_en": "Look for 'piezas'.",
+        "explanation_en": "'Mochi de fresa (2 piezas)' = two pieces."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "When is the drink and dessert deal?",
+        "options": [
+          "Friday to Sunday",
+          "Weekends only",
+          "Every day",
+          "Monday to Thursday"
+        ],
+        "answer": "Monday to Thursday",
+        "hint_en": "Look for 'Promoción'.",
+        "explanation_en": "'Promoción de lunes a jueves' = Monday to Thursday."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "Is the tip included?",
+        "options": [
+          "Only on weekends",
+          "Yes",
+          "Only with a card",
+          "No"
+        ],
+        "answer": "No",
+        "hint_en": "Look at the last line.",
+        "explanation_en": "'La propina no está incluida' = the tip is not included."
+      }
+    ],
+    "region_note": null,
+    "added": "2026-10-05",
+    "folder": "cafes_food"
   }
 ]

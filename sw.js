@@ -1,6 +1,6 @@
 // Oye service worker: offline app shell + content + audio.
 // CACHE_VERSION is rewritten by tools/publish_content.py (content version + hash of the shell files).
-const CACHE_VERSION = 'oye-v10-5b5891a2';
+const CACHE_VERSION = 'oye-v11-efea03fb';
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const CONTENT_CACHE = 'oye-content'; // filled by js/content.js (JSON + audio); kept across shell updates
 
@@ -11,6 +11,7 @@ const SHELL = [
   'manifest.webmanifest',
   'js/app.js',
   'js/content.js',
+  'js/reports.js',
   'js/audio.js',
   'js/check.js',
   'js/srs.js',
@@ -81,6 +82,23 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
   const scope = self.registration.scope;
   const rel = req.url.startsWith(scope) ? req.url.slice(scope.length) : '';
+
+  if (rel.startsWith('content/reports/')) {
+    event.respondWith((async () => {
+      const cache = await caches.open(CONTENT_CACHE);
+      try {
+        const res = await fetch(req, { cache: 'no-store' });
+        if (res.ok) await cache.put(req, res.clone());
+        else if (res.status === 404) await cache.delete(req);
+        else throw new Error('Report unavailable');
+        return res;
+      } catch {
+        const isIndex = rel === 'content/reports/index.json';
+        return (await cache.match(req)) || new Response(isIndex ? '[]' : 'null', { status: isIndex ? 200 : 503, headers: { 'Content-Type': 'application/json' } });
+      }
+    })());
+    return;
+  }
 
   // Always ask the network for the version file; fall back to the stored copy offline.
   if (rel.startsWith('content/version.json')) {

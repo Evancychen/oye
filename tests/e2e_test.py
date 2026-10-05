@@ -27,8 +27,11 @@ SHOTS11 = os.path.join(SHOTS, 'v1.1')
 VIEWPORT = {'width': 412, 'height': 915}
 LAYOUT_SIZES = [(360, 720), (412, 915), (384, 854)]
 SHOT_SIZES = {(360, 720), (412, 915)}
-# Cards that match the design previews go first so they are the screenshotted ones.
-SHOWCASE = ['c-0010', 'c-0018', 'c-0023', 'c-0029', 'c-0034']
+# Current representatives go first so each card layout gets a screenshot.
+SHOWCASE = ['c-0002', 'c-0577', 'c-0339', 'c-0579', 'c-0345']
+# These browser-only cards exercise transcript colours and exact alternate wording;
+# they are never published or added to the production content/audio index.
+UX_CARDS = json.load(open(os.path.join(APP, 'tests', 'fixtures', 'ux-cards.json'), encoding='utf-8'))
 RESULTS = []
 SHELL_VERSION = re.search(r"SHELL_VERSION = '([^']+)'", open(os.path.join(APP, 'js', 'app.js'), encoding='utf-8').read()).group(1)
 VOICE_COLOR = {'male': 'rgb(110, 139, 255)', 'female': 'rgb(76, 195, 138)'}   # accent blue (Alonso), correct green (Paloma)
@@ -113,9 +116,9 @@ class FakeEndpoint:
         return [r for c in self.calls if c['mode'] == 'ok' and isinstance(c['body'], dict) for r in c['body'].get('results', [])]
 
 
-async def new_page(browser, errors, viewport=None, init_script=None, endpoint=None):
+async def new_page(browser, errors, viewport=None, init_script=None, endpoint=None, screen=None):
     ctx = await browser.new_context(viewport=viewport or VIEWPORT, device_scale_factor=1, is_mobile=True, has_touch=True,
-                                    locale='en-GB', timezone_id='America/Mexico_City')
+                                    locale='en-GB', timezone_id='America/Mexico_City', screen=screen)
     fake = endpoint or FakeEndpoint('ok')
     ctx.fake_endpoint = fake
     await ctx.route(ENDPOINT_HOSTS, fake.handle)
@@ -124,7 +127,7 @@ async def new_page(browser, errors, viewport=None, init_script=None, endpoint=No
         await ctx.add_init_script(init_script)
     page = await ctx.new_page()
     page.on('pageerror', lambda e: errors.append(f'pageerror: {e}'))
-    page.on('console', lambda m: errors.append(f'console.{m.type}: {m.text}') if m.type == 'error' else None)
+    page.on('console', lambda m: errors.append(f'console.{m.type}: {m.text}') if m.type == 'error' and not (m.location.get('url', '').endswith('/content/reports/index.json') and '404' in m.text) else None)
     return ctx, page
 
 
@@ -355,7 +358,7 @@ async def main():
         cur = await current(page)
         check('session reaches the summary screen', cur['screen'] == 'summary')
         check('session has 8-10 cards', plan_len is not None and 8 <= plan_len <= 10, plan_len)
-        check('session covered every card type', set(seen_types) == set(TYPES), seen_types)
+        check('session covered every current Easy card type', set(seen_types) == {c['type'] for c in cards if c.get('level', 'easy') == 'easy'}, seen_types)
         check('v2: the Quick session (Easy) showed only Easy cards (no Medium card)', quick_levels and all(l == 'easy' for l in quick_levels), quick_levels)
         check('no autoplay: every listening card opens silent with "Tap to listen"; tapping the play button plays it',
               autoplayed == 0 and listening > 0 and not silent_bad, {'autoplayed': f'{autoplayed}/{listening}', 'bad': silent_bad[:3]})
@@ -499,6 +502,7 @@ async def main():
         shutil.rmtree(SHOTS11, ignore_errors=True)
         for (w, h) in LAYOUT_SIZES:
             await layout_suite(browser, base4, cards, w, h)
+        await money_dock_suite(browser, base4)
         await keyboard_visual_viewport_test(browser, base4)
         await results_upload_tests(browser, base4, version)
         await levels_suite(browser, base4, cards)
@@ -506,6 +510,7 @@ async def main():
         os.makedirs(TMP, exist_ok=True)
         await drill_read_suite(browser, base4, cards)
         await hard_folders_suite(browser, base4)
+        await weekly_reports_suite(browser, base4)
         server4.terminate(); server4.wait()
 
         # ---------- v1.1: service worker update path ----------
@@ -650,6 +655,8 @@ async def layout_suite(browser, base, cards, w, h):
     n_hint = 0
     num = {'listen_pick': '01', 'listen_type': '02', 'scene_question': '03', 'fix_it': '04', 'reply': '05'}
     for idx, cid in enumerate(order):
+        if idx % 100 == 0:
+            print(f'{tag} layout progress: {idx}/{len(order)} cards', flush=True)
         await page.wait_for_selector(f'[data-screen=card][data-card="{cid}"][data-state=question]')
         await page.wait_for_timeout(120)
         card = by_id[cid]
@@ -745,7 +752,15 @@ async def layout_suite(browser, base, cards, w, h):
             if 'The answer is' not in body: probs.append('no "The answer is" line')
             if card.get('explanation_en') and card['explanation_en'] in body: probs.append('explanation shown inline instead of behind "Why"')
         if card.get('audio_text'):
-            probs += replay_problems(g)
+            replay_geom = g
+            if g['overflow'] > 1 and g['pill'] and replay_problems(g):
+                # Long feedback may put the More below pill over a replay edge.
+                # Follow that affordance, then require both buttons to be fully
+                # visible and unobstructed, including their complete tap targets.
+                await page.click('.card-zone .more-pill')
+                await page.wait_for_timeout(500)
+                replay_geom = await page.evaluate(GEOM_JS)
+            probs += replay_problems(replay_geom)
         if is_drill and g['next'] and not fully_inside(g['next'], 0, g['vh']):
             # Drill feedback flows below the options; long explanations can scroll on short phones.
             await page.locator('[data-act=next]').scroll_into_view_if_needed()
@@ -775,7 +790,7 @@ async def layout_suite(browser, base, cards, w, h):
             if card.get('explanation_en') and card['explanation_en'] not in st: sp.append('explanation missing')
             if card.get('region_note') and card['region_note'] not in st: sp.append('region note missing')
             if card.get('transcript'):
-                for l in card['transcript'].split(' / '):
+                for l in re.split(r'\s*/\s*|\n+', card['transcript']):
                     if l.split(': ', 1)[-1] not in st: sp.append('transcript line missing')
             sg = await page.evaluate("""() => { const z = document.querySelector('.sheet-zone'), sc = z.querySelector('.scroller'), s = document.querySelector('.fb-sheet').getBoundingClientRect();
                 return {overflow: sc.scrollHeight - sc.clientHeight, pill: getComputedStyle(z.querySelector('.more-pill')).display !== 'none', top: s.top, bottom: s.bottom,
@@ -839,13 +854,73 @@ FAKE_VV = """(() => {
 })();"""
 
 
+async def money_dock_suite(browser, base):
+    """Three-card food fixture, retained keyboard viewport gap and final money card."""
+    for w, h in [(412, 915), (390, 844), (360, 720), (360, 640), (360, 540)]:
+        for right in (True, False):
+            for retained in (False, True):
+                errors = []
+                ctx, page = await new_page(browser, errors, viewport={'width': w, 'height': h},
+                    screen={'width': w, 'height': h + 100}, init_script=FAKE_VV if retained else None)
+                await home_fresh(page, base)
+                # Isolate the dock regression from published topic size/shuffle.
+                # The typed variant uses words to exercise the native keyboard.
+                await page.evaluate("""() => { const s = window.__oye;
+                    const typed = {...s.medium.find(c => c.id === 'c-0417'),
+                        id: 'c-9417', answer: 'doscientos treinta', options: [],
+                        accepted_answers: ['doscientos treinta']};
+                    s.medium = [s.medium.find(c => c.id === 'c-0420'), typed,
+                        s.medium.find(c => c.id === 'c-0416')];
+                }""")
+                await page.click('[data-act=medium]')
+                await page.click('[data-topic=food_ordering]')
+                ids = await page.evaluate('window.__oye.session.cards.map(c => c.id).sort()')
+                assert ids == ['c-0416', 'c-0420', 'c-9417'], ids
+                if retained:
+                    # Keep the already rendered card, then exercise typing -> money as
+                    # the final two cards, regardless of the random topic shuffle.
+                    await page.evaluate("""() => { const s = window.__oye;
+                        s.session.cards = [s.session.cards[0],
+                            s.medium.find(c => c.id === 'c-9417'), s.medium.find(c => c.id === 'c-0416')]; }""")
+                problems = []
+                for i in range(3):
+                    card = await page.evaluate('window.__oye.session.cards[window.__oye.session.i]')
+                    if await page.locator('#fix-input').count():
+                        await page.fill('#fix-input', card['answer'] if right else 'incorrect')
+                        if retained:
+                            await page.evaluate('window.__setKeyboard(300)')
+                        await page.click('[data-act=check]')
+                    else:
+                        value = card['answer'] if right else next(o for o in card['options'] if o != card['answer'])
+                        await click_option(page, value)
+                    g = await page.evaluate("""() => {
+                        const b = document.querySelector('[data-act=next]'), r = b.getBoundingClientRect();
+                        const doc = document.scrollingElement;
+                        return {top: r.top, bottom: r.bottom, vh: innerHeight,
+                            app: document.querySelector('#app').getBoundingClientRect().height,
+                            kb: getComputedStyle(document.documentElement).getPropertyValue('--kb').trim(),
+                            scroll: doc.scrollHeight, y: scrollY,
+                            hit: b.contains(document.elementFromPoint(r.x + r.width/2, r.y + r.height/2))};
+                    }""")
+                    if not (g['top'] >= 0 and g['bottom'] <= g['vh'] and abs(g['app'] - g['vh']) < 1
+                            and g['kb'] == '0px' and g['scroll'] <= g['vh'] and g['y'] == 0 and g['hit']):
+                        problems.append((card['id'], i, g))
+                    await page.locator('[data-act=next]').tap(timeout=3000)
+                    if i < 2:
+                        await page.wait_for_selector('[data-state=question]')
+                await page.wait_for_selector('[data-screen=summary]')
+                check(f'money dock {w}x{h}, right={right}, retained keyboard={retained}: three-card topic, Next and final Next visible/clickable, app fits, kb=0, no document scroll',
+                      not problems and not errors, problems or errors)
+                await ctx.close()
+
+
 async def keyboard_visual_viewport_test(browser, base, w=360, h=720, kb=300):
     """Fallback path: the keyboard only shrinks the visual viewport (no resizes-content)."""
     errors = []
     ctx, page = await new_page(browser, errors, viewport={'width': w, 'height': h}, init_script=FAKE_VV)
     await page.goto(base)
     await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=15000)
-    await page.evaluate("(() => { const S = window.__oye; S.plan = [S.playable.find(c => c.id === 'c-0029') || S.playable.find(c => c.type === 'fix_it')]; })()")
+    await page.evaluate("(() => { const S = window.__oye; S.plan = [S.playable.find(c => c.id === 'c-0579') || S.playable.find(c => c.type === 'fix_it')]; })()")
     await page.click('[data-act=start]')
     await page.wait_for_selector('#fix-input')
     await page.click('#fix-input'); await page.keyboard.type('estuve')
@@ -986,9 +1061,9 @@ async def live_check(url):
         await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=20000)
         check(f'live: page runs the {SHELL_VERSION} shell', await page.evaluate("document.documentElement.dataset.shell") == SHELL_VERSION)
         await page.screenshot(path=os.path.join(SHOTS11, 'live-412x915-home.png'))
-        await page.evaluate("(() => { const S = window.__oye; S.plan = ['c-0018', 'c-0010', 'c-0029'].map(id => S.playable.find(c => c.id === id)).filter(Boolean); })()")
+        await page.evaluate("(() => { const S = window.__oye; S.plan = ['c-0577', 'c-0002', 'c-0579'].map(id => S.playable.find(c => c.id === id)).filter(Boolean); })()")
         await page.click('[data-act=start]')
-        await page.wait_for_selector('[data-card=c-0018]')
+        await page.wait_for_selector('[data-card=c-0577]')
         await page.wait_for_timeout(300)
         g = await page.evaluate(GEOM_JS)
         probs = layout_problems(g, 'live') + replay_problems(g)
@@ -1054,7 +1129,17 @@ def status_problems(st, state):
 
 
 async def start_plan(page, ids):
-    await page.evaluate(f"(() => {{ const S = window.__oye; S.plan = {json.dumps(ids)}.map(id => S.playable.find(c => c.id === id)); }})()")
+    await page.evaluate("""({ids, fixtures}) => {
+        const S = window.__oye;
+        for (const card of fixtures.filter(c => ids.includes(c.id))) {
+            if (!S.content.cards.some(c => c.id === card.id)) S.content.cards.push(card);
+        }
+        S.plan = ids.map(id => {
+            const card = S.playable.find(c => c.id === id) || fixtures.find(c => c.id === id);
+            if (!card) throw new Error(`Missing test card ${id}`);
+            return card;
+        });
+    }""", {'ids': ids, 'fixtures': UX_CARDS})
     await page.click('[data-act=start]')
 
 
@@ -1081,29 +1166,29 @@ async def results_upload_tests(browser, base, version):
     await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=15000)
     await page.wait_for_timeout(300)
     check('results: nothing is sent on open when the queue is empty', not fake.calls, len(fake.calls))
-    await start_plan(page, ['c-0010', 'c-0018', 'c-0029', 'c-0031'])
+    await start_plan(page, ['c-0002', 'c-0577', 'c-0579', 'c-0340'])
     t_start = time.time()
-    await page.wait_for_selector('[data-card=c-0010][data-state=question]')
+    await page.wait_for_selector('[data-card=c-0002][data-state=question]')
     await page.click('[data-testid=replay]')                    # first listen
     await page.wait_for_timeout(200)
     await page.click('[data-testid=replay]')                    # tap again = stop
     await page.wait_for_timeout(100)
     await page.click('[data-play=slow]')                       # used_slow; a new play after stopping -> replays 1
-    await page.click('[data-opt="0"]')                          # $38: wrong
+    await page.click('[data-opt="0"]')                          # $64: wrong
     await page.wait_for_selector('[data-state=wrong]')
     await page.click('[data-testid=replay]')                    # plays on the feedback screen are not counted
     await page.wait_for_timeout(150)
     await page.click('[data-act=next]')
-    await page.wait_for_selector('[data-card=c-0018][data-state=question]')
+    await page.wait_for_selector('[data-card=c-0577][data-state=question]')
     await page.click('[data-act=hint]')                         # used_hint
-    for ch in '8:45': await page.click(f'[data-key="{ch}"]')
+    for ch in '9:00': await page.click(f'[data-key="{ch}"]')
     await page.click('[data-act=check]')
     await page.wait_for_selector('[data-state=correct]'); await page.click('[data-act=next]')
-    await page.wait_for_selector('[data-card=c-0029][data-state=question]')
+    await page.wait_for_selector('[data-card=c-0579][data-state=question]')
     await page.evaluate('window.__oye.session.plays = 150')    # cap: replays never go above 99
-    await page.fill('#fix-input', 'Estuve'); await page.click('[data-act=check]')
+    await page.fill('#fix-input', 'Abre'); await page.click('[data-act=check]')
     await page.wait_for_selector('[data-state=correct]'); await page.click('[data-act=next]')
-    await page.wait_for_selector('[data-card=c-0031][data-state=question]')
+    await page.wait_for_selector('[data-card=c-0340][data-state=question]')
     await page.click('[data-act=dontknow]')                     # I don't know
     await page.wait_for_selector('[data-state=wrong]'); await page.click('[data-act=next]')
     await page.wait_for_selector('[data-screen=summary]')
@@ -1124,14 +1209,14 @@ async def results_upload_tests(browser, base, version):
           and c0['ctype'].replace(' ', '').lower() == 'text/plain;charset=utf-8' and isinstance(body, dict) and list(body) == ['results'],
           [(c['method'], c['ctype']) for c in fake.calls])
     rows = body.get('results', []) if isinstance(body, dict) else []
-    want = [('c-0010', False, '$38', False, True), ('c-0018', True, '8:45', True, False),
-            ('c-0029', True, 'Estuve', False, False), ('c-0031', False, '', False, False)]
+    want = [('c-0002', False, '$64', False, True), ('c-0577', True, '9:00', True, False),
+            ('c-0579', True, 'Abre', False, False), ('c-0340', False, '', False, False)]
     got = [(r.get('card_id'), r.get('correct'), r.get('answer_given'), r.get('used_hint'), r.get('used_slow')) for r in rows]
     check('results: one row per answer: card_id, correct, answer_given, used_hint, used_slow as answered', got == want, got)
     rs = [(r.get('card_id'), r.get('replays'), r.get('skipped')) for r in rows]
     check('results: replays = plays started before answering minus the first listen (play, stop, slow = 1; none = 0; '
           'feedback-screen plays not counted; capped at 99); skipped true only for "I don\u2019t know"',
-          rs == [('c-0010', 1, False), ('c-0018', 0, False), ('c-0029', 99, False), ('c-0031', 0, True)], rs)
+          rs == [('c-0002', 1, False), ('c-0577', 0, False), ('c-0579', 99, False), ('c-0340', 0, True)], rs)
     sids = {r.get('session_id') for r in rows}
     def iso_ok(v):
         try:
@@ -1164,7 +1249,7 @@ async def results_upload_tests(browser, base, version):
     ctx, page = await new_page(browser, errors, endpoint=fake)
     await page.goto(base)
     await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=15000)
-    await start_plan(page, ['c-0001', 'c-0031'])
+    await start_plan(page, ['c-0576', 'c-0340'])
     await dont_know_all(page, 2)
     got1 = await wait_for_calls(page, fake, 1)
     await page.wait_for_timeout(300)
@@ -1188,7 +1273,7 @@ async def results_upload_tests(browser, base, version):
     check('results: next app open sends the queued rows and empties the queue', got3 and q3 == [], {'calls': len(fake.calls), 'queue': len(q3)})
     # second session: network error at the summary, then the phone comes back online while the summary is open
     fake.mode = 'abort'
-    await start_plan(page, ['c-0002', 'c-0019', 'c-0032'])
+    await start_plan(page, ['c-0002', 'c-0339', 'c-0345'])
     await dont_know_all(page, 3)
     got4 = await wait_for_calls(page, fake, 4)
     await page.wait_for_timeout(300)
@@ -1217,7 +1302,7 @@ async def results_upload_tests(browser, base, version):
     await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=15000)
     await page.evaluate('navigator.serviceWorker.ready')
     await ctx.set_offline(True)
-    await start_plan(page, ['c-0003', 'c-0020'])
+    await start_plan(page, ['c-0337', 'c-0338'])
     await dont_know_all(page, 2)
     await page.wait_for_timeout(500)
     st = await status(page)
@@ -1227,7 +1312,7 @@ async def results_upload_tests(browser, base, version):
     await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
     await page.reload()                                         # app reopened while offline
     await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=10000)
-    await start_plan(page, ['c-0033'])
+    await start_plan(page, ['c-0580'])
     await dont_know_all(page, 1)
     await page.wait_for_timeout(300)
     q = await page.evaluate(QUEUE_JS)
@@ -1269,14 +1354,14 @@ async def results_upload_tests(browser, base, version):
           len(seeded) == 450 and not any('replays' in r or 'skipped' in r for r in seeded), len(seeded))
     norm = await page.evaluate("""import('./js/results.js').then(m => {
         const base = { answered_at: 'x', content_version: 3, correct: false, answer_given: '', used_hint: false, used_slow: false, session_id: 'e2e-norm' };
-        const ids = m.enqueue([{ ...base, card_id: 'c-0001', replays: 150, skipped: true }, { ...base, card_id: 'c-0002', replays: '3', skipped: 'yes' },
-                               { ...base, card_id: 'c-0003', replays: -2, skipped: false }, { ...base, card_id: 'c-0004' }], null);
+        const ids = m.enqueue([{ ...base, card_id: 'c-0576', replays: 150, skipped: true }, { ...base, card_id: 'c-0002', replays: '3', skipped: 'yes' },
+                               { ...base, card_id: 'c-0337', replays: -2, skipped: false }, { ...base, card_id: 'c-0338' }], null);
         const q = JSON.parse(localStorage.getItem('oye.resultsQueue.v1') || '[]').filter(r => ids.includes(r._id));
         localStorage.setItem('oye.resultsQueue.v1', JSON.stringify(JSON.parse(localStorage.getItem('oye.resultsQueue.v1')).filter(r => !ids.includes(r._id))));
         return [q.map(r => [r.card_id, r.replays, r.skipped]), m.clampReplays(99.7), m.clampReplays(null)];
     })""")
     check('results: the offline queue keeps replays as an integer 0-99 and skipped as a boolean (a row without them stays without them)',
-          norm == [[['c-0001', 99, True], ['c-0002', 3, False], ['c-0003', 0, False], ['c-0004', None, None]], 99, 0], norm)
+          norm == [[['c-0576', 99, True], ['c-0002', 3, False], ['c-0337', 0, False], ['c-0338', None, None]], 99, 0], norm)
     check('results (offline test): no JS errors', not [e for e in errors if 'net::' not in e and 'Failed to load resource' not in e and 'Failed to fetch' not in e], errors[:3])
     await ctx.close()
 
@@ -1305,7 +1390,7 @@ async def live_results_check(browser, url):
     await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=20000)
     has_mod = await page.evaluate("import('./js/results.js').then(m => m.RESULTS_ENDPOINT === " + json.dumps(RESULTS_ENDPOINT) + ").catch(() => false)")
     check('live: js/results.js is served and points at the Apps Script endpoint', has_mod)
-    await start_plan(page, ['c-0001', 'c-0031'])
+    await start_plan(page, ['c-0576', 'c-0340'])
     await dont_know_all(page, 2)
     st1 = await status(page)
     sent = await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 10000)
@@ -1313,7 +1398,7 @@ async def live_results_check(browser, url):
     body = fake.calls[0]['body'] if fake.calls else {}
     rows = body.get('results', []) if isinstance(body, dict) else []
     check('live [360x720]: summary shows "Saved · will send…" while sending, then green "Results sent to Gabriel"; 1 faked POST with 2 rows',
-          not status_problems(st1, 'queued') and sent and not status_problems(st2, 'sent') and len(fake.calls) == 1 and [r['card_id'] for r in rows] == ['c-0001', 'c-0031'],
+          not status_problems(st1, 'queued') and sent and not status_problems(st2, 'sent') and len(fake.calls) == 1 and [r['card_id'] for r in rows] == ['c-0576', 'c-0340'],
           {'sending': status_problems(st1, 'queued'), 'sent': status_problems(st2, 'sent'), 'calls': len(fake.calls)})
     await page.screenshot(path=os.path.join(SHOTS11, 'live-360x720-summary-results.png'))
     check('live results: no JS errors', not errors, errors[:3])
@@ -1399,7 +1484,7 @@ def static_v2_checks(cards, idx, version, sw_src):
                 and os.path.basename(e['slow']) == ba.file_name(t, ba.RATES['slow'], v)
         if not ok: bad_cards.append(c['id'])
     n_override = sum(1 for c in cards if c.get('voice'))
-    check(f'v2.1 voices: card audio uses the card voice ({n_override} overrides, e.g. c-0003/c-0011 male), else Easy=Paloma, Medium/Hard=Alonso; audio_lines cards join each line in its own voice',
+    check(f'v2.1 voices: card audio uses the card voice ({n_override} overrides, e.g. c-0337/c-0011 male), else Easy=Paloma, Medium/Hard=Alonso; audio_lines cards join each line in its own voice',
           not bad_cards, bad_cards[:5])
     bad_m = []
     for m in missions:
@@ -1468,7 +1553,7 @@ MQ_GEOM = """() => {
 
 
 async def levels_suite(browser, base, cards):
-    by_id = {c['id']: c for c in cards}
+    by_id = {c['id']: c for c in [*cards, *UX_CARDS]}
     missions = json.load(open(os.path.join(APP, 'content', 'missions.json'), encoding='utf-8'))
     mby = {m['id']: m for m in missions}
     audio_index = json.load(open(os.path.join(APP, 'content', 'audio.json'), encoding='utf-8'))
@@ -1528,11 +1613,11 @@ async def levels_suite(browser, base, cards):
     await home_fresh(page, base)
     await page.click('[data-act=medium]')
     await page.wait_for_selector('[data-screen=topics]')
-    tiles = await page.evaluate("[...document.querySelectorAll('[data-topic]')].map(b => { const r = b.getBoundingClientRect(); return {code: b.dataset.topic, name: b.querySelector('.tname').textContent, w: r.width, h: r.height, score: b.querySelector('.best-score').textContent}; })")
+    tiles = await page.evaluate("[...document.querySelectorAll('[data-topic]')].map(b => { const r = b.getBoundingClientRect(); return {code: b.dataset.topic, name: b.querySelector('.tname').textContent, w: r.width, h: r.height, score: b.querySelector('.best-score')?.textContent || ''}; })")
     soon = (await page.text_content('[data-testid=coming-soon]')).strip()
     have = [t for t in TOPIC_ORDER if any(c.get('topic') == t for c in medium)]
-    check('v2 topic grid: one tile per topic that has cards, in design order, 152 wide, 84+ tall and equal (grows for two-line names), Not tried to start',
-          [t['code'] for t in tiles] == have and all(t['name'] == TOPIC_NAMES[t['code']] and abs(t['w'] - 152) <= 1 and t['h'] >= 83.5 and abs(t['h'] - tiles[0]['h']) <= 0.5 and t['score'] == 'Not tried' for t in tiles), tiles)
+    check('v2 topic grid: one tile per topic that has cards, in design order, 152 wide, 72+ tall and equal, names only',
+          [t['code'] for t in tiles] == have and all(t['name'] == TOPIC_NAMES[t['code']] and abs(t['w'] - 152) <= 1 and t['h'] >= 71.5 and abs(t['h'] - tiles[0]['h']) <= 0.5 and t['score'] == '' for t in tiles), tiles)
     rest = [TOPIC_NAMES[k] for k in TOPIC_NAMES if k not in have]
     check('v2 topic grid: the other topics are listed under "Coming soon" (not tappable)', soon.split(' · ') == rest and not await page.query_selector('.soon [data-topic]'), soon)
     await shot_v2(page, '02-topic-grid-360x640.png')
@@ -1564,8 +1649,8 @@ async def levels_suite(browser, base, cards):
     await shot_v2(page, '04-medium-summary-360x640.png')
     await page.click('[data-act=another]')
     await page.wait_for_selector('[data-screen=topics]')
-    st = await page.text_content('[data-topic=numbers_prices] .best-score')
-    check('v2 topic grid: "Another topic" goes back to the grid, which shows the best score for the topic', st == f'✓ {n}/{n}', st)
+    st = await page.locator('[data-topic=numbers_prices] .best-score').count()
+    check('v2 topic grid: "Another topic" goes back to the grid, which shows names only', st == 0, st)
     # Hint caps a card at half: all right, one hint -> not 3 stars; best stays 3 (no "New best")
     await page.click('[data-topic=verbs_past]')
     await page.wait_for_selector('[data-screen=card][data-state=question]')
@@ -1910,8 +1995,8 @@ async def levels_suite(browser, base, cards):
     # ---- 5. Easy scene transcript: label colours follow the voice (Barista is female in s-cafe-01) ----
     ctx, page = await new_page(browser, errors, viewport={'width': 360, 'height': 640})
     await home_fresh(page, base)
-    await start_plan(page, ['c-0019', 'c-0022'])
-    for cid in ('c-0019', 'c-0022'):
+    await start_plan(page, ['c-9101', 'c-9102'])
+    for cid in ('c-9101', 'c-9102'):
         await page.wait_for_selector(f'[data-card={cid}][data-state=question]')
         await page.click('[data-act=dontknow]')
         await page.wait_for_selector('[data-state=wrong]')
@@ -1920,7 +2005,7 @@ async def levels_suite(browser, base, cards):
         want = [(l['speaker'], l['voice'], VOICE_COLOR[l['voice']]) for l in by_id[cid]['audio_lines']]
         check(f'v2.1 Easy scene {cid}: "What you heard" labels come from content ({", ".join(l["speaker"] for l in by_id[cid]["audio_lines"])}) and colours follow the voice',
               [tuple(p) for p in pairs] == want, pairs)
-        if cid == 'c-0019':
+        if cid == 'c-9101':
             await shot_v2(page, '11-two-voice-transcript-easy-scene-360x640.png')
         await page.click('[data-act=sheet-close]')
         await page.click('[data-act=next]')
@@ -1936,9 +2021,8 @@ PLAYBTN_JS = """() => { const b = document.querySelector('#app .card-zone [data-
   return { playing: !a.paused && !a.ended, rate: a.playbackRate, dur: a.duration, cls: b.className, pressed: b.getAttribute('aria-pressed'), label: b.getAttribute('aria-label'),
            stopIcon: vis(b.querySelector('.ic-stop')), playIcon: vis(b.querySelector('.ic-play')), cap: cap && cap.textContent,
            anim: [b, slow].map((e) => getComputedStyle(e).animationName), slowCls: slow.className }; }"""
-TILES_JS = """() => [...document.querySelectorAll('.topic-tile')].map((t) => { const r = t.getBoundingClientRect(), n = t.querySelector('.tname'), s = t.querySelector('.best-score').getBoundingClientRect();
-  const lines = Math.round(n.getBoundingClientRect().height / parseFloat(getComputedStyle(n).lineHeight));
-  return { name: n.textContent, lines, h: r.height, gap: s.top - n.getBoundingClientRect().bottom, fromBottom: r.bottom - s.bottom, starsTop: s.top - r.top }; })"""
+TILES_JS = """() => [...document.querySelectorAll('.topic-tile')].map((t) => { const r = t.getBoundingClientRect(), n = t.querySelector('.tname');
+  return { name: n.textContent, lines: Math.round(n.getBoundingClientRect().height / parseFloat(getComputedStyle(n).lineHeight)), h: r.height, children: t.children.length, padding: getComputedStyle(t).padding }; })"""
 FOCUS_JS = """() => { const e = document.activeElement, cs = getComputedStyle(e); return { act: e && e.dataset.act, fv: e.matches(':focus-visible'), outline: cs.outlineStyle, width: cs.outlineWidth, bg: cs.backgroundColor }; }"""
 
 
@@ -1955,18 +2039,18 @@ async def ux_replays_suite(browser, base, cards):
     await home_fresh(page, base)
 
     # ---- play button: silent start, playing state + tap to stop, "Play again", slow, no animation (hero and row layouts) ----
-    await start_plan(page, ['c-0010', 'c-0018', 'c-0061', 'c-0055', 'c-0061', 'c-0061', 'c-0011', 'c-0061'])
-    for cid, layout in (('c-0010', 'hero'), ('c-0018', 'row')):
+    await start_plan(page, ['c-0002', 'c-0577', 'c-9104', 'c-9103', 'c-9104', 'c-9104', 'c-0011', 'c-9104'])
+    for cid, layout in (('c-0002', 'hero'), ('c-0577', 'row')):
         await page.wait_for_selector(f'[data-card={cid}][data-state=question]')
         await page.wait_for_timeout(700)
         s0 = await page.evaluate(PLAYBTN_JS)
-        if cid == 'c-0010': await ux_shot(page, '01-card-before-play-tap-to-listen.png')
+        if cid == 'c-0002': await ux_shot(page, '01-card-before-play-tap-to-listen.png')
         await page.click('#app .card-zone [data-testid=replay]'); await page.wait_for_timeout(350)
         s1 = await page.evaluate(PLAYBTN_JS)
-        if cid == 'c-0010': await ux_shot(page, '02-card-playing-stop-state.png')
+        if cid == 'c-0002': await ux_shot(page, '02-card-playing-stop-state.png')
         await page.click('#app .card-zone [data-testid=replay]'); await page.wait_for_timeout(250)
         s2 = await page.evaluate(PLAYBTN_JS)
-        if cid == 'c-0010': await ux_shot(page, '03-card-after-play-play-again.png')
+        if cid == 'c-0002': await ux_shot(page, '03-card-after-play-play-again.png')
         await page.click('#app .card-zone [data-play=slow]'); await page.wait_for_timeout(350)
         s3 = await page.evaluate(PLAYBTN_JS)
         await page.click('#app .card-zone [data-testid=replay]'); await page.wait_for_timeout(250)   # stops the slow clip too
@@ -1981,14 +2065,14 @@ async def ux_replays_suite(browser, base, cards):
         check(f'no autoplay ({layout} play button, {cid}): opens silent with "Tap to listen"; tap plays and shows a stop icon (aria-pressed, "Stop"), caption "Play again"; '
               'tap again stops; slow still starts slow playback on tap (play button shows playing, can stop it); no pulse/animation; 2 plays counted',
               ok, {'before': s0, 'playing': s1, 'stopped': s2, 'slow': s3, 'stopped2': s4, 'plays': plays})
-        if cid == 'c-0010':
+        if cid == 'c-0002':
             await page.click('[data-opt="1"]')
             await page.wait_for_selector('[data-state=correct], [data-state=wrong]')
             f = await page.evaluate(FOCUS_JS)
             check('focus: after tapping an option, Next is focused (keyboard) but shows no focus ring; flat blue button',
                   f['act'] == 'next' and f['outline'] == 'none' and f['bg'] == 'rgb(110, 139, 255)', f)
         else:
-            for ch in '8:45': await page.click(f'[data-key="{ch}"]')
+            for ch in '9:00': await page.click(f'[data-key="{ch}"]')
             await page.click('[data-act=check]')
             await page.wait_for_selector('[data-state=correct]')
         await page.click('[data-act=next]')
@@ -2003,31 +2087,31 @@ async def ux_replays_suite(browser, base, cards):
             return { state: document.querySelector('#app > .screen').dataset.state, blank: b.textContent, blankCls: b.className, line: l.textContent, you: y && y.textContent,
                      head: document.querySelector('[data-testid=result] .title').textContent, why: !!document.querySelector('[data-sheet=why]'),
                      underline: getComputedStyle(b).borderBottomColor, lineColor: getComputedStyle(l).color }; })()""")
-    g = await fix('c-0061', 'gira')
-    await ux_shot(page, '04-accepted-alternate-c-0061-gira.png')
+    g = await fix('c-9104', 'gira')
+    await ux_shot(page, '04-accepted-alternate-c-9104-gira.png')
     f = await page.evaluate(FOCUS_JS)
     check('focus: after typing an answer and tapping Check, Next shows no focus ring even though Chrome treats it as :focus-visible',
           f['act'] == 'next' and f['outline'] == 'none', f)
     await page.click('[data-act=next]')
-    s_ = await fix('c-0055', 'sobre'); await page.click('[data-act=next]')
-    main_ = await fix('c-0061', ' Dobla '); await page.click('[data-act=next]')
-    dv = await fix('c-0061', 'da vuelta'); await page.click('[data-act=next]')
+    s_ = await fix('c-9103', 'sobre'); await page.click('[data-act=next]')
+    main_ = await fix('c-9104', ' Dobla '); await page.click('[data-act=next]')
+    dv = await fix('c-9104', 'da vuelta'); await page.click('[data-act=next]')
     # listen_type with a word alternate: money formatting of the main answer is kept ($90)
     await page.wait_for_selector('[data-card=c-0011][data-state=question]')
     await page.keyboard.type('noventa'); await page.click('[data-act=check]')
     await page.wait_for_selector('[data-state=correct]')
     lt = (await page.text_content('[data-testid=answer-line]')).strip()
     await page.click('[data-act=next]')
-    wrong = await fix('c-0061', 'xyz'); await page.click('[data-act=next]')
+    wrong = await fix('c-9104', 'xyz'); await page.click('[data-act=next]')
     ok_green = 'rgb(76, 195, 138)'
-    check('accepted alternate (c-0061 typed "gira"): the blank keeps "gira" (green, ok style), line is exactly “gira” works. Also common: “dobla”.; "Correct" heading and Why row stay',
+    check('accepted alternate (c-9104 typed "gira"): the blank keeps "gira" (green, ok style), line is exactly “gira” works. Also common: “dobla”.; "Correct" heading and Why row stay',
           g['state'] == 'correct' and g['blank'] == 'gira' and 'ok' in g['blankCls'].split() and g['line'] == '“gira” works. Also common: “dobla”.'
           and g['head'] == 'Correct' and g['why'] and g['you'] is None and g['underline'] == ok_green, g)
-    check('accepted alternate (c-0055 typed "sobre"): “sobre” works. Also common: “encima de”., blank keeps "sobre"',
+    check('accepted alternate (c-9103 typed "sobre"): “sobre” works. Also common: “encima de”., blank keeps "sobre"',
           s_['blank'] == 'sobre' and s_['line'] == '“sobre” works. Also common: “encima de”.', s_)
     check('main answer typed (" Dobla ", normalised equal): unchanged display, blank "dobla", "The answer is “dobla”."',
           main_['state'] == 'correct' and main_['blank'] == 'dobla' and main_['line'] == 'The answer is “dobla”.', main_)
-    check('content sync: c-0061 now also accepts "da vuelta" (Gabriel\'s change) and shows “da vuelta” works. Also common: “dobla”.',
+    check('alternate fixture: c-9104 also accepts "da vuelta" (Gabriel\'s change) and shows “da vuelta” works. Also common: “dobla”.',
           dv['state'] == 'correct' and dv['blank'] == 'da vuelta' and dv['line'] == '“da vuelta” works. Also common: “dobla”.', dv)
     check('accepted alternate on listen_type (c-0011 typed "noventa"): “noventa” works. Also common: $90. (money format kept)',
           lt == '“noventa” works. Also common: $90.', lt)
@@ -2036,13 +2120,14 @@ async def ux_replays_suite(browser, base, cards):
     await page.wait_for_selector('[data-screen=summary]')
     sent = await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 10000)
     rows = fake.ok_rows()
-    check('results: this session\'s rows carry replays (2 plays -> 1 on c-0010 and c-0018, 0 elsewhere) and skipped false',
-          sent and [(r['card_id'], r['replays'], r['skipped']) for r in rows][:3] == [('c-0010', 1, False), ('c-0018', 1, False), ('c-0061', 0, False)]
+    check('results: this session\'s rows carry replays (2 plays -> 1 on c-0002 and c-0577, 0 elsewhere) and skipped false',
+          sent and [(r['card_id'], r['replays'], r['skipped']) for r in rows][:3] == [('c-0002', 1, False), ('c-0577', 1, False), ('c-9104', 0, False)]
           and all(r['replays'] == 0 for r in rows[2:]), [(r['card_id'], r['replays'], r['skipped']) for r in rows])
     # keyboard users still get the ring: Tab moves focus and the outline shows
-    await page.keyboard.press('Tab'); await page.keyboard.press('Tab')
+    await page.locator('[data-act=done]').focus()
+    await page.keyboard.press('Shift+Tab'); await page.keyboard.press('Tab')
     f = await page.evaluate(FOCUS_JS)
-    check('focus: keyboard (Tab) focus still shows the focus ring', f['fv'] and f['outline'] == 'solid' and f['width'] == '2px', f)
+    check('focus: keyboard (Tab) focus still shows the focus ring', f['act'] == 'done' and f['fv'] and f['outline'] == 'solid' and f['width'] == '2px', f)
     await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
 
     # ---- Medium topic grid: stars pinned to the bottom, 12px+ under the name, all lined up ----
@@ -2051,14 +2136,12 @@ async def ux_replays_suite(browser, base, cards):
     tiles = await page.evaluate(TILES_JS)
     await ux_shot(page, '05-medium-topic-grid.png')
     two = [t for t in tiles if t['lines'] == 2]
-    ok = (tiles and len({round(t['h'], 1) for t in tiles}) == 1 and len({round(t['starsTop'], 1) for t in tiles}) == 1 and len({round(t['fromBottom'], 1) for t in tiles}) == 1
-          and all(t['gap'] >= 11.5 for t in tiles) and any(t['name'] in ('Directions & places', 'Future & conditional') for t in two))
-    check('[390x844] topic grid: two-line names ("Future & conditional") keep >= 12px above the scores; scores pinned to the bottom and lined up on every tile', ok, tiles)
+    ok = tiles and len({t['h'] for t in tiles}) == 1 and all(t['h'] >= 72 and t['children'] == 1 and t['padding'] == '12px' for t in tiles) and bool(two)
+    check('[390x844] topic grid: equal name-only tiles, 72px minimum and 12px padding', ok, tiles)
     for (w, h) in ((360, 640), (320, 640)):
         await page.set_viewport_size({'width': w, 'height': h}); await page.wait_for_timeout(150)
         tl = await page.evaluate(TILES_JS)
-        okw = tl and len({round(t['h'], 1) for t in tl}) == 1 and len({round(t['starsTop'], 1) for t in tl}) == 1 and all(t['gap'] >= 11.5 for t in tl) and any(t['lines'] == 2 for t in tl)
-        check(f'[{w}x{h}] topic grid: scores 12px+ below one- and two-line names, bottom-aligned, equal tile heights (grow if needed)', okw, tl)
+        check(f'[{w}x{h}] topic grid: equal name-only tiles with two-line names', len({t['h'] for t in tl}) == 1 and all(t['h'] >= 72 and t['children'] == 1 for t in tl) and any(t['lines'] == 2 for t in tl), tl)
     await page.set_viewport_size({'width': 390, 'height': 844})
     await page.click('[data-act=home]'); await page.wait_for_selector('[data-screen=home]')
 
@@ -2186,11 +2269,11 @@ async def drill_read_suite(browser, base, cards):
     easy_opts = []
     await home_fresh(page, base)
     for _ in range(3):
-        await start_plan(page, ['c-0010', 'c-0018']); await page.wait_for_selector('[data-card=c-0010]')
+        await start_plan(page, ['c-0002', 'c-0577']); await page.wait_for_selector('[data-card=c-0002]')
         easy_opts.append(await page.evaluate("[...document.querySelectorAll('#app [data-opt]')].map(b => b.dataset.value)"))
         await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
-    check('Easy options are NOT shuffled (unchanged behaviour): c-0010 shows its options in content order every time',
-          all(o == by_id['c-0010']['options'] for o in easy_opts), easy_opts[:1])
+    check('Easy options are NOT shuffled (unchanged behaviour): c-0002 shows its options in content order every time',
+          all(o == by_id['c-0002']['options'] for o in easy_opts), easy_opts[:1])
     # > 10 playable cards: 10 picked at random, weighted toward missed / due cards (srs.planTopic on 25 cards)
     w = await page.evaluate("""import('./js/srs.js').then((srs) => {
         const cards = Array.from({ length: 25 }, (_, i) => ({ id: 'x' + i, options: ['a', 'b', 'c', 'd'], answer: 'a' }));
@@ -2740,6 +2823,67 @@ async def hard_folders_suite(browser, base):
     await page.keyboard.type('2:30'); await page.click('[data-act=check]')
     check('Hard typed: edited final answer earns full score', await page.get_attribute('.mission-result .stars', 'data-stars') == '3' and await page.evaluate('window.__oye.mission.answers.every(a => a.ok)'))
     check('Hard folders: no JS errors', not errors, errors)
+    await ctx.close()
+
+
+async def weekly_reports_suite(browser, base):
+    errors = []
+    ctx, page = await new_page(browser, errors, viewport={'width': 360, 'height': 640})
+    report = json.load(open(os.path.join(APP, 'tests', 'fixtures', 'weekly-report.json')))
+    older = {**report, 'id': 'r-2026-09-28', 'week_start': '2026-09-21', 'week_end': '2026-09-27', 'added': '2026-09-28', 'totals': {'done': 0, 'correct': 0, 'wrong': 0}, 'mistakes': []}
+    entries = [{k: r[k] for k in ('id', 'week_start', 'week_end', 'added')} for r in (report, older)]
+    mode = ['reports']
+    async def route_reports(route):
+        if route.request.url.split('?')[0].endswith('/index.json'):
+            await route.fulfill(status=404 if mode[0] == 'missing' else 200, content_type='application/json', body=json.dumps(entries if mode[0] == 'reports' else []))
+        else:
+            await route.fulfill(content_type='application/json', body=json.dumps(older if 'report-2026-09-28' in route.request.url else report))
+    await ctx.route('**/content/reports/**', route_reports)
+    await home_fresh(page, base)
+    await page.wait_for_function("document.querySelector('.weekly-row')?.textContent.includes('Sep 28')")
+    check('Home v4: Your week outside challenge grid, newest date and New; Mix unchanged', await page.locator('.your-week > .eyebrow').text_content() == 'Your week' and await page.locator('.challenges .weekly-row').count() == 0 and await page.locator('.weekly-row .report-new').count() == 1 and await page.locator('.easy-mix').text_content() == 'Mix')
+    fit = await page.evaluate("""() => { document.querySelector('#quiet').textContent = 'Saving audio…'; const h=document.querySelector('.home'), r=document.querySelector('.weekly-row').getBoundingClientRect(); return {fit:h.scrollHeight <= h.clientHeight && document.body.scrollHeight <= innerHeight, bottom:r.bottom, height:r.height}; }""")
+    check('Home v4: 360x640 fits with audio status, report tap target >=64px', fit['fit'] and fit['bottom'] <= 640 and fit['height'] >= 64, fit)
+    await page.click('[data-act=reports]')
+    await page.wait_for_function("document.querySelector('.report-row-total')?.textContent.includes('120 tests')")
+    check('Weekly list: index order, ranges, totals and only newest New', await page.locator('.report-row-title').all_text_contents() == ['Sep 28 – Oct 4', 'Sep 21 – 27'] and await page.locator('.report-row-total').all_text_contents() == ['120 tests · 104 correct', 'No tests this week'] and await page.locator('.report-new').count() == 1)
+    await page.click('[data-report="1"]')
+    await page.wait_for_selector('.report-focus')
+    check('No-play report: summary and focus only', await page.locator('.report-summary').count() == 1 and await page.locator('.report-totals, .report-challenges, .report-mistakes').count() == 0)
+    await page.click('[data-act=report-back]')
+    await page.wait_for_selector('[data-screen=reports]')
+    check('Opening older report keeps newest unread', await page.locator('.report-new').count() == 1)
+    await page.click('[data-report="0"]')
+    await page.wait_for_selector('.report-mistake')
+    check('Report: sections in approved order', await page.locator('main > section').evaluate_all('(els) => els.map(e => e.className)') == ['report-totals', 'report-focus', 'report-challenges', 'report-mistakes'])
+    check('Report: exact totals, percentage, Medium topic breakdown', await page.locator('.report-numbers .display').all_text_contents() == ['120', '104', '16'] and await page.locator('.report-totals > .caption').text_content() == '87% correct' and 'Numbers and prices' in await page.locator('.report-topics').text_content())
+    check('Report: all 15 mistakes in file order, both answers, optional notes, no Show all', await page.locator('.report-mistake > p[lang=es]:not(.answer-pair)').all_text_contents() == [m['question'] for m in report['mistakes']] and await page.locator('.answer-pair s').all_text_contents() == ['abre']*15 and await page.locator('.answer-pair .report-correct').all_text_contents() == ['abra']*15 and await page.get_by_text('Show all', exact=False).count() == 0 and await page.locator('.report-mistake > p:last-child.caption').count() == 8)
+    await page.locator('.report-mistake').last.scroll_into_view_if_needed()
+    await page.wait_for_timeout(100)
+    check('Report: sticky header with range when scrolled, final mistake reachable', await page.locator('.report-header').evaluate('(h) => h.getBoundingClientRect().top === 0 && h.classList.contains("scrolled") && h.classList.contains("past-title")') and await page.locator('.report-sticky-range').text_content() == 'Sep 28 – Oct 4')
+    await page.click('[data-act=report-back]'); await page.wait_for_selector('[data-screen=reports]')
+    check('Newest report read: New removed from list', await page.locator('.report-new').count() == 0)
+    await page.click('[data-act=report-back]'); await page.wait_for_selector('[data-screen=home]')
+    check('Newest report read: Home caption persisted', await page.locator('.weekly-row .caption').text_content() == 'Week of Sep 28' and await page.evaluate("JSON.parse(localStorage.getItem('oye.progress.v1')).reportSeen") == report['id'])
+    await page.evaluate('window.__oye.content.audioSync')
+    check('Weekly reports online: no JS errors', not errors, errors)
+    errors.clear()
+    await ctx.unroute('**/content/reports/**', route_reports)
+    await ctx.set_offline(True)
+    cached = await page.evaluate("async () => { const r=await import('./js/reports.js'); const idx=await r.loadReportsIndex(); return [idx.length, (await r.loadReport(idx[0])).mistakes.length]; }")
+    check('Weekly reports: index and opened report available offline', cached == [2, 15], cached)
+    await ctx.set_offline(False)
+    # Offline fetch failures are expected; runtime exceptions are not.
+    check('Weekly reports offline: no JS exceptions', not [e for e in errors if e.startswith('pageerror:')], errors)
+    errors.clear()
+    await ctx.route('**/content/reports/**', route_reports)
+    for empty in ('empty', 'missing'):
+        mode[0] = empty
+        await page.reload(); await page.wait_for_selector('[data-screen=home]')
+        check(f'Weekly reports {empty}: Home still shows arrival caption', await page.locator('.weekly-row .caption').text_content() == 'First report arrives Monday')
+        await page.click('[data-act=reports]')
+        check(f'Weekly reports {empty}: empty state without list caption', await page.locator('.report-empty').count() == 1 and await page.locator('.report-byline, .report-list-row').count() == 0)
+    check('Weekly reports: no JS errors', not errors, errors)
     await ctx.close()
 
 
