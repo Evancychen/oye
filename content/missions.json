@@ -1659,5 +1659,830 @@
     "region_note": null,
     "added": "2026-10-05",
     "folder": "cafes_food"
+  },
+  {
+    "id": "m-interview-followup-01",
+    "title_en": "Second interview: the follow-up questions",
+    "situation_en": "You are back at the design studio for a second interview. The director asks the quick follow-up questions. Listen.",
+    "topic": "small_talk",
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "vocab_ids": [
+      "v-dejar",
+      "v-puesto",
+      "v-atraer",
+      "v-mezcla",
+      "v-parecido",
+      "v-sentirse-comodo",
+      "v-avisar",
+      "v-querer-decir",
+      "v-verse-haciendo",
+      "v-contar"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Directora",
+          "voice": "female",
+          "es": "Hola otra vez, gracias por regresar. Hoy tengo unas preguntas más. ¿Por qué dejaste tu último puesto?",
+          "en": "Hi again, thanks for coming back. Today I have a few more questions. Why did you leave your last job?"
+        },
+        {
+          "speaker": "Candidato",
+          "voice": "male",
+          "es": "Porque la agencia era muy grande, y yo quería trabajar en proyectos de música y de moda.",
+          "en": "Because the agency was very big, and I wanted to work on music and fashion projects."
+        },
+        {
+          "speaker": "Directora",
+          "voice": "female",
+          "es": "¿Y qué te atrajo de nuestro estudio?",
+          "en": "And what drew you to our studio?"
+        },
+        {
+          "speaker": "Candidato",
+          "voice": "male",
+          "es": "Me encantó su campaña para el festival de música electrónica. Es una mezcla de arte digital y fotografía, muy parecida a mi estilo.",
+          "en": "I loved your campaign for the electronic music festival. It is a mix of digital art and photography, very similar to my style."
+        },
+        {
+          "speaker": "Directora",
+          "voice": "female",
+          "es": "¿Te sientes cómodo con fechas de entrega cortas?",
+          "en": "Are you comfortable with short deadlines?"
+        },
+        {
+          "speaker": "Candidato",
+          "voice": "male",
+          "es": "Sí. En la agencia teníamos entregas todos los viernes.",
+          "en": "Yes. At the agency we had deliveries every Friday."
+        },
+        {
+          "speaker": "Directora",
+          "voice": "female",
+          "es": "¿Tienes que avisar con anticipación en tu trabajo actual?",
+          "en": "Do you have to give notice at your current job?"
+        },
+        {
+          "speaker": "Candidato",
+          "voice": "male",
+          "es": "Sí, con dos semanas de anticipación. Podría empezar el lunes veintiséis.",
+          "en": "Yes, two weeks’ notice. I could start on Monday the twenty-sixth."
+        },
+        {
+          "speaker": "Directora",
+          "voice": "female",
+          "es": "¿Quieres decir el veintiséis de octubre? Perfecto. ¿Y te ves haciendo esto en tres años? Ah, y antes de terminar, ¿hay algo más que quieras contarme?",
+          "en": "You mean October twenty-sixth? Perfect. And can you see yourself doing this in three years? Oh, and before we finish, is there anything else you would like to tell me?"
+        },
+        {
+          "speaker": "Candidato",
+          "voice": "male",
+          "es": "Sí, me veo dirigiendo un equipo. Y también hago ilustración, por si les interesa.",
+          "en": "Yes, I see myself leading a team. And I also do illustration, in case you are interested."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "Why did he leave his last job?",
+        "options": [
+          "The salary was too low",
+          "He moved to another city",
+          "He wanted music and fashion projects",
+          "The agency closed"
+        ],
+        "answer": "He wanted music and fashion projects",
+        "hint_en": "Listen to his first answer.",
+        "explanation_en": "'Quería trabajar en proyectos de música y de moda' = he wanted music and fashion projects."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "What drew him to this studio?",
+        "options": [
+          "Working from home",
+          "The office location",
+          "Their electronic music festival campaign",
+          "The salary"
+        ],
+        "answer": "Their electronic music festival campaign",
+        "hint_en": "Listen after '¿qué te atrajo?'.",
+        "explanation_en": "'Me encantó su campaña para el festival de música electrónica' = their festival campaign."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "How much notice does he have to give?",
+        "options": [
+          "Two weeks",
+          "None",
+          "One month",
+          "Two days"
+        ],
+        "answer": "Two weeks",
+        "hint_en": "Listen for 'anticipación'.",
+        "explanation_en": "'Con dos semanas de anticipación' = two weeks' notice."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "What day of the month could he start? Type the number.",
+        "answer": "26",
+        "accepted_answers": [
+          "26",
+          "veintiséis",
+          "26 de octubre"
+        ],
+        "hint_en": "Listen for 'podría empezar'.",
+        "explanation_en": "'Podría empezar el lunes veintiséis' = he could start on the 26th."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "How does he see himself in three years?",
+        "options": [
+          "Working freelance",
+          "Leading a team",
+          "Teaching illustration",
+          "Back at the agency"
+        ],
+        "answer": "Leading a team",
+        "hint_en": "Listen to his last answer.",
+        "explanation_en": "'Me veo dirigiendo un equipo' = I see myself leading a team."
+      }
+    ],
+    "region_note": "'¿Hay algo más que quieras contarme?' is a set phrase interviewers use; learn it as a chunk.",
+    "added": "2026-10-08",
+    "folder": "design_art"
+  },
+  {
+    "id": "m-techno-club-01",
+    "title_en": "Club box office: a melodic techno night",
+    "situation_en": "You arrive at a club for a melodic techno night with big screen visuals. Listen at the box office.",
+    "topic": "numbers_prices",
+    "lesson_tags": [
+      "A2-L07",
+      "A1-L12",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-taquilla",
+      "v-pulsera",
+      "v-chamarra"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Taquillero",
+          "voice": "male",
+          "es": "Buenas noches. ¿Vienes a la noche de techno melódico?",
+          "en": "Good evening. Are you here for the melodic techno night?"
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "Sí. ¿Cuánto cuesta la entrada?",
+          "en": "Yes. How much is entry?"
+        },
+        {
+          "speaker": "Taquillero",
+          "voice": "male",
+          "es": "En taquilla está en cuatrocientos cincuenta. Si la compraste en línea, son trescientos ochenta.",
+          "en": "At the box office it is four hundred fifty. If you bought it online, it is three hundred eighty."
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "No la compré. Una entrada, por favor. ¿A qué hora sale el artista principal?",
+          "en": "I didn't buy it. One ticket, please. What time does the headliner come on?"
+        },
+        {
+          "speaker": "Taquillero",
+          "voice": "male",
+          "es": "Saldrá a la una y cuarto. Antes toca una productora local, de las once a la una.",
+          "en": "He will come on at a quarter past one. Before that a local producer plays, from eleven to one."
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "¿Habrá visuales en la pantalla grande?",
+          "en": "Will there be visuals on the big screen?"
+        },
+        {
+          "speaker": "Taquillero",
+          "voice": "male",
+          "es": "Sí, toda la presentación tiene visuales en tres dimensiones. Oye, no dejes tu chamarra en la pista; el guardarropa cuesta treinta pesos.",
+          "en": "Yes, the whole performance has 3D visuals. Hey, don’t leave your jacket on the dance floor; the coat check costs thirty pesos."
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "Perfecto. Aquí tienes quinientos.",
+          "en": "Perfect. Here is five hundred."
+        },
+        {
+          "speaker": "Taquillero",
+          "voice": "male",
+          "es": "Tu cambio, cincuenta. Te pongo la pulsera. La salida de emergencia está al fondo, a la izquierda.",
+          "en": "Your change, fifty. I will put the wristband on you. The emergency exit is at the back, on the left."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "type",
+        "prompt_en": "How much does she pay for her ticket? Type the number.",
+        "answer": "450",
+        "accepted_answers": [
+          "450",
+          "$450",
+          "cuatrocientos cincuenta"
+        ],
+        "hint_en": "She didn't buy it online.",
+        "explanation_en": "'En taquilla está en cuatrocientos cincuenta' = 450 at the door. Online would be 380."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "What time does the headliner start?",
+        "options": [
+          "1:15 a.m.",
+          "11:00 p.m.",
+          "1:45 a.m.",
+          "4:15 a.m."
+        ],
+        "answer": "1:15 a.m.",
+        "hint_en": "Listen for 'saldrá a la…'.",
+        "explanation_en": "'Saldrá a la una y cuarto' = he will come on at 1:15."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What does the clerk say about her jacket?",
+        "options": [
+          "Coat check is free",
+          "Leave it with a friend",
+          "Keep it on all night",
+          "Don't leave it on the dance floor"
+        ],
+        "answer": "Don't leave it on the dance floor",
+        "hint_en": "Listen for 'chamarra'.",
+        "explanation_en": "'No dejes tu chamarra en la pista' = don't leave your jacket on the dance floor. Coat check is 30 pesos."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "How much change does she get? Type the number.",
+        "answer": "50",
+        "accepted_answers": [
+          "50",
+          "$50",
+          "cincuenta"
+        ],
+        "hint_en": "She pays 500.",
+        "explanation_en": "450 from 500 leaves 50: 'tu cambio, cincuenta'."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "Where is the emergency exit?",
+        "options": [
+          "At the back, on the left",
+          "Next to the bar",
+          "By the entrance",
+          "At the back, on the right"
+        ],
+        "answer": "At the back, on the left",
+        "hint_en": "Listen to the last line.",
+        "explanation_en": "'Al fondo, a la izquierda' = at the back, on the left."
+      }
+    ],
+    "region_note": "Mexico: 'la chamarra' = jacket, 'la pulsera' = wristband, 'el guardarropa' = coat check.",
+    "added": "2026-10-08",
+    "folder": "music"
+  },
+  {
+    "id": "m-taqueria-night-01",
+    "title_en": "Late-night taquería: ordering and the total",
+    "situation_en": "After a concert you stop at a busy taquería stand near the metro. Listen to the order.",
+    "topic": "food_ordering",
+    "lesson_tags": [
+      "A1-L22",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-al-pastor",
+      "v-suadero",
+      "v-con-todo",
+      "v-para-aqui",
+      "v-nomas-efectivo",
+      "v-agua-de-horchata",
+      "v-joven",
+      "v-esquina"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Taquera",
+          "voice": "female",
+          "es": "¡Buenas noches, joven! ¿Qué le damos?",
+          "en": "Good evening, young man! What can we get you?"
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "¿Me da cuatro tacos al pastor y dos de suadero, por favor?",
+          "en": "Can I have four al pastor tacos and two suadero, please?"
+        },
+        {
+          "speaker": "Taquera",
+          "voice": "female",
+          "es": "¿Con todo? ¿Cebolla y cilantro?",
+          "en": "With everything? Onion and cilantro?"
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Sí, con todo. ¿Cuál salsa pica menos?",
+          "en": "Yes, with everything. Which salsa is less spicy?"
+        },
+        {
+          "speaker": "Taquera",
+          "voice": "female",
+          "es": "La roja pica menos. La verde pica un buen. ¿Para aquí o para llevar?",
+          "en": "The red one is milder. The green one is really spicy. For here or to go?"
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Para aquí. Y un agua de horchata grande, por favor.",
+          "en": "For here. And a large horchata, please."
+        },
+        {
+          "speaker": "Taquera",
+          "voice": "female",
+          "es": "Los de pastor están a veinte y los de suadero a veinticinco. El agua grande son cuarenta. ¿Algo más?",
+          "en": "The pastor ones are twenty and the suadero ones twenty-five. The large drink is forty. Anything else?"
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "No, nada más. ¿Aceptan tarjeta?",
+          "en": "No, that is all. Do you take cards?"
+        },
+        {
+          "speaker": "Taquera",
+          "voice": "female",
+          "es": "Nomás efectivo, joven. Hay un cajero en la esquina, junto a la farmacia.",
+          "en": "Cash only, young man. There is an ATM on the corner, next to the pharmacy."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "Which salsa is milder?",
+        "options": [
+          "The green one",
+          "They have no salsa",
+          "Both are mild",
+          "The red one"
+        ],
+        "answer": "The red one",
+        "hint_en": "Listen for 'pica menos'.",
+        "explanation_en": "'La roja pica menos' = the red one is milder."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "Is he eating there or taking it to go?",
+        "options": [
+          "Eating there",
+          "Half and half",
+          "Taking it to go",
+          "He does not say"
+        ],
+        "answer": "Eating there",
+        "hint_en": "Listen for 'para aquí'.",
+        "explanation_en": "'Para aquí' = to eat here."
+      },
+      {
+        "id": "q3",
+        "kind": "type",
+        "prompt_en": "How much is his total? Type the number.",
+        "answer": "170",
+        "accepted_answers": [
+          "170",
+          "$170",
+          "ciento setenta"
+        ],
+        "hint_en": "Add four pastor, two suadero and the drink.",
+        "explanation_en": "Four at 20 = 80, two at 25 = 50, plus 40 for the drink = 170."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "How can he pay?",
+        "options": [
+          "Bank transfer",
+          "Card or cash",
+          "Card only",
+          "Cash only"
+        ],
+        "answer": "Cash only",
+        "hint_en": "Listen for 'nomás'.",
+        "explanation_en": "'Nomás efectivo' = cash only."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "Where is the ATM?",
+        "options": [
+          "Next to the bank",
+          "Across from the metro",
+          "On the corner, by the pharmacy",
+          "Inside the taquería"
+        ],
+        "answer": "On the corner, by the pharmacy",
+        "hint_en": "Listen for 'cajero'.",
+        "explanation_en": "'Hay un cajero en la esquina, junto a la farmacia' = on the corner, next to the pharmacy."
+      }
+    ],
+    "region_note": "'Nomás' = only (Mexican). 'Pica un buen' = it's really spicy.",
+    "added": "2026-10-08",
+    "folder": "cafes_food"
+  },
+  {
+    "id": "m-hotel-checkin-01",
+    "title_en": "Hotel check-in in Oaxaca",
+    "situation_en": "You arrive at a small hotel in Oaxaca for a long weekend. Listen at the front desk.",
+    "topic": "time_schedules",
+    "lesson_tags": [
+      "A1-L12",
+      "A2-L07",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-quedarse"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Buenas tardes, bienvenido. ¿Tiene una reservación?",
+          "en": "Good afternoon, welcome. Do you have a reservation?"
+        },
+        {
+          "speaker": "Huésped",
+          "voice": "male",
+          "es": "Sí, a nombre de Daniel Ruiz, por tres noches.",
+          "en": "Yes, under Daniel Ruiz, for three nights."
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Aquí está. Es una habitación doble con vista al jardín. La noche está en mil trescientos cuarenta pesos, con el desayuno incluido.",
+          "en": "Here it is. It is a double room with a garden view. The night is one thousand three hundred forty pesos, breakfast included."
+        },
+        {
+          "speaker": "Huésped",
+          "voice": "male",
+          "es": "¿A qué hora es el desayuno?",
+          "en": "What time is breakfast?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "De siete a diez y media, en la terraza del segundo nivel.",
+          "en": "From seven to ten thirty, on the second-level terrace."
+        },
+        {
+          "speaker": "Huésped",
+          "voice": "male",
+          "es": "¿Y a qué hora tengo que dejar la habitación el último día?",
+          "en": "And what time do I have to leave the room on the last day?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "La salida es a las doce. Si necesita más tiempo, puede quedarse hasta las dos por trescientos pesos más.",
+          "en": "Check-out is at twelve. If you need more time, you can stay until two for three hundred pesos more."
+        },
+        {
+          "speaker": "Huésped",
+          "voice": "male",
+          "es": "Perfecto. ¿Hay caja fuerte?",
+          "en": "Perfect. Is there a safe?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Sí, en el clóset. No deje su pasaporte ni su dinero en la mesa. Aquí tiene su llave: es la habitación doscientos catorce.",
+          "en": "Yes, in the closet. Do not leave your passport or your money on the table. Here is your key: it is room two hundred fourteen."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "How much is one night?",
+        "options": [
+          "$1,314",
+          "$1,430",
+          "$1,240",
+          "$1,340"
+        ],
+        "answer": "$1,340",
+        "hint_en": "Listen for 'la noche está en'.",
+        "explanation_en": "'Mil trescientos cuarenta' = 1,340. Cuatrocientos would be 400."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "When is breakfast?",
+        "options": [
+          "7:00 to 10:00",
+          "7:30 to 10:30",
+          "7:00 to 10:30",
+          "10:30 to 12:00"
+        ],
+        "answer": "7:00 to 10:30",
+        "hint_en": "Listen for 'desayuno'.",
+        "explanation_en": "'De siete a diez y media' = from 7 to 10:30."
+      },
+      {
+        "id": "q3",
+        "kind": "type",
+        "prompt_en": "What is his room number? Type the number.",
+        "answer": "214",
+        "accepted_answers": [
+          "214",
+          "doscientos catorce"
+        ],
+        "hint_en": "Listen to the last line.",
+        "explanation_en": "'La habitación doscientos catorce' = room 214. Catorce is 14, not 40."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "What does it cost to stay until 2?",
+        "options": [
+          "$1,340 more",
+          "$300 more",
+          "It is free",
+          "$200 more"
+        ],
+        "answer": "$300 more",
+        "hint_en": "Listen for 'hasta las dos'.",
+        "explanation_en": "'Hasta las dos por trescientos pesos más' = until 2 for 300 more."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What does the receptionist tell him not to do?",
+        "options": [
+          "Take the key out",
+          "Open the safe",
+          "Use the terrace",
+          "Leave his passport on the table"
+        ],
+        "answer": "Leave his passport on the table",
+        "hint_en": "Listen for 'no deje'.",
+        "explanation_en": "'No deje su pasaporte ni su dinero en la mesa' is a negative usted command."
+      }
+    ],
+    "region_note": "'La salida' at a hotel = check-out. Mexico says 'el clóset' for the wardrobe.",
+    "added": "2026-10-08",
+    "folder": "travel"
+  },
+  {
+    "id": "m-building-whatsapp-01",
+    "title_en": "WhatsApp from the building manager: water cut",
+    "situation_en": "Your building's manager posts in the residents' WhatsApp group.",
+    "topic": "home_errands",
+    "lesson_tags": [
+      "A1-L12",
+      "A1-L24",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-avisar",
+      "v-cubeta",
+      "v-plomero",
+      "v-fuga",
+      "v-conserje",
+      "v-depa",
+      "v-mantenimiento"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "whatsapp",
+      "text_es": "Buenos días, vecinos 👋\n\nLes aviso con anticipación: el jueves 15 no habrá agua de 9:00 a 17:00 porque van a limpiar la cisterna.\n\n- Llenen una cubeta o unos garrafones el miércoles en la noche.\n- No dejen las llaves del agua abiertas.\n- El elevador sí va a funcionar.\n\nTambién: el plomero vendrá el viernes a revisar las fugas. Si su depa tiene una fuga, avísenme antes del miércoles.\n\nLa cuota de mantenimiento de octubre es de $650. Pueden pagar en efectivo con el conserje o por transferencia.\n\n¡Gracias!\nAdministración",
+      "text_en": "Good morning, neighbors 👋\n\nAdvance notice: on Thursday the 15th there will be no water from 9:00 to 17:00 because they are cleaning the water tank.\n\n- Fill a bucket or some water jugs on Wednesday night.\n- Don't leave the taps open.\n- The elevator will work.\n\nAlso: the plumber will come on Friday to check for leaks. If your apartment has a leak, let me know before Wednesday.\n\nThe October maintenance fee is $650. You can pay cash to the caretaker or by bank transfer.\n\nThanks!\nBuilding management",
+      "sender_en": "Building management",
+      "time": "08:15"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "When will there be no water?",
+        "options": [
+          "Wednesday night",
+          "Thursday, 9 to 11 a.m.",
+          "Friday, all day",
+          "Thursday, 9 a.m. to 5 p.m."
+        ],
+        "answer": "Thursday, 9 a.m. to 5 p.m.",
+        "hint_en": "Look for 'no habrá agua'.",
+        "explanation_en": "'El jueves 15 no habrá agua de 9:00 a 17:00' = Thursday, 9 to 5."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "What should you do on Wednesday night?",
+        "options": [
+          "Leave the taps open",
+          "Pay the fee",
+          "Call the plumber",
+          "Fill a bucket or water jugs"
+        ],
+        "answer": "Fill a bucket or water jugs",
+        "hint_en": "Look for 'el miércoles en la noche'.",
+        "explanation_en": "'Llenen una cubeta o unos garrafones' = fill a bucket or jugs."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "When is the plumber coming?",
+        "options": [
+          "Monday",
+          "Friday",
+          "Thursday",
+          "Wednesday"
+        ],
+        "answer": "Friday",
+        "hint_en": "Look for 'el plomero'.",
+        "explanation_en": "'El plomero vendrá el viernes' = the plumber will come on Friday."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "How much is the October maintenance fee? Type the number.",
+        "answer": "650",
+        "accepted_answers": [
+          "650",
+          "$650",
+          "seiscientos cincuenta"
+        ],
+        "hint_en": "Look for 'cuota'.",
+        "explanation_en": "'La cuota de mantenimiento de octubre es de $650.'"
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "How can you pay?",
+        "options": [
+          "Card only",
+          "Cash to the caretaker or transfer",
+          "Online only",
+          "Cash at the bank"
+        ],
+        "answer": "Cash to the caretaker or transfer",
+        "hint_en": "Look at the payment line.",
+        "explanation_en": "'En efectivo con el conserje o por transferencia' = cash to the caretaker or transfer."
+      }
+    ],
+    "region_note": "Mexico: 'la cubeta' = bucket, 'el garrafón' = big water jug, 'el depa' = apartment.",
+    "added": "2026-10-08",
+    "folder": "home_errands"
+  },
+  {
+    "id": "m-streetwear-email-01",
+    "title_en": "Email from a streetwear brand: your order",
+    "situation_en": "You ordered a hoodie and a cap online from a Mexican streetwear brand. Their email arrives.",
+    "topic": "shopping",
+    "lesson_tags": [
+      "A1-L24",
+      "A2-L07",
+      "A1-L31"
+    ],
+    "vocab_ids": [
+      "v-talla",
+      "v-etiqueta",
+      "v-chamarra",
+      "v-quedar",
+      "v-cambio-ropa"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "email",
+      "text_es": "Asunto: Tu pedido 4821 ya va en camino\n\nHola:\n\n¡Gracias por tu compra! Tu pedido salió hoy de nuestra bodega y llegará en 3 a 5 días hábiles.\n\nTu pedido:\n- Sudadera negra, talla M: $890\n- Gorra bordada: $350\nEnvío: gratis en compras de más de $1,000\nTotal: $1,240\n\n¿No te queda? Tienes 30 días para cambiarla por otra talla. No laves ni uses la prenda antes del cambio, y no le quites la etiqueta.\n\nEste fin de semana: 20% de descuento en chamarras.\n\nHilo Negro, ropa urbana hecha en México",
+      "text_en": "Subject: Your order 4821 is on its way\n\nHi,\n\nThanks for your purchase! Your order left our warehouse today and will arrive in 3 to 5 business days.\n\nYour order:\n- Black hoodie, size M: $890\n- Embroidered cap: $350\nShipping: free on orders over $1,000\nTotal: $1,240\n\nDoesn't fit? You have 30 days to exchange it for another size. Don't wash or wear the item before the exchange, and don't remove the tag.\n\nThis weekend: 20% off jackets.\n\nHilo Negro, streetwear made in Mexico",
+      "sender_en": "Hilo Negro (online store)",
+      "time": "19:42"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "When will the order arrive?",
+        "options": [
+          "Tomorrow",
+          "In 3 to 5 business days",
+          "In 30 days",
+          "This weekend"
+        ],
+        "answer": "In 3 to 5 business days",
+        "hint_en": "Look for 'llegará'.",
+        "explanation_en": "'Llegará en 3 a 5 días hábiles' = in 3 to 5 business days."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "How much did you pay in total? Type the number.",
+        "answer": "1240",
+        "accepted_answers": [
+          "1240",
+          "$1240",
+          "1,240",
+          "$1,240",
+          "mil doscientos cuarenta"
+        ],
+        "hint_en": "Look for 'Total'.",
+        "explanation_en": "890 for the hoodie plus 350 for the cap = 1,240, with free shipping."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "Why is shipping free?",
+        "options": [
+          "You are a member",
+          "The order is over $1,000",
+          "It is the weekend",
+          "You used a code"
+        ],
+        "answer": "The order is over $1,000",
+        "hint_en": "Look at the shipping line.",
+        "explanation_en": "'Gratis en compras de más de $1,000' = free on orders over 1,000."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "What must you not do before an exchange?",
+        "options": [
+          "Fold it",
+          "Wash or wear the hoodie",
+          "Send a photo",
+          "Keep the receipt"
+        ],
+        "answer": "Wash or wear the hoodie",
+        "hint_en": "Look for 'No laves ni uses'.",
+        "explanation_en": "'No laves ni uses la prenda' = don't wash or wear the item (negative tú commands)."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What is on sale this weekend?",
+        "options": [
+          "Hoodies",
+          "Jackets",
+          "Caps",
+          "Everything"
+        ],
+        "answer": "Jackets",
+        "hint_en": "Look for 'descuento'.",
+        "explanation_en": "'20% de descuento en chamarras' = 20% off jackets."
+      }
+    ],
+    "region_note": "'¿No te queda?' = doesn't it fit? 'La chamarra' = jacket (Mexico).",
+    "added": "2026-10-08",
+    "folder": "fashion"
   }
 ]
