@@ -9,15 +9,15 @@
    when present, including reports/index.json.
 4. Bumps app/content/version.json (version + 1, published date, new_cards, new_card_ids).
 5. Runs tools/build_audio.py --prune (only missing audio is generated; files no card,
-   dialogue line or mission uses any more are deleted).
+   dialogue line or mission uses any more are deleted only if untracked and unreferenced).
 6. Updates CACHE_VERSION in sw.js so installed apps pick up the new shell/content.
 
 If the content is byte-identical to what the app already has, the version is not
 bumped (use --force to bump anyway); audio and sw.js are still refreshed.
 
-Usage:  python3 tools/publish_content.py [--force] [--source DIR] [--validator PATH]
+Usage:  python3 tools/publish_content.py [--force] [--source DIR] [--validator PATH] [--skip-missing-audio]
 """
-import argparse, datetime, glob, hashlib, json, os, re, shutil, subprocess, sys
+import argparse, datetime, glob, hashlib, html, json, os, re, shutil, subprocess, sys
 from pathlib import Path
 
 APP = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +25,7 @@ ROOT = os.path.dirname(APP)
 APP_CONTENT = os.path.join(APP, 'content')
 FILES = ['cards.json', 'scenes.json', 'vocab.json']
 OPTIONAL_FILES = ['missions.json']   # v2 Levels: Hard missions
-SHELL_FILES = ['index.html', 'styles.css', 'manifest.webmanifest', 'js/*.js',
+SHELL_FILES = ['index.html', 'styles.css', 'manifest.webmanifest', 'js/*.js', 'strings/*.json',
                'fonts/*.woff2', 'icons/*.png']
 
 
@@ -52,7 +52,22 @@ def validate(validator):
         sys.exit('ABORT: validator did not print CLEAN, nothing was published.')
 
 
+def update_shell_strings():
+    """Generate pre-JS text and the no-JS fallback from the same English source."""
+    strings = load(os.path.join(APP, 'strings', 'en.json'))
+    index = Path(APP, 'index.html')
+    src = index.read_text(encoding='utf-8')
+    src = re.sub(r'(<[^>]+data-i18n="([^"]+)"[^>]*>)[^<]*(</[^>]+>)',
+                 lambda m: m[1] + html.escape(strings[m[2]]) + m[3], src)
+    src = re.sub(r'<meta\b[^>]*data-i18n-content="([^"]+)"[^>]*>',
+                 lambda m: re.sub(r'content="[^"]*"',
+                                  lambda _: 'content="' + html.escape(strings[m[1]], quote=True) + '"',
+                                  m[0], count=1), src)
+    index.write_text(src, encoding='utf-8')
+
+
 def update_sw(content_version):
+    update_shell_strings()
     sw = os.path.join(APP, 'sw.js')
     h = hashlib.sha256()
     h.update(Path(__file__).read_bytes())  # worker-generation changes also invalidate the shell
@@ -61,6 +76,12 @@ def update_sw(content_version):
             h.update(p.encode()); h.update(open(p, 'rb').read())
     tag = f'oye-v{content_version}-{h.hexdigest()[:8]}'
     src = open(sw, encoding='utf-8').read()
+    # Expand the same globs used for the shell hash, including every catalog.
+    shell = ['./'] + [os.path.relpath(p, APP) for pat in SHELL_FILES
+                     for p in sorted(glob.glob(os.path.join(APP, pat)))]
+    src = re.sub(r'const SHELL = \[.*?\];',
+                 'const SHELL = [\n' + ''.join(f"  {p!r},\n" for p in shell) + '];',
+                 src, count=1, flags=re.S)
     if "  'js/reports.js'," not in src:
         src = src.replace("  'js/content.js',", "  'js/content.js',\n  'js/reports.js',")
     # Reports refresh online and fall back to the shared content cache offline.
@@ -97,6 +118,8 @@ def main():
     ap.add_argument('--source', default=os.path.join(ROOT, 'content'))
     ap.add_argument('--validator', default=os.path.join(ROOT, 'validate_content.py'))
     ap.add_argument('--force', action='store_true', help='bump the version even if nothing changed')
+    ap.add_argument('--skip-missing-audio', action='store_true',
+                    help='continue publishing when TTS fails; record unavailable clips')
     args = ap.parse_args()
 
     validate(args.validator)
@@ -146,7 +169,10 @@ def main():
         print(f"version.json -> version {version['version']}, new_cards {version['new_cards']}")
 
     print('> tools/build_audio.py')
-    r = subprocess.run([sys.executable, os.path.join(APP, 'tools', 'build_audio.py'), '--prune'])
+    audio_cmd = [sys.executable, os.path.join(APP, 'tools', 'build_audio.py'), '--prune']
+    if args.skip_missing_audio:
+        audio_cmd.append('--skip-missing-audio')
+    r = subprocess.run(audio_cmd)
     if r.returncode != 0:
         sys.exit('ABORT: audio build failed (content was copied; rerun after fixing).')
 

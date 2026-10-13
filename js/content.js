@@ -1,3 +1,5 @@
+import { t } from './i18n.js';
+import { unavailable } from './audio.js';
 // Runtime content: version check, download, offline storage (Cache Storage).
 const CONTENT_CACHE = 'oye-content';           // shared with sw.js; survives app-shell updates
 const JSON_FILES = ['cards.json', 'scenes.json', 'vocab.json', 'audio.json', 'missions.json'];
@@ -77,10 +79,15 @@ export async function loadContent(onAudioProgress) {
     for (const f of JSON_FILES) {
       try { const r = await fetch(`content/${f}`); data[f] = r.ok ? await r.json() : null; } catch { data[f] = null; }
     }
-    if (!data['cards.json']) throw new Error('No content available. Connect to the internet once to download it.');
+    if (!data['cards.json']) throw new Error(t('app.no_content'));
   }
   const audio = data['audio.json'] || { items: {} };
   const version = remote || local || { version: 0, new_cards: 0 };
+  if (!online && cache) {
+    const entries = ['items', 'lines', 'missions'].flatMap(k => Object.values(audio[k] || {}));
+    const urls = [...new Set(entries.flatMap(e => [e.normal, e.slow]).filter(Boolean))];
+    for (const url of urls) if (!(await cache.match(url))) unavailable(url, audio);
+  }
   const audioSync = online && cache ? syncAudio(cache, audio, onAudioProgress) : Promise.resolve({ total: 0, missing: 0 });
   return {
     cards: Array.isArray(data['cards.json']) ? data['cards.json'] : [],
@@ -108,7 +115,7 @@ async function syncAudio(cache, audio, onProgress) {
         const r = await fetch(u, { cache: 'no-store' });
         if (!r.ok) throw new Error(r.status);
         await cache.put(u, r);
-      } catch { failed++; }
+      } catch { failed++; unavailable(u, audio); }
       done++;
       onProgress?.({ done, total: missing.length, failed });
     }

@@ -1,23 +1,24 @@
+import { t } from './i18n.js';
 // Oye v2 Levels: level/topic helpers and stars (stored locally, best score counts).
 // Spec: levels-spec-v1.md ("Game layer") and design/levels-v2-spec.md.
 const KEY = 'oye.stars.v1';
 
 /** All topic codes from content-format-v1.md, in the order of the design (grid first, then "Coming soon"). */
 export const TOPICS = [
-  { code: 'numbers_prices', name: 'Numbers & prices' },
-  { code: 'time_schedules', name: 'Time & schedules' },
-  { code: 'directions', name: 'Directions & places' },
-  { code: 'verbs_past', name: 'Past tense' },
-  { code: 'verbs_present', name: 'Present tense' },
-  { code: 'verbs_commands', name: 'Commands' },
-  { code: 'verbs_future', name: 'Future & conditional' },
-  { code: 'weather_plans', name: 'Weather & plans' },
-  { code: 'food_ordering', name: 'Food & ordering' },
-  { code: 'shopping', name: 'Shopping & sizes' },
-  { code: 'health_pharmacy', name: 'Health & pharmacy' },
-  { code: 'phone_reservations', name: 'Calls & bookings' },
-  { code: 'home_errands', name: 'Home & errands' },
-  { code: 'small_talk', name: 'Small talk' },
+  { code: 'numbers_prices', get name() { return t('topic.numbers_prices'); } },
+  { code: 'time_schedules', get name() { return t('topic.time_schedules'); } },
+  { code: 'directions', get name() { return t('topic.directions'); } },
+  { code: 'verbs_past', get name() { return t('topic.verbs_past'); } },
+  { code: 'verbs_present', get name() { return t('topic.verbs_present'); } },
+  { code: 'verbs_commands', get name() { return t('topic.verbs_commands'); } },
+  { code: 'verbs_future', get name() { return t('topic.verbs_future'); } },
+  { code: 'weather_plans', get name() { return t('topic.weather_plans'); } },
+  { code: 'food_ordering', get name() { return t('topic.food_ordering'); } },
+  { code: 'shopping', get name() { return t('topic.shopping'); } },
+  { code: 'health_pharmacy', get name() { return t('topic.health_pharmacy'); } },
+  { code: 'phone_reservations', get name() { return t('topic.phone_reservations'); } },
+  { code: 'home_errands', get name() { return t('topic.home_errands'); } },
+  { code: 'small_talk', get name() { return t('topic.small_talk'); } },
 ];
 export const topicName = (code) => (TOPICS.find((t) => t.code === code) || {}).name || String(code || '').replace(/_/g, ' ');
 

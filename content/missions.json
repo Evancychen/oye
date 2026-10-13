@@ -2484,5 +2484,776 @@
     "region_note": "'¿No te queda?' = doesn't it fit? 'La chamarra' = jacket (Mexico).",
     "added": "2026-10-08",
     "folder": "fashion"
+  },
+  {
+    "id": "m-festival-daypass-01",
+    "title_en": "Electronic festival: buying a day pass",
+    "situation_en": "You are at the box office of an electronic music festival. Listen to the clerk and a visitor.",
+    "topic": "numbers_prices",
+    "lesson_tags": [
+      "A2-L07",
+      "A1-L12"
+    ],
+    "vocab_ids": [
+      "v-taquilla",
+      "v-pulsera",
+      "v-hacer",
+      "v-seguir"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Taquillera",
+          "voice": "female",
+          "es": "Buenas tardes. ¿Vienen al festival de techno melódico?",
+          "en": "Good afternoon. Are you here for the melodic techno festival?"
+        },
+        {
+          "speaker": "Visitante",
+          "voice": "male",
+          "es": "Sí. ¿Cuánto cuesta el pase de un día?",
+          "en": "Yes. How much is the day pass?"
+        },
+        {
+          "speaker": "Taquillera",
+          "voice": "female",
+          "es": "El pase de un día está en mil doscientos. El de dos días cuesta mil novecientos.",
+          "en": "The day pass is one thousand two hundred. The two-day pass costs one thousand nine hundred."
+        },
+        {
+          "speaker": "Visitante",
+          "voice": "male",
+          "es": "Uno de un día, por favor. ¿A qué hora sale el artista principal?",
+          "en": "One day pass, please. What time does the headliner come on?"
+        },
+        {
+          "speaker": "Taquillera",
+          "voice": "female",
+          "es": "Sale a las once y media de la noche. Antes toca una productora local, de las nueve a las once.",
+          "en": "He comes on at half past eleven at night. Before that a local producer plays, from nine to eleven."
+        },
+        {
+          "speaker": "Visitante",
+          "voice": "male",
+          "es": "¿Y si llueve? ¿Siguen el concierto?",
+          "en": "And if it rains? Do they still do the concert?"
+        },
+        {
+          "speaker": "Taquillera",
+          "voice": "female",
+          "es": "Sí, siguen. El escenario tiene techo. Aquí tienes tu pulsera. No dejes tu mochila en el suelo cerca del escenario.",
+          "en": "Yes, they keep going. The stage has a roof. Here is your wristband. Do not leave your backpack on the ground near the stage."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "type",
+        "prompt_en": "How much is the one-day pass? Type the number.",
+        "answer": "1200",
+        "accepted_answers": [
+          "1200",
+          "$1200",
+          "1,200",
+          "$1,200",
+          "mil doscientos"
+        ],
+        "hint_en": "Listen for 'pase de un día'.",
+        "explanation_en": "'Está en mil doscientos' = 1,200."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "What time does the headliner start?",
+        "options": [
+          "9:00 p.m.",
+          "11:00 p.m.",
+          "11:30 p.m.",
+          "9:30 p.m."
+        ],
+        "answer": "11:30 p.m.",
+        "hint_en": "Listen for 'once y media'.",
+        "explanation_en": "'A las once y media de la noche' = 11:30 p.m."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What happens if it rains?",
+        "options": [
+          "They cancel the night",
+          "Only the local opener plays",
+          "They move to another city",
+          "The show continues under a roof"
+        ],
+        "answer": "The show continues under a roof",
+        "hint_en": "Listen for 'siguen'.",
+        "explanation_en": "'Sí, siguen. El escenario tiene techo' = they keep going; the stage has a roof."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "What does the clerk warn him not to do?",
+        "options": [
+          "Bring a backpack",
+          "Arrive before nine",
+          "Wear the wristband",
+          "Leave his backpack by the stage"
+        ],
+        "answer": "Leave his backpack by the stage",
+        "hint_en": "Listen for 'no dejes'.",
+        "explanation_en": "'No dejes tu mochila en el suelo cerca del escenario'."
+      },
+      {
+        "id": "q5",
+        "kind": "type",
+        "prompt_en": "How much is the two-day pass? Type the number.",
+        "answer": "1900",
+        "accepted_answers": [
+          "1900",
+          "$1900",
+          "1,900",
+          "$1,900",
+          "mil novecientos"
+        ],
+        "hint_en": "Listen early for 'dos días'.",
+        "explanation_en": "'El de dos días cuesta mil novecientos' = 1,900."
+      }
+    ],
+    "region_note": "Mexico: 'la pulsera' at festivals = wristband.",
+    "added": "2026-10-12",
+    "folder": "music"
+  },
+  {
+    "id": "m-gallery-tour-01",
+    "title_en": "Gallery visit: ticket and short tour",
+    "situation_en": "You buy a ticket at a contemporary art gallery and ask about the current show. Listen.",
+    "topic": "time_schedules",
+    "lesson_tags": [
+      "A2-L07",
+      "A1-L12",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-mezcla",
+      "v-parecido",
+      "v-pedir"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Bienvenido. La entrada general cuesta ciento ochenta pesos. Los estudiantes pagan ciento veinte.",
+          "en": "Welcome. General entry costs one hundred eighty pesos. Students pay one hundred twenty."
+        },
+        {
+          "speaker": "Visitante",
+          "voice": "male",
+          "es": "Una general, por favor. ¿Me da un mapa de la exposición?",
+          "en": "One general, please. Can I have a map of the exhibition?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Claro. La muestra es una mezcla de fotografía y arte digital. Empieza en la sala de la izquierda.",
+          "en": "Of course. The show is a mix of photography and digital art. It starts in the room on the left."
+        },
+        {
+          "speaker": "Visitante",
+          "voice": "male",
+          "es": "¿Hasta qué hora puedo quedarme?",
+          "en": "Until what time can I stay?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Cerramos a las ocho. El recorrido completo dura como una hora. No toques las obras y no uses flash.",
+          "en": "We close at eight. The full walk-through lasts about an hour. Do not touch the works and do not use flash."
+        },
+        {
+          "speaker": "Visitante",
+          "voice": "male",
+          "es": "Perfecto. ¿Hay una sala parecida a la del año pasado?",
+          "en": "Perfect. Is there a room similar to last year’s?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Sí, la del fondo. Es muy parecida, pero ahora con pantallas grandes. Aquí tiene su boleto.",
+          "en": "Yes, the one at the back. It is very similar, but now with big screens. Here is your ticket."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "type",
+        "prompt_en": "How much is general entry? Type the number.",
+        "answer": "180",
+        "accepted_answers": [
+          "180",
+          "$180",
+          "ciento ochenta"
+        ],
+        "hint_en": "Listen for 'entrada general'.",
+        "explanation_en": "'Ciento ochenta' = 180. Students pay 120."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "Where does the show start?",
+        "options": [
+          "Upstairs",
+          "In the room on the left",
+          "In the room on the right",
+          "At the back only"
+        ],
+        "answer": "In the room on the left",
+        "hint_en": "Listen for 'sala de la izquierda'.",
+        "explanation_en": "'Empieza en la sala de la izquierda'."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "When do they close?",
+        "options": [
+          "7:00",
+          "9:00",
+          "8:30",
+          "8:00"
+        ],
+        "answer": "8:00",
+        "hint_en": "Listen for 'cerramos'.",
+        "explanation_en": "'Cerramos a las ocho' = we close at 8."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "What must visitors not do?",
+        "options": [
+          "Stay a full hour",
+          "Touch the works or use flash",
+          "Take any photos",
+          "Ask for a map"
+        ],
+        "answer": "Touch the works or use flash",
+        "hint_en": "Listen for 'no toques' and 'no uses'.",
+        "explanation_en": "Negative tú commands: no toques / no uses flash."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "How is the back room described?",
+        "options": [
+          "Only photography",
+          "Completely new and empty",
+          "Closed today",
+          "Similar to last year, with big screens"
+        ],
+        "answer": "Similar to last year, with big screens",
+        "hint_en": "Listen for 'parecida'.",
+        "explanation_en": "'Muy parecida, pero ahora con pantallas grandes'."
+      }
+    ],
+    "region_note": null,
+    "added": "2026-10-12",
+    "folder": "design_art"
+  },
+  {
+    "id": "m-gym-trainer-01",
+    "title_en": "Gym: first session with a trainer",
+    "situation_en": "You start a trial session at a gym. Listen to the trainer and a new member.",
+    "topic": "time_schedules",
+    "lesson_tags": [
+      "A1-L24",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-seguir",
+      "v-dejar",
+      "v-hacer",
+      "v-me-da-feeling"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Entrenadora",
+          "voice": "female",
+          "es": "Hola, bienvenido al gimnasio. Hoy hacemos una clase de fuerza de cuarenta y cinco minutos, nada más.",
+          "en": "Hi, welcome to the gym. Today we do a strength class of forty-five minutes, that is all."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Perfecto. ¿A qué hora empieza la clase de hoy?",
+          "en": "Perfect. What time does today’s class start?"
+        },
+        {
+          "speaker": "Entrenadora",
+          "voice": "female",
+          "es": "Empezamos a las seis y media. Antes, calienta diez minutos en la caminadora y estira un poco.",
+          "en": "We start at half past six. Before that, warm up ten minutes on the treadmill and stretch a little."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Últimamente me da flojera venir después del trabajo. Llego muy cansado.",
+          "en": "Lately I feel too lazy to come after work. I arrive very tired."
+        },
+        {
+          "speaker": "Entrenadora",
+          "voice": "female",
+          "es": "Te entiendo. Si sigues tres días por semana, vas a notar el cambio en un mes. No dejes la botella de agua en el suelo, por favor.",
+          "en": "I get it. If you keep going three days a week, you will notice the change in a month. Do not leave the water bottle on the ground, please."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Va, gracias. ¿Cuánto cuesta la clase de prueba?",
+          "en": "OK, thanks. How much is the trial class?"
+        },
+        {
+          "speaker": "Entrenadora",
+          "voice": "female",
+          "es": "La prueba es gratis hoy. El plan mensual empieza en mil doscientos cincuenta pesos. ¿Te late empezar este mes?",
+          "en": "The trial is free today. The monthly plan starts at one thousand two hundred fifty pesos. Sound good to start this month?"
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "How long is the strength class?",
+        "options": [
+          "30 minutes",
+          "60 minutes",
+          "15 minutes",
+          "45 minutes"
+        ],
+        "answer": "45 minutes",
+        "hint_en": "Listen for 'cuarenta y cinco'.",
+        "explanation_en": "'Clase de fuerza de cuarenta y cinco minutos' = 45 minutes."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "What time does the class start? (type like 9:15)",
+        "answer": "6:30",
+        "accepted_answers": [
+          "6:30",
+          "18:30",
+          "6 30"
+        ],
+        "hint_en": "Listen for 'seis y media'.",
+        "explanation_en": "'Empezamos a las seis y media' = 6:30."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What does the trainer tell him not to do?",
+        "options": [
+          "Come three days a week",
+          "Skip the warm-up",
+          "Bring a bottle",
+          "Leave the water bottle on the ground"
+        ],
+        "answer": "Leave the water bottle on the ground",
+        "hint_en": "Listen for 'no dejes'.",
+        "explanation_en": "'No dejes la botella de agua en el suelo'."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "How much does the monthly plan start at? Type the number.",
+        "answer": "1250",
+        "accepted_answers": [
+          "1250",
+          "$1250",
+          "1,250",
+          "$1,250",
+          "mil doscientos cincuenta"
+        ],
+        "hint_en": "Listen for 'plan mensual'.",
+        "explanation_en": "'Empieza en mil doscientos cincuenta' = 1,250."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "How much is the trial class today?",
+        "options": [
+          "$125",
+          "$250",
+          "Free",
+          "$45"
+        ],
+        "answer": "Free",
+        "hint_en": "Listen for 'gratis'.",
+        "explanation_en": "'La prueba es gratis hoy' = the trial is free today."
+      }
+    ],
+    "region_note": "Mexico: 'me da flojera' is common; '¿te late?' = sound good?",
+    "added": "2026-10-12",
+    "folder": "fitness_health"
+  },
+  {
+    "id": "m-metro-transfer-01",
+    "title_en": "Metro: asking for a transfer",
+    "situation_en": "You are lost on the metro and ask another rider for help. Listen.",
+    "topic": "directions",
+    "lesson_tags": [
+      "A2-L08",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-seguir",
+      "v-pasar",
+      "v-perder"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Viajero",
+          "voice": "male",
+          "es": "Disculpa, ¿este tren pasa por la estación del centro? Creo que me perdí.",
+          "en": "Excuse me, does this train go through the downtown station? I think I got lost."
+        },
+        {
+          "speaker": "Viajera",
+          "voice": "female",
+          "es": "No, este va en otra dirección. Tienes que bajar en la siguiente estación y cambiar a la Línea Dos.",
+          "en": "No, this one goes the other way. You have to get off at the next station and switch to Line Two."
+        },
+        {
+          "speaker": "Viajero",
+          "voice": "male",
+          "es": "¿Y si pierdo el trasbordo? No quiero llegar tarde.",
+          "en": "And if I miss the transfer? I do not want to arrive late."
+        },
+        {
+          "speaker": "Viajera",
+          "voice": "female",
+          "es": "No te preocupes. Sigue las señales verdes hacia el andén. El trasbordo tarda como cinco minutos caminando.",
+          "en": "Do not worry. Follow the green signs toward the platform. The transfer takes about five minutes on foot."
+        },
+        {
+          "speaker": "Viajero",
+          "voice": "male",
+          "es": "Perfecto. ¿A qué hora cierra el metro hoy?",
+          "en": "Perfect. What time does the metro close today?"
+        },
+        {
+          "speaker": "Viajera",
+          "voice": "female",
+          "es": "Hoy cierra a las doce de la noche. Ah, y el boleto cuesta cinco pesos. ¿Ya lo compraste?",
+          "en": "Today it closes at midnight. Oh, and the ticket costs five pesos. Did you already buy it?"
+        },
+        {
+          "speaker": "Viajero",
+          "voice": "male",
+          "es": "Sí, ya lo tengo. Gracias. Voy a seguir tus indicaciones con calma.",
+          "en": "Yes, I already have it. Thanks. I am going to follow your directions calmly."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "Does this train go through downtown?",
+        "options": [
+          "No, he must switch lines",
+          "Only on weekends",
+          "Yes, stay on this train",
+          "It is out of service"
+        ],
+        "answer": "No, he must switch lines",
+        "hint_en": "Listen to her first answer.",
+        "explanation_en": "'No… tienes que bajar… y cambiar a la Línea Dos'."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "Which line should he transfer to?",
+        "options": [
+          "Line One",
+          "Line Twelve",
+          "Line Five",
+          "Line Two"
+        ],
+        "answer": "Line Two",
+        "hint_en": "Listen for 'Línea'.",
+        "explanation_en": "'Cambiar a la Línea Dos' = switch to Line Two."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "How long is the transfer walk?",
+        "options": [
+          "One minute",
+          "Half an hour",
+          "About five minutes",
+          "About fifteen minutes"
+        ],
+        "answer": "About five minutes",
+        "hint_en": "Listen for 'cinco minutos'.",
+        "explanation_en": "'Tarda como cinco minutos caminando'."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "When does the metro close today? (type like 9:15 or 12:00)",
+        "answer": "12:00",
+        "accepted_answers": [
+          "12:00",
+          "12",
+          "00:00",
+          "las doce",
+          "doce de la noche"
+        ],
+        "hint_en": "Listen for 'doce de la noche'.",
+        "explanation_en": "'Cierra a las doce de la noche' = midnight."
+      },
+      {
+        "id": "q5",
+        "kind": "type",
+        "prompt_en": "How much is the metro ticket? Type the number.",
+        "answer": "5",
+        "accepted_answers": [
+          "5",
+          "$5",
+          "cinco"
+        ],
+        "hint_en": "Listen for 'boleto'.",
+        "explanation_en": "'El boleto cuesta cinco pesos' = 5."
+      }
+    ],
+    "region_note": "Mexico City metro tickets are spoken as pesos; line names stay as Línea + number.",
+    "added": "2026-10-12",
+    "folder": "city_life"
+  },
+  {
+    "id": "m-landlord-keys-01",
+    "title_en": "WhatsApp from the landlord: new keys",
+    "situation_en": "Your building admin messages you about a locksmith visit and rent.",
+    "topic": "home_errands",
+    "lesson_tags": [
+      "A1-L12",
+      "A1-L24",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-dejar",
+      "v-conserje",
+      "v-depa",
+      "v-renta",
+      "v-flojera",
+      "v-me-da-feeling"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "whatsapp",
+      "text_es": "Hola, buenas tardes 👋\n\nTe escribo por lo de las llaves nuevas del depa.\n\nEl cerrajero va a ir mañana miércoles entre 10:00 y 12:00. ¿Puedes estar ahí o dejas una llave con el conserje?\n\nTambién:\n- No dejes la puerta sin seguro cuando salgas.\n- La renta de este mes (octubre) es de $8,400. Puedes pagar en efectivo o por transferencia antes del viernes 17.\n\nSi te da flojera esperar al cerrajero, avísame y yo paso.\n\nGracias,\nAdmin del edificio",
+      "text_en": "Hi, good afternoon 👋\n\nI am writing about the new apartment keys.\n\nThe locksmith is coming tomorrow Wednesday between 10:00 and 12:00. Can you be there, or will you leave a key with the caretaker?\n\nAlso:\n- Do not leave the door unlocked when you go out.\n- This month's rent (October) is $8,400. You can pay cash or by transfer before Friday the 17th.\n\nIf you do not feel like waiting for the locksmith, tell me and I will stop by.\n\nThanks,\nBuilding admin",
+      "sender_en": "Building admin",
+      "time": "15:40"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "When is the locksmith coming?",
+        "options": [
+          "Wednesday, 10 a.m. to 12 p.m.",
+          "Friday the 17th",
+          "Thursday all day",
+          "Wednesday after 5 p.m."
+        ],
+        "answer": "Wednesday, 10 a.m. to 12 p.m.",
+        "hint_en": "Look for 'miércoles'.",
+        "explanation_en": "'Mañana miércoles entre 10:00 y 12:00'."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "What can you do if you cannot stay?",
+        "options": [
+          "Skip rent this month",
+          "Call the police",
+          "Leave a key with the caretaker",
+          "Leave the door open"
+        ],
+        "answer": "Leave a key with the caretaker",
+        "hint_en": "Look for 'conserje'.",
+        "explanation_en": "'O dejas una llave con el conserje'."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What must you not do when you go out?",
+        "options": [
+          "Leave a key with admin",
+          "Pay by transfer",
+          "Wait for the locksmith",
+          "Leave the door unlocked"
+        ],
+        "answer": "Leave the door unlocked",
+        "hint_en": "Look for 'No dejes'.",
+        "explanation_en": "'No dejes la puerta sin seguro cuando salgas'."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "How much is October rent? Type the number.",
+        "answer": "8400",
+        "accepted_answers": [
+          "8400",
+          "$8400",
+          "8,400",
+          "$8,400",
+          "ocho mil cuatrocientos"
+        ],
+        "hint_en": "Look for 'renta'.",
+        "explanation_en": "'La renta… es de $8,400'."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "When must rent be paid by?",
+        "options": [
+          "Before Friday the 17th",
+          "Anytime in October",
+          "Before the 10th",
+          "Before Wednesday"
+        ],
+        "answer": "Before Friday the 17th",
+        "hint_en": "Look for 'antes del viernes'.",
+        "explanation_en": "'Antes del viernes 17'."
+      }
+    ],
+    "region_note": "Mexico: 'el depa' = apartment, 'el conserje' = building caretaker.",
+    "added": "2026-10-12",
+    "folder": "home_errands"
+  },
+  {
+    "id": "m-client-brief-01",
+    "title_en": "Email from a client: festival visual brief",
+    "situation_en": "A music-festival producer emails you a short design brief.",
+    "topic": "small_talk",
+    "lesson_tags": [
+      "A2-L20",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-mezcla",
+      "v-parecido",
+      "v-seguir",
+      "v-dejar",
+      "v-me-da-feeling",
+      "v-te-late"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "email",
+      "text_es": "Asunto: Brief — campaña visual para festival\n\nHola:\n\nGracias por aceptar el proyecto. Aquí va el brief:\n\n- Entrega: viernes 24 de octubre, antes de las 18:00\n- Formato: 6 piezas verticales para redes (1080×1920)\n- Estilo: mezcla de arte digital y tipografía grande; algo parecido a tu portafolio de marzo\n- Pago: $18,500 al entregar (transferencia)\n\nPor favor:\n1) Confirma si puedes seguir con estas fechas.\n2) No dejes el logo del festival en baja resolución.\n3) Si te da igual usar azul o violeta, elige violeta.\n\n¿Te late una llamada el martes a las 11:00?\n\nSaludos,\nMarina López\nProductora",
+      "text_en": "Subject: Brief — visual campaign for a festival\n\nHi,\n\nThanks for taking the project. Here is the brief:\n\n- Delivery: Friday October 24, before 18:00\n- Format: 6 vertical pieces for social (1080×1920)\n- Style: mix of digital art and big typography; something similar to your March portfolio\n- Pay: $18,500 on delivery (transfer)\n\nPlease:\n1) Confirm you can keep these dates.\n2) Do not leave the festival logo in low resolution.\n3) If you do not mind blue or violet, choose violet.\n\nSound good for a call Tuesday at 11:00?\n\nBest,\nMarina López\nProducer",
+      "sender_en": "Marina López (producer)",
+      "time": "11:05"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "When is the delivery deadline?",
+        "options": [
+          "Friday Oct 24, before 6 p.m.",
+          "March portfolio day",
+          "Anytime in October",
+          "Tuesday at 11:00"
+        ],
+        "answer": "Friday Oct 24, before 6 p.m.",
+        "hint_en": "Look for 'Entrega'.",
+        "explanation_en": "'Viernes 24 de octubre, antes de las 18:00'."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "How much is the payment? Type the number.",
+        "answer": "18500",
+        "accepted_answers": [
+          "18500",
+          "$18500",
+          "18,500",
+          "$18,500",
+          "dieciocho mil quinientos"
+        ],
+        "hint_en": "Look for 'Pago'.",
+        "explanation_en": "'$18,500 al entregar'."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What style do they want?",
+        "options": [
+          "Minimal black and white only",
+          "Only photography",
+          "Digital art plus big typography",
+          "Hand-drawn comics"
+        ],
+        "answer": "Digital art plus big typography",
+        "hint_en": "Look for 'Estilo'.",
+        "explanation_en": "'Mezcla de arte digital y tipografía grande'."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "Which color should you choose if you do not mind?",
+        "options": [
+          "Blue",
+          "Violet",
+          "Either is wrong",
+          "Black"
+        ],
+        "answer": "Violet",
+        "hint_en": "Look for 'me da igual'.",
+        "explanation_en": "'Si te da igual… elige violeta'."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What must you not do with the logo?",
+        "options": [
+          "Deliver it Tuesday",
+          "Remove it entirely",
+          "Make it violet",
+          "Leave it in low resolution"
+        ],
+        "answer": "Leave it in low resolution",
+        "hint_en": "Look for 'No dejes'.",
+        "explanation_en": "'No dejes el logo… en baja resolución'."
+      }
+    ],
+    "region_note": "'¿Te late?' = sound good? (Mexican, casual).",
+    "added": "2026-10-12",
+    "folder": "design_art"
   }
 ]

@@ -28,13 +28,56 @@ VIEWPORT = {'width': 412, 'height': 915}
 LAYOUT_SIZES = [(360, 720), (412, 915), (384, 854)]
 SHOT_SIZES = {(360, 720), (412, 915)}
 # Current representatives go first so each card layout gets a screenshot.
-SHOWCASE = ['c-0607', 'c-0456', 'c-0339', 'c-0610', 'c-0345']
+SHOWCASE = ['c-0337', 'c-0456', 'c-0339', 'c-0478', 'c-0678']
 # These browser-only cards exercise transcript colours and exact alternate wording;
 # they are never published or added to the production content/audio index.
 UX_CARDS = json.load(open(os.path.join(APP, 'tests', 'fixtures', 'ux-cards.json'), encoding='utf-8'))
 RESULTS = []
 SHELL_VERSION = re.search(r"SHELL_VERSION = '([^']+)'", open(os.path.join(APP, 'js', 'app.js'), encoding='utf-8').read()).group(1)
 VOICE_COLOR = {'male': 'rgb(110, 139, 255)', 'female': 'rgb(76, 195, 138)'}   # accent blue (Alonso), correct green (Paloma)
+AUDIO_INDEX = json.load(open(os.path.join(APP, 'content', 'audio.json'), encoding='utf-8'))
+MISSING_AUDIO = json.load(open(os.path.join(APP, 'content', 'missing-audio.json'), encoding='utf-8'))['items']
+
+
+def allowed_missing(kind, item_id, section, key, rate='normal'):
+    """Only the exact owner, clip and rate in the published allowlist are optional."""
+    return is_batch7({'id': item_id}) and any(e['kind'] == kind and e['id'] == item_id and e['section'] == section
+               and e['key'] == key and rate in e['missing_rates'] for e in MISSING_AUDIO)
+
+
+def clip_available(section, key, rate='normal'):
+    path = AUDIO_INDEX.get(section, {}).get(key, {}).get(rate)
+    return bool(path and os.path.isfile(os.path.join(APP, path)))
+
+
+async def coming_soon_problems(page, card):
+    if not card.get('audio_text') or card_requires_controls(card):
+        return []
+    state = await page.evaluate("""() => ({
+        labels: [...document.querySelectorAll('#app [data-testid=audio-coming-soon]')].map(e => e.textContent),
+        controls: document.querySelectorAll('#app [data-play], #app [data-testid=player]').length
+    })""")
+    return [] if state['labels'] and all(s == 'Audio coming soon' for s in state['labels']) and not state['controls'] else [f'invalid coming-soon state: {state}']
+
+
+# Exact batch-7 membership from content/CHANGELOG_batch7.md in the source content.
+# Numeric card ids are bounded so future batches do not inherit this exception.
+BATCH7_MISSIONS = {'m-festival-daypass-01', 'm-gallery-tour-01', 'm-gym-trainer-01',
+                   'm-metro-transfer-01', 'm-landlord-keys-01', 'm-client-brief-01'}
+
+
+def is_batch7(item):
+    if item.get('batch') is not None:
+        return str(item['batch']) == '7'
+    cid = item.get('id', '')
+    return bool(re.fullmatch(r'c-\d{4}', cid) and 673 <= int(cid[2:]) <= 753) or cid in BATCH7_MISSIONS
+
+
+def card_requires_controls(card):
+    if not card.get('audio_text'):
+        return False
+    key = card['audio_text'].strip()
+    return clip_available('items', key) or not allowed_missing('card', card['id'], 'items', key)
 
 
 def all_audio_files(idx):
@@ -162,6 +205,61 @@ async def current(page):
     return {k: await el.get_attribute(f'data-{k}') for k in ('screen', 'type', 'card', 'state')}
 
 
+def i18n_key_check():
+    """Literal keys keep the complete UI catalog statically auditable."""
+    from pathlib import Path
+    root = Path(APP)
+    english = json.loads((root / 'strings/en.json').read_text(encoding='utf-8'))
+    spanish = json.loads((root / 'strings/es.json').read_text(encoding='utf-8'))
+    check('i18n: Spanish and English have exactly the same keys', spanish.keys() == english.keys(),
+          sorted(spanish.keys() ^ english.keys()))
+    mismatches = [key for key in english.keys() & spanish.keys()
+                  if not isinstance(spanish[key], str)
+                  or sorted(re.findall(r'\{\w+\}', english[key])) != sorted(re.findall(r'\{\w+\}', spanish[key]))]
+    check('i18n: every Spanish placeholder matches English', not mismatches, mismatches)
+    used, dynamic = set(), []
+    for path in (root / 'js').glob('*.js'):
+        if path.name == 'i18n.js':
+            continue  # t's declaration and the data-i18n loader accept variable keys.
+        source = path.read_text(encoding='utf-8')
+        for call in re.finditer(r'(?<![\w.$])t\s*\(\s*', source):
+            key = re.match(r'''(['"])([^'"]+)\1\s*[,)]''', source[call.end():])
+            if key: used.add(key[2])
+            else: dynamic.append(f'{path.name}:{source[:call.start()].count(chr(10)) + 1}')
+    used.update(re.findall(r'data-i18n(?:-content)?="([^"]+)"', (root / 'index.html').read_text()))
+    missing = sorted(used - english.keys())
+    check('i18n: every t() and HTML key exists in the flat English catalog',
+          not missing and not dynamic and all(isinstance(v, str) for v in english.values()),
+          f'{len(english)} keys; missing={missing}; dynamic calls={dynamic}')
+
+
+async def i18n_runtime_checks(browser, base):
+    # Load just the module: these isolated fixtures never start content sync or uploads.
+    for requested, catalog, expected, locale in [
+        ('en', None, 'Next', 'en'),
+        ('es', {'card.next': 'Siguiente'}, 'Siguiente', 'es'),
+        ('missing', None, 'Next', 'en'),
+    ]:
+        ctx = await browser.new_context(service_workers='block')
+        await ctx.route(base, lambda route: route.fulfill(content_type='text/html', body='<html><body></body></html>'))
+        if requested != 'en':
+            async def translation(route):
+                if catalog is None: await route.abort()
+                else: await route.fulfill(content_type='application/json', body=json.dumps(catalog))
+            await ctx.route(base + f'strings/{requested}.json', translation)
+            await ctx.add_init_script(f'localStorage.setItem("oye-lang", {json.dumps(requested)})')
+        page = await ctx.new_page()
+        await page.goto(base)
+        values = await page.evaluate('''async () => {
+            const {t, language} = await import('./js/i18n.js');
+            return [t('card.next'), t('common.done'),
+                    t('card.answer', {answer: '<b>$&{name}</b>'}), language];
+        }''')
+        check(f'i18n: {requested} lookup, English fallback and literal interpolation',
+              values == [expected, 'Done', 'The answer is <b>$&{name}</b>.', locale], values)
+        await ctx.close()
+
+
 async def main():
     os.makedirs(SHOTS, exist_ok=True)
     cards = json.load(open(os.path.join(APP, 'content', 'cards.json'), encoding='utf-8'))
@@ -171,6 +269,7 @@ async def main():
     audio_files = all_audio_files(audio_idx)
 
     # ---------- static checks ----------
+    i18n_key_check()
     man = json.load(open(os.path.join(APP, 'manifest.webmanifest')))
     check('manifest: name/short_name = Oye', man.get('name') == 'Oye' and man.get('short_name') == 'Oye')
     check('manifest: display standalone, colours #0E0E10',
@@ -187,8 +286,8 @@ async def main():
     files = ['index.html', 'manifest.webmanifest', 'sw.js', 'styles.css'] + [f'js/{x}' for x in os.listdir(os.path.join(APP, 'js'))]
     abs_refs = [f'{f}: {l.strip()}' for f in files for l in open(os.path.join(APP, f), encoding='utf-8') if pat.search(l)]
     check('no root-absolute paths in app files (works under a subpath)', not abs_refs, abs_refs[:3])
-    audio_texts = {c['audio_text'] for c in cards if c.get('audio_text')}
-    check('audio.json covers every card audio_text', audio_texts <= set(audio_idx['items']), f'{len(audio_texts)} sentences')
+    audio_texts = {c['audio_text'].strip() for c in cards if c.get('audio_text') and not allowed_missing('card', c['id'], 'items', c['audio_text'].strip())}
+    check('audio.json covers every card audio_text outside the explicit missing-audio allowlist', audio_texts <= set(audio_idx['items']), f'{len(audio_texts)} sentences')
     NEW_LINE = f"New batch {__import__('datetime').date.fromisoformat(version['published']).strftime('%A')} · {version.get('new_cards')} new cards"
     check(f"version.json: version {version.get('version')}, new_cards {version.get('new_cards')} (= new_card_ids), card_count {len(cards)}",
           version.get('version', 0) >= 1 and version.get('new_cards') == len(version.get('new_card_ids', [])) and version.get('card_count') == len(cards))
@@ -196,6 +295,8 @@ async def main():
     check('content: every fix_it / listen_type card has hint_en', all(by_id[i].get('hint_en') for i in need_hint),
           f"{sum(1 for c in cards if c.get('hint_en'))} cards with hint_en")
     sw_src = open(os.path.join(APP, 'sw.js'), encoding='utf-8').read()
+    catalogs = [f'strings/{name}' for name in os.listdir(os.path.join(APP, 'strings')) if name.endswith('.json')]
+    check('i18n: module and all catalogs are precached', all(f"'{name}'" in sw_src for name in ['js/i18n.js'] + catalogs))
     m_cv = re.search(r"const CACHE_VERSION = '([^']+)'", sw_src)
     check('sw.js CACHE_VERSION matches the content version', m_cv and m_cv.group(1).startswith(f"oye-v{version.get('version')}-"), m_cv and m_cv.group(1))
     check('viewport meta has interactive-widget=resizes-content (keyboard resizes the layout)',
@@ -208,6 +309,7 @@ async def main():
     errors = []
     async with async_playwright() as p:
         browser = await p.chromium.launch()
+        await i18n_runtime_checks(browser, base)
         ctx, page = await new_page(browser, errors)
 
         # ---------- first load ----------
@@ -264,7 +366,7 @@ async def main():
         quick_levels = []
         hint_used_ids = set()
         counts = {}
-        autoplayed, listening, silent_bad = 0, 0, []
+        autoplayed, listening, coming_soon, silent_bad = 0, 0, 0, []
         slow_checked = None
         plan_len = None
         for step in range(12):
@@ -281,7 +383,7 @@ async def main():
             counts[t] = counts.get(t, 0) + 1
             k = counts[t]
             # no autoplay: the card opens silent ("Tap to listen"); audio only plays after tapping the play button
-            if card.get('audio_text'):
+            if card_requires_controls(card):
                 listening += 1
                 await page.wait_for_timeout(900)
                 st0 = await page.evaluate("(() => { const a = window.__oyeAudioEl; const c = document.querySelector('[data-testid=listen-cap]'); return {played: !a.paused && !a.ended, cap: c && c.textContent}; })()")
@@ -292,9 +394,15 @@ async def main():
                 if not await page.evaluate('(() => { const a = window.__oyeAudioEl; return !a.paused; })()'):
                     silent_bad.append((card['id'], 'tap did not play'))
                 await wait_audio_idle(page)
+            elif card.get('audio_text'):
+                coming_soon += 1
+                if await page.evaluate('!window.__oyeAudioEl.paused'):
+                    silent_bad.append((card['id'], 'coming-soon card played audio'))
+            check(f'{card["id"]}: audio controls or allowlisted coming-soon state',
+                  not await coming_soon_problems(page, card))
             # Outcome plan: listen_pick #1 wrong, #2 correct; scene #2, fix_it #2 wrong; everything else correct.
             correct = not ((t == 'listen_pick' and k == 1) or (t in ('scene_question', 'fix_it') and k == 2))
-            if t == 'listen_pick' and k == 1 and slow_checked is None:
+            if card_requires_controls(card) and slow_checked is None:
                 normal_dur = await page.evaluate('window.__oyeAudioEl.duration')
                 await page.click('[data-play=slow]')
                 await page.wait_for_timeout(700)
@@ -366,8 +474,9 @@ async def main():
         check('session has 8-10 cards', plan_len is not None and 8 <= plan_len <= 10, plan_len)
         check('session covered every current Easy card type', set(seen_types) == {c['type'] for c in cards if c.get('level', 'easy') == 'easy'}, seen_types)
         check('v2: the Quick session (Easy) showed only Easy cards (no Medium card)', quick_levels and all(l == 'easy' for l in quick_levels), quick_levels)
-        check('no autoplay: every listening card opens silent with "Tap to listen"; tapping the play button plays it',
-              autoplayed == 0 and listening > 0 and not silent_bad, {'autoplayed': f'{autoplayed}/{listening}', 'bad': silent_bad[:3]})
+        check('no autoplay: audio-backed cards open silent and play on tap; allowlisted cards show coming soon and stay silent',
+              autoplayed == 0 and listening + coming_soon > 0 and not silent_bad,
+              {'autoplayed': f'{autoplayed}/{listening}', 'coming_soon': coming_soon, 'bad': silent_bad[:3]})
         score = (await page.text_content('[data-testid=score]')).strip()
         expect_right = sum(1 for i, t in enumerate(seen_types) if not ((t == 'listen_pick' and seen_types[:i + 1].count(t) == 1) or (t in ('scene_question', 'fix_it') and seen_types[:i + 1].count(t) == 2)))
         check('summary score matches answers', score == f'{expect_right}/{len(seen_types)}', score)
@@ -415,7 +524,11 @@ async def main():
             await page.wait_for_selector('[data-screen=card]')
             cur = await current(page)
             c = by_id[cur['card']]
-            if c.get('audio_text'):
+            # Use a known audio-backed card so offline playback is always exercised.
+            await page.click('[data-act=close]')
+            await start_plan(page, ['c-0337'])
+            c = by_id['c-0337']
+            if card_requires_controls(c):
                 await page.click('[data-testid=replay]')
                 await page.wait_for_timeout(1200)
                 played = await page.evaluate('(() => { const a = window.__oyeAudioEl; return a.currentTime > 0 || !a.paused; })()')
@@ -517,6 +630,8 @@ async def main():
         await drill_read_suite(browser, base4, cards)
         await hard_folders_suite(browser, base4)
         await weekly_reports_suite(browser, base4)
+        await language_toggle_suite(browser, base4)
+        await missing_batch7_audio_suite(browser, base4, cards)
         server4.terminate(); server4.wait()
 
         # ---------- v1.1: service worker update path ----------
@@ -535,6 +650,71 @@ async def main():
     json.dump([{'check': n, 'ok': o, 'detail': str(d)} for n, o, d in RESULTS],
               open(os.path.join(APP, 'tests', 'last-run.json'), 'w'), indent=1)
     return 0 if passed == len(RESULTS) else 1
+
+
+async def missing_batch7_audio_suite(browser, base, cards):
+    """Exercise simulated missing-audio fallbacks even after batch 7 is published."""
+    version = json.load(open(os.path.join(APP, 'content', 'version.json'), encoding='utf-8'))
+    card = next(c for c in cards if c['id'] in version['new_card_ids'] and is_batch7(c)
+                and c['type'] == 'listen_pick' and c.get('level', 'easy') == 'easy')
+    for language, label in [('en', 'Audio coming soon'), ('es', 'Audio próximamente')]:
+        errors = []
+        ctx, page = await new_page(browser, errors, init_script=f"localStorage.setItem('oye-lang', '{language}')")
+        try:
+            await page.goto(base)
+            await page.wait_for_selector('html[data-ready="1"] [data-screen=home]')
+            await page.evaluate('window.__oye.content.audioSync')
+            await page.evaluate("""async id => {
+                const S = window.__oye, card = S.playable.find(c => c.id === id);
+                const audio = structuredClone(S.content.audio);
+                delete audio.items[card.audio_text];
+                audio.lines = {};
+                audio.missions = {};
+                (await import('./js/audio.js')).setAudioIndex(audio);
+                S.plan = [card];
+            }""", card['id'])
+            await page.click('[data-act=start]')
+            await page.wait_for_selector(f'[data-card="{card["id"]}"]')
+            check(f'batch 7 without audio ({language}): muted label, readable prompt and no audio controls',
+                  await page.locator('[data-testid=audio-coming-soon]').text_content() == label
+                  and await page.locator('[data-testid=audio-fallback]').is_visible()
+                  and await page.locator('[data-play], [data-testid=player]').count() == 0)
+            await page.locator('[data-opt]').first.click()
+            await page.click('[data-act=next]')
+            await page.wait_for_selector('[data-screen=summary]')
+            check(f'batch 7 without audio ({language}): answers and Next work, no console errors', not errors, errors)
+            await page.goto(base)
+            await page.wait_for_selector('html[data-ready="1"] [data-screen=home]')
+            await page.evaluate('window.__oye.content.audioSync')
+            await page.evaluate("""async () => {
+                const S = window.__oye;
+                const audio = structuredClone(S.content.audio);
+                delete audio.missions['m-festival-daypass-01'];
+                audio.lines = {};
+                (await import('./js/audio.js')).setAudioIndex(audio);
+                S.missions.find(m => m.id === 'm-festival-daypass-01').added = new Date().toLocaleDateString('en-CA');
+            }""")
+            await page.click('[data-act=hard]')
+            await page.click('[data-mission=m-festival-daypass-01] [data-act=open-mission]')
+            await page.click('[data-act=begin]')
+            questions = await page.evaluate('window.__oye.mission.qs')
+            for question in questions:
+                check(f'batch 7 mission without audio ({language}): {question["id"]} has script and no player',
+                      await page.locator('[data-testid=audio-fallback]').is_visible()
+                      and await page.locator('[data-testid=audio-coming-soon]').text_content() == label
+                      and await page.locator('[data-play], [data-testid=player]').count() == 0)
+                if question['kind'] == 'pick':
+                    await page.click(f'[data-opt="{question["options"].index(question["answer"])}"]')
+                elif await page.locator('#fix-input').count():
+                    await page.fill('#fix-input', str(question['answer']))
+                else:
+                    await page.keyboard.type(str(question['answer']))
+                await page.click('[data-act=check]')
+            await page.wait_for_selector('[data-screen=mission-result]')
+            check(f'batch 7 mission without audio ({language}): completes without console errors', not errors, errors)
+
+        finally:
+            await ctx.close()
 
 
 # ---------------------------------------------------------------- v1.1 helpers
@@ -671,11 +851,11 @@ async def layout_suite(browser, base, cards, w, h):
         shot_types.add(t)
         pre = f'{num[t]}-{t.replace("_", "-")}'
         g = await page.evaluate(GEOM_JS)
-        probs = layout_problems(g, cid)
+        probs = layout_problems(g, cid) + await coming_soon_problems(page, card)
         if g['overflow'] > 1:
             q_overflow.append(f'{cid}:{g["overflow"]}px' + ('+pill' if g['pill'] else ''))
         if probs: q_bad.append(f'{cid}: {"; ".join(probs)}')
-        if card.get('audio_text'):
+        if card_requires_controls(card):
             rp = replay_problems(g)
             if rp: rp_bad.append(f'{cid}: {"; ".join(rp)}')
         if first:
@@ -700,7 +880,7 @@ async def layout_suite(browser, base, cards, w, h):
             hp = layout_problems(g2, cid, allow_overflow_with_pill=card.get('level') == 'drill')
             if g2['hintBox'] and g2['dock'] and g2['hintBox']['bottom'] > g2['dock']['top'] + 0.5:
                 hp.append('hint box runs under the dock')
-            if card.get('audio_text'):
+            if card_requires_controls(card):
                 hp += replay_problems(g2)
             if hp: hint_bad.append(f'{cid} (hint open): {"; ".join(hp)}')
             if first:
@@ -747,7 +927,7 @@ async def layout_suite(browser, base, cards, w, h):
         await page.wait_for_selector('[data-state=wrong]')
         await page.wait_for_timeout(80)
         g = await page.evaluate(GEOM_JS)
-        probs = layout_problems(g, cid)
+        probs = layout_problems(g, cid) + await coming_soon_problems(page, card)
         body = await page.evaluate("(() => { const c = document.querySelector('.card-inner').cloneNode(true); c.querySelectorAll('.info-rows').forEach(e => e.remove()); return c.textContent; })()")
         is_drill = card.get('level') == 'drill'
         if is_drill:
@@ -757,7 +937,7 @@ async def layout_suite(browser, base, cards, w, h):
         else:
             if 'The answer is' not in body: probs.append('no "The answer is" line')
             if card.get('explanation_en') and card['explanation_en'] in body: probs.append('explanation shown inline instead of behind "Why"')
-        if card.get('audio_text'):
+        if card_requires_controls(card):
             replay_geom = g
             if g['overflow'] > 1 and g['pill'] and replay_problems(g):
                 # Long feedback may put the More below pill over a replay edge.
@@ -767,6 +947,7 @@ async def layout_suite(browser, base, cards, w, h):
                 await page.wait_for_timeout(500)
                 replay_geom = await page.evaluate(GEOM_JS)
             probs += replay_problems(replay_geom)
+        probs += await coming_soon_problems(page, card)
         if is_drill and g['next'] and not fully_inside(g['next'], 0, g['vh']):
             # Drill feedback flows below the options; long explanations can scroll on short phones.
             await page.locator('[data-act=next]').scroll_into_view_if_needed()
@@ -807,10 +988,12 @@ async def layout_suite(browser, base, cards, w, h):
             if sg['bottom'] > h + 0.5 or sg['top'] < 0: sp.append('sheet off screen')
             if sg['radius'] != '20px': sp.append(f'sheet radius {sg["radius"]}')
             if t == 'scene_question':
-                if sg['lines'] == 0 or sg['linePlay'] != sg['lines']: sp.append(f'speaker lines {sg["lines"]}, per-line replay {sg["linePlay"]}')
                 scene = scenes.get(card.get('scene_id'))
                 # v2.1: colours follow the VOICE (content `voice`), not the order: male/Alonso accent blue, female/Paloma green
                 src_lines = card.get('audio_lines') or (scene or {}).get('dialogue') or []
+                expected_plays = sum(clip_available('lines', f"{l['voice']}|{l['es'].strip()}") or not allowed_missing('card', cid, 'lines', f"{l['voice']}|{l['es'].strip()}") for l in src_lines)
+                if sg['lines'] == 0 or sg['linePlay'] != expected_plays:
+                    sp.append(f'speaker lines {sg["lines"]}, per-line replay {sg["linePlay"]}, expected {expected_plays}')
                 want = {l['speaker'].upper(): VOICE_COLOR[l['voice']] for l in src_lines if l.get('voice') in VOICE_COLOR}
                 if scene:
                     want.update({d['speaker'].upper(): VOICE_COLOR[d['voice']] for d in scene['dialogue'] if d.get('voice') in VOICE_COLOR})
@@ -941,7 +1124,7 @@ async def keyboard_visual_viewport_test(browser, base, w=360, h=720, kb=300):
     ctx, page = await new_page(browser, errors, viewport={'width': w, 'height': h}, init_script=FAKE_VV)
     await page.goto(base)
     await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=15000)
-    await page.evaluate("(() => { const S = window.__oye; S.plan = [S.playable.find(c => c.id === 'c-0610') || S.playable.find(c => c.type === 'fix_it')]; })()")
+    await page.evaluate("(() => { const S = window.__oye; S.plan = [S.playable.find(c => c.id === 'c-0478') || S.playable.find(c => c.type === 'fix_it')]; })()")
     await page.click('[data-act=start]')
     await page.wait_for_selector('#fix-input')
     await page.click('#fix-input'); await page.keyboard.type('estuve')
@@ -1082,7 +1265,7 @@ async def live_check(url):
         await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=20000)
         check(f'live: page runs the {SHELL_VERSION} shell', await page.evaluate("document.documentElement.dataset.shell") == SHELL_VERSION)
         await page.screenshot(path=os.path.join(SHOTS11, 'live-412x915-home.png'))
-        await page.evaluate("(() => { const S = window.__oye; S.plan = ['c-0456', 'c-0607', 'c-0610'].map(id => S.playable.find(c => c.id === id)).filter(Boolean); })()")
+        await page.evaluate("(() => { const S = window.__oye; S.plan = ['c-0456', 'c-0337', 'c-0478'].map(id => S.playable.find(c => c.id === id)).filter(Boolean); })()")
         await page.click('[data-act=start]')
         await page.wait_for_selector('[data-card=c-0456]')
         await page.wait_for_timeout(300)
@@ -1187,15 +1370,15 @@ async def results_upload_tests(browser, base, version):
     await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=15000)
     await page.wait_for_timeout(300)
     check('results: nothing is sent on open when the queue is empty', not fake.calls, len(fake.calls))
-    await start_plan(page, ['c-0607', 'c-0456', 'c-0610', 'c-0611'])
+    await start_plan(page, ['c-0337', 'c-0456', 'c-0478', 'c-0678'])
     t_start = time.time()
-    await page.wait_for_selector('[data-card=c-0607][data-state=question]')
+    await page.wait_for_selector('[data-card=c-0337][data-state=question]')
     await page.click('[data-testid=replay]')                    # first listen
     await page.wait_for_timeout(200)
     await page.click('[data-testid=replay]')                    # tap again = stop
     await page.wait_for_timeout(100)
     await page.click('[data-play=slow]')                       # used_slow; a new play after stopping -> replays 1
-    await page.click('[data-opt="1"]')                          # $240: wrong
+    await page.click('[data-opt="1"]')                          # 3:00: wrong
     await page.wait_for_selector('[data-state=wrong]')
     await page.click('[data-testid=replay]')                    # plays on the feedback screen are not counted
     await page.wait_for_timeout(150)
@@ -1205,11 +1388,11 @@ async def results_upload_tests(browser, base, version):
     for ch in '4:00': await page.click(f'[data-key="{ch}"]')
     await page.click('[data-act=check]')
     await page.wait_for_selector('[data-state=correct]'); await page.click('[data-act=next]')
-    await page.wait_for_selector('[data-card=c-0610][data-state=question]')
+    await page.wait_for_selector('[data-card=c-0478][data-state=question]')
     await page.evaluate('window.__oye.session.plays = 150')    # cap: replays never go above 99
     await page.fill('#fix-input', 'Puede'); await page.click('[data-act=check]')
     await page.wait_for_selector('[data-state=correct]'); await page.click('[data-act=next]')
-    await page.wait_for_selector('[data-card=c-0611][data-state=question]')
+    await page.wait_for_selector('[data-card=c-0678][data-state=question]')
     await page.click('[data-act=dontknow]')                     # I don't know
     await page.wait_for_selector('[data-state=wrong]'); await page.click('[data-act=next]')
     await page.wait_for_selector('[data-screen=summary]')
@@ -1230,14 +1413,14 @@ async def results_upload_tests(browser, base, version):
           and c0['ctype'].replace(' ', '').lower() == 'text/plain;charset=utf-8' and isinstance(body, dict) and list(body) == ['results'],
           [(c['method'], c['ctype']) for c in fake.calls])
     rows = body.get('results', []) if isinstance(body, dict) else []
-    want = [('c-0607', False, '$240', False, True), ('c-0456', True, '4:00', True, False),
-            ('c-0610', True, 'Puede', False, False), ('c-0611', False, '', False, False)]
+    want = [('c-0337', False, '3:00', False, True), ('c-0456', True, '4:00', True, False),
+            ('c-0478', True, 'Puede', False, False), ('c-0678', False, '', False, False)]
     got = [(r.get('card_id'), r.get('correct'), r.get('answer_given'), r.get('used_hint'), r.get('used_slow')) for r in rows]
     check('results: one row per answer: card_id, correct, answer_given, used_hint, used_slow as answered', got == want, got)
     rs = [(r.get('card_id'), r.get('replays'), r.get('skipped')) for r in rows]
     check('results: replays = plays started before answering minus the first listen (play, stop, slow = 1; none = 0; '
           'feedback-screen plays not counted; capped at 99); skipped true only for "I don\u2019t know"',
-          rs == [('c-0607', 1, False), ('c-0456', 0, False), ('c-0610', 99, False), ('c-0611', 0, True)], rs)
+          rs == [('c-0337', 1, False), ('c-0456', 0, False), ('c-0478', 99, False), ('c-0678', 0, True)], rs)
     sids = {r.get('session_id') for r in rows}
     def iso_ok(v):
         try:
@@ -1270,7 +1453,7 @@ async def results_upload_tests(browser, base, version):
     ctx, page = await new_page(browser, errors, endpoint=fake)
     await page.goto(base)
     await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=15000)
-    await start_plan(page, ['c-0612', 'c-0611'])
+    await start_plan(page, ['c-0338', 'c-0678'])
     await dont_know_all(page, 2)
     got1 = await wait_for_calls(page, fake, 1)
     await page.wait_for_timeout(300)
@@ -1294,7 +1477,7 @@ async def results_upload_tests(browser, base, version):
     check('results: next app open sends the queued rows and empties the queue', got3 and q3 == [], {'calls': len(fake.calls), 'queue': len(q3)})
     # second session: network error at the summary, then the phone comes back online while the summary is open
     fake.mode = 'abort'
-    await start_plan(page, ['c-0607', 'c-0339', 'c-0345'])
+    await start_plan(page, ['c-0337', 'c-0339', 'c-0678'])
     await dont_know_all(page, 3)
     got4 = await wait_for_calls(page, fake, 4)
     await page.wait_for_timeout(300)
@@ -1333,7 +1516,7 @@ async def results_upload_tests(browser, base, version):
     await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
     await page.reload()                                         # app reopened while offline
     await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=10000)
-    await start_plan(page, ['c-0616'])
+    await start_plan(page, ['c-0682'])
     await dont_know_all(page, 1)
     await page.wait_for_timeout(300)
     q = await page.evaluate(QUEUE_JS)
@@ -1375,14 +1558,14 @@ async def results_upload_tests(browser, base, version):
           len(seeded) == 450 and not any('replays' in r or 'skipped' in r for r in seeded), len(seeded))
     norm = await page.evaluate("""import('./js/results.js').then(m => {
         const base = { answered_at: 'x', content_version: 3, correct: false, answer_given: '', used_hint: false, used_slow: false, session_id: 'e2e-norm' };
-        const ids = m.enqueue([{ ...base, card_id: 'c-0612', replays: 150, skipped: true }, { ...base, card_id: 'c-0607', replays: '3', skipped: 'yes' },
+        const ids = m.enqueue([{ ...base, card_id: 'c-0338', replays: 150, skipped: true }, { ...base, card_id: 'c-0337', replays: '3', skipped: 'yes' },
                                { ...base, card_id: 'c-0337', replays: -2, skipped: false }, { ...base, card_id: 'c-0338' }], null);
         const q = JSON.parse(localStorage.getItem('oye.resultsQueue.v1') || '[]').filter(r => ids.includes(r._id));
         localStorage.setItem('oye.resultsQueue.v1', JSON.stringify(JSON.parse(localStorage.getItem('oye.resultsQueue.v1')).filter(r => !ids.includes(r._id))));
         return [q.map(r => [r.card_id, r.replays, r.skipped]), m.clampReplays(99.7), m.clampReplays(null)];
     })""")
     check('results: the offline queue keeps replays as an integer 0-99 and skipped as a boolean (a row without them stays without them)',
-          norm == [[['c-0612', 99, True], ['c-0607', 3, False], ['c-0337', 0, False], ['c-0338', None, None]], 99, 0], norm)
+          norm == [[['c-0338', 99, True], ['c-0337', 3, False], ['c-0337', 0, False], ['c-0338', None, None]], 99, 0], norm)
     check('results (offline test): no JS errors', not [e for e in errors if 'net::' not in e and 'Failed to load resource' not in e and 'Failed to fetch' not in e], errors[:3])
     await ctx.close()
 
@@ -1411,7 +1594,7 @@ async def live_results_check(browser, url):
     await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=20000)
     has_mod = await page.evaluate("import('./js/results.js').then(m => m.RESULTS_ENDPOINT === " + json.dumps(RESULTS_ENDPOINT) + ").catch(() => false)")
     check('live: js/results.js is served and points at the Apps Script endpoint', has_mod)
-    await start_plan(page, ['c-0612', 'c-0611'])
+    await start_plan(page, ['c-0338', 'c-0678'])
     await dont_know_all(page, 2)
     st1 = await status(page)
     sent = await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 10000)
@@ -1419,7 +1602,7 @@ async def live_results_check(browser, url):
     body = fake.calls[0]['body'] if fake.calls else {}
     rows = body.get('results', []) if isinstance(body, dict) else []
     check('live [360x720]: summary shows "Saved · will send…" while sending, then green "Results sent to Gabriel"; 1 faked POST with 2 rows',
-          not status_problems(st1, 'queued') and sent and not status_problems(st2, 'sent') and len(fake.calls) == 1 and [r['card_id'] for r in rows] == ['c-0612', 'c-0611'],
+          not status_problems(st1, 'queued') and sent and not status_problems(st2, 'sent') and len(fake.calls) == 1 and [r['card_id'] for r in rows] == ['c-0338', 'c-0678'],
           {'sending': status_problems(st1, 'queued'), 'sent': status_problems(st2, 'sent'), 'calls': len(fake.calls)})
     await page.screenshot(path=os.path.join(SHOTS11, 'live-360x720-summary-results.png'))
     check('live results: no JS errors', not errors, errors[:3])
@@ -1452,6 +1635,24 @@ def static_v2_checks(cards, idx, version, sw_src):
     scenes = json.load(open(os.path.join(APP, 'content', 'scenes.json'), encoding='utf-8'))
     mpath = os.path.join(APP, 'content', 'missions.json')
     missions = json.load(open(mpath, encoding='utf-8')) if os.path.exists(mpath) else []
+    # Published batch 7 audio is mandatory, independently of the missing-audio allowlist.
+    batch7_clips = [('card ' + c['id'], 'items', (c.get('audio_text') or '').strip())
+                    for c in cards if is_batch7(c) and c.get('audio_text')]
+    batch7_clips += [('mission ' + m['id'], 'missions', m['id'])
+                     for m in missions if is_batch7(m) and (m.get('media') or {}).get('kind') == 'audio']
+    batch7_clips += [('card ' + c['id'], 'lines', f"{l['voice']}|{l['es'].strip()}")
+                     for c in cards if is_batch7(c) for l in c.get('audio_lines') or []]
+    batch7_clips += [('mission ' + m['id'], 'lines', f"{l['voice']}|{l['es'].strip()}")
+                     for m in missions if is_batch7(m) for l in (m.get('media') or {}).get('lines') or []]
+    bad_batch7_audio = []
+    for owner, section, key in batch7_clips:
+        entry = (idx.get(section) or {}).get(key) or {}
+        for rate in (('normal',) if section == 'lines' else ('normal', 'slow')):
+            path = entry.get(rate)
+            if not path or not os.path.isfile(os.path.join(APP, path)) or os.path.getsize(os.path.join(APP, path)) == 0:
+                bad_batch7_audio.append(f'{owner}: {section} {key!r} {rate}: {path!r}')
+    check('batch 7: every published audio card and mission has normal and slow files, and every dialogue line has a normal file, that exist and are nonempty',
+          bool(batch7_clips) and not bad_batch7_audio, bad_batch7_audio)
     src = os.path.join(os.path.dirname(APP), 'content', 'missions.json')
     if os.path.exists(src):
         # Folder metadata is published separately; compare the playable content here.
@@ -1484,6 +1685,9 @@ def static_v2_checks(cards, idx, version, sw_src):
     wrong = []
     for w, l in dlines:
         e = (idx.get('lines') or {}).get(f"{l.get('voice')}|{l['es'].strip()}")
+        kind, owner = w.split()[:2]
+        if not e and allowed_missing(kind, owner, 'lines', f"{l.get('voice')}|{l['es'].strip()}"):
+            continue
         if not e or e.get('voice') != l.get('voice') or os.path.basename(e['normal']) != ba.file_name(l['es'].strip(), ba.RATES['normal'], l['voice']):
             wrong.append(f"{w}: {l['es'][:30]!r}")
     check('v2.1 voices: audio.json maps every dialogue line to a file made in that line\'s voice', not wrong, wrong[:4])
@@ -1492,6 +1696,9 @@ def static_v2_checks(cards, idx, version, sw_src):
         t = (c.get('audio_text') or '').strip()
         if not t: continue
         e = idx['items'].get(t)
+        missing = [k for k in ('normal', 'slow') if not (e or {}).get(k)]
+        if missing and all(allowed_missing('card', c['id'], 'items', t, k) for k in missing): continue
+        if missing: bad_cards.append(f"{c['id']}: missing {missing}"); continue
         if not e: bad_cards.append(f"{c['id']}: no entry"); continue
         if c.get('audio_lines'):
             want = [ba.file_name(l['es'].strip(), ba.RATES[k], l['voice']) for k in ('normal',) for l in c['audio_lines']]
@@ -1512,14 +1719,17 @@ def static_v2_checks(cards, idx, version, sw_src):
         md = m.get('media') or {}
         if md.get('kind') != 'audio': continue
         e = (idx.get('missions') or {}).get(m['id'])
+        missing = [k for k in ('normal', 'slow') if not (e or {}).get(k)]
+        if missing and all(allowed_missing('mission', m['id'], 'missions', m['id'], k) for k in missing): continue
+        if missing: bad_m.append(f"{m['id']}: missing {missing}"); continue
         want = [ba.file_name(l['es'].strip(), ba.RATES['normal'], l['voice']) for l in md['lines']]
         if not e or e['parts']['normal'] != want or not (30 <= e.get('duration', 0) <= 120) or not e.get('slow_duration', 0) > e['duration']:
             bad_m.append(m['id'])
     check('v2.1 voices: each audio mission is one clip joined from its lines in their voices, with duration (slow clip longer)', not bad_m, bad_m)
     used = set(os.path.basename(f) for f in all_audio_files(idx))
     on_disk = {f for f in os.listdir(os.path.join(APP, 'audio')) if f.endswith('.mp3')}
-    check(f'audio: every referenced file exists and no stale file is left over from the old voice ({len(used)} files)',
-          used <= on_disk and not (on_disk - used), {'missing': sorted(used - on_disk)[:3], 'stale': len(on_disk - used)})
+    check(f'audio: every referenced file exists and is nonempty; committed unused clips may remain ({len(used)} files)',
+          used <= on_disk and all(os.path.getsize(os.path.join(APP, 'audio', f)) > 0 for f in used & on_disk), {'missing': sorted(used - on_disk)[:3], 'stale': len(on_disk - used)})
     js = sorted(f'js/{f}' for f in os.listdir(os.path.join(APP, 'js')) if f.endswith('.js'))
     missing_sw = [f for f in js if f"'{f}'" not in sw_src]
     check('sw.js precaches every js/*.js file (incl. js/levels.js)', not missing_sw, missing_sw)
@@ -1734,6 +1944,9 @@ async def levels_suite(browser, base, cards):
                   docScroll: document.scrollingElement.scrollHeight - innerHeight }; })()""")
             def want_sub(mm):
                 if mm['media']['kind'] != 'audio': return 'Message'
+                if not clip_available('missions', mm['id']):
+                    assert allowed_missing('mission', mm['id'], 'missions', mm['id']), mm['id']
+                    return 'Audio coming soon'
                 d = audio_index['missions'][mm['id']]['duration']
                 return f'Audio · about {max(1, round(d / 60))} min'
             want_rows = [(mm['id'], mm['title_en'], want_sub(mm), 'Not tried') for mm in missions]
@@ -1741,7 +1954,7 @@ async def levels_suite(browser, base, cards):
             check('v2 missions list (Picasso): "Home" back link, HARD eyebrow, title "Real-life missions"; one surface row per mission with title_en, '
                   '"Audio · about N min" (rounded from the clip) or "Message", best score and a chevron',
                   ml_['back'] == 'Home' and ml_['gridBack'] and ml_['eyebrow'].lower() == 'hard' and ml_['eyeTT'] == 'uppercase' and ml_['title'] == 'Real-life missions'
-                  and [(a, b, c.split(' · ')[:2] if c.startswith('Audio') else ['Message'], d) for a, b, c, d in got_rows] == [(a, b, c.split(' · '), d) for a, b, c, d in want_rows] and all(r['chev'] and r['bg'] not in ('rgba(0, 0, 0, 0)', 'transparent') and r['radius'] == '12px' for r in ml_['rows'])
+                  and [(a, b, c.split(' · ')[:2] if c.startswith('Audio · ') else c.split(' · ')[:1], d) for a, b, c, d in got_rows] == [(a, b, c.split(' · '), d) for a, b, c, d in want_rows] and all(r['chev'] and r['bg'] not in ('rgba(0, 0, 0, 0)', 'transparent') and r['radius'] == '12px' for r in ml_['rows'])
                   and ml_['docScroll'] <= 1, {'got': got_rows, 'want': want_rows, 'hdr': (ml_['back'], ml_['eyebrow'], ml_['title'])})
             await shot_v2(page, '12-missions-list-360x640.png')
         await page.click('[data-mission=m-metro-01]')
@@ -2054,24 +2267,24 @@ async def ux_shot(page, name):
 
 async def ux_replays_suite(browser, base, cards):
     errors = []
-    by_id = {c['id']: c for c in cards}
+    by_id = {c['id']: c for c in [*cards, *UX_CARDS]}
     fake = FakeEndpoint('ok')
     ctx, page = await new_page(browser, errors, viewport={'width': 390, 'height': 844}, endpoint=fake)
     await home_fresh(page, base)
 
     # ---- play button: silent start, playing state + tap to stop, "Play again", slow, no animation (hero and row layouts) ----
-    await start_plan(page, ['c-0607', 'c-0456', 'c-9104', 'c-9103', 'c-9104', 'c-9104', 'c-0608', 'c-9104'])
-    for cid, layout in (('c-0607', 'hero'), ('c-0456', 'row')):
+    await start_plan(page, ['c-0337', 'c-0456', 'c-9104', 'c-9103', 'c-9104', 'c-9104', 'c-0674', 'c-9104'])
+    for cid, layout in (('c-0337', 'hero'), ('c-0456', 'row')):
         await page.wait_for_selector(f'[data-card={cid}][data-state=question]')
         await page.wait_for_timeout(700)
         s0 = await page.evaluate(PLAYBTN_JS)
-        if cid == 'c-0607': await ux_shot(page, '01-card-before-play-tap-to-listen.png')
+        if cid == 'c-0337': await ux_shot(page, '01-card-before-play-tap-to-listen.png')
         await page.click('#app .card-zone [data-testid=replay]'); await page.wait_for_timeout(350)
         s1 = await page.evaluate(PLAYBTN_JS)
-        if cid == 'c-0607': await ux_shot(page, '02-card-playing-stop-state.png')
+        if cid == 'c-0337': await ux_shot(page, '02-card-playing-stop-state.png')
         await page.click('#app .card-zone [data-testid=replay]'); await page.wait_for_timeout(250)
         s2 = await page.evaluate(PLAYBTN_JS)
-        if cid == 'c-0607': await ux_shot(page, '03-card-after-play-play-again.png')
+        if cid == 'c-0337': await ux_shot(page, '03-card-after-play-play-again.png')
         await page.click('#app .card-zone [data-play=slow]'); await page.wait_for_timeout(350)
         s3 = await page.evaluate(PLAYBTN_JS)
         await page.click('#app .card-zone [data-testid=replay]'); await page.wait_for_timeout(250)   # stops the slow clip too
@@ -2086,7 +2299,7 @@ async def ux_replays_suite(browser, base, cards):
         check(f'no autoplay ({layout} play button, {cid}): opens silent with "Tap to listen"; tap plays and shows a stop icon (aria-pressed, "Stop"), caption "Play again"; '
               'tap again stops; slow still starts slow playback on tap (play button shows playing, can stop it); no pulse/animation; 2 plays counted',
               ok, {'before': s0, 'playing': s1, 'stopped': s2, 'slow': s3, 'stopped2': s4, 'plays': plays})
-        if cid == 'c-0607':
+        if cid == 'c-0337':
             await page.click('[data-opt="1"]')
             await page.wait_for_selector('[data-state=correct], [data-state=wrong]')
             f = await page.evaluate(FOCUS_JS)
@@ -2117,9 +2330,9 @@ async def ux_replays_suite(browser, base, cards):
     s_ = await fix('c-9103', 'sobre'); await page.click('[data-act=next]')
     main_ = await fix('c-9104', ' Dobla '); await page.click('[data-act=next]')
     dv = await fix('c-9104', 'da vuelta'); await page.click('[data-act=next]')
-    # listen_type with a word alternate: money formatting of the main answer is kept ($75)
-    await page.wait_for_selector('[data-card=c-0608][data-state=question]')
-    await page.keyboard.type('setenta y cinco'); await page.click('[data-act=check]')
+    # listen_type with a word alternate: money formatting of the main answer is kept ($240)
+    await page.wait_for_selector('[data-card=c-0674][data-state=question]')
+    await page.keyboard.type('doscientos cuarenta'); await page.click('[data-act=check]')
     await page.wait_for_selector('[data-state=correct]')
     lt = (await page.text_content('[data-testid=answer-line]')).strip()
     await page.click('[data-act=next]')
@@ -2134,15 +2347,15 @@ async def ux_replays_suite(browser, base, cards):
           main_['state'] == 'correct' and main_['blank'] == 'dobla' and main_['line'] == 'The answer is “dobla”.', main_)
     check('alternate fixture: c-9104 also accepts "da vuelta" (Gabriel\'s change) and shows “da vuelta” works. Also common: “dobla”.',
           dv['state'] == 'correct' and dv['blank'] == 'da vuelta' and dv['line'] == '“da vuelta” works. Also common: “dobla”.', dv)
-    check('accepted alternate on listen_type (c-0608 typed "setenta y cinco"): “setenta y cinco” works. Also common: $75. (money format kept)',
-          lt == '“setenta y cinco” works. Also common: $75.', lt)
+    check('accepted alternate on listen_type (c-0674 typed "doscientos cuarenta"): “doscientos cuarenta” works. Also common: $240. (money format kept)',
+          lt == '“doscientos cuarenta” works. Also common: $240.', lt)
     check('wrong answer unchanged: "The answer is “dobla”." + "You wrote: xyz", blank shows the answer',
           wrong['state'] == 'wrong' and wrong['line'] == 'The answer is “dobla”.' and wrong['you'] == 'You wrote: xyz' and wrong['blank'] == 'dobla', wrong)
     await page.wait_for_selector('[data-screen=summary]')
     sent = await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 10000)
     rows = fake.ok_rows()
-    check('results: this session\'s rows carry replays (2 plays -> 1 on c-0607 and c-0456, 0 elsewhere) and skipped false',
-          sent and [(r['card_id'], r['replays'], r['skipped']) for r in rows][:3] == [('c-0607', 1, False), ('c-0456', 1, False), ('c-9104', 0, False)]
+    check('results: this session\'s rows carry replays (2 plays -> 1 on c-0337 and c-0456, 0 elsewhere) and skipped false',
+          sent and [(r['card_id'], r['replays'], r['skipped']) for r in rows][:3] == [('c-0337', 1, False), ('c-0456', 1, False), ('c-9104', 0, False)]
           and all(r['replays'] == 0 for r in rows[2:]), [(r['card_id'], r['replays'], r['skipped']) for r in rows])
     # keyboard users still get the ring: Tab moves focus and the outline shows
     await page.locator('[data-act=done]').focus()
@@ -2290,11 +2503,11 @@ async def drill_read_suite(browser, base, cards):
     easy_opts = []
     await home_fresh(page, base)
     for _ in range(3):
-        await start_plan(page, ['c-0607', 'c-0456']); await page.wait_for_selector('[data-card=c-0607]')
+        await start_plan(page, ['c-0337', 'c-0456']); await page.wait_for_selector('[data-card=c-0337]')
         easy_opts.append(await page.evaluate("[...document.querySelectorAll('#app [data-opt]')].map(b => b.dataset.value)"))
         await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
-    check('Easy options are NOT shuffled (unchanged behaviour): c-0607 shows its options in content order every time',
-          all(o == by_id['c-0607']['options'] for o in easy_opts), easy_opts[:1])
+    check('Easy options are NOT shuffled (unchanged behaviour): c-0337 shows its options in content order every time',
+          all(o == by_id['c-0337']['options'] for o in easy_opts), easy_opts[:1])
     # > 10 playable cards: 10 picked at random, weighted toward missed / due cards (srs.planTopic on 25 cards)
     w = await page.evaluate("""import('./js/srs.js').then((srs) => {
         const cards = Array.from({ length: 25 }, (_, i) => ({ id: 'x' + i, options: ['a', 'b', 'c', 'd'], answer: 'a' }));
@@ -2905,6 +3118,159 @@ async def weekly_reports_suite(browser, base):
         await page.click('[data-act=reports]')
         check(f'Weekly reports {empty}: empty state without list caption', await page.locator('.report-empty').count() == 1 and await page.locator('.report-byline, .report-list-row').count() == 0)
     check('Weekly reports: no JS errors', not errors, errors)
+    await ctx.close()
+
+
+# Spanish labels must fit their boxes; vertically scrollable content remains reachable.
+# The .pv ellipsis is an intentional lesson-content preview, never a UI label.
+SPANISH_FIT_JS = """() => {
+  const issues = [], root = document.querySelector('#app');
+  for (const e of root.querySelectorAll('*')) {
+    const s = getComputedStyle(e), r = e.getBoundingClientRect();
+    if (!r.width || !r.height || s.visibility === 'hidden' || e.closest('svg, .pv')) continue;
+    const name = e.className || e.tagName;
+    if (r.left < -1 || r.right > innerWidth + 1) issues.push(`${name}: outside viewport horizontally`);
+    if (e.clientWidth && s.display !== 'inline' && e.scrollWidth > e.clientWidth + 1)
+      issues.push(`${name}: horizontal overflow ${e.scrollWidth}/${e.clientWidth}`);
+    if (['hidden', 'clip'].includes(s.overflowY) && e.scrollHeight > e.clientHeight + 1)
+      issues.push(`${name}: vertically clipped`);
+    // A text range reveals text spilling out of fixed-height buttons or label boxes.
+    for (const node of e.childNodes) {
+      if (node.nodeType !== Node.TEXT_NODE || !node.textContent.trim()) continue;
+      const range = document.createRange(); range.selectNodeContents(node);
+      for (const t of range.getClientRects()) {
+        if (t.left < r.left - 1 || t.right > r.right + 1 || t.top < r.top - 3 || t.bottom > r.bottom + 3)
+          issues.push(`${name}: text outside label box: ${node.textContent.trim().slice(0, 50)}`);
+      }
+    }
+  }
+  return [...new Set(issues)];
+}"""
+
+
+async def language_toggle_suite(browser, base):
+    errors = []
+    ctx, page = await new_page(browser, errors, viewport={'width': 360, 'height': 720})
+    await page.clock.set_fixed_time('2026-10-11T18:00:00Z')
+    shots = os.path.abspath(os.path.join(APP, '..', 'design', 'lang-toggle', 'built-es'))
+    os.makedirs(shots, exist_ok=True)
+    report = json.load(open(os.path.join(APP, 'tests', 'fixtures', 'weekly-report.json')))
+    async def reports(route):
+        data = [{k: report[k] for k in ('id', 'week_start', 'week_end', 'added')}] if route.request.url.split('?')[0].endswith('/index.json') else report
+        await route.fulfill(content_type='application/json', body=json.dumps(data))
+    await ctx.route('**/content/reports/**', reports)
+    await home_fresh(page, base)
+    english_home = await page.locator('.home-header').text_content()
+    check('language: English is default, Oye stays Oye', await page.get_attribute('html', 'lang') == 'en'
+          and await page.locator('.display').text_content() == 'Oye')
+    await page.evaluate('window.__languagePage = true')
+    await page.click('[data-lang=es]')
+    await page.wait_for_function("document.documentElement.lang === 'es'")
+    geometry = await page.evaluate("""() => {
+      const group = document.querySelector('.language-toggle'), date = document.querySelector('.home-date');
+      const buttons = [...group.querySelectorAll('button')];
+      return {role:group.getAttribute('role'), label:group.getAttribute('aria-label'),
+        right: group.getBoundingClientRect().right, gap: group.querySelector('span').offsetWidth,
+        separate:date.getBoundingClientRect().right <= group.getBoundingClientRect().left,
+        buttons:buttons.map(b => ({w:b.offsetWidth,h:b.offsetHeight,lang:b.lang,pressed:b.getAttribute('aria-pressed'),color:getComputedStyle(b).color}))};
+    }""")
+    check('language: approved group, 44px buttons, 8px dot, 24px edge and active colours',
+          geometry == {'role':'group','label':'Language','right':336,'gap':8,'separate':True,'buttons':[
+              {'w':44,'h':44,'lang':'en','pressed':'false','color':'rgb(107, 107, 115)'},
+              {'w':44,'h':44,'lang':'es','pressed':'true','color':'rgb(242, 242, 244)'}]}, geometry)
+    check('language: switches immediately without reload, date is DOM 11 OCT, choice saved',
+          await page.evaluate('window.__languagePage === true')
+          and (await page.locator('.home-date').text_content()).upper() == 'DOM 11 OCT'
+          and await page.locator('.challenges-head').text_content() == 'Retos'
+          and await page.locator('.display').text_content() == 'Oye'
+          and await page.evaluate("localStorage.getItem('oye-lang')") == 'es')
+    home_labels = await page.locator('.ch-title, .ch-tag, .your-week > .eyebrow').all_text_contents()
+    check('language: all Home challenge and report labels switch together', home_labels == [
+        'Fácil', 'Sesión rápida', 'Medio', 'Reto del tema', 'Difícil', 'Misión de la vida real',
+        'Práctica de verbos', 'Tu semana', 'Reporte semanal'], home_labels)
+    await page.click('[data-lang=en]')
+    await page.wait_for_function("document.documentElement.lang === 'en'")
+    check('language: toggles back with every Home header label restored', await page.locator('.home-header').text_content() == english_home)
+    await page.click('[data-lang=es]')
+    await page.wait_for_function("document.documentElement.lang === 'es'")
+
+    async def fits(name, screenshot=None):
+        await page.evaluate('document.fonts.ready')
+        issues = await page.evaluate(SPANISH_FIT_JS)
+        check(f'Spanish 360x720: {name} labels fit without clipping or overflow', not issues, issues)
+        if screenshot: await page.screenshot(path=os.path.join(shots, screenshot + '.png'))
+
+    await fits('Home', 'home')
+    await page.click('[data-act=medium]')
+    check('language: topic names update without reloading modules',
+          await page.locator('[data-topic=numbers_prices] .tname').text_content() == 'Números y precios'
+          and await page.locator('.language-toggle').count() == 0)
+    await fits('topics', 'topics')
+    await page.click('[data-act=home]'); await page.wait_for_selector('[data-screen=home]')
+    card = await page.evaluate("window.__oye.easy.find(c => c.type === 'listen_type' && c.hint_en)")
+    await start_plan(page, [card['id']])
+    check('language: card labels update without reload; lesson prompt unchanged',
+          await page.locator('.audio-row .caption').text_content() == 'Toca para escuchar'
+          and await page.locator('[data-act=hint]').text_content() == 'Pista')
+    await fits('card question', 'card')
+    await page.click('[data-act=hint]')
+    check('language: hint wording stays original and Quita fits',
+          await page.locator('.hint-text').text_content() == card['hint_en']
+          and await page.locator('[data-act=hint-hide]').text_content() == 'Quita')
+    await fits('card hint', 'card-hint')
+    await page.click('[data-act=hint-hide]')
+    await answer_card_right(page, card)
+    check('language: feedback uses Sigue', await page.locator('[data-act=next]').text_content() == 'Sigue')
+    await fits('card feedback', 'card-feedback')
+    await page.click('[data-act=next]'); await page.wait_for_selector('[data-screen=summary]')
+    await fits('summary', 'summary')
+    await page.click('[data-act=done]'); await page.wait_for_selector('[data-screen=home]')
+    await page.reload(); await page.wait_for_selector('[data-screen=home]')
+    check('language: Spanish persists across reload', await page.get_attribute('html', 'lang') == 'es'
+          and await page.locator('[data-lang=es]').get_attribute('aria-pressed') == 'true'
+          and await page.locator('.challenges-head').text_content() == 'Retos')
+    await page.evaluate('window.__oye.content.audioSync')
+    await page.wait_for_function('!!navigator.serviceWorker.controller')
+    await ctx.set_offline(True)
+    await page.reload(); await page.wait_for_selector('[data-screen=home]')
+    await page.click('[data-lang=en]'); await page.wait_for_function("document.documentElement.lang === 'en'")
+    await page.click('[data-lang=es]'); await page.wait_for_function("document.documentElement.lang === 'es'")
+    check('language: both catalogs work offline after reload', await page.locator('.challenges-head').text_content() == 'Retos')
+    await ctx.set_offline(False)
+    # Offline content/report refreshes may log network failures, never runtime errors.
+    check('language: offline switching has no JS exceptions', not [e for e in errors if e.startswith('pageerror:')], errors)
+    errors.clear()
+    await page.evaluate("window.__oye.missions.forEach(m => m.added = '2026-10-11')")
+    await page.click('[data-act=hard]'); await fits('mission hub')
+    await page.click('[data-mission=m-metro-01] [data-act=open-mission]')
+    await fits('mission intro', 'mission')
+    await page.click('[data-act=begin]')
+    qs = await page.evaluate('window.__oye.mission.qs')
+    for i, q in enumerate(qs):
+        await fits(f'mission question {i+1}', 'mission-question' if i == 1 else None)
+        if i == 1:
+            check('language: mission row has Atrás and Sigue',
+                  await page.locator('[data-act=question-back]').text_content() == 'Atrás'
+                  and await page.locator('[data-act=check]').text_content() == 'Sigue')
+            # Exercise longer translations without changing the approved catalog.
+            await page.locator('[data-act=check]').evaluate("b => b.textContent = 'Siguiente'")
+            await fits('mission row with Siguiente')
+        if q['kind'] == 'pick': await page.click(f'[data-opt="{q["options"].index(q["answer"])}"]')
+        else: await page.keyboard.type(q['answer'])
+        await page.click('[data-act=check]')
+    await page.wait_for_selector('[data-screen=mission-result]'); await fits('mission result', 'mission-result')
+    await page.click('[data-act=close]'); await page.wait_for_selector('[data-screen=home]')
+    await page.click('[data-act=reports]'); await page.wait_for_selector('.report-row-total')
+    await fits('reports list', 'reports')
+    await page.click('[data-report="0"]'); await page.wait_for_selector('.report-mistake')
+    await fits('report detail', 'report')
+    await page.locator('.report-focus h2').evaluate("e => e.textContent = 'Enfoque de la próxima semana'")
+    await fits('long report focus heading')
+    check('Spanish: long focus heading wraps to two lines',
+          await page.locator('.report-focus h2').evaluate('e => e.offsetHeight >= 32'))
+    await page.locator('.report-mistake').last.scroll_into_view_if_needed()
+    await fits('report scrolled')
+    check('language: no JS or console errors', not errors, errors)
     await ctx.close()
 
 

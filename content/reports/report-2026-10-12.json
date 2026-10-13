@@ -1,0 +1,213 @@
+{
+  "id": "r-2026-10-12",
+  "week_start": "2026-10-05",
+  "week_end": "2026-10-11",
+  "added": "2026-10-12",
+  "totals": {
+    "done": 110,
+    "correct": 97,
+    "wrong": 13
+  },
+  "by_challenge": [
+    {
+      "challenge": "easy",
+      "label": "Easy",
+      "done": 30,
+      "correct": 29,
+      "wrong": 1
+    },
+    {
+      "challenge": "medium",
+      "label": "Medium",
+      "done": 20,
+      "correct": 18,
+      "wrong": 2,
+      "topics": [
+        {
+          "topic": "food_ordering",
+          "label": "Food and ordering",
+          "done": 10,
+          "correct": 9,
+          "wrong": 1
+        },
+        {
+          "topic": "small_talk",
+          "label": "Small talk",
+          "done": 10,
+          "correct": 9,
+          "wrong": 1
+        }
+      ]
+    },
+    {
+      "challenge": "hard",
+      "label": "Hard",
+      "done": 40,
+      "correct": 33,
+      "wrong": 7
+    },
+    {
+      "challenge": "drill",
+      "label": "Verb drill",
+      "done": 20,
+      "correct": 17,
+      "wrong": 3
+    }
+  ],
+  "mistakes": [
+    {
+      "card_id": "c-0189",
+      "challenge": "drill",
+      "prompt_en": "preocuparse, usted, negative command",
+      "question": "No ___, señor, su cuarto ya está listo.",
+      "your_answer": "te preocupes",
+      "right_answer": "se preocupe",
+      "note_en": "Negative usted of preocuparse is no se preocupe; no te preocupes is for tú."
+    },
+    {
+      "card_id": "c-0272",
+      "challenge": "drill",
+      "prompt_en": "oír, participle",
+      "question": "¿Has ___ el nuevo disco de esa cantante?",
+      "your_answer": "oyido",
+      "right_answer": "oído",
+      "note_en": "Oír has the participle oído (accent on the i), not oyido."
+    },
+    {
+      "card_id": "c-0257",
+      "challenge": "drill",
+      "prompt_en": "tener, él, past",
+      "question": "El hotel donde nos quedamos ___ una piscina enorme.",
+      "your_answer": "tuvo",
+      "right_answer": "tenía",
+      "note_en": "Describing what a place was like takes the imperfect: tenía, not tuvo."
+    },
+    {
+      "card_id": "m-interview-design-01:q2",
+      "challenge": "hard",
+      "prompt_en": "Job interview at a design studio",
+      "question": "What did he do last year?",
+      "your_answer": "Two years at an agency",
+      "right_answer": "An online animation course",
+      "note_en": "El año pasado hice… is a finished past action; listen for last year, not the older job."
+    },
+    {
+      "card_id": "m-interview-design-01:q4",
+      "challenge": "hard",
+      "prompt_en": "Job interview at a design studio",
+      "question": "What is the starting monthly salary? Type the number.",
+      "your_answer": "10000",
+      "right_answer": "22000",
+      "note_en": "Veintidós mil = 22,000. Catch the number before mil."
+    },
+    {
+      "card_id": "c-0575",
+      "challenge": "medium",
+      "prompt_en": "What is the question?",
+      "question": "¿Eres aficionado al fútbol o prefieres otros deportes?",
+      "your_answer": "If you play professionally",
+      "right_answer": "If you're into soccer",
+      "note_en": "Ser aficionado a means to be a fan of, not to play professionally."
+    },
+    {
+      "card_id": "c-0427",
+      "challenge": "medium",
+      "prompt_en": "How much do they charge you? Type the number.",
+      "question": "Te cobro ochenta y siete pesos.",
+      "your_answer": "85",
+      "right_answer": "87",
+      "note_en": "Listen to the full price; eighty-five and eighty-seven are easy to mix by ear."
+    },
+    {
+      "card_id": "m-cinema-taquilla-01:q1",
+      "challenge": "hard",
+      "prompt_en": "Cinema box office: the new superhero movie",
+      "question": "Why can't they see the 9:30 showing?",
+      "your_answer": "It already started",
+      "right_answer": "It's sold out",
+      "note_en": "Ya está llena means sold out, not that it already started."
+    },
+    {
+      "card_id": "m-cinema-taquilla-01:q2",
+      "challenge": "hard",
+      "prompt_en": "Cinema box office: the new superhero movie",
+      "question": "What time is the showing he picks? (type it like 9:15)",
+      "your_answer": "14:00",
+      "right_answer": "10:15",
+      "note_en": "Las diez y cuarto = 10:15, not 14:00."
+    },
+    {
+      "card_id": "c-0608",
+      "challenge": "easy",
+      "prompt_en": "How much is the entry? Type the number.",
+      "question": "La entrada cuesta setenta y cinco pesos.",
+      "your_answer": "65",
+      "right_answer": "75",
+      "note_en": "Setenta y cinco = 75; sesenta would be 60."
+    },
+    {
+      "card_id": "m-bus-terminal-01:q3",
+      "challenge": "hard",
+      "prompt_en": "Bus terminal: a ticket to Oaxaca",
+      "question": "How much does she pay for her ticket? Type the number.",
+      "your_answer": "260",
+      "right_answer": "860",
+      "note_en": "Ochocientos sesenta = 860. Do not hear it as doscientos."
+    },
+    {
+      "card_id": "m-taqueria-night-01:q3",
+      "challenge": "hard",
+      "prompt_en": "Late-night taquería: ordering and the total",
+      "question": "How much is his total? Type the number.",
+      "your_answer": "85",
+      "right_answer": "170",
+      "note_en": "Add every item: the total was ciento setenta (170)."
+    },
+    {
+      "card_id": "m-techno-club-01:q4",
+      "challenge": "hard",
+      "prompt_en": "Club box office: a melodic techno night",
+      "question": "How much change does she get? Type the number.",
+      "your_answer": "30",
+      "right_answer": "50",
+      "note_en": "Change from 500 after a 450 ticket is cincuenta (50), not treinta."
+    }
+  ],
+  "focus_next_week": [
+    {
+      "title_en": "Prices and change by ear",
+      "detail_en": "Hundreds like ochocientos vs doscientos, setenta vs sesenta, and change (cincuenta vs treinta). New Easy and Numbers cards, plus replacements for the bus, taquería and club mission totals.",
+      "card_ids": [
+        "c-0673",
+        "c-0734",
+        "c-0735",
+        "c-0736"
+      ]
+    },
+    {
+      "title_en": "Multi-meaning verbs",
+      "detail_en": "pasar, seguir, dejar, poner, hacer, tocar/me tocó, me pone/me hace/me deja, me da + noun, and perder vs pedir vs preguntar. New Present-tense Medium cards and Verb drills.",
+      "card_ids": [
+        "c-0708",
+        "c-0712",
+        "c-0713",
+        "c-0716",
+        "c-0720",
+        "c-0737",
+        "c-0739"
+      ]
+    },
+    {
+      "title_en": "Weather, plans and sizes",
+      "detail_en": "New Medium topic Weather and plans (hace calor/frío, nublado, picnic plans) plus shopping sizes talla chica/mediana/grande and me quedan bien.",
+      "card_ids": [
+        "c-0688",
+        "c-0691",
+        "c-0722",
+        "c-0723",
+        "c-0684"
+      ]
+    }
+  ],
+  "summary_en": "You answered 110 questions this week and got 97 right (88%). Easy and Medium were strong; most slips were irregular forms in the Verb drill earlier in the week, plus a few Hard-mission prices by ear (860, 170, change of 50). You missed 13 different questions; the 13 most useful are below."
+}

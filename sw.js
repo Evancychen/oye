@@ -1,6 +1,6 @@
 // Oye service worker: offline app shell + content + audio.
 // CACHE_VERSION is rewritten by tools/publish_content.py (content version + hash of the shell files).
-const CACHE_VERSION = 'oye-v12-efea03fb';
+const CACHE_VERSION = 'oye-v13-1259efe5';
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const CONTENT_CACHE = 'oye-content'; // filled by js/content.js (JSON + audio); kept across shell updates
 
@@ -10,18 +10,21 @@ const SHELL = [
   'styles.css',
   'manifest.webmanifest',
   'js/app.js',
-  'js/content.js',
-  'js/reports.js',
   'js/audio.js',
   'js/check.js',
-  'js/srs.js',
-  'js/results.js',
+  'js/content.js',
+  'js/i18n.js',
   'js/levels.js',
+  'js/reports.js',
+  'js/results.js',
+  'js/srs.js',
+  'strings/en.json',
+  'strings/es.json',
   'fonts/inter-latin.woff2',
-  'icons/icon-192.png',
-  'icons/icon-512.png',
   'icons/icon-192-maskable.png',
+  'icons/icon-192.png',
   'icons/icon-512-maskable.png',
+  'icons/icon-512.png',
 ];
 
 self.addEventListener('install', (event) => {

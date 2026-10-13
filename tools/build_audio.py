@@ -22,15 +22,21 @@ Single-voice files are named sha1("<voice name>|<rate>|<text>")[:16].mp3, so a v
 change regenerates everything and a rerun only creates what's missing. Joined clips are
 named from the hashes of their parts. Writes app/content/audio.json.
 
-Usage:  python3 tools/build_audio.py [--prune] [--dry-run]
+Usage:  python3 tools/build_audio.py [--prune] [--dry-run] [--skip-missing-audio]
+Failures are logged and listed by content id/text in content/missing-audio.json.
+The index contains successful clips only. Failures exit 1 unless --skip-missing-audio
+is supplied; a later normal run fills missing clips without rewriting existing MP3s.
+--prune preserves both referenced clips and all tracked MP3s. --dry-run writes nothing.
+
 Needs:  pip install edge-tts, ffmpeg + ffprobe on PATH, network access to Microsoft's TTS.
 """
-import argparse, asyncio, hashlib, json, os, shutil, subprocess, sys, tempfile
+import argparse, asyncio, hashlib, json, os, shutil, subprocess, sys
 
 APP = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONTENT = os.path.join(APP, 'content')
 AUDIO_DIR = os.path.join(APP, 'audio')
 INDEX = os.path.join(CONTENT, 'audio.json')
+MISSING_INDEX = os.path.join(CONTENT, 'missing-audio.json')
 PARTS_DIR = os.path.join(APP, '.audio-parts')   # local cache of single lines used to build joined clips (gitignored)
 
 VOICES = {'male': 'es-US-AlonsoNeural', 'female': 'es-US-PalomaNeural'}
@@ -122,11 +128,15 @@ def collect():
 
 
 async def synth(text, rate, voice, path, sem):
-    import edge_tts
+    if os.path.exists(path):
+        if exists(path):
+            return
+        raise RuntimeError(f'refusing to overwrite existing empty file: {path}')
     async with sem:
         last = None
         for attempt in range(1, RETRIES + 1):
             try:
+                import edge_tts
                 tmp = path + '.part'
                 await edge_tts.Communicate(text, VOICES[voice], rate=rate).save(tmp)
                 if os.path.getsize(tmp) == 0:
@@ -135,14 +145,19 @@ async def synth(text, rate, voice, path, sem):
                 return
             except Exception as e:  # network hiccups: retry
                 last = e
-                await asyncio.sleep(1.5 * attempt)
+                if os.path.exists(path + '.part'):
+                    os.remove(path + '.part')
+                if attempt < RETRIES:
+                    await asyncio.sleep(1.5 * attempt)
         raise RuntimeError(f'failed after {RETRIES} tries: {text!r}: {last}')
 
 
 def join(parts, out):
     """Concatenate MP3 parts with PAUSE_S of silence between them (re-encoded 24 kHz mono 48 kbps, like edge-tts)."""
-    if os.path.exists(out) and os.path.getsize(out) > 0:
-        return
+    if os.path.exists(out):
+        if exists(out):
+            return
+        raise RuntimeError(f'refusing to overwrite existing empty file: {out}')
     cmd = ['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y']
     for p in parts:
         cmd += ['-i', os.path.join(PARTS_DIR, p)]
@@ -151,8 +166,14 @@ def join(parts, out):
     filt += ''.join(f'[a{i}]' for i in range(len(parts))) + f'concat=n={len(parts)}:v=0:a=1[out]'
     tmp = out + '.part'
     cmd += ['-filter_complex', filt, '-map', '[out]', '-ac', '1', '-ar', '24000', '-c:a', 'libmp3lame', '-b:a', '48k', '-f', 'mp3', tmp]
-    subprocess.run(cmd, check=True)
-    os.replace(tmp, out)
+    try:
+        subprocess.run(cmd, check=True, capture_output=True)
+        if not exists(tmp):
+            raise RuntimeError('empty joined audio')
+        os.replace(tmp, out)
+    finally:
+        if os.path.exists(tmp):
+            os.remove(tmp)
 
 
 def duration(name):
@@ -161,12 +182,67 @@ def duration(name):
     return round(float(r.stdout.strip()), 2)
 
 
+def exists(path):
+    return os.path.isfile(path) and os.path.getsize(path) > 0
+
+
+def references(index):
+    return {os.path.basename(e[k]) for sec in ('items', 'lines', 'missions')
+            for e in index.get(sec, {}).values() for k in RATES if e.get(k)}
+
+
+def write_missing(index):
+    """Report missing rates by content owner, including lines shared by multiple owners."""
+    skipped = []
+
+    def record(kind, owner, section, key, text, rates):
+        entry = index.get(section, {}).get(key, {})
+        missing = [rate for rate in rates if not entry.get(rate) or not exists(os.path.join(APP, entry[rate]))]
+        if missing:
+            skipped.append({'kind': kind, 'id': owner['id'], 'section': section, 'key': key,
+                            'text': text, 'missing_rates': missing})
+
+    for card in load('cards.json', []):
+        text = (card.get('audio_text') or '').strip()
+        if text:
+            record('card', card, 'items', text, text, RATES)
+    for kind, filename, field in [('card', 'cards.json', 'audio_lines'),
+                                   ('scene', 'scenes.json', 'dialogue'),
+                                   ('mission', 'missions.json', 'lines')]:
+        for owner in load(filename, []):
+            media = owner.get('media') or {}
+            lines = media.get(field, []) if kind == 'mission' else owner.get(field, [])
+            if kind == 'mission':
+                if media.get('kind') != 'audio':
+                    continue
+                record(kind, owner, 'missions', owner['id'],
+                       '\n'.join(l['es'].strip() for l in lines), RATES)
+            for line in lines or []:
+                text = (line.get('es') or '').strip()
+                if text:
+                    record(kind, owner, 'lines', f"{line['voice']}|{text}", text, ('normal',))
+    with open(MISSING_INDEX, 'w', encoding='utf-8') as f:
+        json.dump({'count': len(skipped), 'items': skipped}, f, ensure_ascii=False, indent=1)
+        f.write('\n')
+    for item in skipped:
+        print(f"SKIPPED {item['kind']} {item['id']} {item['section']}[{item['key']!r}] "
+              f"({', '.join(item['missing_rates'])})", file=sys.stderr)
+    print(f'{len(skipped)} missing audio item(s); wrote {os.path.relpath(MISSING_INDEX, APP)}')
+    return skipped
+
+
+def committed_audio():
+    """Pruning must also preserve tracked MP3s, including retired content."""
+    result = subprocess.run(['git', '-C', APP, 'ls-files', '-z', '--', 'audio/*.mp3'],
+                            check=True, capture_output=True, text=True)
+    return {os.path.basename(p) for p in result.stdout.split('\0') if p}
+
+
 async def main_async(args):
-    os.makedirs(AUDIO_DIR, exist_ok=True)
-    os.makedirs(PARTS_DIR, exist_ok=True)
+    if not args.dry_run:
+        os.makedirs(AUDIO_DIR, exist_ok=True)
+        os.makedirs(PARTS_DIR, exist_ok=True)
     card_plan, line_plan, mission_plan = collect()
-    if (card_plan or mission_plan) and not (shutil.which('ffmpeg') and shutil.which('ffprobe')) and not args.dry_run:
-        raise SystemExit('ERROR: ffmpeg and ffprobe are needed to join dialogue lines')
     todo = {}   # path -> (text, rate, voice)
 
     def need(text, rate, voice):
@@ -184,10 +260,20 @@ async def main_async(args):
         if not (os.path.exists(p) and os.path.getsize(p) > 0):
             shipped = os.path.join(AUDIO_DIR, name)
             if os.path.exists(shipped) and os.path.getsize(shipped) > 0:
-                shutil.copyfile(shipped, p)
+                if not args.dry_run:
+                    shutil.copyfile(shipped, p)
             else:
                 todo[p] = (text, rate, voice)
         return name
+
+    def plan_join(lines, rate):
+        parts = [file_name(es, rate, v) for v, es, _ in lines]
+        out = joined_name(parts)
+        if not exists(os.path.join(AUDIO_DIR, out)):
+            for v, es, _ in lines:
+                need_part(es, rate, v)
+            joins.append((out, parts))
+        return out, parts
 
     index = {'format': 2, 'voices': VOICES, 'level_voice': LEVEL_VOICE, 'rates': RATES, 'pause_s': PAUSE_S,
              'items': {}, 'lines': {}, 'missions': {}}
@@ -199,9 +285,7 @@ async def main_async(args):
         else:
             entry = {'voice': 'dialogue', 'lines': [{'speaker': s, 'voice': v, 'es': es} for v, es, s in e['lines']], 'parts': {}}
             for kind, rate in RATES.items():
-                parts = [need_part(es, rate, v) for v, es, _ in e['lines']]
-                out = joined_name(parts)
-                joins.append((out, parts))
+                out, parts = plan_join(e['lines'], rate)
                 entry[kind] = f'audio/{out}'
                 entry['parts'][kind] = parts
             index['items'][t] = entry
@@ -210,47 +294,88 @@ async def main_async(args):
     for mid, lines in mission_plan.items():
         entry = {'lines': [{'speaker': s, 'voice': v, 'es': es} for v, es, s in lines], 'parts': {}}
         for kind, rate in RATES.items():
-            parts = [need_part(es, rate, v) for v, es, _ in lines]
-            out = joined_name(parts)
-            joins.append((out, parts))
+            out, parts = plan_join(lines, rate)
             entry[kind] = f'audio/{out}'
             entry['parts'][kind] = parts
         index['missions'][mid] = entry
+    # A line needed both as a shipped replay and as a join part is synthesized once.
+    copies = {}
+    for path in list(todo):
+        shipped = os.path.join(AUDIO_DIR, os.path.basename(path))
+        if os.path.dirname(path) == PARTS_DIR and shipped in todo:
+            copies[path] = shipped
+            del todo[path]
     print(f'{len(card_plan)} card clips, {len(line_plan)} dialogue lines, {len(mission_plan)} mission clips; '
-          f'{len(todo)} TTS file(s) to generate, {len(joins)} joined clip(s) (voices {VOICES["male"]}, {VOICES["female"]})')
+          f'{len(todo)} TTS file(s) to generate, {len(dict(joins))} joined clip(s) (voices {VOICES["male"]}, {VOICES["female"]})')
     if args.dry_run:
         return 0
+    planned = references(index)
+    previous = load('audio.json', {})
     sem = asyncio.Semaphore(CONCURRENCY)
     results = await asyncio.gather(*(synth(t, r, v, p, sem) for p, (t, r, v) in todo.items()), return_exceptions=True)
-    errors = [r for r in results if isinstance(r, Exception)]
-    for e in errors:
-        print('ERROR', e, file=sys.stderr)
-    if errors:
-        return 1
-    for out, parts in joins:
-        join(parts, os.path.join(AUDIO_DIR, out))
-    for mid, entry in index['missions'].items():
-        entry['duration'] = duration(entry['normal'].split('/')[-1])
-        entry['slow_duration'] = duration(entry['slow'].split('/')[-1])
-    wanted = set()
-    for sec in ('items', 'lines', 'missions'):
-        for e in index[sec].values():
-            wanted.update(os.path.basename(e[k]) for k in ('normal', 'slow') if e.get(k))
-    stale = [f for f in os.listdir(AUDIO_DIR) if f.endswith('.mp3') and f not in wanted]
+    errors = []
+    for path, result in zip(todo, results):
+        if isinstance(result, Exception):
+            errors.append(result)
+            # Also clean up when synth itself fails before its retry loop.
+            if os.path.exists(path + '.part'):
+                os.remove(path + '.part')
+            print(f'ERROR TTS {os.path.basename(path)} {todo[path]!r}: {result}', file=sys.stderr)
+    for target, source in copies.items():
+        if exists(source):
+            shutil.copyfile(source, target)
+    for out, parts in dict(joins).items():
+        try:
+            if not all(exists(os.path.join(PARTS_DIR, p)) for p in parts):
+                raise RuntimeError('missing TTS parts')
+            join(parts, os.path.join(AUDIO_DIR, out))
+        except Exception as e:
+            errors.append(e)
+            print(f'ERROR join {out}: {e}', file=sys.stderr)
+    # Only successful clips are published. A missing slow clip can use normal at 0.75x.
+    for section in ('items', 'lines', 'missions'):
+        for key, entry in list(index[section].items()):
+            for kind in RATES:
+                if not entry.get(kind):
+                    continue
+                if not exists(os.path.join(APP, entry[kind])):
+                    del entry[kind]
+                    continue
+                if section == 'missions':
+                    try:
+                        entry['duration' if kind == 'normal' else 'slow_duration'] = duration(os.path.basename(entry[kind]))
+                    except Exception as e:
+                        errors.append(e)
+                        print(f'ERROR duration missions[{key!r}] {kind}: {e}', file=sys.stderr)
+                        del entry[kind]
+            if not any(entry.get(k) for k in RATES):
+                del index[section][key]
+    skipped = write_missing(index)
+    with open(INDEX, 'w', encoding='utf-8') as f:
+        json.dump(index, f, ensure_ascii=False, indent=1)
+        f.write('\n')
+    wanted = references(index)
+    # Protect planned outputs, previous references and tracked files as well as the new index.
+    # In particular, a failed slow/join/duration step must never prune an existing clip.
+    protected = wanted | planned | references(previous)
+    if args.prune:
+        protected |= committed_audio()  # fail closed if Git cannot establish which files are tracked
+    stale = [f for f in os.listdir(AUDIO_DIR) if f.endswith('.mp3') and f not in protected]
     if args.prune:
         for f in stale:
             os.remove(os.path.join(AUDIO_DIR, f))
-        print(f'pruned {len(stale)} unused file(s)')
+        print(f'pruned {len(stale)} unused, untracked file(s)')
     elif stale:
-        print(f'{len(stale)} unused file(s) kept (run with --prune to delete)')
-    with open(INDEX, 'w', encoding='utf-8') as f:
-        json.dump(index, f, ensure_ascii=False, indent=1)
-    print(f'wrote {os.path.relpath(INDEX, APP)}; generated {len(todo)} new TTS file(s); {len(wanted)} audio files in use')
-    return 0
+        print(f'{len(stale)} unused file(s) kept (run with --prune to delete untracked files)')
+    print(f'wrote {os.path.relpath(INDEX, APP)}; generated {len(todo) - sum(isinstance(r, Exception) for r in results)} '
+          f'new TTS file(s); {len(wanted)} audio files in use; {len(errors)} failure(s)')
+    return 1 if (errors or skipped) and not args.skip_missing_audio else 0
 
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
-    ap.add_argument('--prune', action='store_true', help='delete audio files nothing uses any more')
+    ap.add_argument('--prune', action='store_true', help='delete only unused, unreferenced, untracked audio files')
     ap.add_argument('--dry-run', action='store_true')
+    ap.add_argument('--skip-missing-audio', action='store_true',
+                    help='publish successful clips and report missing audio without failing the build')
     sys.exit(asyncio.run(main_async(ap.parse_args())))

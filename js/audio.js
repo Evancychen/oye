@@ -8,12 +8,21 @@ window.__oyeAudioEl = el; // exposed for tests
 const blobUrls = new Map();
 
 export function setAudioIndex(idx) { index = idx || { items: {} }; }
-export function hasAudio(text) { return !!(text && index.items && index.items[text]); }
+export function hasAudio(text) { return !!(text && index.items && index.items[text]?.normal); }
 const lineEntry = (text, voice) => (text && voice && index.lines ? index.lines[`${voice}|${text}`] : null);
 /** A dialogue line in the given voice ('male' | 'female'); falls back to the sentence audio. */
-export function hasLine(text, voice) { return !!lineEntry(text, voice) || hasAudio(text); }
-export function clipInfo(id) { return (index.missions && index.missions[id]) || null; }
+export function hasLine(text, voice) { return !!lineEntry(text, voice)?.normal || hasAudio(text); }
+export function clipInfo(id) { const entry = index.missions?.[id]; return entry?.normal ? entry : null; }
 export function audioEl() { return el; }
+
+export function unavailable(url, audio = index) {
+  for (const section of ['items', 'lines', 'missions']) {
+    for (const entry of Object.values(audio[section] || {})) {
+      for (const rate of ['normal', 'slow']) if (entry[rate] === url) delete entry[rate];
+    }
+  }
+  window.dispatchEvent(new Event('oye-audio-unavailable'));
+}
 
 async function srcFor(url) {
   if (blobUrls.has(url)) return blobUrls.get(url);
@@ -21,11 +30,13 @@ async function srcFor(url) {
     let r = typeof caches !== 'undefined' ? await caches.match(url) : null;
     if (!r) r = await fetch(url);
     if (!r.ok) throw new Error(r.status);
-    const u = URL.createObjectURL(await r.blob());
+    const blob = await r.blob();
+    if (!blob.size) return null;
+    const u = URL.createObjectURL(blob);
     blobUrls.set(url, u);
     return u;
   } catch {
-    return url;
+    return null;
   }
 }
 
@@ -54,13 +65,15 @@ export function stop() { try { el.pause(); } catch {} clearPlaying(); }
  *  btn = the button (or buttons) that show the playing state while this clip plays. */
 export async function play(text, { slow = false, btn = null, voice = null } = {}) {
   const line = lineEntry(text, voice);
-  const item = line || (index.items && index.items[text]);
-  if (!item) return false;
+  const item = line?.normal ? line : index.items?.[text];
+  if (!item?.normal) return false;
   const url = slow ? (item.slow || item.normal) : item.normal;
   const stretch = slow && !item.slow;
   stop();
   el.dataset.clip = '';
-  el.src = await srcFor(url);
+  const src = await srcFor(url);
+  if (!src) { unavailable(url); return false; }
+  el.src = src;
   el.preservesPitch = true;
   el.playbackRate = stretch ? 0.75 : 1;
   el.defaultPlaybackRate = el.playbackRate;
@@ -76,6 +89,7 @@ export async function playClip(id, { slow = false, at = 0 } = {}) {
   if (!e) return false;
   stop();
   const src = await srcFor(slow ? (e.slow || e.normal) : e.normal);
+  if (!src) { unavailable(slow ? (e.slow || e.normal) : e.normal); return false; }
   el.dataset.clip = id;
   el.dataset.slow = slow && e.slow ? '1' : '';
   el.src = src;
