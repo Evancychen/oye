@@ -1478,46 +1478,6 @@
    "slow": "audio/5d11a1a046255260.mp3",
    "voice": "male"
   },
-  "Son setenta y cinco pesos la entrada.": {
-   "normal": "audio/d0464b1f97343b5c.mp3",
-   "slow": "audio/6ea64582d1bbe593.mp3",
-   "voice": "female"
-  },
-  "El boleto sencillo cuesta doscientos cuarenta.": {
-   "normal": "audio/df38b102d77f0521.mp3",
-   "slow": "audio/f0fc31adfaf32305.mp3",
-   "voice": "female"
-  },
-  "Tu cambio es de ochenta pesos.": {
-   "normal": "audio/8524a4c153d468ee.mp3",
-   "slow": "audio/9b4495eeb49eadf0.mp3",
-   "voice": "female"
-  },
-  "En total son noventa y cinco pesos.": {
-   "normal": "audio/51ee3dc78af0f241.mp3",
-   "slow": "audio/75944cd552c05292.mp3",
-   "voice": "female"
-  },
-  "¿Qué le damos?": {
-   "normal": "audio/c03021d0f810737e.mp3",
-   "slow": "audio/79bb74a94e841e83.mp3",
-   "voice": "female"
-  },
-  "Hoy hace mucho calor en la ciudad.": {
-   "normal": "audio/a7f855371a5ae5c4.mp3",
-   "slow": "audio/ff431394f472d7bc.mp3",
-   "voice": "female"
-  },
-  "Mi departamento es el trescientos quince.": {
-   "normal": "audio/50ff3757c4ca662b.mp3",
-   "slow": "audio/1afeb66ea09eaf53.mp3",
-   "voice": "female"
-  },
-  "¿Te late ir al concierto el sábado?": {
-   "normal": "audio/2ba519c7b1445b36.mp3",
-   "slow": "audio/d5382f6c7cca8861.mp3",
-   "voice": "female"
-  },
   "No se preocupe, joven, ahorita se lo traigo.": {
    "normal": "audio/0e97695f6362eefd.mp3",
    "slow": "audio/b65962fbd3a140d9.mp3",
@@ -1803,6 +1763,238 @@
   "Pagó quinientos y le dieron cincuenta de cambio.": {
    "normal": "audio/e460675608972106.mp3",
    "slow": "audio/4a1b1450b56f332f.mp3",
+   "voice": "male"
+  },
+  "Mi oficina está en el doscientos dieciocho.": {
+   "normal": "audio/deae6e984c4db25b.mp3",
+   "slow": "audio/abdceb069f9ce721.mp3",
+   "voice": "female"
+  },
+  "Son cuarenta y ocho pesos el paracetamol.": {
+   "normal": "audio/774000e6d00ab87c.mp3",
+   "slow": "audio/7846913017a17a9b.mp3",
+   "voice": "female"
+  },
+  "En total son sesenta y dos pesos.": {
+   "normal": "audio/5fa6c0f92cba3f35.mp3",
+   "slow": "audio/2cb365eb8f6c0264.mp3",
+   "voice": "female"
+  },
+  "¿Te duele la cabeza?": {
+   "normal": "audio/2a24d8b842fdb2f4.mp3",
+   "slow": "audio/8c3f2690387a09be.mp3",
+   "voice": "female"
+  },
+  "La cita es a las nueve de la mañana.": {
+   "normal": "audio/5d4f8e0a7ae48573.mp3",
+   "slow": "audio/a327324d6d830838.mp3",
+   "voice": "female"
+  },
+  "El jarabe cuesta noventa y cinco pesos.": {
+   "normal": "audio/cf21f1c5a5930356.mp3",
+   "slow": "audio/2eef7324ee2ca4cc.mp3",
+   "voice": "female"
+  },
+  "¿Sigues tomando el antibiótico?": {
+   "normal": "audio/141ba1d30f121ca6.mp3",
+   "slow": "audio/69f8fdbda1068ec7.mp3",
+   "voice": "female"
+  },
+  "Me duele mucho la cabeza desde anoche.": {
+   "normal": "audio/4145927ebe317e3e.mp3",
+   "slow": "audio/dffbdb9ee130f063.mp3",
+   "voice": "male"
+  },
+  "Tómate una pastilla cada ocho horas con comida.": {
+   "normal": "audio/2f9c2dcbe57e444c.mp3",
+   "slow": "audio/24583a5c95c94436.mp3",
+   "voice": "male"
+  },
+  "El paracetamol más barato cuesta treinta y cinco pesos.": {
+   "normal": "audio/fd0e5d83efb39290.mp3",
+   "slow": "audio/b62b8c8b50a6104c.mp3",
+   "voice": "male"
+  },
+  "Buenas tardes. ¿En qué le puedo ayudar? Me duele la garganta y tengo tos. ¿Me da un jarabe, por favor? Claro. Este jarabe cuesta ochenta pesos. Tómelo cada ocho horas.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Farmacéutica",
+     "voice": "female",
+     "es": "Buenas tardes. ¿En qué le puedo ayudar?"
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Me duele la garganta y tengo tos. ¿Me da un jarabe, por favor?"
+    },
+    {
+     "speaker": "Farmacéutica",
+     "voice": "female",
+     "es": "Claro. Este jarabe cuesta ochenta pesos. Tómelo cada ocho horas."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "b08267e3d9aaccec.mp3",
+     "60c6282a7090a53d.mp3",
+     "981c8b0932504f43.mp3"
+    ],
+    "slow": [
+     "35a2e25a79a71c47.mp3",
+     "409f5c32ea74acc6.mp3",
+     "7db1a07d147d244f.mp3"
+    ]
+   },
+   "normal": "audio/2b698d03313b139c.mp3",
+   "slow": "audio/e5a9c80e30955475.mp3"
+  },
+  "¿Trae receta para este antibiótico?": {
+   "normal": "audio/0a84fb73c7986cd0.mp3",
+   "slow": "audio/737df88390aecfd9.mp3",
+   "voice": "male"
+  },
+  "No dejes de tomar el jarabe, aunque ya te sientes mejor.": {
+   "normal": "audio/5f47827c3e08ade5.mp3",
+   "slow": "audio/1dd07b824b4240b1.mp3",
+   "voice": "male"
+  },
+  "Con el descuento el jarabe queda en setenta pesos.": {
+   "normal": "audio/f8060ccfa70f394c.mp3",
+   "slow": "audio/94b2208d9193d4d2.mp3",
+   "voice": "male"
+  },
+  "La clínica abre a las ocho de la mañana y cierra a las ocho de la noche.": {
+   "normal": "audio/2c8e6d6f4790a967.mp3",
+   "slow": "audio/06bb3d2b3f5314d5.mp3",
+   "voice": "male"
+  },
+  "Disculpe, ¿alguien me puede tomar la presión? Ahorita no hay nadie libre. Espere unos diez minutos, por favor. Va, gracias. Me duele un poco la cabeza.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Paciente",
+     "voice": "male",
+     "es": "Disculpe, ¿alguien me puede tomar la presión?"
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Ahorita no hay nadie libre. Espere unos diez minutos, por favor."
+    },
+    {
+     "speaker": "Paciente",
+     "voice": "male",
+     "es": "Va, gracias. Me duele un poco la cabeza."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "8b7c2237731288e6.mp3",
+     "b559514597cdaa23.mp3",
+     "8e4ca011bacab0c1.mp3"
+    ],
+    "slow": [
+     "49111b705f4a8fc2.mp3",
+     "de8986f1ebb87885.mp3",
+     "5fe050b5bce3eb22.mp3"
+    ]
+   },
+   "normal": "audio/9cb2b1f879d09566.mp3",
+   "slow": "audio/07c399eb453eb1ec.mp3"
+  },
+  "Si sigue la fiebre mañana, vaya al médico.": {
+   "normal": "audio/36b3fbdf936a63aa.mp3",
+   "slow": "audio/8db123d912c66a34.mp3",
+   "voice": "male"
+  },
+  "¿Quieres paracetamol o ibuprofeno?": {
+   "normal": "audio/a94da7ff75893258.mp3",
+   "slow": "audio/2a46910aa1cbaebb.mp3",
+   "voice": "male"
+  },
+  "La consulta cuesta cuatrocientos cincuenta pesos.": {
+   "normal": "audio/609e02d3b55fc4b1.mp3",
+   "slow": "audio/9fea95779ced193b.mp3",
+   "voice": "male"
+  },
+  "Necesitas receta para ese medicamento; para el paracetamol no.": {
+   "normal": "audio/9313754267d8d2de.mp3",
+   "slow": "audio/47834abc3f6ae63d.mp3",
+   "voice": "male"
+  },
+  "¿Desde cuándo tiene tos? Desde el lunes. También me duele el pecho un poco. Le voy a dar un jarabe. No deje de tomarlo cinco días.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Doctora",
+     "voice": "female",
+     "es": "¿Desde cuándo tiene tos?"
+    },
+    {
+     "speaker": "Paciente",
+     "voice": "male",
+     "es": "Desde el lunes. También me duele el pecho un poco."
+    },
+    {
+     "speaker": "Doctora",
+     "voice": "female",
+     "es": "Le voy a dar un jarabe. No deje de tomarlo cinco días."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "6eef23427f06f664.mp3",
+     "1774d2ec158c9a71.mp3",
+     "93e34b058efc2536.mp3"
+    ],
+    "slow": [
+     "4f823cf5f4fd8f96.mp3",
+     "a9ff072a39bc103b.mp3",
+     "3918c97caf062d9e.mp3"
+    ]
+   },
+   "normal": "audio/96cd448cb807a8ab.mp3",
+   "slow": "audio/ecc5610de8cfcf11.mp3"
+  },
+  "Como sea, primero compra el jarabe y luego ven a la cita.": {
+   "normal": "audio/225f0bbcb32f2737.mp3",
+   "slow": "audio/2b74b819d91be234.mp3",
+   "voice": "male"
+  },
+  "Pide lo que sea; hoy yo invito.": {
+   "normal": "audio/21dd447ffbe7bee8.mp3",
+   "slow": "audio/0337bf3648452bba.mp3",
+   "voice": "male"
+  },
+  "¿Puedes dejar de revisar el celular un momento?": {
+   "normal": "audio/54b8d9817af9d6dc.mp3",
+   "slow": "audio/ecdf7d1fc58170a7.mp3",
+   "voice": "male"
+  },
+  "Sigo practicando español todas las mañanas.": {
+   "normal": "audio/543ad6803682fd25.mp3",
+   "slow": "audio/826e0b190bf2897b.mp3",
+   "voice": "male"
+  },
+  "Mis amigos se escriben todos los días.": {
+   "normal": "audio/d57ddb96b20a0207.mp3",
+   "slow": "audio/095a44f480244b12.mp3",
+   "voice": "male"
+  },
+  "La clase es a las once de la mañana, no de la noche.": {
+   "normal": "audio/575f5000b9c3260d.mp3",
+   "slow": "audio/292154e65d9dc669.mp3",
+   "voice": "male"
+  },
+  "La entrada cuesta cien pesos; el combo cuesta ciento veinte.": {
+   "normal": "audio/6315cd4e473c9a4d.mp3",
+   "slow": "audio/049e72c606a8fc15.mp3",
+   "voice": "male"
+  },
+  "Son cien pesos, no ciento.": {
+   "normal": "audio/698a59e859fbdefe.mp3",
+   "slow": "audio/75b1592799caa8bd.mp3",
    "voice": "male"
   }
  },
@@ -2133,6 +2325,42 @@
   },
   "female|Perfecto. Yo llevo el mantel.": {
    "normal": "audio/f94029170b1bd794.mp3",
+   "voice": "female"
+  },
+  "female|Buenas tardes. ¿En qué le puedo ayudar?": {
+   "normal": "audio/b08267e3d9aaccec.mp3",
+   "voice": "female"
+  },
+  "male|Me duele la garganta y tengo tos. ¿Me da un jarabe, por favor?": {
+   "normal": "audio/60c6282a7090a53d.mp3",
+   "voice": "male"
+  },
+  "female|Claro. Este jarabe cuesta ochenta pesos. Tómelo cada ocho horas.": {
+   "normal": "audio/981c8b0932504f43.mp3",
+   "voice": "female"
+  },
+  "male|Disculpe, ¿alguien me puede tomar la presión?": {
+   "normal": "audio/8b7c2237731288e6.mp3",
+   "voice": "male"
+  },
+  "female|Ahorita no hay nadie libre. Espere unos diez minutos, por favor.": {
+   "normal": "audio/b559514597cdaa23.mp3",
+   "voice": "female"
+  },
+  "male|Va, gracias. Me duele un poco la cabeza.": {
+   "normal": "audio/8e4ca011bacab0c1.mp3",
+   "voice": "male"
+  },
+  "female|¿Desde cuándo tiene tos?": {
+   "normal": "audio/6eef23427f06f664.mp3",
+   "voice": "female"
+  },
+  "male|Desde el lunes. También me duele el pecho un poco.": {
+   "normal": "audio/1774d2ec158c9a71.mp3",
+   "voice": "male"
+  },
+  "female|Le voy a dar un jarabe. No deje de tomarlo cinco días.": {
+   "normal": "audio/93e34b058efc2536.mp3",
    "voice": "female"
   },
   "male|Próxima estación: Bellas Artes.": {
@@ -2641,6 +2869,114 @@
   },
   "male|Sí, ya lo tengo. Gracias. Voy a seguir tus indicaciones con calma.": {
    "normal": "audio/9e765171013e223c.mp3",
+   "voice": "male"
+  },
+  "male|Buenas. Tengo tos desde el lunes y me duele mucho la cabeza. ¿Me da algo, por favor?": {
+   "normal": "audio/137728995a4b69ce.mp3",
+   "voice": "male"
+  },
+  "female|Claro. Este jarabe para la tos cuesta noventa pesos. El paracetamol está en cuarenta y ocho. ¿Trae receta?": {
+   "normal": "audio/66ea1e11d4a1daa8.mp3",
+   "voice": "female"
+  },
+  "male|No, no traigo receta. Solo quiero algo sin receta.": {
+   "normal": "audio/d16801ad71a4a175.mp3",
+   "voice": "male"
+  },
+  "female|Perfecto. Tome el jarabe cada ocho horas y una pastilla de paracetamol si le duele la cabeza. No deje de tomar líquidos.": {
+   "normal": "audio/3862e97dd2a409b4.mp3",
+   "voice": "female"
+  },
+  "male|Va, gracias. ¿Aceptan tarjeta?": {
+   "normal": "audio/550a3a9cd31a8946.mp3",
+   "voice": "male"
+  },
+  "female|Sí. En total son ciento treinta y ocho pesos. Aquí tiene su cambio y su ticket.": {
+   "normal": "audio/8e2206ad4833465c.mp3",
+   "voice": "female"
+  },
+  "female|Buenos días. ¿Tiene cita o es sin cita?": {
+   "normal": "audio/bec1cc4f9bdc1b9c.mp3",
+   "voice": "female"
+  },
+  "male|Sin cita. Desde anoche tengo fiebre y me duele el cuerpo. ¿Alguien me puede ver hoy?": {
+   "normal": "audio/68c403253cd38d36.mp3",
+   "voice": "male"
+  },
+  "female|Ahorita el doctor está con otro paciente. Puede esperar como veinte minutos. La consulta cuesta trescientos cincuenta.": {
+   "normal": "audio/09a3e903ecd528e2.mp3",
+   "voice": "female"
+  },
+  "male|Va. ¿Abren también en la tarde?": {
+   "normal": "audio/68645767380efb36.mp3",
+   "voice": "male"
+  },
+  "female|Sí. De la una a las siete de la tarde. Si sigue la fiebre mañana, regrese o vaya a urgencias.": {
+   "normal": "audio/ce709a11d415e2c0.mp3",
+   "voice": "female"
+  },
+  "male|Gracias. Me quedo a esperar. ¿Dónde está el baño?": {
+   "normal": "audio/ce5c530493e28993.mp3",
+   "voice": "male"
+  },
+  "female|Al fondo, a la izquierda. No deje sus cosas en la silla sin cuidarlas.": {
+   "normal": "audio/6d6d8a3dd4cb5b57.mp3",
+   "voice": "female"
+  },
+  "female|Hola. ¿Qué se te antoja? Hay un americano muy bueno aquí.": {
+   "normal": "audio/f7da17f3c7ad3a25.mp3",
+   "voice": "female"
+  },
+  "male|La verdad me duele la garganta y tengo un poco de tos. No sé si quiero café.": {
+   "normal": "audio/8d7ff704493dbacc.mp3",
+   "voice": "male"
+  },
+  "female|Pide lo que sea, un té está bien. ¿Te late ir a la farmacia después?": {
+   "normal": "audio/568c8d2323c864a9.mp3",
+   "voice": "female"
+  },
+  "male|Sí, me late. Quiero un jarabe. Anoche no dejé de toser.": {
+   "normal": "audio/1767395660923536.mp3",
+   "voice": "male"
+  },
+  "female|Pobrecito. El té de manzanilla cuesta cuarenta y cinco. Yo invito.": {
+   "normal": "audio/2d721e080287226d.mp3",
+   "voice": "female"
+  },
+  "male|Gracias. Como sea, después del té vamos a la farmacia cerca del metro.": {
+   "normal": "audio/4d8db694096bd27d.mp3",
+   "voice": "male"
+  },
+  "female|Va. Si sigue la fiebre mañana, no dejes de ir al médico.": {
+   "normal": "audio/a335da434ceb0476.mp3",
+   "voice": "female"
+  },
+  "male|Disculpe, me duele mucho la cabeza. ¿Hay una farmacia cerca del hotel?": {
+   "normal": "audio/a9acdb8413aefc1b.mp3",
+   "voice": "male"
+  },
+  "female|Sí. Salga, siga derecho dos cuadras y cruce en el semáforo. La farmacia está enfrente del OXXO.": {
+   "normal": "audio/828d851b52dc2e71.mp3",
+   "voice": "female"
+  },
+  "male|¿Abren ahora? Son como las nueve de la noche.": {
+   "normal": "audio/054bd9e4ad34c5e3.mp3",
+   "voice": "male"
+  },
+  "female|Sí, esa farmacia cierra a las once de la noche. El paracetamol más barato suele costar como treinta y cinco pesos.": {
+   "normal": "audio/331eb44ec4c1d26c.mp3",
+   "voice": "female"
+  },
+  "male|Perfecto. ¿Me puede dejar una botella de agua en la habitación, por favor?": {
+   "normal": "audio/e18fed474c6c3920.mp3",
+   "voice": "male"
+  },
+  "female|Claro. No deje la puerta abierta al bajar. Aquí tiene un mapa rápido del camino.": {
+   "normal": "audio/74f06b25c0471c3c.mp3",
+   "voice": "female"
+  },
+  "male|Mil gracias. Voy a seguir sus indicaciones con calma.": {
+   "normal": "audio/1c4ed1b37cd2d5cd.mp3",
    "voice": "male"
   }
  },
@@ -3771,6 +4107,258 @@
    "slow": "audio/450cdb14e06fb323.mp3",
    "duration": 35.29,
    "slow_duration": 46.06
+  },
+  "m-farmacia-counter-01": {
+   "lines": [
+    {
+     "speaker": "Farmacéutica",
+     "voice": "female",
+     "es": "Buenas tardes. ¿En qué le puedo ayudar?"
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Buenas. Tengo tos desde el lunes y me duele mucho la cabeza. ¿Me da algo, por favor?"
+    },
+    {
+     "speaker": "Farmacéutica",
+     "voice": "female",
+     "es": "Claro. Este jarabe para la tos cuesta noventa pesos. El paracetamol está en cuarenta y ocho. ¿Trae receta?"
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "No, no traigo receta. Solo quiero algo sin receta."
+    },
+    {
+     "speaker": "Farmacéutica",
+     "voice": "female",
+     "es": "Perfecto. Tome el jarabe cada ocho horas y una pastilla de paracetamol si le duele la cabeza. No deje de tomar líquidos."
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Va, gracias. ¿Aceptan tarjeta?"
+    },
+    {
+     "speaker": "Farmacéutica",
+     "voice": "female",
+     "es": "Sí. En total son ciento treinta y ocho pesos. Aquí tiene su cambio y su ticket."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "b08267e3d9aaccec.mp3",
+     "137728995a4b69ce.mp3",
+     "66ea1e11d4a1daa8.mp3",
+     "d16801ad71a4a175.mp3",
+     "3862e97dd2a409b4.mp3",
+     "550a3a9cd31a8946.mp3",
+     "8e2206ad4833465c.mp3"
+    ],
+    "slow": [
+     "35a2e25a79a71c47.mp3",
+     "81d8f033d7eda5a8.mp3",
+     "7d0b24055aa3ee00.mp3",
+     "9424987bc97c97cd.mp3",
+     "f9498c1d2f8eba12.mp3",
+     "652e39de6db156d9.mp3",
+     "99160a214486858f.mp3"
+    ]
+   },
+   "normal": "audio/29f00934c975bdb7.mp3",
+   "slow": "audio/05ccc469783c97ed.mp3",
+   "duration": 36.53,
+   "slow_duration": 47.69
+  },
+  "m-clinic-walkin-01": {
+   "lines": [
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Buenos días. ¿Tiene cita o es sin cita?"
+    },
+    {
+     "speaker": "Paciente",
+     "voice": "male",
+     "es": "Sin cita. Desde anoche tengo fiebre y me duele el cuerpo. ¿Alguien me puede ver hoy?"
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Ahorita el doctor está con otro paciente. Puede esperar como veinte minutos. La consulta cuesta trescientos cincuenta."
+    },
+    {
+     "speaker": "Paciente",
+     "voice": "male",
+     "es": "Va. ¿Abren también en la tarde?"
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Sí. De la una a las siete de la tarde. Si sigue la fiebre mañana, regrese o vaya a urgencias."
+    },
+    {
+     "speaker": "Paciente",
+     "voice": "male",
+     "es": "Gracias. Me quedo a esperar. ¿Dónde está el baño?"
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Al fondo, a la izquierda. No deje sus cosas en la silla sin cuidarlas."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "bec1cc4f9bdc1b9c.mp3",
+     "68c403253cd38d36.mp3",
+     "09a3e903ecd528e2.mp3",
+     "68645767380efb36.mp3",
+     "ce709a11d415e2c0.mp3",
+     "ce5c530493e28993.mp3",
+     "6d6d8a3dd4cb5b57.mp3"
+    ],
+    "slow": [
+     "7926137728e4040e.mp3",
+     "b3e95c748e74b10f.mp3",
+     "5f0dad9d73dd304e.mp3",
+     "b57bad5677741e88.mp3",
+     "bc6cd02231b2df12.mp3",
+     "f1022b93c179f1e0.mp3",
+     "e9abee1f44cb7ca2.mp3"
+    ]
+   },
+   "normal": "audio/2f6988c5c95effa4.mp3",
+   "slow": "audio/1e26e650df859bbf.mp3",
+   "duration": 34.8,
+   "slow_duration": 45.41
+  },
+  "m-cafe-gripe-01": {
+   "lines": [
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "Hola. ¿Qué se te antoja? Hay un americano muy bueno aquí."
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "La verdad me duele la garganta y tengo un poco de tos. No sé si quiero café."
+    },
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "Pide lo que sea, un té está bien. ¿Te late ir a la farmacia después?"
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "Sí, me late. Quiero un jarabe. Anoche no dejé de toser."
+    },
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "Pobrecito. El té de manzanilla cuesta cuarenta y cinco. Yo invito."
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "Gracias. Como sea, después del té vamos a la farmacia cerca del metro."
+    },
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "Va. Si sigue la fiebre mañana, no dejes de ir al médico."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "f7da17f3c7ad3a25.mp3",
+     "8d7ff704493dbacc.mp3",
+     "568c8d2323c864a9.mp3",
+     "1767395660923536.mp3",
+     "2d721e080287226d.mp3",
+     "4d8db694096bd27d.mp3",
+     "a335da434ceb0476.mp3"
+    ],
+    "slow": [
+     "f1b9e8316dc9f751.mp3",
+     "0345a197891fe61b.mp3",
+     "7d574398a4d31a0a.mp3",
+     "731939c7bb9be411.mp3",
+     "7f20e9d763209298.mp3",
+     "d179f17b0cb447d9.mp3",
+     "b1ccdaa9f541820e.mp3"
+    ]
+   },
+   "normal": "audio/d1678f8e606e91fa.mp3",
+   "slow": "audio/609bd713c180c7ba.mp3",
+   "duration": 31.82,
+   "slow_duration": 41.42
+  },
+  "m-hotel-farmacia-01": {
+   "lines": [
+    {
+     "speaker": "Huésped",
+     "voice": "male",
+     "es": "Disculpe, me duele mucho la cabeza. ¿Hay una farmacia cerca del hotel?"
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Sí. Salga, siga derecho dos cuadras y cruce en el semáforo. La farmacia está enfrente del OXXO."
+    },
+    {
+     "speaker": "Huésped",
+     "voice": "male",
+     "es": "¿Abren ahora? Son como las nueve de la noche."
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Sí, esa farmacia cierra a las once de la noche. El paracetamol más barato suele costar como treinta y cinco pesos."
+    },
+    {
+     "speaker": "Huésped",
+     "voice": "male",
+     "es": "Perfecto. ¿Me puede dejar una botella de agua en la habitación, por favor?"
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Claro. No deje la puerta abierta al bajar. Aquí tiene un mapa rápido del camino."
+    },
+    {
+     "speaker": "Huésped",
+     "voice": "male",
+     "es": "Mil gracias. Voy a seguir sus indicaciones con calma."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "a9acdb8413aefc1b.mp3",
+     "828d851b52dc2e71.mp3",
+     "054bd9e4ad34c5e3.mp3",
+     "331eb44ec4c1d26c.mp3",
+     "e18fed474c6c3920.mp3",
+     "74f06b25c0471c3c.mp3",
+     "1c4ed1b37cd2d5cd.mp3"
+    ],
+    "slow": [
+     "9995e5b1e6259b09.mp3",
+     "ff399ff704d5c80f.mp3",
+     "2009f87a31a7b9f5.mp3",
+     "91fa933c86fce342.mp3",
+     "4f0f21649736aed0.mp3",
+     "4385b20c71c65194.mp3",
+     "2a576189cffd9829.mp3"
+    ]
+   },
+   "normal": "audio/bbcc0e210fea8611.mp3",
+   "slow": "audio/1075573956cfca69.mp3",
+   "duration": 36.05,
+   "slow_duration": 47.06
   }
  }
 }

@@ -3255,5 +3255,779 @@
     "region_note": "'¿Te late?' = sound good? (Mexican, casual).",
     "added": "2026-10-12",
     "folder": "design_art"
+  },
+  {
+    "id": "m-farmacia-counter-01",
+    "title_en": "Pharmacy: buying medicine for a cold",
+    "situation_en": "You are at a neighborhood pharmacy with a cough and a headache. Listen to the pharmacist and the customer.",
+    "topic": "health_pharmacy",
+    "lesson_tags": [
+      "A1-L12",
+      "A1-L24",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-farmacia",
+      "v-jarabe",
+      "v-pastilla",
+      "v-me-duele",
+      "v-paracetamol",
+      "v-cada-ocho-horas",
+      "v-receta"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Farmacéutica",
+          "voice": "female",
+          "es": "Buenas tardes. ¿En qué le puedo ayudar?",
+          "en": "Good afternoon. How can I help you?"
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Buenas. Tengo tos desde el lunes y me duele mucho la cabeza. ¿Me da algo, por favor?",
+          "en": "Hi. I have had a cough since Monday and my head hurts a lot. Can you give me something, please?"
+        },
+        {
+          "speaker": "Farmacéutica",
+          "voice": "female",
+          "es": "Claro. Este jarabe para la tos cuesta noventa pesos. El paracetamol está en cuarenta y ocho. ¿Trae receta?",
+          "en": "Of course. This cough syrup costs ninety pesos. Paracetamol is forty-eight. Do you have a prescription?"
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "No, no traigo receta. Solo quiero algo sin receta.",
+          "en": "No, I do not have a prescription. I only want something over the counter."
+        },
+        {
+          "speaker": "Farmacéutica",
+          "voice": "female",
+          "es": "Perfecto. Tome el jarabe cada ocho horas y una pastilla de paracetamol si le duele la cabeza. No deje de tomar líquidos.",
+          "en": "Perfect. Take the syrup every eight hours and one paracetamol pill if your head hurts. Do not stop drinking fluids."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Va, gracias. ¿Aceptan tarjeta?",
+          "en": "OK, thanks. Do you take cards?"
+        },
+        {
+          "speaker": "Farmacéutica",
+          "voice": "female",
+          "es": "Sí. En total son ciento treinta y ocho pesos. Aquí tiene su cambio y su ticket.",
+          "en": "Yes. The total is one hundred thirty-eight pesos. Here is your change and your receipt."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "type",
+        "prompt_en": "How much is the cough syrup? Type the number.",
+        "answer": "90",
+        "accepted_answers": [
+          "90",
+          "$90",
+          "noventa"
+        ],
+        "hint_en": "Listen for 'jarabe'.",
+        "explanation_en": "'El jarabe… cuesta noventa' = 90."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "How much is the paracetamol? Type the number.",
+        "answer": "48",
+        "accepted_answers": [
+          "48",
+          "$48",
+          "cuarenta y ocho"
+        ],
+        "hint_en": "Listen for 'paracetamol'.",
+        "explanation_en": "'Está en cuarenta y ocho' = 48."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "Does he bring a prescription?",
+        "options": [
+          "The doctor sent one",
+          "Yes",
+          "Only for the syrup",
+          "No"
+        ],
+        "answer": "No",
+        "hint_en": "Listen for 'no traigo receta'.",
+        "explanation_en": "'No, no traigo receta'."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "How often should he take the syrup?",
+        "options": [
+          "Only at night",
+          "Every eight hours",
+          "Every two hours",
+          "Once a day"
+        ],
+        "answer": "Every eight hours",
+        "hint_en": "Listen for 'cada ocho horas'.",
+        "explanation_en": "'Tome el jarabe cada ocho horas'."
+      },
+      {
+        "id": "q5",
+        "kind": "type",
+        "prompt_en": "What is the total? Type the number.",
+        "answer": "138",
+        "accepted_answers": [
+          "138",
+          "$138",
+          "ciento treinta y ocho"
+        ],
+        "hint_en": "Listen for 'en total'.",
+        "explanation_en": "'En total son ciento treinta y ocho' = 138."
+      }
+    ],
+    "region_note": "Mexico OTC: many painkillers sold without receta; antibiotics usually need one.",
+    "added": "2026-10-15",
+    "folder": "fitness_health"
+  },
+  {
+    "id": "m-clinic-walkin-01",
+    "title_en": "Clinic: walk-in for fever",
+    "situation_en": "You walk into a small clinic with a fever. Listen to the receptionist and the patient.",
+    "topic": "health_pharmacy",
+    "lesson_tags": [
+      "A1-L12",
+      "A2-L07",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-cita",
+      "v-fiebre",
+      "v-me-duele",
+      "v-seguir",
+      "v-alguien-nadie"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Buenos días. ¿Tiene cita o es sin cita?",
+          "en": "Good morning. Do you have an appointment, or are you walk-in?"
+        },
+        {
+          "speaker": "Paciente",
+          "voice": "male",
+          "es": "Sin cita. Desde anoche tengo fiebre y me duele el cuerpo. ¿Alguien me puede ver hoy?",
+          "en": "Walk-in. Since last night I have had a fever and my body hurts. Can someone see me today?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Ahorita el doctor está con otro paciente. Puede esperar como veinte minutos. La consulta cuesta trescientos cincuenta.",
+          "en": "Right now the doctor is with another patient. You can wait about twenty minutes. The visit costs three hundred fifty."
+        },
+        {
+          "speaker": "Paciente",
+          "voice": "male",
+          "es": "Va. ¿Abren también en la tarde?",
+          "en": "OK. Do you also open in the afternoon?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Sí. De la una a las siete de la tarde. Si sigue la fiebre mañana, regrese o vaya a urgencias.",
+          "en": "Yes. From one to seven in the afternoon. If the fever continues tomorrow, come back or go to urgent care."
+        },
+        {
+          "speaker": "Paciente",
+          "voice": "male",
+          "es": "Gracias. Me quedo a esperar. ¿Dónde está el baño?",
+          "en": "Thanks. I will wait. Where is the bathroom?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Al fondo, a la izquierda. No deje sus cosas en la silla sin cuidarlas.",
+          "en": "At the back, on the left. Do not leave your things on the chair unwatched."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "Does he have an appointment?",
+        "options": [
+          "No, walk-in",
+          "Yes, at 1:00",
+          "Yes, tomorrow",
+          "Only for lab work"
+        ],
+        "answer": "No, walk-in",
+        "hint_en": "Listen for 'sin cita'.",
+        "explanation_en": "'Sin cita' = walk-in / without an appointment."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "What are his symptoms?",
+        "options": [
+          "Nothing hurts",
+          "Only a headache",
+          "Fever and body aches",
+          "Only a cough"
+        ],
+        "answer": "Fever and body aches",
+        "hint_en": "Listen for 'fiebre' and 'me duele el cuerpo'.",
+        "explanation_en": "Fever since last night; body hurts."
+      },
+      {
+        "id": "q3",
+        "kind": "type",
+        "prompt_en": "How much is the visit? Type the number.",
+        "answer": "350",
+        "accepted_answers": [
+          "350",
+          "$350",
+          "trescientos cincuenta"
+        ],
+        "hint_en": "Listen for 'consulta'.",
+        "explanation_en": "'La consulta cuesta trescientos cincuenta' = 350."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "When are afternoon hours?",
+        "options": [
+          "1:00 p.m. to 7:00 p.m.",
+          "24 hours",
+          "Only mornings",
+          "8:00 a.m. to 1:00 p.m."
+        ],
+        "answer": "1:00 p.m. to 7:00 p.m.",
+        "hint_en": "Listen for 'de la una a las siete de la tarde'.",
+        "explanation_en": "'De la una a las siete de la tarde'."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What must he not do with his things?",
+        "options": [
+          "Bring them into the exam room",
+          "Give them to the doctor",
+          "Put them on the floor",
+          "Leave them unwatched on the chair"
+        ],
+        "answer": "Leave them unwatched on the chair",
+        "hint_en": "Listen for 'No deje'.",
+        "explanation_en": "'No deje sus cosas en la silla sin cuidarlas'."
+      }
+    ],
+    "region_note": null,
+    "added": "2026-10-15",
+    "folder": "fitness_health"
+  },
+  {
+    "id": "m-cafe-gripe-01",
+    "title_en": "Café: a friend feels sick",
+    "situation_en": "You meet a friend at a café. He does not feel well. Listen.",
+    "topic": "food_ordering",
+    "lesson_tags": [
+      "A1-L12",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-me-duele",
+      "v-fiebre",
+      "v-tos",
+      "v-dejar-de",
+      "v-lo-que-sea",
+      "v-te-late"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "Hola. ¿Qué se te antoja? Hay un americano muy bueno aquí.",
+          "en": "Hi. What are you in the mood for? There is a really good americano here."
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "La verdad me duele la garganta y tengo un poco de tos. No sé si quiero café.",
+          "en": "Honestly my throat hurts and I have a bit of a cough. I do not know if I want coffee."
+        },
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "Pide lo que sea, un té está bien. ¿Te late ir a la farmacia después?",
+          "en": "Order whatever; tea is fine. Sound good to go to the pharmacy after?"
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "Sí, me late. Quiero un jarabe. Anoche no dejé de toser.",
+          "en": "Yes, sounds good. I want cough syrup. Last night I could not stop coughing."
+        },
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "Pobrecito. El té de manzanilla cuesta cuarenta y cinco. Yo invito.",
+          "en": "Poor you. Chamomile tea costs forty-five. It is on me."
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "Gracias. Como sea, después del té vamos a la farmacia cerca del metro.",
+          "en": "Thanks. Anyway, after the tea we go to the pharmacy near the metro."
+        },
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "Va. Si sigue la fiebre mañana, no dejes de ir al médico.",
+          "en": "OK. If the fever continues tomorrow, do not skip going to the doctor."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "How does the friend feel?",
+        "options": [
+          "He has no symptoms",
+          "Great and hungry",
+          "Sore throat and some cough",
+          "Only sleepy"
+        ],
+        "answer": "Sore throat and some cough",
+        "hint_en": "Listen for 'me duele la garganta' and 'tos'.",
+        "explanation_en": "Throat hurts; a bit of cough."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "What does she suggest he order?",
+        "options": [
+          "Nothing at all",
+          "Whatever / tea is fine",
+          "Only an americano",
+          "Only water with ice"
+        ],
+        "answer": "Whatever / tea is fine",
+        "hint_en": "Listen for 'lo que sea'.",
+        "explanation_en": "'Pide lo que sea, un té está bien'."
+      },
+      {
+        "id": "q3",
+        "kind": "type",
+        "prompt_en": "How much is the chamomile tea? Type the number.",
+        "answer": "45",
+        "accepted_answers": [
+          "45",
+          "$45",
+          "cuarenta y cinco"
+        ],
+        "hint_en": "Listen for 'cuarenta y cinco'.",
+        "explanation_en": "'Cuesta cuarenta y cinco' = 45."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "Where will they go after the tea?",
+        "options": [
+          "To the pharmacy near the metro",
+          "To a gym",
+          "To a cinema",
+          "Straight home"
+        ],
+        "answer": "To the pharmacy near the metro",
+        "hint_en": "Listen for 'farmacia'.",
+        "explanation_en": "'Vamos a la farmacia cerca del metro'."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What should he not skip if the fever continues?",
+        "options": [
+          "Buying only tea",
+          "Drinking more coffee",
+          "Going to the café",
+          "Going to the doctor"
+        ],
+        "answer": "Going to the doctor",
+        "hint_en": "Listen for 'no dejes de ir'.",
+        "explanation_en": "'No dejes de ir al médico'."
+      }
+    ],
+    "region_note": "'¿Te late?' and 'lo que sea' / 'como sea' are common casual Mexican phrases.",
+    "added": "2026-10-15",
+    "folder": "cafes_food"
+  },
+  {
+    "id": "m-hotel-farmacia-01",
+    "title_en": "Hotel: asking where the pharmacy is",
+    "situation_en": "You feel sick at a hotel and ask the front desk for a nearby pharmacy. Listen.",
+    "topic": "directions",
+    "lesson_tags": [
+      "A2-L08",
+      "A1-L12",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-farmacia",
+      "v-seguir",
+      "v-me-duele",
+      "v-pastilla",
+      "v-dejar"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Huésped",
+          "voice": "male",
+          "es": "Disculpe, me duele mucho la cabeza. ¿Hay una farmacia cerca del hotel?",
+          "en": "Excuse me, my head hurts a lot. Is there a pharmacy near the hotel?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Sí. Salga, siga derecho dos cuadras y cruce en el semáforo. La farmacia está enfrente del OXXO.",
+          "en": "Yes. Go out, continue straight two blocks and cross at the light. The pharmacy is across from the OXXO."
+        },
+        {
+          "speaker": "Huésped",
+          "voice": "male",
+          "es": "¿Abren ahora? Son como las nueve de la noche.",
+          "en": "Are they open now? It is about nine at night."
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Sí, esa farmacia cierra a las once de la noche. El paracetamol más barato suele costar como treinta y cinco pesos.",
+          "en": "Yes, that pharmacy closes at eleven at night. The cheapest paracetamol usually costs about thirty-five pesos."
+        },
+        {
+          "speaker": "Huésped",
+          "voice": "male",
+          "es": "Perfecto. ¿Me puede dejar una botella de agua en la habitación, por favor?",
+          "en": "Perfect. Can you leave a bottle of water in the room for me, please?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Claro. No deje la puerta abierta al bajar. Aquí tiene un mapa rápido del camino.",
+          "en": "Of course. Do not leave the door open when you go down. Here is a quick map of the route."
+        },
+        {
+          "speaker": "Huésped",
+          "voice": "male",
+          "es": "Mil gracias. Voy a seguir sus indicaciones con calma.",
+          "en": "Thank you so much. I am going to follow your directions calmly."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "Where is the pharmacy?",
+        "options": [
+          "Inside the hotel",
+          "Three blocks left, then right",
+          "Straight two blocks, across from the OXXO",
+          "Next to the metro only"
+        ],
+        "answer": "Straight two blocks, across from the OXXO",
+        "hint_en": "Listen for 'siga derecho' and 'enfrente del OXXO'.",
+        "explanation_en": "Two blocks straight; across from OXXO."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "When does that pharmacy close?",
+        "options": [
+          "8:00 a.m.",
+          "9:00 p.m.",
+          "11:00 p.m.",
+          "10:00 p.m."
+        ],
+        "answer": "11:00 p.m.",
+        "hint_en": "Listen for 'once de la noche'.",
+        "explanation_en": "'Cierra a las once de la noche'."
+      },
+      {
+        "id": "q3",
+        "kind": "type",
+        "prompt_en": "About how much is the cheapest paracetamol? Type the number.",
+        "answer": "35",
+        "accepted_answers": [
+          "35",
+          "$35",
+          "treinta y cinco"
+        ],
+        "hint_en": "Listen for 'treinta y cinco'.",
+        "explanation_en": "'Como treinta y cinco pesos' = about 35."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "What does he ask them to leave in the room?",
+        "options": [
+          "A bottle of water",
+          "The map only",
+          "More pillows",
+          "A doctor"
+        ],
+        "answer": "A bottle of water",
+        "hint_en": "Listen for 'botella de agua'.",
+        "explanation_en": "'¿Me puede dejar una botella de agua…?'"
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What must he not do when he goes downstairs?",
+        "options": [
+          "Take the map",
+          "Leave the door open",
+          "Cross at the light",
+          "Buy paracetamol"
+        ],
+        "answer": "Leave the door open",
+        "hint_en": "Listen for 'No deje'.",
+        "explanation_en": "'No deje la puerta abierta al bajar'."
+      }
+    ],
+    "region_note": null,
+    "added": "2026-10-15",
+    "folder": "travel"
+  },
+  {
+    "id": "m-amigo-gripe-whatsapp-01",
+    "title_en": "WhatsApp: friend cancels movie (sick)",
+    "situation_en": "A friend messages the group chat that he is sick and will miss the movie.",
+    "topic": "health_pharmacy",
+    "lesson_tags": [
+      "A1-L12",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-fiebre",
+      "v-tos",
+      "v-me-duele",
+      "v-jarabe",
+      "v-paracetamol",
+      "v-cita",
+      "v-como-sea",
+      "v-lo-que-sea",
+      "v-dejar-de"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "whatsapp",
+      "text_es": "Hola 👋\n\nNo voy a poder ir al cine esta noche 😕\n\nDesde anoche tengo fiebre y no dejo de toser. Me duele la cabeza un buen.\n\nVoy a la farmacia a las 6:00 por un jarabe y paracetamol. El jarabe que me recomendaron está en $90.\n\nSi mañana sigo igual, saco cita en la clínica (la consulta anda en $350).\n\nComo sea, disfruten la película. Pidan lo que sea de palomitas por mí 🍿\n\nAvísame cómo estuvo.\nLuis",
+      "text_en": "Hi 👋\n\nI will not be able to go to the movies tonight 😕\n\nSince last night I have had a fever and I cannot stop coughing. My head hurts a lot.\n\nI am going to the pharmacy at 6:00 for cough syrup and paracetamol. The syrup they recommended is $90.\n\nIf tomorrow I am still the same, I will get a clinic appointment (the visit is around $350).\n\nAnyway, enjoy the movie. Order whatever popcorn for me 🍿\n\nTell me how it was.\nLuis",
+      "sender_en": "Luis (friend)",
+      "time": "17:12"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "Why is he canceling?",
+        "options": [
+          "Work meeting",
+          "Rain only",
+          "Fever and cough",
+          "He already saw the movie"
+        ],
+        "answer": "Fever and cough",
+        "hint_en": "Look for 'fiebre' and 'toser'.",
+        "explanation_en": "Fever since last night; cannot stop coughing."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "What time is he going to the pharmacy? (type like 9:15)",
+        "answer": "6:00",
+        "accepted_answers": [
+          "6:00",
+          "18:00",
+          "6 00",
+          "6"
+        ],
+        "hint_en": "Look for 'a las 6:00'.",
+        "explanation_en": "'Voy a la farmacia a las 6:00'."
+      },
+      {
+        "id": "q3",
+        "kind": "type",
+        "prompt_en": "How much is the recommended syrup? Type the number.",
+        "answer": "90",
+        "accepted_answers": [
+          "90",
+          "$90",
+          "noventa"
+        ],
+        "hint_en": "Look for '$90'.",
+        "explanation_en": "'Está en $90'."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "About how much is the clinic visit? Type the number.",
+        "answer": "350",
+        "accepted_answers": [
+          "350",
+          "$350",
+          "trescientos cincuenta"
+        ],
+        "hint_en": "Look for '$350'.",
+        "explanation_en": "'La consulta anda en $350'."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What does he tell them to order at the movies?",
+        "options": [
+          "Nothing for him",
+          "Only water",
+          "Whatever popcorn",
+          "Only his seat"
+        ],
+        "answer": "Whatever popcorn",
+        "hint_en": "Look for 'lo que sea'.",
+        "explanation_en": "'Pidan lo que sea de palomitas'."
+      }
+    ],
+    "region_note": "'Un buen' = a lot (Mexico). 'Anda en' ≈ is around (price).",
+    "added": "2026-10-15",
+    "folder": "home_errands"
+  },
+  {
+    "id": "m-lab-results-email-01",
+    "title_en": "Email: lab results ready",
+    "situation_en": "A lab emails that your blood-test results are ready and gives pick-up hours.",
+    "topic": "health_pharmacy",
+    "lesson_tags": [
+      "A1-L12",
+      "A2-L07",
+      "A2-L20"
+    ],
+    "vocab_ids": [
+      "v-cita",
+      "v-fiebre",
+      "v-tos",
+      "v-dejar-de",
+      "v-lo-que-sea",
+      "v-como-sea",
+      "v-en-ayunas"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "email",
+      "text_es": "Asunto: Resultados de laboratorio — listos\n\nHola:\n\nSus análisis de sangre ya están listos.\n\nResumen:\n- Fecha del estudio: martes 14 de octubre\n- Resultado general: normal\n- Costo pagado: $680 (transferencia)\n- Recoja copia impresa en recepción de 9:00 a 14:00 (de la mañana a la tarde)\n\nIndicaciones:\n1) Si tiene fiebre o tos fuerte, no deje de avisar a su médico.\n2) Puede comer lo que sea; no hay dieta especial.\n3) La próxima cita de control es el viernes 31 a las 11:00.\n\nComo sea, si tiene dudas conteste este correo.\n\nSaludos,\nDra. Sofía Ramírez\nLaboratorio Centro",
+      "text_en": "Subject: Lab results — ready\n\nHi,\n\nYour blood tests are ready.\n\nSummary:\n- Test date: Tuesday October 14\n- Overall result: normal\n- Amount paid: $680 (transfer)\n- Pick up a printed copy at reception from 9:00 to 14:00 (morning to afternoon)\n\nNotes:\n1) If you have a fever or a bad cough, do not skip telling your doctor.\n2) You can eat whatever; there is no special diet.\n3) The next check-up appointment is Friday the 31st at 11:00.\n\nAnyway, if you have questions reply to this email.\n\nBest,\nDr. Sofía Ramírez\nCentro Lab",
+      "sender_en": "Dr. Sofía Ramírez (lab)",
+      "time": "10:22"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "What is the overall result?",
+        "options": [
+          "Needs urgent surgery",
+          "Positive for flu only",
+          "Normal",
+          "Incomplete"
+        ],
+        "answer": "Normal",
+        "hint_en": "Look for 'Resultado general'.",
+        "explanation_en": "'Resultado general: normal'."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "How much was paid? Type the number.",
+        "answer": "680",
+        "accepted_answers": [
+          "680",
+          "$680",
+          "seiscientos ochenta"
+        ],
+        "hint_en": "Look for 'Costo pagado'.",
+        "explanation_en": "'$680'."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "When can you pick up the printed copy?",
+        "options": [
+          "Weekends only",
+          "Only after 6:00 p.m.",
+          "9:00 a.m. to 2:00 p.m.",
+          "24 hours"
+        ],
+        "answer": "9:00 a.m. to 2:00 p.m.",
+        "hint_en": "Look for '9:00 a 14:00'.",
+        "explanation_en": "Reception 9:00–14:00."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "When is the next check-up?",
+        "options": [
+          "Tuesday October 14",
+          "Monday at 9:00",
+          "Anytime this week",
+          "Friday the 31st at 11:00"
+        ],
+        "answer": "Friday the 31st at 11:00",
+        "hint_en": "Look for 'próxima cita'.",
+        "explanation_en": "'Viernes 31 a las 11:00'."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "Is there a special diet?",
+        "options": [
+          "Only liquids",
+          "Fasting all week",
+          "No; eat whatever",
+          "No salt forever"
+        ],
+        "answer": "No; eat whatever",
+        "hint_en": "Look for 'lo que sea'.",
+        "explanation_en": "'Puede comer lo que sea; no hay dieta especial'."
+      }
+    ],
+    "region_note": "Mexico: 'análisis de sangre' = blood test; 'cita de control' = check-up appointment.",
+    "added": "2026-10-15",
+    "folder": "fitness_health"
   }
 ]
