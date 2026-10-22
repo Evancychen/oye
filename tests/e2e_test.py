@@ -28,7 +28,7 @@ VIEWPORT = {'width': 412, 'height': 915}
 LAYOUT_SIZES = [(360, 720), (412, 915), (384, 854)]
 SHOT_SIZES = {(360, 720), (412, 915)}
 # Current representatives go first so each card layout gets a screenshot.
-SHOWCASE = ['c-0337', 'c-0456', 'c-0339', 'c-0478', 'c-0759']
+SHOWCASE = ['c-0337', 'c-0456', 'c-0339', 'c-0841', 'c-0813']
 # These browser-only cards exercise transcript colours and exact alternate wording;
 # they are never published or added to the production content/audio index.
 UX_CARDS = json.load(open(os.path.join(APP, 'tests', 'fixtures', 'ux-cards.json'), encoding='utf-8'))
@@ -655,7 +655,8 @@ async def main():
 async def missing_batch7_audio_suite(browser, base, cards):
     """Exercise simulated missing-audio fallbacks even after batch 7 is published."""
     version = json.load(open(os.path.join(APP, 'content', 'version.json'), encoding='utf-8'))
-    card = next(c for c in cards if c['id'] in version['new_card_ids'] and is_batch7(c)
+    # Use the current batch: older Easy cards can be retired between publishes.
+    card = next(c for c in cards if c['id'] in version['new_card_ids']
                 and c['type'] == 'listen_pick' and c.get('level', 'easy') == 'easy')
     for language, label in [('en', 'Audio coming soon'), ('es', 'Audio próximamente')]:
         errors = []
@@ -1124,7 +1125,7 @@ async def keyboard_visual_viewport_test(browser, base, w=360, h=720, kb=300):
     ctx, page = await new_page(browser, errors, viewport={'width': w, 'height': h}, init_script=FAKE_VV)
     await page.goto(base)
     await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=15000)
-    await page.evaluate("(() => { const S = window.__oye; S.plan = [S.playable.find(c => c.id === 'c-0478') || S.playable.find(c => c.type === 'fix_it')]; })()")
+    await page.evaluate("(() => { const S = window.__oye; S.plan = [S.playable.find(c => c.id === 'c-0841') || S.playable.find(c => c.type === 'fix_it')]; })()")
     await page.click('[data-act=start]')
     await page.wait_for_selector('#fix-input')
     await page.click('#fix-input'); await page.keyboard.type('estuve')
@@ -1265,7 +1266,7 @@ async def live_check(url):
         await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=20000)
         check(f'live: page runs the {SHELL_VERSION} shell', await page.evaluate("document.documentElement.dataset.shell") == SHELL_VERSION)
         await page.screenshot(path=os.path.join(SHOTS11, 'live-412x915-home.png'))
-        await page.evaluate("(() => { const S = window.__oye; S.plan = ['c-0456', 'c-0337', 'c-0478'].map(id => S.playable.find(c => c.id === id)).filter(Boolean); })()")
+        await page.evaluate("(() => { const S = window.__oye; S.plan = ['c-0456', 'c-0337', 'c-0841'].map(id => S.playable.find(c => c.id === id)).filter(Boolean); })()")
         await page.click('[data-act=start]')
         await page.wait_for_selector('[data-card=c-0456]')
         await page.wait_for_timeout(300)
@@ -1370,7 +1371,7 @@ async def results_upload_tests(browser, base, version):
     await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=15000)
     await page.wait_for_timeout(300)
     check('results: nothing is sent on open when the queue is empty', not fake.calls, len(fake.calls))
-    await start_plan(page, ['c-0337', 'c-0456', 'c-0478', 'c-0759'])
+    await start_plan(page, ['c-0337', 'c-0456', 'c-0841', 'c-0813'])
     t_start = time.time()
     await page.wait_for_selector('[data-card=c-0337][data-state=question]')
     await page.click('[data-testid=replay]')                    # first listen
@@ -1388,11 +1389,11 @@ async def results_upload_tests(browser, base, version):
     for ch in '4:00': await page.click(f'[data-key="{ch}"]')
     await page.click('[data-act=check]')
     await page.wait_for_selector('[data-state=correct]'); await page.click('[data-act=next]')
-    await page.wait_for_selector('[data-card=c-0478][data-state=question]')
+    await page.wait_for_selector('[data-card=c-0841][data-state=question]')
     await page.evaluate('window.__oye.session.plays = 150')    # cap: replays never go above 99
     await page.fill('#fix-input', 'Puede'); await page.click('[data-act=check]')
     await page.wait_for_selector('[data-state=correct]'); await page.click('[data-act=next]')
-    await page.wait_for_selector('[data-card=c-0759][data-state=question]')
+    await page.wait_for_selector('[data-card=c-0813][data-state=question]')
     await page.click('[data-act=dontknow]')                     # I don't know
     await page.wait_for_selector('[data-state=wrong]'); await page.click('[data-act=next]')
     await page.wait_for_selector('[data-screen=summary]')
@@ -1414,13 +1415,13 @@ async def results_upload_tests(browser, base, version):
           [(c['method'], c['ctype']) for c in fake.calls])
     rows = body.get('results', []) if isinstance(body, dict) else []
     want = [('c-0337', False, '3:00', False, True), ('c-0456', True, '4:00', True, False),
-            ('c-0478', True, 'Puede', False, False), ('c-0759', False, '', False, False)]
+            ('c-0841', True, 'Puede', False, False), ('c-0813', False, '', False, False)]
     got = [(r.get('card_id'), r.get('correct'), r.get('answer_given'), r.get('used_hint'), r.get('used_slow')) for r in rows]
     check('results: one row per answer: card_id, correct, answer_given, used_hint, used_slow as answered', got == want, got)
     rs = [(r.get('card_id'), r.get('replays'), r.get('skipped')) for r in rows]
     check('results: replays = plays started before answering minus the first listen (play, stop, slow = 1; none = 0; '
           'feedback-screen plays not counted; capped at 99); skipped true only for "I don\u2019t know"',
-          rs == [('c-0337', 1, False), ('c-0456', 0, False), ('c-0478', 99, False), ('c-0759', 0, True)], rs)
+          rs == [('c-0337', 1, False), ('c-0456', 0, False), ('c-0841', 99, False), ('c-0813', 0, True)], rs)
     sids = {r.get('session_id') for r in rows}
     def iso_ok(v):
         try:
@@ -1453,7 +1454,7 @@ async def results_upload_tests(browser, base, version):
     ctx, page = await new_page(browser, errors, endpoint=fake)
     await page.goto(base)
     await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=15000)
-    await start_plan(page, ['c-0338', 'c-0759'])
+    await start_plan(page, ['c-0338', 'c-0813'])
     await dont_know_all(page, 2)
     got1 = await wait_for_calls(page, fake, 1)
     await page.wait_for_timeout(300)
@@ -1477,7 +1478,7 @@ async def results_upload_tests(browser, base, version):
     check('results: next app open sends the queued rows and empties the queue', got3 and q3 == [], {'calls': len(fake.calls), 'queue': len(q3)})
     # second session: network error at the summary, then the phone comes back online while the summary is open
     fake.mode = 'abort'
-    await start_plan(page, ['c-0337', 'c-0339', 'c-0759'])
+    await start_plan(page, ['c-0337', 'c-0339', 'c-0813'])
     await dont_know_all(page, 3)
     got4 = await wait_for_calls(page, fake, 4)
     await page.wait_for_timeout(300)
@@ -1594,7 +1595,7 @@ async def live_results_check(browser, url):
     await page.wait_for_selector('html[data-ready="1"] [data-screen=home]', timeout=20000)
     has_mod = await page.evaluate("import('./js/results.js').then(m => m.RESULTS_ENDPOINT === " + json.dumps(RESULTS_ENDPOINT) + ").catch(() => false)")
     check('live: js/results.js is served and points at the Apps Script endpoint', has_mod)
-    await start_plan(page, ['c-0338', 'c-0759'])
+    await start_plan(page, ['c-0338', 'c-0813'])
     await dont_know_all(page, 2)
     st1 = await status(page)
     sent = await wait_for(page, "document.querySelector('[data-testid=results-status]')?.dataset.state === 'sent'", 10000)
@@ -1602,7 +1603,7 @@ async def live_results_check(browser, url):
     body = fake.calls[0]['body'] if fake.calls else {}
     rows = body.get('results', []) if isinstance(body, dict) else []
     check('live [360x720]: summary shows "Saved · will send…" while sending, then green "Results sent to Gabriel"; 1 faked POST with 2 rows',
-          not status_problems(st1, 'queued') and sent and not status_problems(st2, 'sent') and len(fake.calls) == 1 and [r['card_id'] for r in rows] == ['c-0338', 'c-0759'],
+          not status_problems(st1, 'queued') and sent and not status_problems(st2, 'sent') and len(fake.calls) == 1 and [r['card_id'] for r in rows] == ['c-0338', 'c-0813'],
           {'sending': status_problems(st1, 'queued'), 'sent': status_problems(st2, 'sent'), 'calls': len(fake.calls)})
     await page.screenshot(path=os.path.join(SHOTS11, 'live-360x720-summary-results.png'))
     check('live results: no JS errors', not errors, errors[:3])
@@ -2277,7 +2278,7 @@ async def ux_replays_suite(browser, base, cards):
     await home_fresh(page, base)
 
     # ---- play button: silent start, playing state + tap to stop, "Play again", slow, no animation (hero and row layouts) ----
-    await start_plan(page, ['c-0337', 'c-0456', 'c-9104', 'c-9103', 'c-9104', 'c-9104', 'c-0757', 'c-9104'])
+    await start_plan(page, ['c-0337', 'c-0456', 'c-9104', 'c-9103', 'c-9104', 'c-9104', 'c-0814', 'c-9104'])
     for cid, layout in (('c-0337', 'hero'), ('c-0456', 'row')):
         await page.wait_for_selector(f'[data-card={cid}][data-state=question]')
         await page.wait_for_timeout(700)
@@ -2334,9 +2335,9 @@ async def ux_replays_suite(browser, base, cards):
     s_ = await fix('c-9103', 'sobre'); await page.click('[data-act=next]')
     main_ = await fix('c-9104', ' Dobla '); await page.click('[data-act=next]')
     dv = await fix('c-9104', 'da vuelta'); await page.click('[data-act=next]')
-    # listen_type with a word alternate: money formatting of the main answer is kept ($62)
-    await page.wait_for_selector('[data-card=c-0757][data-state=question]')
-    await page.keyboard.type('sesenta y dos'); await page.click('[data-act=check]')
+    # listen_type with a word alternate: money formatting of the main answer is kept ($140)
+    await page.wait_for_selector('[data-card=c-0814][data-state=question]')
+    await page.keyboard.type('ciento cuarenta'); await page.click('[data-act=check]')
     await page.wait_for_selector('[data-state=correct]')
     lt = (await page.text_content('[data-testid=answer-line]')).strip()
     await page.click('[data-act=next]')
@@ -2351,8 +2352,8 @@ async def ux_replays_suite(browser, base, cards):
           main_['state'] == 'correct' and main_['blank'] == 'dobla' and main_['line'] == 'The answer is “dobla”.', main_)
     check('alternate fixture: c-9104 also accepts "da vuelta" (Gabriel\'s change) and shows “da vuelta” works. Also common: “dobla”.',
           dv['state'] == 'correct' and dv['blank'] == 'da vuelta' and dv['line'] == '“da vuelta” works. Also common: “dobla”.', dv)
-    check('accepted alternate on listen_type (c-0757 typed "sesenta y dos"): “sesenta y dos” works. Also common: $62. (money format kept)',
-          lt == '“sesenta y dos” works. Also common: $62.', lt)
+    check('accepted alternate on listen_type (c-0814 typed "ciento cuarenta"): “ciento cuarenta” works. Also common: $140. (money format kept)',
+          lt == '“ciento cuarenta” works. Also common: $140.', lt)
     check('wrong answer unchanged: "The answer is “dobla”." + "You wrote: xyz", blank shows the answer',
           wrong['state'] == 'wrong' and wrong['line'] == 'The answer is “dobla”.' and wrong['you'] == 'You wrote: xyz' and wrong['blank'] == 'dobla', wrong)
     await page.wait_for_selector('[data-screen=summary]')

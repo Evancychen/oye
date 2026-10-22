@@ -4029,5 +4029,820 @@
     "region_note": "Mexico: 'análisis de sangre' = blood test; 'cita de control' = check-up appointment.",
     "added": "2026-10-15",
     "folder": "fitness_health"
+  },
+  {
+    "id": "m-mercado-puesto-01",
+    "title_en": "Market stall: fruit, vegetables and change",
+    "situation_en": "You are buying fruit and vegetables at a stall in a public market. Listen to the vendor and the customer.",
+    "topic": "shopping",
+    "lesson_tags": [
+      "A2-L21",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-mercado",
+      "v-jitomate",
+      "v-aguacate",
+      "v-queria",
+      "v-algun-ningun",
+      "v-algo-nada",
+      "v-bolsa",
+      "v-cambio",
+      "v-a-como"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Buenas tardes, joven. ¿Qué le damos?",
+          "en": "Good afternoon, young man. What can we get you?"
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Buenas tardes. Quería un kilo de jitomate y medio kilo de chiles. ¿A cómo están los aguacates?",
+          "en": "Good afternoon. I would like a kilo of tomatoes and half a kilo of chiles. How much are the avocados?"
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Los aguacates están a sesenta pesos el kilo. El jitomate, a treinta y dos.",
+          "en": "Avocados are sixty pesos a kilo. Tomatoes, thirty-two."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Perfecto, deme un kilo de aguacate también. ¿Tiene alguna papaya?",
+          "en": "Perfect, give me a kilo of avocados too. Do you have any papaya?"
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Lo siento, hoy no me queda ninguna. Pero tengo mangos muy buenos, a tres por cincuenta.",
+          "en": "Sorry, I have none left today. But I have really good mangoes, three for fifty."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "No, gracias, no quiero nada más. ¿Cuánto es?",
+          "en": "No, thanks, I do not want anything else. How much is it?"
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Son ciento veinte pesos. Le doy una bolsa.",
+          "en": "It is one hundred twenty pesos. I will give you a bag."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Gracias. Aquí tiene doscientos.",
+          "en": "Thanks. Here is two hundred."
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Aquí tiene su cambio, ochenta pesos. Hasta luego, joven.",
+          "en": "Here is your change, eighty pesos. See you, young man."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "type",
+        "prompt_en": "How much is a kilo of avocados? Type the number.",
+        "answer": "60",
+        "accepted_answers": [
+          "60",
+          "$60",
+          "sesenta"
+        ],
+        "hint_en": "Listen for 'aguacates'.",
+        "explanation_en": "'Los aguacates están a sesenta pesos el kilo' = 60."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "Why can't he buy papaya?",
+        "options": [
+          "He does not like it",
+          "She has none left today",
+          "It is too expensive",
+          "It is not ripe"
+        ],
+        "answer": "She has none left today",
+        "hint_en": "Listen for 'no me queda ninguna'.",
+        "explanation_en": "'No me queda ninguna' = I have none left."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What does he say about the mangoes?",
+        "options": [
+          "He does not want anything else",
+          "He takes six",
+          "He takes three",
+          "He asks for a discount"
+        ],
+        "answer": "He does not want anything else",
+        "hint_en": "Listen for 'no quiero nada más'.",
+        "explanation_en": "'No quiero nada más' = I do not want anything else."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "What is the total? Type the number.",
+        "answer": "120",
+        "accepted_answers": [
+          "120",
+          "$120",
+          "ciento veinte"
+        ],
+        "hint_en": "Listen after '¿Cuánto es?'.",
+        "explanation_en": "'Son ciento veinte pesos' = 120."
+      },
+      {
+        "id": "q5",
+        "kind": "type",
+        "prompt_en": "How much change does he get? Type the number.",
+        "answer": "80",
+        "accepted_answers": [
+          "80",
+          "$80",
+          "ochenta"
+        ],
+        "hint_en": "Listen for 'su cambio'.",
+        "explanation_en": "He pays 200 for 120, so the change is ochenta (80)."
+      }
+    ],
+    "region_note": "Mexico: 'jitomate' (red tomato); 'cambio' for change (Spain: 'la vuelta').",
+    "added": "2026-10-19",
+    "folder": "cafes_food"
+  },
+  {
+    "id": "m-festival-objetos-01",
+    "title_en": "Festival lost and found: a missing jacket",
+    "situation_en": "At an electronic music festival, a woman asks the lost-and-found staff about her jacket. Listen.",
+    "topic": "directions",
+    "lesson_tags": [
+      "A2-L21",
+      "A1-L32",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-perder",
+      "v-alguien-nadie",
+      "v-algun-ningun",
+      "v-escenario",
+      "v-chamarra",
+      "v-dejar-de"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Visitante",
+          "voice": "female",
+          "es": "Hola, disculpa. Perdí mi chamarra cerca del escenario principal. ¿Alguien trajo una chamarra negra?",
+          "en": "Hi, excuse me. I lost my jacket near the main stage. Did anyone bring in a black jacket?"
+        },
+        {
+          "speaker": "Encargado",
+          "voice": "male",
+          "es": "A ver. Hoy nadie ha traído ninguna chamarra negra. Tenemos una azul y dos gorras.",
+          "en": "Let me see. Today nobody has brought in any black jacket. We have a blue one and two caps."
+        },
+        {
+          "speaker": "Visitante",
+          "voice": "female",
+          "es": "Ay, no. También perdí mis audífonos. ¿Hay algún otro lugar para preguntar?",
+          "en": "Oh no. I also lost my headphones. Is there any other place to ask?"
+        },
+        {
+          "speaker": "Encargado",
+          "voice": "male",
+          "es": "Sí. Ve a la carpa de información, al lado del escenario dos. Está abierta hasta las doce de la noche.",
+          "en": "Yes. Go to the information tent, next to stage two. It is open until midnight."
+        },
+        {
+          "speaker": "Visitante",
+          "voice": "female",
+          "es": "Gracias. ¿Y si alguien la trae más tarde?",
+          "en": "Thanks. And if someone brings it later?"
+        },
+        {
+          "speaker": "Encargado",
+          "voice": "male",
+          "es": "Déjame tu nombre y tu número. Si llega algo, te mando un mensaje. Mientras, no dejes de revisar la app del festival.",
+          "en": "Leave me your name and number. If something comes in, I will text you. Meanwhile, keep checking the festival app."
+        },
+        {
+          "speaker": "Visitante",
+          "voice": "female",
+          "es": "Va. El set de techno melódico empieza a las diez y media, así que regreso después.",
+          "en": "OK. The melodic techno set starts at ten thirty, so I will come back after."
+        },
+        {
+          "speaker": "Encargado",
+          "voice": "male",
+          "es": "Perfecto. Disfruta el set.",
+          "en": "Perfect. Enjoy the set."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "What did she lose near the main stage?",
+        "options": [
+          "A black jacket",
+          "Two caps",
+          "Her phone",
+          "A blue jacket"
+        ],
+        "answer": "A black jacket",
+        "hint_en": "Listen for 'Perdí mi chamarra'.",
+        "explanation_en": "'Perdí mi chamarra… negra' = I lost my black jacket."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "Has anyone brought in a black jacket?",
+        "options": [
+          "Yes, this morning",
+          "No, nobody has",
+          "Yes, two of them",
+          "He does not know"
+        ],
+        "answer": "No, nobody has",
+        "hint_en": "Listen for 'nadie ha traído ninguna'.",
+        "explanation_en": "'Nadie ha traído ninguna chamarra negra' = nobody has brought any."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "Where should she go next?",
+        "options": [
+          "The festival exit",
+          "The parking lot",
+          "The main stage",
+          "The info tent next to stage two"
+        ],
+        "answer": "The info tent next to stage two",
+        "hint_en": "Listen for 'carpa de información'.",
+        "explanation_en": "'Ve a la carpa de información, al lado del escenario dos'."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "Until what time is the info tent open? (type it like 9:15)",
+        "answer": "12:00",
+        "accepted_answers": [
+          "12:00",
+          "12",
+          "0:00",
+          "00:00",
+          "24:00",
+          "midnight"
+        ],
+        "hint_en": "Listen for 'hasta las…'.",
+        "explanation_en": "'Hasta las doce de la noche' = until midnight (12:00)."
+      },
+      {
+        "id": "q5",
+        "kind": "type",
+        "prompt_en": "What time does the melodic techno set start? (type it like 9:15)",
+        "answer": "10:30",
+        "accepted_answers": [
+          "10:30",
+          "22:30",
+          "10 30"
+        ],
+        "hint_en": "Listen for 'empieza a las…'.",
+        "explanation_en": "'A las diez y media' = 10:30."
+      }
+    ],
+    "region_note": "'Audífonos' = headphones (Mexico). 'Carpa' = tent.",
+    "added": "2026-10-19",
+    "folder": "music"
+  },
+  {
+    "id": "m-client-call-logo-01",
+    "title_en": "Client call: changes to a café logo",
+    "situation_en": "You are a designer. A café client calls you about the logo proposal. Listen.",
+    "topic": "phone_reservations",
+    "lesson_tags": [
+      "A2-L16",
+      "A2-L21",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-algun-ningun",
+      "v-algo-nada",
+      "v-anticipo",
+      "v-mil"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "¿Bueno? Hola, habla Mariana, de la cafetería. ¿Tienes un minuto?",
+          "en": "Hello? Hi, this is Mariana from the café. Do you have a minute?"
+        },
+        {
+          "speaker": "Diseñador",
+          "voice": "male",
+          "es": "Hola, Mariana. Sí, claro. ¿Ya viste la propuesta del logo?",
+          "en": "Hi, Mariana. Yes, of course. Did you see the logo proposal?"
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "Sí, la vi ayer. Nos gusta mucho, pero queremos algún cambio en los colores. El verde es muy oscuro.",
+          "en": "Yes, I saw it yesterday. We like it a lot, but we want a change in the colors. The green is very dark."
+        },
+        {
+          "speaker": "Diseñador",
+          "voice": "male",
+          "es": "Va. ¿Quieren algo más claro o prefieren otro color?",
+          "en": "OK. Do you want something lighter, or do you prefer another color?"
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "Algo más claro, como verde matcha. Y no queremos ningún texto debajo del logo.",
+          "en": "Something lighter, like matcha green. And we do not want any text under the logo."
+        },
+        {
+          "speaker": "Diseñador",
+          "voice": "male",
+          "es": "Entendido. ¿Para cuándo lo necesitan?",
+          "en": "Got it. When do you need it by?"
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "Para el jueves a las diez de la mañana, porque tenemos junta con la imprenta.",
+          "en": "By Thursday at ten in the morning, because we have a meeting with the printer."
+        },
+        {
+          "speaker": "Diseñador",
+          "voice": "male",
+          "es": "Perfecto. El cambio cuesta mil quinientos pesos más. ¿Está bien?",
+          "en": "Perfect. The change costs one thousand five hundred pesos more. Is that OK?"
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "Sí, está bien. Te mando el anticipo hoy en la tarde.",
+          "en": "Yes, that is fine. I will send you the deposit this afternoon."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "What does the client want to change?",
+        "options": [
+          "The café name",
+          "The colors",
+          "The font",
+          "The price"
+        ],
+        "answer": "The colors",
+        "hint_en": "Listen for 'cambio en los colores'.",
+        "explanation_en": "'Queremos algún cambio en los colores'."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "What color do they want?",
+        "options": [
+          "A darker green",
+          "Black and white",
+          "A lighter, matcha-like green",
+          "Bright red"
+        ],
+        "answer": "A lighter, matcha-like green",
+        "hint_en": "Listen for 'más claro'.",
+        "explanation_en": "'Algo más claro, como verde matcha'."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What do they NOT want?",
+        "options": [
+          "Any green at all",
+          "A deposit",
+          "A new meeting",
+          "Any text under the logo"
+        ],
+        "answer": "Any text under the logo",
+        "hint_en": "Listen for 'no queremos ningún…'.",
+        "explanation_en": "'No queremos ningún texto debajo del logo'."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "When do they need it?",
+        "options": [
+          "Today in the afternoon",
+          "Tuesday at 10:00 a.m.",
+          "Thursday at 10:00 a.m.",
+          "Thursday at 10:00 p.m."
+        ],
+        "answer": "Thursday at 10:00 a.m.",
+        "hint_en": "Listen for 'para el jueves'.",
+        "explanation_en": "'Para el jueves a las diez de la mañana'."
+      },
+      {
+        "id": "q5",
+        "kind": "type",
+        "prompt_en": "How much more does the change cost? Type the number.",
+        "answer": "1500",
+        "accepted_answers": [
+          "1500",
+          "$1500",
+          "1,500",
+          "$1,500",
+          "mil quinientos"
+        ],
+        "hint_en": "Listen for 'mil…'.",
+        "explanation_en": "'Mil quinientos pesos' = 1,500."
+      }
+    ],
+    "region_note": "Mexico: '¿Bueno?' to answer the phone; 'junta' = meeting; 'anticipo' = deposit.",
+    "added": "2026-10-19",
+    "folder": "design_art"
+  },
+  {
+    "id": "m-comic-store-01",
+    "title_en": "Comic shop: the new superhero issue",
+    "situation_en": "You go to a comic shop to buy the new issue of a superhero series. Listen to the customer and the clerk.",
+    "topic": "shopping",
+    "lesson_tags": [
+      "A2-L21",
+      "A2-L07",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-algun-ningun",
+      "v-algo-nada",
+      "v-alguien-nadie",
+      "v-descuento"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Buenas tardes. ¿Tienen algún cómic nuevo de los Vengadores?",
+          "en": "Good afternoon. Do you have any new Avengers comic?"
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Del número nuevo ya no queda ninguno. Se agotó el sábado, pero el martes llegan más.",
+          "en": "There are none left of the new issue. It sold out on Saturday, but more arrive on Tuesday."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Qué lástima. ¿Y tienen algo del Hombre Araña?",
+          "en": "Too bad. And do you have anything with Spider-Man?"
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Sí, hay algunos. Este cuesta doscientos ochenta pesos y la edición especial, cuatrocientos cincuenta.",
+          "en": "Yes, there are some. This one costs two hundred eighty pesos and the special edition, four hundred fifty."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Me llevo el de doscientos ochenta. ¿Me puede apartar uno de los Vengadores para el martes?",
+          "en": "I will take the two-hundred-eighty one. Can you set aside an Avengers one for me for Tuesday?"
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Claro. Déjeme su nombre y nadie más lo va a llevar. Puede recogerlo después de las cinco de la tarde.",
+          "en": "Of course. Leave me your name and nobody else will take it. You can pick it up after five in the afternoon."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Perfecto. ¿Aceptan tarjeta?",
+          "en": "Perfect. Do you take cards?"
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Sí. Y los miembros del club tienen diez por ciento de descuento.",
+          "en": "Yes. And club members get ten percent off."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "Why can't he buy the new Avengers issue today?",
+        "options": [
+          "It is too expensive",
+          "The shop is closing",
+          "It arrives next month",
+          "It sold out on Saturday"
+        ],
+        "answer": "It sold out on Saturday",
+        "hint_en": "Listen for 'ya no queda ninguno'.",
+        "explanation_en": "'Ya no queda ninguno. Se agotó el sábado'."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "When do more copies arrive?",
+        "options": [
+          "Thursday",
+          "Saturday",
+          "Tuesday",
+          "Next week"
+        ],
+        "answer": "Tuesday",
+        "hint_en": "Listen for 'llegan más'.",
+        "explanation_en": "'El martes llegan más'."
+      },
+      {
+        "id": "q3",
+        "kind": "type",
+        "prompt_en": "How much is the Spider-Man comic he takes? Type the number.",
+        "answer": "280",
+        "accepted_answers": [
+          "280",
+          "$280",
+          "doscientos ochenta"
+        ],
+        "hint_en": "Listen for 'Me llevo el de…'.",
+        "explanation_en": "'Me llevo el de doscientos ochenta' = 280."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "From what time can he pick up the reserved comic?",
+        "options": [
+          "After 5:00 p.m.",
+          "After 5:00 a.m.",
+          "Before noon",
+          "After 7:00 p.m."
+        ],
+        "answer": "After 5:00 p.m.",
+        "hint_en": "Listen for 'después de las…'.",
+        "explanation_en": "'Después de las cinco de la tarde' = after 5 p.m."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What discount do club members get?",
+        "options": [
+          "5%",
+          "20%",
+          "10%",
+          "No discount"
+        ],
+        "answer": "10%",
+        "hint_en": "Listen for 'por ciento'.",
+        "explanation_en": "'Diez por ciento de descuento' = 10% off."
+      }
+    ],
+    "region_note": "Mexico: 'el Hombre Araña' is common for Spider-Man; 'apartar' = to set aside, reserve.",
+    "added": "2026-10-19",
+    "folder": "scifi_tech"
+  },
+  {
+    "id": "m-roomie-mercado-whatsapp-01",
+    "title_en": "WhatsApp: your roommate's market list",
+    "situation_en": "Your roommate sends you a shopping list for the market.",
+    "topic": "shopping",
+    "lesson_tags": [
+      "A2-L21",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-mercado",
+      "v-jitomate",
+      "v-aguacate",
+      "v-algun-ningun",
+      "v-algo-nada",
+      "v-cuando-sea",
+      "v-refri",
+      "v-porfa",
+      "v-cambio"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "whatsapp",
+      "text_es": "¡Hola! ¿Vas al mercado hoy? 🛒\n\nYa no hay nada en el refri 😅 Porfa compra:\n- 1 kg de jitomate\n- 2 aguacates para hoy\n- algún chile para la salsa (el que sea)\n- medio kg de queso Oaxaca\n\nNo compres tortillas, ya tengo. Y no hay ningún limón, trae 1 kg.\n\nTe paso $300 en la noche. Si sobra algo de cambio, quédatelo para tu café ☕\n\nLlego a las 7:30. ¿Cenamos juntos?\nDani",
+      "text_en": "Hi! Are you going to the market today? 🛒\n\nThere's nothing left in the fridge 😅 Please buy:\n- 1 kg of tomatoes\n- 2 avocados for today\n- some chile for the salsa (whichever)\n- half a kg of Oaxaca cheese\n\nDon't buy tortillas, I already have some. And there isn't a single lime, bring 1 kg.\n\nI'll send you $300 tonight. If there's any change left, keep it for your coffee ☕\n\nI get home at 7:30. Shall we have dinner together?\nDani",
+      "sender_en": "Dani (roommate)",
+      "time": "13:05"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "Why does Dani ask you to shop?",
+        "options": [
+          "There is a party",
+          "Dani is sick",
+          "There is nothing in the fridge",
+          "The market closes early"
+        ],
+        "answer": "There is nothing in the fridge",
+        "hint_en": "Look for 'refri'.",
+        "explanation_en": "'Ya no hay nada en el refri' = there is nothing left in the fridge."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "What should you NOT buy?",
+        "options": [
+          "Limes",
+          "Cheese",
+          "Avocados",
+          "Tortillas"
+        ],
+        "answer": "Tortillas",
+        "hint_en": "Look for 'No compres'.",
+        "explanation_en": "'No compres tortillas, ya tengo'."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "Which chile should you buy?",
+        "options": [
+          "Any one, whichever",
+          "Only habanero",
+          "None at all",
+          "Two kilos"
+        ],
+        "answer": "Any one, whichever",
+        "hint_en": "Look for 'el que sea'.",
+        "explanation_en": "'Algún chile… (el que sea)' = some chile, whichever."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "How much will Dani send you? Type the number.",
+        "answer": "300",
+        "accepted_answers": [
+          "300",
+          "$300",
+          "trescientos"
+        ],
+        "hint_en": "Look for 'Te paso'.",
+        "explanation_en": "'Te paso $300 en la noche'."
+      },
+      {
+        "id": "q5",
+        "kind": "type",
+        "prompt_en": "What time does Dani get home? (type it like 9:15)",
+        "answer": "7:30",
+        "accepted_answers": [
+          "7:30",
+          "19:30",
+          "7 30"
+        ],
+        "hint_en": "Look for 'Llego a las…'.",
+        "explanation_en": "'Llego a las 7:30'."
+      }
+    ],
+    "region_note": "Mexico: 'refri' = fridge; 'te paso' = I'll send/give you; 'porfa' = please (casual).",
+    "added": "2026-10-19",
+    "folder": "home_errands"
+  },
+  {
+    "id": "m-coworking-email-01",
+    "title_en": "Email: your coworking membership",
+    "situation_en": "A coworking space emails you the details of your monthly desk plan.",
+    "topic": "time_schedules",
+    "lesson_tags": [
+      "A2-L21",
+      "A1-L12",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-membresia",
+      "v-algun-ningun",
+      "v-alguien-nadie",
+      "v-avisar",
+      "v-como-sea",
+      "v-mil"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "email",
+      "text_es": "Asunto: Tu membresía de noviembre\n\nHola:\n\nGracias por elegir nuestro coworking. Este es el resumen de tu plan:\n\n- Plan: escritorio flexible\n- Precio: $1,800 al mes\n- Horario: lunes a viernes de 8:00 a 21:00; sábados de 10:00 a 15:00\n- Domingos: cerrado\n\nNotas:\n1) La sala de juntas se reserva con un día de anticipación.\n2) No hay ningún costo extra por el café.\n3) Si alguien te visita, avisa en recepción.\n\nComo sea, para cualquier duda contesta este correo.\n\nSaludos,\nEquipo de Recepción",
+      "text_en": "Subject: Your November membership\n\nHi,\n\nThanks for choosing our coworking space. Here is a summary of your plan:\n\n- Plan: flexible desk\n- Price: $1,800 a month\n- Hours: Monday to Friday 8:00 to 21:00; Saturdays 10:00 to 15:00\n- Sundays: closed\n\nNotes:\n1) The meeting room is booked one day in advance.\n2) There is no extra cost for coffee.\n3) If someone visits you, tell reception.\n\nAnyway, for any questions reply to this email.\n\nBest,\nReception Team",
+      "sender_en": "Coworking reception",
+      "time": "09:40"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "type",
+        "prompt_en": "How much is the plan per month? Type the number.",
+        "answer": "1800",
+        "accepted_answers": [
+          "1800",
+          "$1800",
+          "1,800",
+          "$1,800",
+          "mil ochocientos"
+        ],
+        "hint_en": "Look for 'Precio'.",
+        "explanation_en": "'$1,800 al mes'."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "When is it open on Saturdays?",
+        "options": [
+          "Closed",
+          "8:00 a.m. to 9:00 p.m.",
+          "10:00 a.m. to 5:00 p.m.",
+          "10:00 a.m. to 3:00 p.m."
+        ],
+        "answer": "10:00 a.m. to 3:00 p.m.",
+        "hint_en": "Look for 'sábados'.",
+        "explanation_en": "'Sábados de 10:00 a 15:00' = 10 a.m. to 3 p.m."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "Is it open on Sundays?",
+        "options": [
+          "Only for members",
+          "Only mornings",
+          "No, it is closed",
+          "Yes, all day"
+        ],
+        "answer": "No, it is closed",
+        "hint_en": "Look for 'Domingos'.",
+        "explanation_en": "'Domingos: cerrado'."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "How far ahead do you book the meeting room?",
+        "options": [
+          "One day before",
+          "One month before",
+          "One week before",
+          "The same day"
+        ],
+        "answer": "One day before",
+        "hint_en": "Look for 'anticipación'.",
+        "explanation_en": "'Se reserva con un día de anticipación' = one day ahead."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "How much extra is the coffee?",
+        "options": [
+          "It is not offered",
+          "Fifty pesos",
+          "Nothing, it is free",
+          "Only on Saturdays"
+        ],
+        "answer": "Nothing, it is free",
+        "hint_en": "Look for 'ningún costo'.",
+        "explanation_en": "'No hay ningún costo extra por el café' = no extra cost."
+      }
+    ],
+    "region_note": "'Sala de juntas' = meeting room (Mexico).",
+    "added": "2026-10-19",
+    "folder": "city_life"
   }
 ]
