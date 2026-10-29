@@ -3473,7 +3473,7 @@
     "options": [
       "salgo",
       "sale",
-      "salgas",
+      "salí",
       "salo"
     ],
     "answer": "salgo",
@@ -3543,7 +3543,7 @@
     "options": [
       "pido",
       "piden",
-      "pida",
+      "pierdo",
       "pide"
     ],
     "answer": "pido",
@@ -16820,5 +16820,1380 @@
     "hint_en": "Affirmative tú command of a regular verb: same as the él/ella present form.",
     "level": "drill",
     "topic": "verbs_commands"
+  },
+  {
+    "id": "c-0853",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [],
+    "vocab_ids": [
+      "v-queria",
+      "v-jitomate",
+      "v-aguacate"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Buenas tardes, joven. ¿Qué le damos? Quería un kilo de jitomate y dos aguacates, por favor.",
+    "prompt_en": "What does he want?",
+    "sentence": null,
+    "options": [
+      "Apples and garlic",
+      "Only avocados",
+      "Tomatoes and avocados",
+      "Limes and onions"
+    ],
+    "answer": "Tomatoes and avocados",
+    "accepted_answers": [],
+    "explanation_en": "'Quería…' is a polite way to ask for something.",
+    "transcript": "Vendedora: Buenas tardes, joven. ¿Qué le damos?\nCliente: Quería un kilo de jitomate y dos aguacates, por favor.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "market",
+    "audio_lines": [
+      {
+        "speaker": "Vendedora",
+        "voice": "female",
+        "es": "Buenas tardes, joven. ¿Qué le damos?"
+      },
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "Quería un kilo de jitomate y dos aguacates, por favor."
+      }
+    ]
+  },
+  {
+    "id": "c-0854",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-jitomate"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "El kilo de jitomate está en treinta y dos pesos.",
+    "prompt_en": "How much is a kilo of tomatoes? Type the number.",
+    "sentence": null,
+    "options": [],
+    "answer": "32",
+    "accepted_answers": [
+      "32",
+      "$32",
+      "treinta y dos"
+    ],
+    "explanation_en": "Treinta y dos = 32.",
+    "transcript": "El kilo de jitomate está en treinta y dos pesos.",
+    "region_note": null,
+    "hint_en": "A price under one hundred.",
+    "level": "medium",
+    "topic": "market"
+  },
+  {
+    "id": "c-0855",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [
+      "indefinite_negative"
+    ],
+    "vocab_ids": [
+      "v-algun-ningun"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Fill with 'no / not any' before a feminine noun.",
+    "sentence": "Lo siento, hoy no me queda ___ papaya.",
+    "options": [],
+    "answer": "ninguna",
+    "accepted_answers": [
+      "ninguna"
+    ],
+    "explanation_en": "'Papaya' is feminine, so 'ninguna papaya'.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Negative word that agrees with a feminine singular noun.",
+    "level": "medium",
+    "topic": "market"
+  },
+  {
+    "id": "c-0856",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-a-como"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿A cómo el kilo de limón? A cuarenta y cinco, joven.",
+    "prompt_en": "How much is a kilo of limes?",
+    "sentence": null,
+    "options": [
+      "$54",
+      "$55",
+      "$35",
+      "$45"
+    ],
+    "answer": "$45",
+    "accepted_answers": [],
+    "explanation_en": "'¿A cómo…?' asks the price. Cuarenta y cinco = 45.",
+    "transcript": "Cliente: ¿A cómo el kilo de limón?\nVendedora: A cuarenta y cinco, joven.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "market",
+    "audio_lines": [
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "¿A cómo el kilo de limón?"
+      },
+      {
+        "speaker": "Vendedora",
+        "voice": "female",
+        "es": "A cuarenta y cinco, joven."
+      }
+    ]
+  },
+  {
+    "id": "c-0857",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [
+      "indefinite_negative"
+    ],
+    "vocab_ids": [
+      "v-algun-ningun"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Le pongo algo más?",
+    "prompt_en": "Ask if she has any ripe mango.",
+    "sentence": null,
+    "options": [
+      "¿Tiene ningún mango maduro?",
+      "¿Tiene alguien mango maduro?",
+      "¿Tiene algún mango maduro?",
+      "¿Tiene alguno mango maduro?"
+    ],
+    "answer": "¿Tiene algún mango maduro?",
+    "accepted_answers": [],
+    "explanation_en": "Alguno shortens to 'algún' before a masculine singular noun.",
+    "transcript": "¿Le pongo algo más?",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "market",
+    "voice": "female"
+  },
+  {
+    "id": "c-0858",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-cambio"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Son ochenta y siete pesos. De cien, le doy trece de cambio.",
+    "prompt_en": "How much change? Type the number.",
+    "sentence": null,
+    "options": [],
+    "answer": "13",
+    "accepted_answers": [
+      "13",
+      "$13",
+      "trece"
+    ],
+    "explanation_en": "100 − 87 = 13 (trece).",
+    "transcript": "Son ochenta y siete pesos. De cien, le doy trece de cambio.",
+    "region_note": null,
+    "hint_en": "A small number of pesos.",
+    "level": "medium",
+    "topic": "market"
+  },
+  {
+    "id": "c-0859",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [
+      "indefinite_negative"
+    ],
+    "vocab_ids": [
+      "v-alguien-nadie"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Fill with 'someone / anyone'.",
+    "sentence": "¿Hay ___ en el puesto? No veo a nadie.",
+    "options": [],
+    "answer": "alguien",
+    "accepted_answers": [
+      "alguien"
+    ],
+    "explanation_en": "'Alguien' = someone; the negative is 'nadie'.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Indefinite word for a person.",
+    "level": "medium",
+    "topic": "market"
+  },
+  {
+    "id": "c-0860",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [],
+    "vocab_ids": [
+      "v-algo-nada"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Hoy no hay nada de cilantro; mañana llega.",
+    "prompt_en": "Is there cilantro today?",
+    "sentence": null,
+    "options": [
+      "No, none at all",
+      "Only dried",
+      "Only a little",
+      "Yes, a lot"
+    ],
+    "answer": "No, none at all",
+    "accepted_answers": [],
+    "explanation_en": "'No hay nada de…' = there is none of it at all.",
+    "transcript": "Hoy no hay nada de cilantro; mañana llega.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "market"
+  },
+  {
+    "id": "c-0861",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [
+      "indefinite_negative"
+    ],
+    "vocab_ids": [
+      "v-algun-ningun",
+      "v-mercado"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Fill with 'some' (some day).",
+    "sentence": "___ día voy a probar el mole de este mercado.",
+    "options": [],
+    "answer": "Algún",
+    "accepted_answers": [
+      "Algún",
+      "algún"
+    ],
+    "explanation_en": "'Algún día' = some day; alguno shortens before a masculine noun.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Indefinite word, short form before a masculine singular noun.",
+    "level": "medium",
+    "topic": "market"
+  },
+  {
+    "id": "c-0862",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [],
+    "vocab_ids": [
+      "v-bolsa",
+      "v-cambio"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Me puede dar una bolsa, por favor? Claro. Aquí tiene su bolsa y su cambio.",
+    "prompt_en": "What does he ask for?",
+    "sentence": null,
+    "options": [
+      "A bag",
+      "More limes",
+      "A discount",
+      "A receipt"
+    ],
+    "answer": "A bag",
+    "accepted_answers": [],
+    "explanation_en": "'Una bolsa' = a bag.",
+    "transcript": "Cliente: ¿Me puede dar una bolsa, por favor?\nVendedora: Claro. Aquí tiene su bolsa y su cambio.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "market",
+    "audio_lines": [
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "¿Me puede dar una bolsa, por favor?"
+      },
+      {
+        "speaker": "Vendedora",
+        "voice": "female",
+        "es": "Claro. Aquí tiene su bolsa y su cambio."
+      }
+    ]
+  },
+  {
+    "id": "c-0863",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Medio kilo de chiles y una cabeza de ajo, por favor.",
+    "prompt_en": "How much garlic does he want?",
+    "sentence": null,
+    "options": [
+      "Half a kilo",
+      "One head",
+      "One kilo",
+      "Two heads"
+    ],
+    "answer": "One head",
+    "accepted_answers": [],
+    "explanation_en": "'Una cabeza de ajo' = one head of garlic.",
+    "transcript": "Medio kilo de chiles y una cabeza de ajo, por favor.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "market"
+  },
+  {
+    "id": "c-0864",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Dos kilos de papas son cincuenta y ocho pesos.",
+    "prompt_en": "How much are two kilos of potatoes? Type the number.",
+    "sentence": null,
+    "options": [],
+    "answer": "58",
+    "accepted_answers": [
+      "58",
+      "$58",
+      "cincuenta y ocho"
+    ],
+    "explanation_en": "Cincuenta y ocho = 58.",
+    "transcript": "Dos kilos de papas son cincuenta y ocho pesos.",
+    "region_note": null,
+    "hint_en": "A price under one hundred.",
+    "level": "medium",
+    "topic": "market"
+  },
+  {
+    "id": "c-0865",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [
+      "indefinite_negative"
+    ],
+    "vocab_ids": [
+      "v-algun-ningun"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Fill with 'some' (feminine plural).",
+    "sentence": "___ frutas están en oferta, pero no todas.",
+    "options": [],
+    "answer": "Algunas",
+    "accepted_answers": [
+      "Algunas",
+      "algunas"
+    ],
+    "explanation_en": "'Frutas' is feminine plural, so 'algunas'.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Indefinite word that agrees with a feminine plural noun.",
+    "level": "medium",
+    "topic": "market"
+  },
+  {
+    "id": "c-0866",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [],
+    "vocab_ids": [
+      "v-aguacate"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Los aguacates son para hoy o para mañana?",
+    "prompt_en": "Say they are for today.",
+    "sentence": null,
+    "options": [
+      "Para ayer, por favor.",
+      "Para hoy, por favor.",
+      "Hoy para, por favor.",
+      "A hoy, por favor."
+    ],
+    "answer": "Para hoy, por favor.",
+    "accepted_answers": [],
+    "explanation_en": "Vendors ask if you will eat them today (ripe) or tomorrow.",
+    "transcript": "¿Los aguacates son para hoy o para mañana?",
+    "region_note": "Mexico: '¿para hoy o para mañana?' is how vendors ask how ripe you want avocados.",
+    "hint_en": null,
+    "level": "medium",
+    "topic": "market"
+  },
+  {
+    "id": "c-0867",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "imperative"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Cuántas naranjas quiere? Deme diez, son para jugo.",
+    "prompt_en": "How many oranges does he want?",
+    "sentence": null,
+    "options": [
+      "10",
+      "20",
+      "12",
+      "2"
+    ],
+    "answer": "10",
+    "accepted_answers": [],
+    "explanation_en": "'Deme diez' = give me ten. 'Para jugo' = for juice.",
+    "transcript": "Vendedora: ¿Cuántas naranjas quiere?\nCliente: Deme diez, son para jugo.",
+    "region_note": "Spain says 'naranjas de zumo'; Mexico says 'para jugo'.",
+    "hint_en": null,
+    "level": "medium",
+    "topic": "market",
+    "audio_lines": [
+      {
+        "speaker": "Vendedora",
+        "voice": "female",
+        "es": "¿Cuántas naranjas quiere?"
+      },
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "Deme diez, son para jugo."
+      }
+    ]
+  },
+  {
+    "id": "c-0868",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "pesar, usted, command (weigh)",
+    "sentence": "___ estas manzanas, por favor.",
+    "options": [],
+    "answer": "Pese",
+    "accepted_answers": [
+      "Pese",
+      "pese"
+    ],
+    "explanation_en": "Usted command of -ar verbs ends in -e: pese.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Start from yo (peso), drop the -o and add -e.",
+    "level": "medium",
+    "topic": "market"
+  },
+  {
+    "id": "c-0869",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [],
+    "vocab_ids": [
+      "v-cambio",
+      "v-aqui-tiene"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Aquí tiene su cambio: veinte pesos.",
+    "prompt_en": "What does she give him?",
+    "sentence": null,
+    "options": [
+      "Twenty limes",
+      "A free bag",
+      "Twenty pesos change",
+      "A twenty-peso discount"
+    ],
+    "answer": "Twenty pesos change",
+    "accepted_answers": [],
+    "explanation_en": "'Su cambio' = your change. Spain says 'la vuelta'.",
+    "transcript": "Aquí tiene su cambio: veinte pesos.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "market",
+    "voice": "female"
+  },
+  {
+    "id": "c-0870",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Los mangos están a tres por cincuenta pesos.",
+    "prompt_en": "How much for three mangoes? Type the number.",
+    "sentence": null,
+    "options": [],
+    "answer": "50",
+    "accepted_answers": [
+      "50",
+      "$50",
+      "cincuenta"
+    ],
+    "explanation_en": "'Tres por cincuenta' = three for 50.",
+    "transcript": "Los mangos están a tres por cincuenta pesos.",
+    "region_note": null,
+    "hint_en": "A round price.",
+    "level": "medium",
+    "topic": "market"
+  },
+  {
+    "id": "c-0871",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [],
+    "vocab_ids": [
+      "v-alguien-nadie"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Aquí nadie vende flor de calabaza, pero en el otro pasillo sí.",
+    "prompt_en": "Where can he find squash blossoms?",
+    "sentence": null,
+    "options": [
+      "In the other aisle",
+      "Nowhere today",
+      "At this stand",
+      "Only tomorrow"
+    ],
+    "answer": "In the other aisle",
+    "accepted_answers": [],
+    "explanation_en": "'Aquí nadie vende…, pero en el otro pasillo sí'.",
+    "transcript": "Aquí nadie vende flor de calabaza, pero en el otro pasillo sí.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "market"
+  },
+  {
+    "id": "c-0872",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L21"
+    ],
+    "grammar_tags": [
+      "indefinite_negative"
+    ],
+    "vocab_ids": [
+      "v-algun-ningun"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Fill with 'no / not any' before a masculine noun.",
+    "sentence": "A esta hora no hay ___ puesto de pescado abierto.",
+    "options": [],
+    "answer": "ningún",
+    "accepted_answers": [
+      "ningún"
+    ],
+    "explanation_en": "'Puesto' is masculine singular, so 'ningún puesto'.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Negative word, short form before a masculine singular noun.",
+    "level": "medium",
+    "topic": "market"
+  },
+  {
+    "id": "c-0884",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22"
+    ],
+    "grammar_tags": [],
+    "vocab_ids": [
+      "v-buen-estado"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Buenas tardes. ¿Es ahí donde venden una bici? Sí, aquí es. Es azul y está en buen estado.",
+    "prompt_en": "What color is the bike?",
+    "sentence": null,
+    "options": [
+      "Red",
+      "Blue",
+      "Black",
+      "Green"
+    ],
+    "answer": "Blue",
+    "accepted_answers": [],
+    "explanation_en": "'Es azul' = it is blue. '¿Es ahí donde venden…?' is how you start a call about an ad.",
+    "transcript": "Comprador: Buenas tardes. ¿Es ahí donde venden una bici?\nVendedora: Sí, aquí es. Es azul y está en buen estado.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "second_hand",
+    "audio_lines": [
+      {
+        "speaker": "Comprador",
+        "voice": "male",
+        "es": "Buenas tardes. ¿Es ahí donde venden una bici?"
+      },
+      {
+        "speaker": "Vendedora",
+        "voice": "female",
+        "es": "Sí, aquí es. Es azul y está en buen estado."
+      }
+    ]
+  },
+  {
+    "id": "c-0885",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-cuanto-pide",
+      "v-mil"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Pido mil ochocientos pesos por la bici.",
+    "prompt_en": "How much is he asking? Type the number.",
+    "sentence": null,
+    "options": [],
+    "answer": "1800",
+    "accepted_answers": [
+      "1800",
+      "$1800",
+      "1,800",
+      "$1,800",
+      "mil ochocientos"
+    ],
+    "explanation_en": "Mil ochocientos = 1,800.",
+    "transcript": "Pido mil ochocientos pesos por la bici.",
+    "region_note": null,
+    "hint_en": "A price over one thousand.",
+    "level": "medium",
+    "topic": "second_hand"
+  },
+  {
+    "id": "c-0886",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22"
+    ],
+    "grammar_tags": [
+      "present",
+      "stem_change",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [
+      "v-cuanto-pide",
+      "v-pedir"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "pedir, usted, present (how much are you asking?)",
+    "sentence": "Disculpe, ¿cuánto ___ por la computadora?",
+    "options": [],
+    "answer": "pide",
+    "accepted_answers": [
+      "pide"
+    ],
+    "explanation_en": "Usted takes the él/ella form, and pedir changes e→i: pide. Pierde is from perder.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "pedir, usted (same as él/ella), present; it has a stem change.",
+    "level": "medium",
+    "topic": "second_hand"
+  },
+  {
+    "id": "c-0887",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22"
+    ],
+    "grammar_tags": [
+      "question_words"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Cuántos años tiene la cámara?",
+    "prompt_en": "Say it is three years old.",
+    "sentence": null,
+    "options": [
+      "Es tres años.",
+      "Tiene tres años.",
+      "Está tres años.",
+      "Tengo tres años."
+    ],
+    "answer": "Tiene tres años.",
+    "accepted_answers": [],
+    "explanation_en": "Objects 'have' years too: tiene tres años.",
+    "transcript": "¿Cuántos años tiene la cámara?",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "second_hand"
+  },
+  {
+    "id": "c-0888",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22"
+    ],
+    "grammar_tags": [],
+    "vocab_ids": [
+      "v-buen-estado"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "La lavadora está en perfecto estado; casi no la usé.",
+    "prompt_en": "What condition is the washing machine in?",
+    "sentence": null,
+    "options": [
+      "Needs a repair",
+      "Broken",
+      "Perfect condition",
+      "Very old"
+    ],
+    "answer": "Perfect condition",
+    "accepted_answers": [],
+    "explanation_en": "'En perfecto estado' = in perfect condition.",
+    "transcript": "La lavadora está en perfecto estado; casi no la usé.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "second_hand"
+  },
+  {
+    "id": "c-0889",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22",
+      "A1-L32"
+    ],
+    "grammar_tags": [
+      "participle_irregular",
+      "agreement"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "romper, participle (broken), describing la pantalla",
+    "sentence": "La pantalla está ___, por eso es más barata.",
+    "options": [],
+    "answer": "rota",
+    "accepted_answers": [
+      "rota"
+    ],
+    "explanation_en": "Romper has the irregular participle roto; 'pantalla' is feminine, so rota.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Irregular participle of romper; make it agree with 'pantalla'.",
+    "level": "medium",
+    "topic": "second_hand"
+  },
+  {
+    "id": "c-0890",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22"
+    ],
+    "grammar_tags": [
+      "time",
+      "quedar"
+    ],
+    "vocab_ids": [
+      "v-a-que-hora-quedamos",
+      "v-quedar",
+      "v-te-late"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿A qué hora quedamos?",
+    "prompt_en": "Suggest meeting at six in the evening.",
+    "sentence": null,
+    "options": [
+      "Las seis en tarde, ¿te late?",
+      "A seis de la tarde, ¿te late?",
+      "En las seis de la mañana, ¿te late?",
+      "A las seis de la tarde, ¿te late?"
+    ],
+    "answer": "A las seis de la tarde, ¿te late?",
+    "accepted_answers": [],
+    "explanation_en": "Times take 'a las…', and 'de la tarde' marks the afternoon or evening.",
+    "transcript": "¿A qué hora quedamos?",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "second_hand"
+  },
+  {
+    "id": "c-0891",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22"
+    ],
+    "grammar_tags": [],
+    "vocab_ids": [
+      "v-se-vende",
+      "v-mudanza"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Se vende por mudanza. Me voy a vivir a Guadalajara. ¿Y por eso está tan barato? Sí, lo tengo que vender esta semana.",
+    "prompt_en": "Why is he selling it?",
+    "sentence": null,
+    "options": [
+      "He is moving away",
+      "It is broken",
+      "It was a gift",
+      "He bought a new one"
+    ],
+    "answer": "He is moving away",
+    "accepted_answers": [],
+    "explanation_en": "'Por mudanza' = because he is moving house.",
+    "transcript": "Vendedor: Se vende por mudanza. Me voy a vivir a Guadalajara.\nCompradora: ¿Y por eso está tan barato?\nVendedor: Sí, lo tengo que vender esta semana.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "second_hand",
+    "audio_lines": [
+      {
+        "speaker": "Vendedor",
+        "voice": "male",
+        "es": "Se vende por mudanza. Me voy a vivir a Guadalajara."
+      },
+      {
+        "speaker": "Compradora",
+        "voice": "female",
+        "es": "¿Y por eso está tan barato?"
+      },
+      {
+        "speaker": "Vendedor",
+        "voice": "male",
+        "es": "Sí, lo tengo que vender esta semana."
+      }
+    ]
+  },
+  {
+    "id": "c-0892",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Bueno, te lo dejo en novecientos cincuenta.",
+    "prompt_en": "What is the final price? Type the number.",
+    "sentence": null,
+    "options": [],
+    "answer": "950",
+    "accepted_answers": [
+      "950",
+      "$950",
+      "novecientos cincuenta"
+    ],
+    "explanation_en": "Novecientos (not nuevecientos) = 900, so 950.",
+    "transcript": "Bueno, te lo dejo en novecientos cincuenta.",
+    "region_note": null,
+    "hint_en": "A price just under one thousand.",
+    "level": "medium",
+    "topic": "second_hand"
+  },
+  {
+    "id": "c-0893",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22"
+    ],
+    "grammar_tags": [
+      "preterite"
+    ],
+    "vocab_ids": [
+      "v-gastarse"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "gastar(se), yo, preterite",
+    "sentence": "El mes pasado me ___ mucho dinero en conciertos.",
+    "options": [],
+    "answer": "gasté",
+    "accepted_answers": [
+      "gasté",
+      "gaste"
+    ],
+    "explanation_en": "Regular -ar preterite for yo ends in -é: me gasté.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Regular -ar verb, yo, preterite (one finished period).",
+    "level": "medium",
+    "topic": "second_hand"
+  },
+  {
+    "id": "c-0894",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22"
+    ],
+    "grammar_tags": [
+      "por_para"
+    ],
+    "vocab_ids": [
+      "v-ahorrar"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Fill with 'for' (the goal of the saving).",
+    "sentence": "Este año estoy ahorrando ___ un viaje a Japón.",
+    "options": [],
+    "answer": "para",
+    "accepted_answers": [
+      "para"
+    ],
+    "explanation_en": "'Ahorrar para…' = to save for a goal, so para, not por.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Preposition for a goal or purpose.",
+    "level": "medium",
+    "topic": "second_hand"
+  },
+  {
+    "id": "c-0895",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22"
+    ],
+    "grammar_tags": [],
+    "vocab_ids": [
+      "v-trueque",
+      "v-alguien-nadie"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "En el trueque nadie paga con dinero; cambias una cosa por otra.",
+    "prompt_en": "How do you pay in a trueque?",
+    "sentence": null,
+    "options": [
+      "You trade one thing",
+      "By card",
+      "Cash only",
+      "Half price"
+    ],
+    "answer": "You trade one thing",
+    "accepted_answers": [],
+    "explanation_en": "'Trueque' = barter: you swap one thing for another.",
+    "transcript": "En el trueque nadie paga con dinero; cambias una cosa por otra.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "second_hand"
+  },
+  {
+    "id": "c-0896",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22"
+    ],
+    "grammar_tags": [
+      "preterite",
+      "articles"
+    ],
+    "vocab_ids": [
+      "v-segunda-mano",
+      "v-chamarra"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Qué te has comprado últimamente?",
+    "prompt_en": "Say you bought a second-hand jacket.",
+    "sentence": null,
+    "options": [
+      "Me compré una chamarra de segunda mano.",
+      "Me compraste una chamarra de segunda mano.",
+      "Me compré un chamarra de segunda mano.",
+      "Me compro una chamarra de segunda mano ayer."
+    ],
+    "answer": "Me compré una chamarra de segunda mano.",
+    "accepted_answers": [],
+    "explanation_en": "Yo past is compré, and 'chamarra' is feminine: una chamarra.",
+    "transcript": "¿Qué te has comprado últimamente?",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "second_hand"
+  },
+  {
+    "id": "c-0897",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22",
+      "A2-L21"
+    ],
+    "grammar_tags": [],
+    "vocab_ids": [
+      "v-celular",
+      "v-algun-ningun"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿El celular tiene algún golpe? No, no tiene ningún golpe. Solo le falta la caja.",
+    "prompt_en": "What is missing?",
+    "sentence": null,
+    "options": [
+      "The case",
+      "The charger",
+      "Nothing",
+      "The box"
+    ],
+    "answer": "The box",
+    "accepted_answers": [],
+    "explanation_en": "'Le falta la caja' = the box is missing. 'Ningún golpe' = no dents at all.",
+    "transcript": "Compradora: ¿El celular tiene algún golpe?\nVendedor: No, no tiene ningún golpe. Solo le falta la caja.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "second_hand",
+    "audio_lines": [
+      {
+        "speaker": "Compradora",
+        "voice": "female",
+        "es": "¿El celular tiene algún golpe?"
+      },
+      {
+        "speaker": "Vendedor",
+        "voice": "male",
+        "es": "No, no tiene ningún golpe. Solo le falta la caja."
+      }
+    ]
+  },
+  {
+    "id": "c-0898",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22"
+    ],
+    "grammar_tags": [
+      "question_words",
+      "agreement"
+    ],
+    "vocab_ids": [
+      "v-refri"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Question word: how many (años)",
+    "sentence": "¿___ años tiene el refri?",
+    "options": [],
+    "answer": "Cuántos",
+    "accepted_answers": [
+      "Cuántos",
+      "cuántos",
+      "Cuantos",
+      "cuantos"
+    ],
+    "explanation_en": "'Años' is masculine plural, so ¿cuántos? (cuándo is 'when').",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Question word for 'how many'; make it agree with 'años'.",
+    "level": "medium",
+    "topic": "second_hand"
+  },
+  {
+    "id": "c-0899",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-refri",
+      "v-mil"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "El refri tiene dos puertas y cuesta tres mil quinientos pesos.",
+    "prompt_en": "How much is the fridge? Type the number.",
+    "sentence": null,
+    "options": [],
+    "answer": "3500",
+    "accepted_answers": [
+      "3500",
+      "$3500",
+      "3,500",
+      "$3,500",
+      "tres mil quinientos"
+    ],
+    "explanation_en": "Tres mil quinientos = 3,500.",
+    "transcript": "El refri tiene dos puertas y cuesta tres mil quinientos pesos.",
+    "region_note": null,
+    "hint_en": "A price over three thousand.",
+    "level": "medium",
+    "topic": "second_hand"
+  },
+  {
+    "id": "c-0900",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-apartar",
+      "v-anticipo",
+      "v-ciento-cien"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Me la puede apartar hasta el sábado? Le doy cien pesos de anticipo.",
+    "prompt_en": "How much is the deposit?",
+    "sentence": null,
+    "options": [
+      "$110",
+      "$200",
+      "$1,000",
+      "$100"
+    ],
+    "answer": "$100",
+    "accepted_answers": [],
+    "explanation_en": "'Cien pesos' = 100; it becomes 'ciento' only in 101 to 199.",
+    "transcript": "¿Me la puede apartar hasta el sábado? Le doy cien pesos de anticipo.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "second_hand"
+  },
+  {
+    "id": "c-0901",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22"
+    ],
+    "grammar_tags": [
+      "tu_vs_usted",
+      "question_words"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Hola, ¿todavía vende la bici?",
+    "prompt_en": "Say yes, still, and ask when they want to see it.",
+    "sentence": null,
+    "options": [
+      "Sí, todavía. ¿Cuándo quiero verla?",
+      "Sí, ya no. ¿Cuándo quiere verla?",
+      "Sí, todavía. ¿Cuándo quiere verla?",
+      "Sí, todavía. ¿Cuánto quiere verla?"
+    ],
+    "answer": "Sí, todavía. ¿Cuándo quiere verla?",
+    "accepted_answers": [],
+    "explanation_en": "Usted: ¿cuándo quiere…? Cuándo asks 'when'; cuánto asks 'how much'.",
+    "transcript": "Hola, ¿todavía vende la bici?",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "second_hand",
+    "voice": "female"
+  },
+  {
+    "id": "c-0902",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22",
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "imperative",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "llamar, usted, command (call)",
+    "sentence": "___ a la persona de la bici después de las seis.",
+    "options": [],
+    "answer": "Llame",
+    "accepted_answers": [
+      "Llame",
+      "llame"
+    ],
+    "explanation_en": "Usted command of -ar verbs ends in -e: llame.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Start from yo (llamo), drop the -o and add -e.",
+    "level": "medium",
+    "topic": "second_hand"
+  },
+  {
+    "id": "c-0903",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L22",
+      "A2-L21"
+    ],
+    "grammar_tags": [],
+    "vocab_ids": [
+      "v-algun-ningun"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "No tengo ninguna foto de la bici, pero puede verla hoy en la tarde.",
+    "prompt_en": "Can the buyer see photos?",
+    "sentence": null,
+    "options": [
+      "Only tomorrow",
+      "Only one photo",
+      "Yes, some",
+      "No, she has none"
+    ],
+    "answer": "No, she has none",
+    "accepted_answers": [],
+    "explanation_en": "'No tengo ninguna foto' = I don't have any photos.",
+    "transcript": "No tengo ninguna foto de la bici, pero puede verla hoy en la tarde.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "second_hand",
+    "voice": "female"
   }
 ]

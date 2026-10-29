@@ -19,6 +19,8 @@ export const TOPICS = [
   { code: 'phone_reservations', get name() { return t('topic.phone_reservations'); } },
   { code: 'home_errands', get name() { return t('topic.home_errands'); } },
   { code: 'small_talk', get name() { return t('topic.small_talk'); } },
+  { code: 'market', get name() { return t('topic.market'); } },
+  { code: 'second_hand', get name() { return t('topic.second_hand'); } },
 ];
 export const topicName = (code) => (TOPICS.find((t) => t.code === code) || {}).name || String(code || '').replace(/_/g, ' ');
 

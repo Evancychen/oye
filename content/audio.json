@@ -1922,6 +1922,307 @@
    "normal": "audio/66e09af0a57cb424.mp3",
    "slow": "audio/adc3cddf83a40d56.mp3",
    "voice": "male"
+  },
+  "Buenas tardes, joven. ¿Qué le damos? Quería un kilo de jitomate y dos aguacates, por favor.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Buenas tardes, joven. ¿Qué le damos?"
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Quería un kilo de jitomate y dos aguacates, por favor."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "eeb2b56cb08a3393.mp3",
+     "0ec5ef9265f36a49.mp3"
+    ],
+    "slow": [
+     "cc1087e42286f249.mp3",
+     "48724161ab12ac9f.mp3"
+    ]
+   },
+   "normal": "audio/084eb6532f05e06d.mp3",
+   "slow": "audio/5ae4d339011f8d4d.mp3"
+  },
+  "El kilo de jitomate está en treinta y dos pesos.": {
+   "normal": "audio/8b79a1b5980a21f1.mp3",
+   "slow": "audio/30baa418d167ace9.mp3",
+   "voice": "male"
+  },
+  "¿A cómo el kilo de limón? A cuarenta y cinco, joven.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "¿A cómo el kilo de limón?"
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "A cuarenta y cinco, joven."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "c093dff2ec607767.mp3",
+     "7e43731866ec92fa.mp3"
+    ],
+    "slow": [
+     "a62e8940eabfdb8e.mp3",
+     "6e5b4c2a5f52496c.mp3"
+    ]
+   },
+   "normal": "audio/33ce5c7b61a74694.mp3",
+   "slow": "audio/f9a1b43d0bd437fd.mp3"
+  },
+  "¿Le pongo algo más?": {
+   "normal": "audio/46a1caed077a42f2.mp3",
+   "slow": "audio/a0d99c1b6f5e6d56.mp3",
+   "voice": "female"
+  },
+  "Son ochenta y siete pesos. De cien, le doy trece de cambio.": {
+   "normal": "audio/3c52ac1a93e21da0.mp3",
+   "slow": "audio/64f8ad7e00a878b4.mp3",
+   "voice": "male"
+  },
+  "Hoy no hay nada de cilantro; mañana llega.": {
+   "normal": "audio/fcb0f4258e56c737.mp3",
+   "slow": "audio/c58b6eab67b5cf56.mp3",
+   "voice": "male"
+  },
+  "¿Me puede dar una bolsa, por favor? Claro. Aquí tiene su bolsa y su cambio.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "¿Me puede dar una bolsa, por favor?"
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Claro. Aquí tiene su bolsa y su cambio."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "d92cb9949b83447a.mp3",
+     "1967152465f8b1fc.mp3"
+    ],
+    "slow": [
+     "ad21da2016aa6ffd.mp3",
+     "41084c7f300881ee.mp3"
+    ]
+   },
+   "normal": "audio/5bc1cb3fb5b634c0.mp3",
+   "slow": "audio/ac1bcaeca1125863.mp3"
+  },
+  "Medio kilo de chiles y una cabeza de ajo, por favor.": {
+   "normal": "audio/4b5c60e5d44c4d84.mp3",
+   "slow": "audio/08feb1f42b447ee8.mp3",
+   "voice": "male"
+  },
+  "Dos kilos de papas son cincuenta y ocho pesos.": {
+   "normal": "audio/e815cdf94362c50c.mp3",
+   "slow": "audio/dbfc6aac802b87be.mp3",
+   "voice": "male"
+  },
+  "¿Los aguacates son para hoy o para mañana?": {
+   "normal": "audio/5f22c02ce2d62ae8.mp3",
+   "slow": "audio/d0b524199180f05c.mp3",
+   "voice": "male"
+  },
+  "¿Cuántas naranjas quiere? Deme diez, son para jugo.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "¿Cuántas naranjas quiere?"
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Deme diez, son para jugo."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "3faadc2fbebadadf.mp3",
+     "01a3392d80976c59.mp3"
+    ],
+    "slow": [
+     "a2c958f5b44e9551.mp3",
+     "b134bcdba810acea.mp3"
+    ]
+   },
+   "normal": "audio/cb6cf03673a104e5.mp3",
+   "slow": "audio/4e437fd77d4cb8fd.mp3"
+  },
+  "Aquí tiene su cambio: veinte pesos.": {
+   "normal": "audio/afcdb95c182f35dd.mp3",
+   "slow": "audio/fa872522aa540b3d.mp3",
+   "voice": "female"
+  },
+  "Los mangos están a tres por cincuenta pesos.": {
+   "normal": "audio/04cd5f7a66922140.mp3",
+   "slow": "audio/bf08fed6d5a7823a.mp3",
+   "voice": "male"
+  },
+  "Aquí nadie vende flor de calabaza, pero en el otro pasillo sí.": {
+   "normal": "audio/652b2df8307720e1.mp3",
+   "slow": "audio/f5bd34b69e12fe70.mp3",
+   "voice": "male"
+  },
+  "Buenas tardes. ¿Es ahí donde venden una bici? Sí, aquí es. Es azul y está en buen estado.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Comprador",
+     "voice": "male",
+     "es": "Buenas tardes. ¿Es ahí donde venden una bici?"
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Sí, aquí es. Es azul y está en buen estado."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "e1fe3cca197eb6b3.mp3",
+     "1faa277632ac8c16.mp3"
+    ],
+    "slow": [
+     "ad568877748afe1e.mp3",
+     "a20f966f9a771ea7.mp3"
+    ]
+   },
+   "normal": "audio/fb19cef01c734873.mp3",
+   "slow": "audio/75025156409fff9d.mp3"
+  },
+  "Pido mil ochocientos pesos por la bici.": {
+   "normal": "audio/7c34f7da2bc7d81e.mp3",
+   "slow": "audio/1c60d2b881fd493f.mp3",
+   "voice": "male"
+  },
+  "¿Cuántos años tiene la cámara?": {
+   "normal": "audio/832096b4a1aa0516.mp3",
+   "slow": "audio/3ab9cf9a7f36a279.mp3",
+   "voice": "male"
+  },
+  "La lavadora está en perfecto estado; casi no la usé.": {
+   "normal": "audio/684d025fc1bb03f0.mp3",
+   "slow": "audio/3f2f4e7d60d2602b.mp3",
+   "voice": "male"
+  },
+  "¿A qué hora quedamos?": {
+   "normal": "audio/02f52491cc3320df.mp3",
+   "slow": "audio/24fea798af072811.mp3",
+   "voice": "male"
+  },
+  "Se vende por mudanza. Me voy a vivir a Guadalajara. ¿Y por eso está tan barato? Sí, lo tengo que vender esta semana.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Vendedor",
+     "voice": "male",
+     "es": "Se vende por mudanza. Me voy a vivir a Guadalajara."
+    },
+    {
+     "speaker": "Compradora",
+     "voice": "female",
+     "es": "¿Y por eso está tan barato?"
+    },
+    {
+     "speaker": "Vendedor",
+     "voice": "male",
+     "es": "Sí, lo tengo que vender esta semana."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "5af0131194323f3e.mp3",
+     "b172d442c62d8350.mp3",
+     "e0441710b100932b.mp3"
+    ],
+    "slow": [
+     "8bd3087e050fc703.mp3",
+     "58b7598c00af88b2.mp3",
+     "8b1f7920e3a4b8ce.mp3"
+    ]
+   },
+   "normal": "audio/ea825583a67c6acc.mp3",
+   "slow": "audio/c9d400749911f1c8.mp3"
+  },
+  "Bueno, te lo dejo en novecientos cincuenta.": {
+   "normal": "audio/d82fa11d5a9d3dfc.mp3",
+   "slow": "audio/54031c8d5164b4fb.mp3",
+   "voice": "male"
+  },
+  "En el trueque nadie paga con dinero; cambias una cosa por otra.": {
+   "normal": "audio/0992c21067cb2fef.mp3",
+   "slow": "audio/0ea540f7a4c6f056.mp3",
+   "voice": "male"
+  },
+  "¿Qué te has comprado últimamente?": {
+   "normal": "audio/32f39b6c1e4d05b1.mp3",
+   "slow": "audio/2f870400dbcee256.mp3",
+   "voice": "male"
+  },
+  "¿El celular tiene algún golpe? No, no tiene ningún golpe. Solo le falta la caja.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Compradora",
+     "voice": "female",
+     "es": "¿El celular tiene algún golpe?"
+    },
+    {
+     "speaker": "Vendedor",
+     "voice": "male",
+     "es": "No, no tiene ningún golpe. Solo le falta la caja."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "b33b411630470038.mp3",
+     "ddbd7cf45ac1f609.mp3"
+    ],
+    "slow": [
+     "da13a6bb7d1355f0.mp3",
+     "f82798937e44aae8.mp3"
+    ]
+   },
+   "normal": "audio/f3ca464721bddfc3.mp3",
+   "slow": "audio/a986a8b3bfe987d4.mp3"
+  },
+  "El refri tiene dos puertas y cuesta tres mil quinientos pesos.": {
+   "normal": "audio/6eb894d461e9f34d.mp3",
+   "slow": "audio/954a83c33de9b11b.mp3",
+   "voice": "male"
+  },
+  "¿Me la puede apartar hasta el sábado? Le doy cien pesos de anticipo.": {
+   "normal": "audio/ea37280873af31fb.mp3",
+   "slow": "audio/263f3220cd354379.mp3",
+   "voice": "male"
+  },
+  "Hola, ¿todavía vende la bici?": {
+   "normal": "audio/175acaf6b641ab33.mp3",
+   "slow": "audio/8adf108342db990f.mp3",
+   "voice": "female"
+  },
+  "No tengo ninguna foto de la bici, pero puede verla hoy en la tarde.": {
+   "normal": "audio/576ae3702cb0e6e7.mp3",
+   "slow": "audio/4d125c3e9caf0f30.mp3",
+   "voice": "female"
   }
  },
  "lines": {
@@ -2275,6 +2576,66 @@
   },
   "male|No, a ninguno.": {
    "normal": "audio/81b260b23e9593d7.mp3",
+   "voice": "male"
+  },
+  "female|Buenas tardes, joven. ¿Qué le damos?": {
+   "normal": "audio/eeb2b56cb08a3393.mp3",
+   "voice": "female"
+  },
+  "male|Quería un kilo de jitomate y dos aguacates, por favor.": {
+   "normal": "audio/0ec5ef9265f36a49.mp3",
+   "voice": "male"
+  },
+  "male|¿A cómo el kilo de limón?": {
+   "normal": "audio/c093dff2ec607767.mp3",
+   "voice": "male"
+  },
+  "female|A cuarenta y cinco, joven.": {
+   "normal": "audio/7e43731866ec92fa.mp3",
+   "voice": "female"
+  },
+  "male|¿Me puede dar una bolsa, por favor?": {
+   "normal": "audio/d92cb9949b83447a.mp3",
+   "voice": "male"
+  },
+  "female|Claro. Aquí tiene su bolsa y su cambio.": {
+   "normal": "audio/1967152465f8b1fc.mp3",
+   "voice": "female"
+  },
+  "female|¿Cuántas naranjas quiere?": {
+   "normal": "audio/3faadc2fbebadadf.mp3",
+   "voice": "female"
+  },
+  "male|Deme diez, son para jugo.": {
+   "normal": "audio/01a3392d80976c59.mp3",
+   "voice": "male"
+  },
+  "male|Buenas tardes. ¿Es ahí donde venden una bici?": {
+   "normal": "audio/e1fe3cca197eb6b3.mp3",
+   "voice": "male"
+  },
+  "female|Sí, aquí es. Es azul y está en buen estado.": {
+   "normal": "audio/1faa277632ac8c16.mp3",
+   "voice": "female"
+  },
+  "male|Se vende por mudanza. Me voy a vivir a Guadalajara.": {
+   "normal": "audio/5af0131194323f3e.mp3",
+   "voice": "male"
+  },
+  "female|¿Y por eso está tan barato?": {
+   "normal": "audio/b172d442c62d8350.mp3",
+   "voice": "female"
+  },
+  "male|Sí, lo tengo que vender esta semana.": {
+   "normal": "audio/e0441710b100932b.mp3",
+   "voice": "male"
+  },
+  "female|¿El celular tiene algún golpe?": {
+   "normal": "audio/b33b411630470038.mp3",
+   "voice": "female"
+  },
+  "male|No, no tiene ningún golpe. Solo le falta la caja.": {
+   "normal": "audio/ddbd7cf45ac1f609.mp3",
    "voice": "male"
   },
   "male|Próxima estación: Bellas Artes.": {
@@ -2901,10 +3262,6 @@
    "normal": "audio/1c4ed1b37cd2d5cd.mp3",
    "voice": "male"
   },
-  "female|Buenas tardes, joven. ¿Qué le damos?": {
-   "normal": "audio/eeb2b56cb08a3393.mp3",
-   "voice": "female"
-  },
   "male|Buenas tardes. Quería un kilo de jitomate y medio kilo de chiles. ¿A cómo están los aguacates?": {
    "normal": "audio/c2242699b05fe770.mp3",
    "voice": "male"
@@ -3036,6 +3393,170 @@
   "female|Sí. Y los miembros del club tienen diez por ciento de descuento.": {
    "normal": "audio/bff58c5fee678d65.mp3",
    "voice": "female"
+  },
+  "male|¿Bueno? Buenas tardes. ¿Es ahí donde venden un celular? Vi su anuncio en internet.": {
+   "normal": "audio/cb269c4afa4389f5.mp3",
+   "voice": "male"
+  },
+  "female|Sí, joven, aquí es. Tiene dos años y está en muy buen estado. No tiene ningún golpe.": {
+   "normal": "audio/25219da37bcd6d6f.mp3",
+   "voice": "female"
+  },
+  "male|¿De qué color es?": {
+   "normal": "audio/e35b2ea5d45acae8.mp3",
+   "voice": "male"
+  },
+  "female|Es negro. La pantalla es nueva, porque el año pasado se me rompió y la cambié.": {
+   "normal": "audio/03157a19f4381139.mp3",
+   "voice": "female"
+  },
+  "male|¿Y cuánto pide por él?": {
+   "normal": "audio/e8b1e0f40d833c07.mp3",
+   "voice": "male"
+  },
+  "female|Pido tres mil doscientos pesos. Incluye el cargador y la funda.": {
+   "normal": "audio/889d44b376dc5945.mp3",
+   "voice": "female"
+  },
+  "male|¿Me lo puede dejar en tres mil?": {
+   "normal": "audio/5bcec7b950fb4185.mp3",
+   "voice": "male"
+  },
+  "female|Se lo dejo en tres mil cien. Es mi última oferta.": {
+   "normal": "audio/b1fb9b0a3697186b.mp3",
+   "voice": "female"
+  },
+  "male|Va, está bien. ¿Cuándo puedo verlo? ¿A qué hora quedamos?": {
+   "normal": "audio/95640b251ca4366d.mp3",
+   "voice": "male"
+  },
+  "female|Mañana a las seis de la tarde, en la entrada del metro, junto al OXXO.": {
+   "normal": "audio/120cca747ef46430.mp3",
+   "voice": "female"
+  },
+  "male|Perfecto. Ahí nos vemos.": {
+   "normal": "audio/07c9e9b1d5b1a829.mp3",
+   "voice": "male"
+  },
+  "female|Hola, ¿tú eres Toño? Vengo por el controlador para mezclar música del anuncio.": {
+   "normal": "audio/a0a875237d3460a5.mp3",
+   "voice": "female"
+  },
+  "male|Sí, soy yo. Mira, aquí está. Lo compré hace tres años, pero casi no lo he usado.": {
+   "normal": "audio/70dfce45521da44a.mp3",
+   "voice": "male"
+  },
+  "female|Se ve en buen estado. ¿Por qué lo vendes?": {
+   "normal": "audio/14321928a18b8fb7.mp3",
+   "voice": "female"
+  },
+  "male|Se vende por mudanza. Me voy a vivir a Monterrey y no puedo llevar todo.": {
+   "normal": "audio/0b9de188673c7c66.mp3",
+   "voice": "male"
+  },
+  "female|¿Funcionan todos los botones?": {
+   "normal": "audio/9730bc1b6b107285.mp3",
+   "voice": "female"
+  },
+  "male|Sí, todos. Solo un cable está roto, pero uno nuevo cuesta cien pesos.": {
+   "normal": "audio/1efb6edec563cb07.mp3",
+   "voice": "male"
+  },
+  "female|En el anuncio dice cuatro mil quinientos. ¿Cuánto pides al final?": {
+   "normal": "audio/2f9de8a13ad9bf75.mp3",
+   "voice": "female"
+  },
+  "male|Si me pagas en efectivo hoy, te lo dejo en cuatro mil.": {
+   "normal": "audio/8fffbe9a2051a0f0.mp3",
+   "voice": "male"
+  },
+  "female|Trato hecho. Es un regalo para mi hermano. Cumple años el sábado.": {
+   "normal": "audio/eb1a36b145d175cf.mp3",
+   "voice": "female"
+  },
+  "male|¡Qué buen regalo! Y te doy también unos audífonos que ya no uso.": {
+   "normal": "audio/ee39773ee5eaaedb.mp3",
+   "voice": "male"
+  },
+  "female|Hola. ¿Tú eres el diseñador de los carteles? Esta feria es de trueque, ¿verdad? Aquí nadie paga con dinero.": {
+   "normal": "audio/11303bada84858ce.mp3",
+   "voice": "female"
+  },
+  "male|Exacto. Aquí todo es intercambio. ¿Qué ofreces?": {
+   "normal": "audio/d0693def69d53baf.mp3",
+   "voice": "male"
+  },
+  "female|Hago ilustraciones digitales. Me encanta tu cartel del festival de música. ¿Me lo cambias por un retrato?": {
+   "normal": "audio/2c6613a355180741.mp3",
+   "voice": "female"
+  },
+  "male|Me late, pero el cartel es grande y lo imprimí en papel especial.": {
+   "normal": "audio/01b3f58d642c8760.mp3",
+   "voice": "male"
+  },
+  "female|Entonces te hago un retrato y también un ícono para tu página.": {
+   "normal": "audio/87be51f7445ac0bf.mp3",
+   "voice": "female"
+  },
+  "male|Va. ¿Cuándo me los mandas?": {
+   "normal": "audio/2d9c37f4fb754871.mp3",
+   "voice": "male"
+  },
+  "female|El retrato, el viernes. El ícono, la próxima semana.": {
+   "normal": "audio/a0f18ad76df5805e.mp3",
+   "voice": "female"
+  },
+  "male|Perfecto. ¿Vienes a la feria cada mes?": {
+   "normal": "audio/4d7b486409927124.mp3",
+   "voice": "male"
+  },
+  "female|Sí, el primer domingo de cada mes. Antes me gastaba mucho dinero en materiales; ahora los consigo aquí.": {
+   "normal": "audio/31e2b24bf446b354.mp3",
+   "voice": "female"
+  },
+  "male|Yo también. El mes pasado cambié dos carteles por una lámpara vintage.": {
+   "normal": "audio/f97ec225daec5f41.mp3",
+   "voice": "male"
+  },
+  "female|Oye, ¿qué te has comprado últimamente?": {
+   "normal": "audio/a641ee166ef72675.mp3",
+   "voice": "female"
+  },
+  "male|Nada. Este año estoy ahorrando para un viaje a Japón en marzo.": {
+   "normal": "audio/a55f3e47857f8017.mp3",
+   "voice": "male"
+  },
+  "female|¡Qué padre! ¿Cuánto necesitas?": {
+   "normal": "audio/e3db94bb0bcc7132.mp3",
+   "voice": "female"
+  },
+  "male|Unos cuarenta mil pesos para el vuelo y el hotel. Ya tengo veinticinco mil.": {
+   "normal": "audio/ae3e565ea7544ef1.mp3",
+   "voice": "male"
+  },
+  "female|Yo no puedo ahorrar nada. Me gasto todo el dinero en conciertos y en ropa.": {
+   "normal": "audio/8c9656f121507708.mp3",
+   "voice": "female"
+  },
+  "male|Yo antes también. Ahora vendo cosas de segunda mano por internet. La semana pasada vendí mi bici en dos mil pesos.": {
+   "normal": "audio/f1ecd19bfd963ba9.mp3",
+   "voice": "male"
+  },
+  "female|¿En serio? Yo tengo una cámara que casi no uso.": {
+   "normal": "audio/3a29213a899732bf.mp3",
+   "voice": "female"
+  },
+  "male|Véndela. Una cámara en buen estado se vende muy rápido.": {
+   "normal": "audio/3e3f180adfca1386.mp3",
+   "voice": "male"
+  },
+  "female|Buena idea. Y con ese dinero me compro boletos para el festival.": {
+   "normal": "audio/6649064e9706c292.mp3",
+   "voice": "female"
+  },
+  "male|¡No! Mejor ahorra un poco.": {
+   "normal": "audio/354537f9e0defc06.mp3",
+   "voice": "male"
   }
  },
  "missions": {
@@ -4711,6 +5232,349 @@
    "slow": "audio/f7a2169a52e1e88b.mp3",
    "duration": 38.45,
    "slow_duration": 50.11
+  },
+  "m-celular-usado-llamada-01": {
+   "lines": [
+    {
+     "speaker": "Comprador",
+     "voice": "male",
+     "es": "¿Bueno? Buenas tardes. ¿Es ahí donde venden un celular? Vi su anuncio en internet."
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Sí, joven, aquí es. Tiene dos años y está en muy buen estado. No tiene ningún golpe."
+    },
+    {
+     "speaker": "Comprador",
+     "voice": "male",
+     "es": "¿De qué color es?"
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Es negro. La pantalla es nueva, porque el año pasado se me rompió y la cambié."
+    },
+    {
+     "speaker": "Comprador",
+     "voice": "male",
+     "es": "¿Y cuánto pide por él?"
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Pido tres mil doscientos pesos. Incluye el cargador y la funda."
+    },
+    {
+     "speaker": "Comprador",
+     "voice": "male",
+     "es": "¿Me lo puede dejar en tres mil?"
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Se lo dejo en tres mil cien. Es mi última oferta."
+    },
+    {
+     "speaker": "Comprador",
+     "voice": "male",
+     "es": "Va, está bien. ¿Cuándo puedo verlo? ¿A qué hora quedamos?"
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Mañana a las seis de la tarde, en la entrada del metro, junto al OXXO."
+    },
+    {
+     "speaker": "Comprador",
+     "voice": "male",
+     "es": "Perfecto. Ahí nos vemos."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "cb269c4afa4389f5.mp3",
+     "25219da37bcd6d6f.mp3",
+     "e35b2ea5d45acae8.mp3",
+     "03157a19f4381139.mp3",
+     "e8b1e0f40d833c07.mp3",
+     "889d44b376dc5945.mp3",
+     "5bcec7b950fb4185.mp3",
+     "b1fb9b0a3697186b.mp3",
+     "95640b251ca4366d.mp3",
+     "120cca747ef46430.mp3",
+     "07c9e9b1d5b1a829.mp3"
+    ],
+    "slow": [
+     "4556c9d767b88523.mp3",
+     "1c06f9f0d62f7ea6.mp3",
+     "2b7f26cf77b83caa.mp3",
+     "3ccfbb0fe3258a3d.mp3",
+     "bce413eeec7c53d9.mp3",
+     "b1d3fbb4b30ead79.mp3",
+     "2f66472955bdba5f.mp3",
+     "2d92fd64417fe53c.mp3",
+     "708bfd532be077ce.mp3",
+     "f1d425a8fa6e707c.mp3",
+     "d19dcfc8a7fc1e42.mp3"
+    ]
+   },
+   "normal": "audio/0017e2a05a45bdb2.mp3",
+   "slow": "audio/67673635790addcd.mp3",
+   "duration": 40.73,
+   "slow_duration": 52.63
+  },
+  "m-controlador-dj-01": {
+   "lines": [
+    {
+     "speaker": "Compradora",
+     "voice": "female",
+     "es": "Hola, ¿tú eres Toño? Vengo por el controlador para mezclar música del anuncio."
+    },
+    {
+     "speaker": "Vendedor",
+     "voice": "male",
+     "es": "Sí, soy yo. Mira, aquí está. Lo compré hace tres años, pero casi no lo he usado."
+    },
+    {
+     "speaker": "Compradora",
+     "voice": "female",
+     "es": "Se ve en buen estado. ¿Por qué lo vendes?"
+    },
+    {
+     "speaker": "Vendedor",
+     "voice": "male",
+     "es": "Se vende por mudanza. Me voy a vivir a Monterrey y no puedo llevar todo."
+    },
+    {
+     "speaker": "Compradora",
+     "voice": "female",
+     "es": "¿Funcionan todos los botones?"
+    },
+    {
+     "speaker": "Vendedor",
+     "voice": "male",
+     "es": "Sí, todos. Solo un cable está roto, pero uno nuevo cuesta cien pesos."
+    },
+    {
+     "speaker": "Compradora",
+     "voice": "female",
+     "es": "En el anuncio dice cuatro mil quinientos. ¿Cuánto pides al final?"
+    },
+    {
+     "speaker": "Vendedor",
+     "voice": "male",
+     "es": "Si me pagas en efectivo hoy, te lo dejo en cuatro mil."
+    },
+    {
+     "speaker": "Compradora",
+     "voice": "female",
+     "es": "Trato hecho. Es un regalo para mi hermano. Cumple años el sábado."
+    },
+    {
+     "speaker": "Vendedor",
+     "voice": "male",
+     "es": "¡Qué buen regalo! Y te doy también unos audífonos que ya no uso."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "a0a875237d3460a5.mp3",
+     "70dfce45521da44a.mp3",
+     "14321928a18b8fb7.mp3",
+     "0b9de188673c7c66.mp3",
+     "9730bc1b6b107285.mp3",
+     "1efb6edec563cb07.mp3",
+     "2f9de8a13ad9bf75.mp3",
+     "8fffbe9a2051a0f0.mp3",
+     "eb1a36b145d175cf.mp3",
+     "ee39773ee5eaaedb.mp3"
+    ],
+    "slow": [
+     "7e0b3e7f231da3a7.mp3",
+     "ba9e0d2bcb068f07.mp3",
+     "0da0f6e80fcc94cc.mp3",
+     "3ffa6e0a9ddbac6d.mp3",
+     "8b0eaa1126e0fdb4.mp3",
+     "04309ffb6e502606.mp3",
+     "dcfcc3f9aeefe2e7.mp3",
+     "f92d245fbc6b63c8.mp3",
+     "3a172cb23b4d1ca7.mp3",
+     "11399019cea0fa5b.mp3"
+    ]
+   },
+   "normal": "audio/605f76ccfc7dc7ae.mp3",
+   "slow": "audio/34248300fc36ca6a.mp3",
+   "duration": 44.47,
+   "slow_duration": 57.79
+  },
+  "m-feria-trueque-01": {
+   "lines": [
+    {
+     "speaker": "Ilustradora",
+     "voice": "female",
+     "es": "Hola. ¿Tú eres el diseñador de los carteles? Esta feria es de trueque, ¿verdad? Aquí nadie paga con dinero."
+    },
+    {
+     "speaker": "Diseñador",
+     "voice": "male",
+     "es": "Exacto. Aquí todo es intercambio. ¿Qué ofreces?"
+    },
+    {
+     "speaker": "Ilustradora",
+     "voice": "female",
+     "es": "Hago ilustraciones digitales. Me encanta tu cartel del festival de música. ¿Me lo cambias por un retrato?"
+    },
+    {
+     "speaker": "Diseñador",
+     "voice": "male",
+     "es": "Me late, pero el cartel es grande y lo imprimí en papel especial."
+    },
+    {
+     "speaker": "Ilustradora",
+     "voice": "female",
+     "es": "Entonces te hago un retrato y también un ícono para tu página."
+    },
+    {
+     "speaker": "Diseñador",
+     "voice": "male",
+     "es": "Va. ¿Cuándo me los mandas?"
+    },
+    {
+     "speaker": "Ilustradora",
+     "voice": "female",
+     "es": "El retrato, el viernes. El ícono, la próxima semana."
+    },
+    {
+     "speaker": "Diseñador",
+     "voice": "male",
+     "es": "Perfecto. ¿Vienes a la feria cada mes?"
+    },
+    {
+     "speaker": "Ilustradora",
+     "voice": "female",
+     "es": "Sí, el primer domingo de cada mes. Antes me gastaba mucho dinero en materiales; ahora los consigo aquí."
+    },
+    {
+     "speaker": "Diseñador",
+     "voice": "male",
+     "es": "Yo también. El mes pasado cambié dos carteles por una lámpara vintage."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "11303bada84858ce.mp3",
+     "d0693def69d53baf.mp3",
+     "2c6613a355180741.mp3",
+     "01b3f58d642c8760.mp3",
+     "87be51f7445ac0bf.mp3",
+     "2d9c37f4fb754871.mp3",
+     "a0f18ad76df5805e.mp3",
+     "4d7b486409927124.mp3",
+     "31e2b24bf446b354.mp3",
+     "f97ec225daec5f41.mp3"
+    ],
+    "slow": [
+     "7f25f9327b0841ce.mp3",
+     "dc758559951d0233.mp3",
+     "6318a4f005c0604f.mp3",
+     "fb9bf6d7eae10017.mp3",
+     "de4c92fd6a8168b5.mp3",
+     "95a4e248b165ed83.mp3",
+     "6614fd6dcff6381c.mp3",
+     "0e4f34af80c3f2ee.mp3",
+     "7787ac94937b5229.mp3",
+     "8e48ecded592c938.mp3"
+    ]
+   },
+   "normal": "audio/2c73b6b0332186d8.mp3",
+   "slow": "audio/5d350c0f61a3f00d.mp3",
+   "duration": 47.3,
+   "slow_duration": 61.56
+  },
+  "m-ahorro-japon-01": {
+   "lines": [
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "Oye, ¿qué te has comprado últimamente?"
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "Nada. Este año estoy ahorrando para un viaje a Japón en marzo."
+    },
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "¡Qué padre! ¿Cuánto necesitas?"
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "Unos cuarenta mil pesos para el vuelo y el hotel. Ya tengo veinticinco mil."
+    },
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "Yo no puedo ahorrar nada. Me gasto todo el dinero en conciertos y en ropa."
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "Yo antes también. Ahora vendo cosas de segunda mano por internet. La semana pasada vendí mi bici en dos mil pesos."
+    },
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "¿En serio? Yo tengo una cámara que casi no uso."
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "Véndela. Una cámara en buen estado se vende muy rápido."
+    },
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "Buena idea. Y con ese dinero me compro boletos para el festival."
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "¡No! Mejor ahorra un poco."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "a641ee166ef72675.mp3",
+     "a55f3e47857f8017.mp3",
+     "e3db94bb0bcc7132.mp3",
+     "ae3e565ea7544ef1.mp3",
+     "8c9656f121507708.mp3",
+     "f1ecd19bfd963ba9.mp3",
+     "3a29213a899732bf.mp3",
+     "3e3f180adfca1386.mp3",
+     "6649064e9706c292.mp3",
+     "354537f9e0defc06.mp3"
+    ],
+    "slow": [
+     "7009e92fc2d3c0c4.mp3",
+     "7f5ea7ac2a124ec9.mp3",
+     "4917f4e236dc01ee.mp3",
+     "44896b7833b1720e.mp3",
+     "93f791861824b0e0.mp3",
+     "22724fa027c4d9e4.mp3",
+     "d5ef32810feaf3f6.mp3",
+     "43bdc4c5170523f3.mp3",
+     "126e42f7fd7d7c21.mp3",
+     "983b5d35842d2690.mp3"
+    ]
+   },
+   "normal": "audio/276183dd045becb3.mp3",
+   "slow": "audio/74d52b4efb464410.mp3",
+   "duration": 42.5,
+   "slow_duration": 55.18
   }
  }
 }

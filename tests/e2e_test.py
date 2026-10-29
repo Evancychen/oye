@@ -654,10 +654,9 @@ async def main():
 
 async def missing_batch7_audio_suite(browser, base, cards):
     """Exercise simulated missing-audio fallbacks even after batch 7 is published."""
-    version = json.load(open(os.path.join(APP, 'content', 'version.json'), encoding='utf-8'))
-    # Use the current batch: older Easy cards can be retired between publishes.
-    card = next(c for c in cards if c['id'] in version['new_card_ids']
-                and c['type'] == 'listen_pick' and c.get('level', 'easy') == 'easy')
+    # Use a currently published card: a batch need not add any Easy cards.
+    card = next(c for c in cards
+                if c['type'] == 'listen_pick' and c.get('level', 'easy') == 'easy')
     for language, label in [('en', 'Audio coming soon'), ('es', 'Audio próximamente')]:
         errors = []
         ctx, page = await new_page(browser, errors, init_script=f"localStorage.setItem('oye-lang', '{language}')")
@@ -1618,7 +1617,7 @@ SHOTS_V2 = os.environ.get('OYE_V2_SHOTS') or os.path.join(SHOTS, 'v2')
 TOPIC_NAMES = {'numbers_prices': 'Numbers & prices', 'time_schedules': 'Time & schedules', 'directions': 'Directions & places',
                'verbs_past': 'Past tense', 'verbs_present': 'Present tense', 'verbs_commands': 'Commands', 'verbs_future': 'Future & conditional',
                'weather_plans': 'Weather & plans', 'food_ordering': 'Food & ordering', 'shopping': 'Shopping & sizes',
-               'health_pharmacy': 'Health & pharmacy', 'phone_reservations': 'Calls & bookings', 'home_errands': 'Home & errands', 'small_talk': 'Small talk'}
+               'health_pharmacy': 'Health & pharmacy', 'phone_reservations': 'Calls & bookings', 'home_errands': 'Home & errands', 'small_talk': 'Small talk', 'market': 'At the market', 'second_hand': 'Second-hand'}
 # Full design order: topics move from Coming soon into the grid as content arrives.
 TOPIC_ORDER = list(TOPIC_NAMES)
 

@@ -4844,5 +4844,869 @@
     "region_note": "'Sala de juntas' = meeting room (Mexico).",
     "added": "2026-10-19",
     "folder": "city_life"
+  },
+  {
+    "id": "m-celular-usado-llamada-01",
+    "title_en": "Phone call: a used phone for sale",
+    "situation_en": "You saw an online ad for a used phone. Listen to the call between the buyer and the seller.",
+    "topic": "phone_reservations",
+    "lesson_tags": [
+      "A2-L22",
+      "A2-L07",
+      "A1-L26"
+    ],
+    "vocab_ids": [
+      "v-cuanto-pide",
+      "v-buen-estado",
+      "v-a-que-hora-quedamos",
+      "v-celular",
+      "v-algun-ningun",
+      "v-mil",
+      "v-joven"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Comprador",
+          "voice": "male",
+          "es": "¿Bueno? Buenas tardes. ¿Es ahí donde venden un celular? Vi su anuncio en internet.",
+          "en": "Hello? Good afternoon. Is this where a phone is for sale? I saw your ad online."
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Sí, joven, aquí es. Tiene dos años y está en muy buen estado. No tiene ningún golpe.",
+          "en": "Yes, young man, this is the place. It is two years old and in very good condition. It has no dents at all."
+        },
+        {
+          "speaker": "Comprador",
+          "voice": "male",
+          "es": "¿De qué color es?",
+          "en": "What color is it?"
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Es negro. La pantalla es nueva, porque el año pasado se me rompió y la cambié.",
+          "en": "It is black. The screen is new, because it broke last year and I replaced it."
+        },
+        {
+          "speaker": "Comprador",
+          "voice": "male",
+          "es": "¿Y cuánto pide por él?",
+          "en": "And how much are you asking for it?"
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Pido tres mil doscientos pesos. Incluye el cargador y la funda.",
+          "en": "I am asking three thousand two hundred pesos. It includes the charger and the case."
+        },
+        {
+          "speaker": "Comprador",
+          "voice": "male",
+          "es": "¿Me lo puede dejar en tres mil?",
+          "en": "Could you let me have it for three thousand?"
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Se lo dejo en tres mil cien. Es mi última oferta.",
+          "en": "I will let you have it for three thousand one hundred. That is my final offer."
+        },
+        {
+          "speaker": "Comprador",
+          "voice": "male",
+          "es": "Va, está bien. ¿Cuándo puedo verlo? ¿A qué hora quedamos?",
+          "en": "OK, fine. When can I see it? What time shall we meet?"
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Mañana a las seis de la tarde, en la entrada del metro, junto al OXXO.",
+          "en": "Tomorrow at six in the evening, at the metro entrance, next to the OXXO."
+        },
+        {
+          "speaker": "Comprador",
+          "voice": "male",
+          "es": "Perfecto. Ahí nos vemos.",
+          "en": "Perfect. See you there."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "How old is the phone?",
+        "options": [
+          "One year old",
+          "Two years old",
+          "Six months old",
+          "Twelve years old"
+        ],
+        "answer": "Two years old",
+        "hint_en": "Listen for 'tiene… años'.",
+        "explanation_en": "'Tiene dos años' = it is two years old."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "Why is the screen new?",
+        "options": [
+          "It was a gift",
+          "It broke last year",
+          "It came that way",
+          "The buyer asked for it"
+        ],
+        "answer": "It broke last year",
+        "hint_en": "Listen for 'se me rompió'.",
+        "explanation_en": "'El año pasado se me rompió y la cambié' = it broke last year and she replaced it."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What comes with the phone?",
+        "options": [
+          "Only the case",
+          "Nothing else",
+          "Headphones",
+          "The charger and the case"
+        ],
+        "answer": "The charger and the case",
+        "hint_en": "Listen for 'Incluye…'.",
+        "explanation_en": "'Incluye el cargador y la funda'."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "What is the seller's final price? Type the number.",
+        "answer": "3100",
+        "accepted_answers": [
+          "3100",
+          "$3100",
+          "3,100",
+          "$3,100",
+          "tres mil cien"
+        ],
+        "hint_en": "Listen for 'mi última oferta'.",
+        "explanation_en": "'Se lo dejo en tres mil cien' = 3,100."
+      },
+      {
+        "id": "q5",
+        "kind": "type",
+        "prompt_en": "What time do they meet tomorrow? (type it like 9:15)",
+        "answer": "6:00",
+        "accepted_answers": [
+          "6:00",
+          "18:00",
+          "6 00",
+          "6"
+        ],
+        "hint_en": "Listen for 'a las… de la tarde'.",
+        "explanation_en": "'A las seis de la tarde' = 6:00 p.m."
+      }
+    ],
+    "region_note": "Mexico: '¿Bueno?' to answer the phone; 'celular' (Spain: 'móvil'); 'funda' = phone case.",
+    "added": "2026-10-26",
+    "folder": "scifi_tech"
+  },
+  {
+    "id": "m-controlador-dj-01",
+    "title_en": "Second-hand DJ controller",
+    "situation_en": "A woman meets a seller to buy a used DJ controller she saw in an ad. Listen.",
+    "topic": "shopping",
+    "lesson_tags": [
+      "A2-L22",
+      "A1-L32",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-segunda-mano",
+      "v-buen-estado",
+      "v-se-vende",
+      "v-mudanza",
+      "v-cuanto-pide",
+      "v-mil",
+      "v-pagar-en-efectivo"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Compradora",
+          "voice": "female",
+          "es": "Hola, ¿tú eres Toño? Vengo por el controlador para mezclar música del anuncio.",
+          "en": "Hi, are you Toño? I am here for the DJ controller (for mixing music) from the ad."
+        },
+        {
+          "speaker": "Vendedor",
+          "voice": "male",
+          "es": "Sí, soy yo. Mira, aquí está. Lo compré hace tres años, pero casi no lo he usado.",
+          "en": "Yes, that is me. Look, here it is. I bought it three years ago, but I have hardly used it."
+        },
+        {
+          "speaker": "Compradora",
+          "voice": "female",
+          "es": "Se ve en buen estado. ¿Por qué lo vendes?",
+          "en": "It looks in good condition. Why are you selling it?"
+        },
+        {
+          "speaker": "Vendedor",
+          "voice": "male",
+          "es": "Se vende por mudanza. Me voy a vivir a Monterrey y no puedo llevar todo.",
+          "en": "It is for sale because I am moving. I am going to live in Monterrey and I cannot take everything."
+        },
+        {
+          "speaker": "Compradora",
+          "voice": "female",
+          "es": "¿Funcionan todos los botones?",
+          "en": "Do all the buttons work?"
+        },
+        {
+          "speaker": "Vendedor",
+          "voice": "male",
+          "es": "Sí, todos. Solo un cable está roto, pero uno nuevo cuesta cien pesos.",
+          "en": "Yes, all of them. Only one cable is broken, but a new one costs a hundred pesos."
+        },
+        {
+          "speaker": "Compradora",
+          "voice": "female",
+          "es": "En el anuncio dice cuatro mil quinientos. ¿Cuánto pides al final?",
+          "en": "The ad says four thousand five hundred. How much are you asking in the end?"
+        },
+        {
+          "speaker": "Vendedor",
+          "voice": "male",
+          "es": "Si me pagas en efectivo hoy, te lo dejo en cuatro mil.",
+          "en": "If you pay me in cash today, I will let you have it for four thousand."
+        },
+        {
+          "speaker": "Compradora",
+          "voice": "female",
+          "es": "Trato hecho. Es un regalo para mi hermano. Cumple años el sábado.",
+          "en": "Deal. It is a present for my brother. His birthday is on Saturday."
+        },
+        {
+          "speaker": "Vendedor",
+          "voice": "male",
+          "es": "¡Qué buen regalo! Y te doy también unos audífonos que ya no uso.",
+          "en": "What a great present! And I will also give you some headphones I do not use anymore."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "Why is he selling the controller?",
+        "options": [
+          "He bought a new one",
+          "He needs money for a festival",
+          "It does not work",
+          "He is moving to another city"
+        ],
+        "answer": "He is moving to another city",
+        "hint_en": "Listen for 'por mudanza'.",
+        "explanation_en": "'Se vende por mudanza. Me voy a vivir a Monterrey'."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "What is broken?",
+        "options": [
+          "One button",
+          "One cable",
+          "The screen",
+          "Nothing"
+        ],
+        "answer": "One cable",
+        "hint_en": "Listen for 'está roto'.",
+        "explanation_en": "'Solo un cable está roto' = only one cable is broken."
+      },
+      {
+        "id": "q3",
+        "kind": "type",
+        "prompt_en": "How much does she pay in cash today? Type the number.",
+        "answer": "4000",
+        "accepted_answers": [
+          "4000",
+          "$4000",
+          "4,000",
+          "$4,000",
+          "cuatro mil"
+        ],
+        "hint_en": "Listen for 'te lo dejo en…'.",
+        "explanation_en": "'Te lo dejo en cuatro mil' = 4,000 (the ad said 4,500)."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "Who is the controller for?",
+        "options": [
+          "A friend from work",
+          "Her father",
+          "Herself",
+          "Her brother"
+        ],
+        "answer": "Her brother",
+        "hint_en": "Listen for 'para mi…'.",
+        "explanation_en": "'Es un regalo para mi hermano' = it is a present for my brother."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What extra thing does he give her?",
+        "options": [
+          "A new cable",
+          "Some headphones",
+          "A discount coupon",
+          "A festival ticket"
+        ],
+        "answer": "Some headphones",
+        "hint_en": "Listen to his last line.",
+        "explanation_en": "'Te doy también unos audífonos que ya no uso'."
+      }
+    ],
+    "region_note": "'Se vende por mudanza' (Spain ads: 'por traslado'). 'Audífonos' = headphones (Mexico). 'Trato hecho' = deal.",
+    "added": "2026-10-26",
+    "folder": "music"
+  },
+  {
+    "id": "m-feria-trueque-01",
+    "title_en": "Barter fair: a poster for a portrait",
+    "situation_en": "At a monthly barter fair for designers and illustrators, two people try to make a trade. Listen.",
+    "topic": "small_talk",
+    "lesson_tags": [
+      "A2-L22",
+      "A2-L21",
+      "A2-L15"
+    ],
+    "vocab_ids": [
+      "v-trueque",
+      "v-alguien-nadie",
+      "v-te-late",
+      "v-gastarse"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Ilustradora",
+          "voice": "female",
+          "es": "Hola. ¿Tú eres el diseñador de los carteles? Esta feria es de trueque, ¿verdad? Aquí nadie paga con dinero.",
+          "en": "Hi. Are you the poster designer? This fair is a barter fair, right? Nobody pays with money here."
+        },
+        {
+          "speaker": "Diseñador",
+          "voice": "male",
+          "es": "Exacto. Aquí todo es intercambio. ¿Qué ofreces?",
+          "en": "Exactly. Everything here is a trade. What are you offering?"
+        },
+        {
+          "speaker": "Ilustradora",
+          "voice": "female",
+          "es": "Hago ilustraciones digitales. Me encanta tu cartel del festival de música. ¿Me lo cambias por un retrato?",
+          "en": "I make digital illustrations. I love your music festival poster. Will you trade it for a portrait?"
+        },
+        {
+          "speaker": "Diseñador",
+          "voice": "male",
+          "es": "Me late, pero el cartel es grande y lo imprimí en papel especial.",
+          "en": "I like the idea, but the poster is big and I printed it on special paper."
+        },
+        {
+          "speaker": "Ilustradora",
+          "voice": "female",
+          "es": "Entonces te hago un retrato y también un ícono para tu página.",
+          "en": "Then I will make you a portrait and also an icon for your website."
+        },
+        {
+          "speaker": "Diseñador",
+          "voice": "male",
+          "es": "Va. ¿Cuándo me los mandas?",
+          "en": "OK. When will you send them to me?"
+        },
+        {
+          "speaker": "Ilustradora",
+          "voice": "female",
+          "es": "El retrato, el viernes. El ícono, la próxima semana.",
+          "en": "The portrait on Friday. The icon next week."
+        },
+        {
+          "speaker": "Diseñador",
+          "voice": "male",
+          "es": "Perfecto. ¿Vienes a la feria cada mes?",
+          "en": "Perfect. Do you come to the fair every month?"
+        },
+        {
+          "speaker": "Ilustradora",
+          "voice": "female",
+          "es": "Sí, el primer domingo de cada mes. Antes me gastaba mucho dinero en materiales; ahora los consigo aquí.",
+          "en": "Yes, the first Sunday of every month. I used to spend a lot of money on materials; now I get them here."
+        },
+        {
+          "speaker": "Diseñador",
+          "voice": "male",
+          "es": "Yo también. El mes pasado cambié dos carteles por una lámpara vintage.",
+          "en": "Me too. Last month I traded two posters for a vintage lamp."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "How do people pay at this fair?",
+        "options": [
+          "They trade, nobody uses money",
+          "By card",
+          "Cash only",
+          "Everything is half price"
+        ],
+        "answer": "They trade, nobody uses money",
+        "hint_en": "Listen for 'nadie paga con dinero'.",
+        "explanation_en": "'Aquí nadie paga con dinero. Aquí todo es intercambio'."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "What does she want from him?",
+        "options": [
+          "A new logo",
+          "Some art materials",
+          "His vintage lamp",
+          "His music festival poster"
+        ],
+        "answer": "His music festival poster",
+        "hint_en": "Listen for 'Me encanta tu…'.",
+        "explanation_en": "'Me encanta tu cartel del festival de música'."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What does she offer in the end?",
+        "options": [
+          "Only a portrait",
+          "Money for the paper",
+          "Two posters",
+          "A portrait and an icon"
+        ],
+        "answer": "A portrait and an icon",
+        "hint_en": "Listen for 'Entonces te hago…'.",
+        "explanation_en": "'Te hago un retrato y también un ícono para tu página'."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "When will she send the portrait?",
+        "options": [
+          "Today",
+          "Next week",
+          "On Friday",
+          "On Sunday"
+        ],
+        "answer": "On Friday",
+        "hint_en": "Listen for 'El retrato…'.",
+        "explanation_en": "'El retrato, el viernes. El ícono, la próxima semana'."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What did he get last month for two posters?",
+        "options": [
+          "A vintage lamp",
+          "A camera",
+          "A portrait",
+          "Art materials"
+        ],
+        "answer": "A vintage lamp",
+        "hint_en": "Listen to his last line.",
+        "explanation_en": "'Cambié dos carteles por una lámpara vintage'."
+      }
+    ],
+    "region_note": "'Me late' = I like the idea (Mexico, casual). 'Cartel' = poster; 'retrato' = portrait.",
+    "added": "2026-10-26",
+    "folder": "design_art"
+  },
+  {
+    "id": "m-ahorro-japon-01",
+    "title_en": "Saving for a trip to Japan",
+    "situation_en": "Two friends talk about what they spend money on and what they are saving for. Listen.",
+    "topic": "small_talk",
+    "lesson_tags": [
+      "A2-L22",
+      "A1-L32",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-ahorrar",
+      "v-gastarse",
+      "v-segunda-mano",
+      "v-buen-estado",
+      "v-mil",
+      "v-algo-nada"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "Oye, ¿qué te has comprado últimamente?",
+          "en": "Hey, what have you bought lately?"
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "Nada. Este año estoy ahorrando para un viaje a Japón en marzo.",
+          "en": "Nothing. This year I am saving for a trip to Japan in March."
+        },
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "¡Qué padre! ¿Cuánto necesitas?",
+          "en": "How cool! How much do you need?"
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "Unos cuarenta mil pesos para el vuelo y el hotel. Ya tengo veinticinco mil.",
+          "en": "About forty thousand pesos for the flight and the hotel. I already have twenty-five thousand."
+        },
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "Yo no puedo ahorrar nada. Me gasto todo el dinero en conciertos y en ropa.",
+          "en": "I cannot save anything. I spend all my money on concerts and clothes."
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "Yo antes también. Ahora vendo cosas de segunda mano por internet. La semana pasada vendí mi bici en dos mil pesos.",
+          "en": "I used to as well. Now I sell second-hand things online. Last week I sold my bike for two thousand pesos."
+        },
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "¿En serio? Yo tengo una cámara que casi no uso.",
+          "en": "Really? I have a camera I hardly use."
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "Véndela. Una cámara en buen estado se vende muy rápido.",
+          "en": "Sell it. A camera in good condition sells very fast."
+        },
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "Buena idea. Y con ese dinero me compro boletos para el festival.",
+          "en": "Good idea. And with that money I will buy festival tickets."
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "¡No! Mejor ahorra un poco.",
+          "en": "No! Better save a little."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "What is he saving for?",
+        "options": [
+          "A new bike",
+          "A new camera",
+          "A music festival",
+          "A trip to Japan"
+        ],
+        "answer": "A trip to Japan",
+        "hint_en": "Listen for 'ahorrando para…'.",
+        "explanation_en": "'Estoy ahorrando para un viaje a Japón'."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "How much has he already saved? Type the number.",
+        "answer": "25000",
+        "accepted_answers": [
+          "25000",
+          "$25000",
+          "25,000",
+          "$25,000",
+          "veinticinco mil"
+        ],
+        "hint_en": "Listen for 'Ya tengo…'.",
+        "explanation_en": "'Ya tengo veinticinco mil' = 25,000 (he needs about 40,000)."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What does she spend her money on?",
+        "options": [
+          "Restaurants",
+          "Video games",
+          "Concerts and clothes",
+          "Travel and hotels"
+        ],
+        "answer": "Concerts and clothes",
+        "hint_en": "Listen for 'Me gasto todo el dinero en…'.",
+        "explanation_en": "'Me gasto todo el dinero en conciertos y en ropa'."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "How much did he sell his bike for? Type the number.",
+        "answer": "2000",
+        "accepted_answers": [
+          "2000",
+          "$2000",
+          "2,000",
+          "$2,000",
+          "dos mil"
+        ],
+        "hint_en": "Listen for 'vendí mi bici en…'.",
+        "explanation_en": "'Vendí mi bici en dos mil pesos' = 2,000."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What does he tell her to do with the camera?",
+        "options": [
+          "Sell it",
+          "Take it to Japan",
+          "Keep it",
+          "Lend it to him"
+        ],
+        "answer": "Sell it",
+        "hint_en": "Listen for the command after her camera line.",
+        "explanation_en": "'Véndela' = sell it (tú command + la)."
+      }
+    ],
+    "region_note": "'¡Qué padre!' = how cool (Mexico). 'Vender algo en…' = to sell something for (a price).",
+    "added": "2026-10-26",
+    "folder": "travel"
+  },
+  {
+    "id": "m-chamarra-vintage-whatsapp-01",
+    "title_en": "WhatsApp: a vintage jacket for sale",
+    "situation_en": "You asked about a second-hand jacket in an online ad. The seller answers on WhatsApp.",
+    "topic": "shopping",
+    "lesson_tags": [
+      "A2-L22",
+      "A1-L13",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-segunda-mano",
+      "v-buen-estado",
+      "v-a-que-hora-quedamos",
+      "v-chamarra",
+      "v-mezclilla",
+      "v-talla",
+      "v-chica-mediana"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "whatsapp",
+      "text_es": "¡Hola! Sí, todavía la tengo 😊\n\nEs una chamarra de mezclilla vintage, talla mediana. Está en muy buen estado, solo tiene una pequeña mancha en la manga.\n\nPido $650, pero si vienes hoy te la dejo en $550.\n\nNo hago envíos. Podemos quedar en la salida del metro, cerca del parque.\n¿A qué hora quedamos? Hoy puedo de 17:00 a 19:30.\n\nSi no puedes hoy, el sábado también, pero ya a $650.\nSofi",
+      "text_en": "Hi! Yes, I still have it 😊\n\nIt's a vintage denim jacket, size medium. It's in very good condition, it only has a small stain on the sleeve.\n\nI'm asking $650, but if you come today I'll let you have it for $550.\n\nI don't ship. We can meet at the metro exit, near the park.\nWhat time shall we meet? Today I can do 17:00 to 19:30.\n\nIf you can't today, Saturday works too, but then it's $650.\nSofi",
+      "sender_en": "Sofi (seller)",
+      "time": "12:20"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "What size is the jacket?",
+        "options": [
+          "Large",
+          "Medium",
+          "Extra large",
+          "Small"
+        ],
+        "answer": "Medium",
+        "hint_en": "Look for 'talla'.",
+        "explanation_en": "'Talla mediana' = size medium ('talla' is feminine)."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "What is wrong with it?",
+        "options": [
+          "A broken zipper",
+          "A small stain on the sleeve",
+          "A missing button",
+          "Nothing at all"
+        ],
+        "answer": "A small stain on the sleeve",
+        "hint_en": "Look for 'solo tiene…'.",
+        "explanation_en": "'Solo tiene una pequeña mancha en la manga'."
+      },
+      {
+        "id": "q3",
+        "kind": "type",
+        "prompt_en": "How much is it if you go today? Type the number.",
+        "answer": "550",
+        "accepted_answers": [
+          "550",
+          "$550",
+          "quinientos cincuenta"
+        ],
+        "hint_en": "Look for 'si vienes hoy'.",
+        "explanation_en": "'Si vienes hoy te la dejo en $550'."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "Can she ship the jacket?",
+        "options": [
+          "Only on Saturday",
+          "No, she does not ship",
+          "Yes, for $100",
+          "Yes, for free"
+        ],
+        "answer": "No, she does not ship",
+        "hint_en": "Look for 'envíos'.",
+        "explanation_en": "'No hago envíos' = I don't ship."
+      },
+      {
+        "id": "q5",
+        "kind": "type",
+        "prompt_en": "Until what time can she meet today? (type it like 9:15)",
+        "answer": "19:30",
+        "accepted_answers": [
+          "19:30",
+          "7:30",
+          "7:30 pm",
+          "7 30"
+        ],
+        "hint_en": "Look for 'Hoy puedo de… a…'.",
+        "explanation_en": "'De 17:00 a 19:30' = until 7:30 p.m."
+      }
+    ],
+    "region_note": "Mexico: 'chamarra' (Spain: 'chaqueta'); 'mezclilla' = denim; 'quedar' here = to meet up.",
+    "added": "2026-10-26",
+    "folder": "fashion"
+  },
+  {
+    "id": "m-anuncios-edificio-01",
+    "title_en": "Building notice board: second-hand ads",
+    "situation_en": "You read the second-hand ads on the notice board in your building lobby.",
+    "topic": "home_errands",
+    "lesson_tags": [
+      "A2-L22",
+      "A2-L21",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-se-vende",
+      "v-mudanza",
+      "v-refri",
+      "v-trueque",
+      "v-buen-estado",
+      "v-alguien-nadie",
+      "v-depa"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "sign",
+      "text_es": "ANUNCIOS DEL EDIFICIO\n\n1) SE VENDE POR MUDANZA: refri de 2 puertas, 8 años, funciona perfecto. $3,500. Preguntar por Luis (depto 304) después de las 18:00.\n\n2) Bici azul, casi nueva, en buen estado. $1,900 o trueque por una mesa pequeña. Mensaje a Carla (depto 102).\n\n3) Regalo libros en inglés y en español. Ya nadie los lee en mi casa. Están en recepción, son gratis.\n\n4) SE BUSCA alguien para cuidar a mi perro el fin de semana. Pago $400 por día. Preguntar por Marta (depto 501).",
+      "text_en": "BUILDING NOTICES\n\n1) FOR SALE, MOVING OUT: 2-door fridge, 8 years old, works perfectly. $3,500. Ask for Luis (apt 304) after 18:00.\n\n2) Blue bike, almost new, in good condition. $1,900 or a trade for a small table. Message Carla (apt 102).\n\n3) Giving away books in English and Spanish. Nobody at home reads them anymore. They're at reception, free.\n\n4) WANTED: someone to look after my dog this weekend. I pay $400 a day. Ask for Marta (apt 501)."
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "How many doors does the fridge have?",
+        "options": [
+          "Two",
+          "Three",
+          "Four",
+          "One"
+        ],
+        "answer": "Two",
+        "hint_en": "Look at ad 1.",
+        "explanation_en": "'Refri de 2 puertas' = a two-door fridge."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "How much is the fridge? Type the number.",
+        "answer": "3500",
+        "accepted_answers": [
+          "3500",
+          "$3500",
+          "3,500",
+          "$3,500",
+          "tres mil quinientos"
+        ],
+        "hint_en": "Look at ad 1.",
+        "explanation_en": "'$3,500'."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What can you trade for the bike?",
+        "options": [
+          "A small table",
+          "Some books",
+          "Nothing, cash only",
+          "A fridge"
+        ],
+        "answer": "A small table",
+        "hint_en": "Look for 'trueque por…'.",
+        "explanation_en": "'$1,900 o trueque por una mesa pequeña'."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "When should you ask for Luis?",
+        "options": [
+          "Only on Saturday",
+          "After 6:00 p.m.",
+          "After 6:00 a.m.",
+          "Before noon"
+        ],
+        "answer": "After 6:00 p.m.",
+        "hint_en": "Look for 'después de las…'.",
+        "explanation_en": "'Después de las 18:00' = after 6 p.m."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What does Marta need?",
+        "options": [
+          "Books in English",
+          "Someone to look after her dog",
+          "A second-hand fridge",
+          "A small table"
+        ],
+        "answer": "Someone to look after her dog",
+        "hint_en": "Look at ad 4.",
+        "explanation_en": "'Se busca alguien para cuidar a mi perro'."
+      }
+    ],
+    "region_note": "Mexico: 'refri' (Spain: 'frigorífico'); 'depto' = apartment; ads say 'por mudanza' (Spain: 'por traslado').",
+    "added": "2026-10-26",
+    "folder": "home_errands"
   }
 ]

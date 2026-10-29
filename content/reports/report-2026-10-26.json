@@ -1,0 +1,89 @@
+{
+  "id": "r-2026-10-26",
+  "week_start": "2026-10-19",
+  "week_end": "2026-10-25",
+  "added": "2026-10-26",
+  "totals": {
+    "done": 0,
+    "correct": 0,
+    "wrong": 0
+  },
+  "by_challenge": [
+    {
+      "challenge": "easy",
+      "label": "Easy",
+      "done": 0,
+      "correct": 0,
+      "wrong": 0
+    },
+    {
+      "challenge": "medium",
+      "label": "Medium",
+      "done": 0,
+      "correct": 0,
+      "wrong": 0,
+      "topics": []
+    },
+    {
+      "challenge": "hard",
+      "label": "Hard",
+      "done": 0,
+      "correct": 0,
+      "wrong": 0
+    },
+    {
+      "challenge": "drill",
+      "label": "Verb drill",
+      "done": 0,
+      "correct": 0,
+      "wrong": 0
+    }
+  ],
+  "mistakes": [],
+  "focus_next_week": [
+    {
+      "title_en": "Buying and selling second-hand",
+      "detail_en": "From your class Segunda mano: ¿Cuánto pide?, en buen estado, ¿A qué hora quedamos?, trueque, and ahorrar para… Six new Hard missions: a call about a used phone, a DJ controller, a barter fair, saving for Japan, a vintage jacket on WhatsApp and building ads.",
+      "card_ids": [],
+      "mission_ids": [
+        "m-celular-usado-llamada-01",
+        "m-controlador-dj-01",
+        "m-feria-trueque-01",
+        "m-ahorro-japon-01",
+        "m-chamarra-vintage-whatsapp-01",
+        "m-anuncios-edificio-01"
+      ]
+    },
+    {
+      "title_en": "Last week's cards are still waiting",
+      "detail_en": "Some, any, none (algo, nadie, algún, ningún) from En el mercado, and usted forms and agreement (ha ido, ¿puede…?, talla mediana). None of these have been played yet.",
+      "card_ids": [
+        "c-0810",
+        "c-0812",
+        "c-0813",
+        "c-0819",
+        "c-0820",
+        "c-0823",
+        "c-0835",
+        "c-0843"
+      ]
+    },
+    {
+      "title_en": "Irregular forms you mix up",
+      "detail_en": "Verb drill: participles abierto and roto, past pude and vino, future pondré, and look-alikes pierdo vs pido, vamos vs vemos, abre vs hable.",
+      "card_ids": [
+        "c-0873",
+        "c-0874",
+        "c-0875",
+        "c-0876",
+        "c-0877",
+        "c-0878",
+        "c-0879",
+        "c-0880",
+        "c-0882",
+        "c-0883"
+      ]
+    }
+  ],
+  "summary_en": "No Oye practice was recorded this week (Monday Oct 19 to Sunday Oct 25), so there are no scores or mistakes to show. Last week's cards are all still waiting, and this batch adds six Hard missions on buying and selling second-hand from your Segunda mano class."
+}
