@@ -5708,5 +5708,866 @@
     "region_note": "Mexico: 'refri' (Spain: 'frigorífico'); 'depto' = apartment; ads say 'por mudanza' (Spain: 'por traslado').",
     "added": "2026-10-26",
     "folder": "home_errands"
+  },
+  {
+    "id": "m-curso-produccion-llamada-01",
+    "title_en": "Phone call: a music production course",
+    "situation_en": "A man calls a music school to ask about an electronic music production course. Listen to the call.",
+    "topic": "phone_reservations",
+    "lesson_tags": [
+      "A2-L20",
+      "A1-L24",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-inscribirse",
+      "v-mil",
+      "v-descuento",
+      "v-me-da"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Escuela de Música Sonido Norte, buenas tardes. ¿En qué le puedo ayudar?",
+          "en": "Sonido Norte Music School, good afternoon. How can I help you?"
+        },
+        {
+          "speaker": "Interesado",
+          "voice": "male",
+          "es": "Buenas tardes. Quería información sobre el curso de producción de música electrónica.",
+          "en": "Good afternoon. I wanted some information about the electronic music production course."
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Claro. El curso empieza el doce de noviembre y dura ocho semanas.",
+          "en": "Of course. The course starts on November twelfth and lasts eight weeks."
+        },
+        {
+          "speaker": "Interesado",
+          "voice": "male",
+          "es": "¿Qué días son las clases?",
+          "en": "What days are the classes?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Los martes y los jueves, de siete a nueve de la noche.",
+          "en": "Tuesdays and Thursdays, from seven to nine in the evening."
+        },
+        {
+          "speaker": "Interesado",
+          "voice": "male",
+          "es": "¿Y cuánto cuesta?",
+          "en": "And how much does it cost?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Cuesta cuatro mil ochocientos pesos. Si paga antes del viernes, le hacemos un descuento de quinientos pesos.",
+          "en": "It costs four thousand eight hundred pesos. If you pay before Friday, we give you a five-hundred-peso discount."
+        },
+        {
+          "speaker": "Interesado",
+          "voice": "male",
+          "es": "¿Tengo que llevar mi computadora?",
+          "en": "Do I have to bring my computer?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Sí, traiga su computadora y unos audífonos. El programa se lo damos nosotros.",
+          "en": "Yes, bring your computer and some headphones. We give you the software."
+        },
+        {
+          "speaker": "Interesado",
+          "voice": "male",
+          "es": "Perfecto. ¿Puedo inscribirme por teléfono?",
+          "en": "Perfect. Can I sign up by phone?"
+        },
+        {
+          "speaker": "Recepcionista",
+          "voice": "female",
+          "es": "Sí, cómo no. ¿Me da su nombre completo, por favor?",
+          "en": "Yes, of course. Could you give me your full name, please?"
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "How long is the course?",
+        "options": [
+          "Eight weeks",
+          "Two weeks",
+          "Six weeks",
+          "Eight months"
+        ],
+        "answer": "Eight weeks",
+        "hint_en": "Listen for 'dura…'.",
+        "explanation_en": "'Dura ocho semanas' = it lasts eight weeks."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "What days are the classes?",
+        "options": [
+          "Tuesdays and Thursdays",
+          "Mondays and Thursdays",
+          "Only Saturdays",
+          "Tuesdays and Fridays"
+        ],
+        "answer": "Tuesdays and Thursdays",
+        "hint_en": "Listen for 'Los… y los…'.",
+        "explanation_en": "'Los martes y los jueves' = Tuesdays and Thursdays."
+      },
+      {
+        "id": "q3",
+        "kind": "type",
+        "prompt_en": "What time do the classes end? (type it like 9:15)",
+        "answer": "9:00",
+        "accepted_answers": [
+          "9:00",
+          "21:00",
+          "9 00",
+          "9"
+        ],
+        "hint_en": "Listen for 'de… a… de la noche'.",
+        "explanation_en": "'De siete a nueve de la noche' = 7 to 9 p.m., so they end at 9:00 p.m."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "What is the full price, without the discount? Type the number.",
+        "answer": "4800",
+        "accepted_answers": [
+          "4800",
+          "$4800",
+          "4,800",
+          "$4,800",
+          "cuatro mil ochocientos"
+        ],
+        "hint_en": "Listen for 'Cuesta…'.",
+        "explanation_en": "'Cuatro mil ochocientos' = 4,800 (500 less if he pays before Friday)."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What does he have to bring?",
+        "options": [
+          "The music software",
+          "His computer and headphones",
+          "A keyboard",
+          "Only headphones"
+        ],
+        "answer": "His computer and headphones",
+        "hint_en": "Listen for the command 'traiga…'.",
+        "explanation_en": "'Traiga su computadora y unos audífonos' (usted command of traer)."
+      }
+    ],
+    "region_note": "'Cómo no' = of course (very common in Mexico). 'Audífonos' = headphones (Spain: 'auriculares').",
+    "added": "2026-10-29",
+    "folder": "music"
+  },
+  {
+    "id": "m-mochila-chofer-01",
+    "title_en": "Ride app: a backpack left in the car",
+    "situation_en": "A woman calls the driver of a ride she took an hour ago. Listen.",
+    "topic": "directions",
+    "lesson_tags": [
+      "A1-L26",
+      "A2-L12",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-chofer",
+      "v-se-me-olvido",
+      "v-perder",
+      "v-pedir",
+      "v-ahorita",
+      "v-ciento-cien"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Pasajera",
+          "voice": "female",
+          "es": "Hola, buenas noches. ¿Es usted el chofer que me llevó al centro hace una hora? Pedí el viaje en la aplicación.",
+          "en": "Hello, good evening. Are you the driver who took me downtown an hour ago? I ordered the ride in the app."
+        },
+        {
+          "speaker": "Chofer",
+          "voice": "male",
+          "es": "Sí, señorita, soy yo. ¿Qué pasó?",
+          "en": "Yes, miss, that is me. What happened?"
+        },
+        {
+          "speaker": "Pasajera",
+          "voice": "female",
+          "es": "Creo que perdí mi mochila. La puse en el asiento de atrás y se me olvidó.",
+          "en": "I think I lost my backpack. I put it on the back seat and I forgot it."
+        },
+        {
+          "speaker": "Chofer",
+          "voice": "male",
+          "es": "Déjeme ver. Sí, aquí está. Es una mochila negra, ¿verdad?",
+          "en": "Let me see. Yes, here it is. It is a black backpack, right?"
+        },
+        {
+          "speaker": "Pasajera",
+          "voice": "female",
+          "es": "¡Sí! Adentro tiene mi computadora y unos dibujos para un cliente.",
+          "en": "Yes! My computer and some drawings for a client are inside."
+        },
+        {
+          "speaker": "Chofer",
+          "voice": "male",
+          "es": "No se preocupe. ¿Dónde está ahora?",
+          "en": "Do not worry. Where are you now?"
+        },
+        {
+          "speaker": "Pasajera",
+          "voice": "female",
+          "es": "Estoy en casa de una amiga, enfrente de una estación del Metrobús.",
+          "en": "I am at a friend's house, across from a Metrobús station."
+        },
+        {
+          "speaker": "Chofer",
+          "voice": "male",
+          "es": "Ahorita estoy en otro viaje. Puedo pasar en cuarenta minutos, a las diez y cuarto.",
+          "en": "Right now I am on another ride. I can come by in forty minutes, at a quarter past ten."
+        },
+        {
+          "speaker": "Pasajera",
+          "voice": "female",
+          "es": "Perfecto. ¿Le tengo que pagar algo?",
+          "en": "Perfect. Do I have to pay you anything?"
+        },
+        {
+          "speaker": "Chofer",
+          "voice": "male",
+          "es": "La aplicación le cobra ciento cincuenta pesos por la devolución.",
+          "en": "The app charges you one hundred fifty pesos for the return."
+        },
+        {
+          "speaker": "Pasajera",
+          "voice": "female",
+          "es": "Está bien. Muchas gracias, de verdad.",
+          "en": "That is fine. Thank you so much, really."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "How did she get the ride?",
+        "options": [
+          "She called a taxi company",
+          "She ordered it in the app",
+          "She stopped a taxi",
+          "A friend ordered it"
+        ],
+        "answer": "She ordered it in the app",
+        "hint_en": "Listen for 'Pedí el viaje…'.",
+        "explanation_en": "'Pedí el viaje en la aplicación' = I ordered the ride in the app (pedir, not perder)."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "Where did she leave the backpack?",
+        "options": [
+          "On the back seat",
+          "On the front seat",
+          "In the trunk",
+          "At her friend's house"
+        ],
+        "answer": "On the back seat",
+        "hint_en": "Listen for 'La puse en…'.",
+        "explanation_en": "'La puse en el asiento de atrás' = I put it on the back seat (puse, from poner)."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What is inside the backpack?",
+        "options": [
+          "Only some books",
+          "Some clothes",
+          "Her computer and some drawings",
+          "Her keys and wallet"
+        ],
+        "answer": "Her computer and some drawings",
+        "hint_en": "Listen for 'Adentro tiene…'.",
+        "explanation_en": "'Adentro tiene mi computadora y unos dibujos para un cliente'."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "What time will he come by? (type it like 9:15)",
+        "answer": "10:15",
+        "accepted_answers": [
+          "10:15",
+          "22:15",
+          "10 15"
+        ],
+        "hint_en": "Listen for 'a las… y cuarto'.",
+        "explanation_en": "'A las diez y cuarto' = 10:15."
+      },
+      {
+        "id": "q5",
+        "kind": "type",
+        "prompt_en": "How much does the app charge for the return? Type the number.",
+        "answer": "150",
+        "accepted_answers": [
+          "150",
+          "$150",
+          "ciento cincuenta"
+        ],
+        "hint_en": "Listen for 'le cobra…'.",
+        "explanation_en": "'Ciento cincuenta' = 150 (ciento, because it is between 101 and 199)."
+      }
+    ],
+    "region_note": "Mexico: 'chofer' (Spain: 'conductor'); 'ahorita' = right now; 'se me olvidó' = I forgot it.",
+    "added": "2026-10-29",
+    "folder": "city_life"
+  },
+  {
+    "id": "m-aeropuerto-tokio-01",
+    "title_en": "Airport check-in: a flight to Tokyo",
+    "situation_en": "A man checks in for his flight to Tokyo at the airport counter. Listen.",
+    "topic": "time_schedules",
+    "lesson_tags": [
+      "A1-L38",
+      "A1-L24",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-documentar",
+      "v-pase-de-abordar",
+      "v-mil",
+      "v-ciento-cien"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Empleada",
+          "voice": "female",
+          "es": "Buenos días. ¿A dónde viaja hoy?",
+          "en": "Good morning. Where are you flying today?"
+        },
+        {
+          "speaker": "Pasajero",
+          "voice": "male",
+          "es": "A Tokio, con escala en Los Ángeles.",
+          "en": "To Tokyo, with a layover in Los Angeles."
+        },
+        {
+          "speaker": "Empleada",
+          "voice": "female",
+          "es": "Su pasaporte, por favor. ¿Va a documentar maleta?",
+          "en": "Your passport, please. Are you going to check a bag?"
+        },
+        {
+          "speaker": "Pasajero",
+          "voice": "male",
+          "es": "Sí, una maleta grande. La mochila la llevo conmigo.",
+          "en": "Yes, one big suitcase. I will keep the backpack with me."
+        },
+        {
+          "speaker": "Empleada",
+          "voice": "female",
+          "es": "Ponga la maleta aquí, por favor. Pesa veintiséis kilos y el límite es de veintitrés.",
+          "en": "Put the suitcase here, please. It weighs twenty-six kilos and the limit is twenty-three."
+        },
+        {
+          "speaker": "Pasajero",
+          "voice": "male",
+          "es": "¿Y cuánto tengo que pagar por los kilos extra?",
+          "en": "And how much do I have to pay for the extra kilos?"
+        },
+        {
+          "speaker": "Empleada",
+          "voice": "female",
+          "es": "Son mil cien pesos. O puede sacar algunas cosas y ponerlas en la mochila.",
+          "en": "It is one thousand one hundred pesos. Or you can take some things out and put them in your backpack."
+        },
+        {
+          "speaker": "Pasajero",
+          "voice": "male",
+          "es": "Mejor saco los tenis y unos libros. Ya está. ¿Cuánto pesa ahora?",
+          "en": "I would rather take out the sneakers and some books. Done. How much does it weigh now?"
+        },
+        {
+          "speaker": "Empleada",
+          "voice": "female",
+          "es": "Veintitrés exactos. Aquí tiene su pase de abordar. Su sala es la treinta y ocho, y el abordaje empieza a las once y cuarto de la mañana.",
+          "en": "Exactly twenty-three. Here is your boarding pass. Your gate is thirty-eight, and boarding starts at a quarter past eleven in the morning."
+        },
+        {
+          "speaker": "Pasajero",
+          "voice": "male",
+          "es": "¿El vuelo sale a tiempo?",
+          "en": "Is the flight leaving on time?"
+        },
+        {
+          "speaker": "Empleada",
+          "voice": "female",
+          "es": "Sí, sale a las doce menos diez. Le recomiendo pasar a la sala temprano.",
+          "en": "Yes, it leaves at ten to twelve. I recommend going to the gate early."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "type",
+        "prompt_en": "How much does the suitcase weigh at first? Type the number of kilos.",
+        "answer": "26",
+        "accepted_answers": [
+          "26",
+          "veintiséis",
+          "veintiseis",
+          "26 kilos",
+          "26 kg"
+        ],
+        "hint_en": "Listen for 'Pesa…'.",
+        "explanation_en": "'Pesa veintiséis kilos' = 26 kg; the limit is 23."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "How much would the extra kilos cost? Type the number.",
+        "answer": "1100",
+        "accepted_answers": [
+          "1100",
+          "$1100",
+          "1,100",
+          "$1,100",
+          "mil cien"
+        ],
+        "hint_en": "Listen for 'Son…'.",
+        "explanation_en": "'Mil cien' = 1,100 (not ciento: there is nothing after cien here)."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What does he do instead of paying?",
+        "options": [
+          "Moves things to his backpack",
+          "Gives the books away",
+          "Buys a smaller suitcase",
+          "Leaves the suitcase"
+        ],
+        "answer": "Moves things to his backpack",
+        "hint_en": "Listen for 'Mejor saco…'.",
+        "explanation_en": "He takes out the sneakers and books ('saco los tenis y unos libros') to put them in the backpack."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "What is his gate number?",
+        "options": [
+          "83",
+          "28",
+          "38",
+          "48"
+        ],
+        "answer": "38",
+        "hint_en": "Listen for 'Su sala es la…'.",
+        "explanation_en": "'La treinta y ocho' = gate 38 ('sala' = gate in Mexican airports)."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "When does boarding start?",
+        "options": [
+          "12:15 p.m.",
+          "11:50 a.m.",
+          "10:45 a.m.",
+          "11:15 a.m."
+        ],
+        "answer": "11:15 a.m.",
+        "hint_en": "Listen for 'el abordaje empieza a las…'.",
+        "explanation_en": "'Once y cuarto de la mañana' = 11:15 a.m.; 'doce menos diez' (11:50) is when the flight leaves."
+      }
+    ],
+    "region_note": "Mexico: 'documentar' and 'pase de abordar' (Spain: 'facturar' and 'tarjeta de embarque'); 'sala' = gate; 'tenis' = sneakers.",
+    "added": "2026-10-29",
+    "folder": "travel"
+  },
+  {
+    "id": "m-show-drag-01",
+    "title_en": "Planning a night at a drag show",
+    "situation_en": "Two friends talk about a drag show at a cultural center and make plans for the next one. Listen.",
+    "topic": "small_talk",
+    "lesson_tags": [
+      "A2-L12",
+      "A1-L26",
+      "A1-L35"
+    ],
+    "vocab_ids": [
+      "v-preventa",
+      "v-taquilla",
+      "v-cuadra",
+      "v-chamarra"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "Oye, ¿fuiste al show de drag del sábado en el centro cultural?",
+          "en": "Hey, did you go to the drag show on Saturday at the cultural center?"
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "Sí, fui con mi novio. Estuvo increíble. La presentadora hizo un número con música de los años ochenta y todo el público cantó.",
+          "en": "Yes, I went with my boyfriend. It was amazing. The host did a number with eighties music and the whole audience sang."
+        },
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "¡Qué envidia! Yo no pude ir porque tuve que trabajar. ¿Hay otro show pronto?",
+          "en": "So jealous! I could not go because I had to work. Is there another show soon?"
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "Sí, el próximo es el viernes veinte. Empieza a las diez de la noche, pero las puertas abren a las nueve.",
+          "en": "Yes, the next one is on Friday the twentieth. It starts at ten at night, but the doors open at nine."
+        },
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "¿Cuánto cuestan los boletos?",
+          "en": "How much are the tickets?"
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "Doscientos cincuenta pesos en preventa y trescientos cincuenta en la taquilla.",
+          "en": "Two hundred fifty pesos in presale and three hundred fifty at the box office."
+        },
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "Entonces los compro hoy. ¿Me acompañarías? Podríamos cenar antes.",
+          "en": "Then I will buy them today. Would you come with me? We could have dinner before."
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "Me encantaría. Conozco una taquería buenísima a dos cuadras.",
+          "en": "I would love to. I know a great taquería two blocks away."
+        },
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "Va. Y esta vez me pongo la chamarra brillante que me regalaste.",
+          "en": "OK. And this time I will wear the shiny jacket you gave me."
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "¡Perfecto! Te va a quedar increíble.",
+          "en": "Perfect! It is going to look amazing on you."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "Who did he go to the show with?",
+        "options": [
+          "His sister",
+          "His boyfriend",
+          "A coworker",
+          "Nobody, he went alone"
+        ],
+        "answer": "His boyfriend",
+        "hint_en": "Listen for 'fui con…'.",
+        "explanation_en": "'Fui con mi novio' = I went with my boyfriend (fui, preterite of ir)."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "Why didn't she go?",
+        "options": [
+          "She was sick",
+          "She lost her ticket",
+          "She had to work",
+          "It was sold out"
+        ],
+        "answer": "She had to work",
+        "hint_en": "Listen for 'porque…'.",
+        "explanation_en": "'No pude ir porque tuve que trabajar' (pude, tuve: irregular preterite)."
+      },
+      {
+        "id": "q3",
+        "kind": "type",
+        "prompt_en": "What time do the doors open? (type it like 9:15)",
+        "answer": "9:00",
+        "accepted_answers": [
+          "9:00",
+          "21:00",
+          "9 00",
+          "9"
+        ],
+        "hint_en": "Listen for 'las puertas abren a las…'.",
+        "explanation_en": "'Las puertas abren a las nueve' = 9:00 p.m.; the show starts at ten."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "How much is a presale ticket? Type the number.",
+        "answer": "250",
+        "accepted_answers": [
+          "250",
+          "$250",
+          "doscientos cincuenta"
+        ],
+        "hint_en": "Listen for 'en preventa'.",
+        "explanation_en": "'Doscientos cincuenta' = 250; at the box office it is 350."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What will they do before the show?",
+        "options": [
+          "Meet the host",
+          "Go shopping for clothes",
+          "Buy the tickets at the door",
+          "Have dinner at a taquería"
+        ],
+        "answer": "Have dinner at a taquería",
+        "hint_en": "Listen for 'Podríamos…'.",
+        "explanation_en": "'Podríamos cenar antes' + 'una taquería buenísima a dos cuadras'."
+      }
+    ],
+    "region_note": "'¡Qué envidia!' = so jealous (friendly). 'Taquilla' = box office. 'Quedar' here = to look (on someone).",
+    "added": "2026-10-29",
+    "folder": "lgbtq_culture"
+  },
+  {
+    "id": "m-cliente-cambios-email-01",
+    "title_en": "Email from a client: final logo changes",
+    "situation_en": "You designed a logo for a small bakery. The client emails you about the last changes.",
+    "topic": "time_schedules",
+    "lesson_tags": [
+      "A1-L32",
+      "A1-L33",
+      "A2-L20"
+    ],
+    "vocab_ids": [
+      "v-entrega",
+      "v-mil",
+      "v-bolsa"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "email",
+      "text_es": "Asunto: Logo de la panadería – cambios finales\n\nHola, Daniel:\n\nYa he visto la última versión del logo y me encanta. Mi socio también la ha visto y dice que está muy bien.\n\nSolo tenemos dos cambios:\n1. ¿Podrías poner el nombre un poco más grande?\n2. El color café nos parece muy oscuro. ¿Lo cambiarías por un naranja?\n\nNecesitamos los archivos finales para el lunes 9, porque el martes vamos a imprimir las bolsas.\n\nMañana te mando el segundo pago de $4,500. El primero te lo pagué la semana pasada.\n\n¿Tendrás tiempo para hacer también el menú? Te llamo el jueves en la mañana para hablarlo.\n\nSaludos,\nMariana",
+      "text_en": "Subject: Bakery logo – final changes\n\nHi Daniel,\n\nI've seen the latest version of the logo and I love it. My business partner has seen it too and says it looks very good.\n\nWe only have two changes:\n1. Could you make the name a bit bigger?\n2. The brown seems too dark to us. Would you change it to an orange?\n\nWe need the final files by Monday the 9th, because on Tuesday we're going to print the bags.\n\nTomorrow I'll send you the second payment of $4,500. I paid you the first one last week.\n\nWill you have time to do the menu too? I'll call you Thursday morning to talk about it.\n\nBest,\nMariana",
+      "sender_en": "Mariana (bakery client)",
+      "time": "10:05"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "What does she think of the latest version?",
+        "options": [
+          "She does not like it",
+          "She wants a new logo",
+          "She loves it",
+          "She has not seen it yet"
+        ],
+        "answer": "She loves it",
+        "hint_en": "Look for 'Ya he visto…'.",
+        "explanation_en": "'Ya he visto la última versión del logo y me encanta' (he visto: irregular participle of ver)."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "What color do they want instead of brown?",
+        "options": [
+          "Black",
+          "A darker brown",
+          "Orange",
+          "Red"
+        ],
+        "answer": "Orange",
+        "hint_en": "Look at change 2.",
+        "explanation_en": "'¿Lo cambiarías por un naranja?' = would you change it to an orange?"
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "When do they need the final files?",
+        "options": [
+          "By Thursday morning",
+          "By Friday the 6th",
+          "By Tuesday the 9th",
+          "By Monday the 9th"
+        ],
+        "answer": "By Monday the 9th",
+        "hint_en": "Look for 'para el…'.",
+        "explanation_en": "'Para el lunes 9' = by Monday the 9th (para for a deadline)."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "How much is the second payment? Type the number.",
+        "answer": "4500",
+        "accepted_answers": [
+          "4500",
+          "$4500",
+          "4,500",
+          "$4,500",
+          "cuatro mil quinientos"
+        ],
+        "hint_en": "Look for 'el segundo pago'.",
+        "explanation_en": "'El segundo pago de $4,500'."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What new job does she ask about?",
+        "options": [
+          "The menu",
+          "Business cards",
+          "Printing the bags",
+          "A website"
+        ],
+        "answer": "The menu",
+        "hint_en": "Look for 'Tendrás tiempo para…'.",
+        "explanation_en": "'¿Tendrás tiempo para hacer también el menú?' (tendrás: irregular future of tener)."
+      }
+    ],
+    "region_note": "'Café' as a color = brown (Mexico; also 'marrón' in Spain). 'Socio' = business partner.",
+    "added": "2026-10-29",
+    "folder": "design_art"
+  },
+  {
+    "id": "m-calistenia-whatsapp-01",
+    "title_en": "WhatsApp from your calisthenics coach",
+    "situation_en": "You train calisthenics in a park with a small group. Your coach sends a WhatsApp about this week.",
+    "topic": "health_pharmacy",
+    "lesson_tags": [
+      "A1-L24",
+      "A1-L35",
+      "A1-L36"
+    ],
+    "vocab_ids": [
+      "v-perder",
+      "v-lluvia"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "whatsapp",
+      "text_es": "¡Hola! Te escribo por los cambios de esta semana 💪\n\nEl martes no hay clase en el parque porque va a llover. La hacemos el miércoles a las 7:00 de la mañana, en el mismo lugar.\n\nPara el jueves: no comas nada pesado antes de entrenar y trae agua. Vamos a hacer 4 series de 10 dominadas.\n\nAyer perdiste tu toalla en el parque. La tengo yo, te la doy el miércoles.\n\nNoviembre cuesta $900. Si pagas antes del día 5, te queda en $800.\n\n¡Nos vemos!\nBeto",
+      "text_en": "Hi! I'm writing about this week's changes 💪\n\nOn Tuesday there's no class in the park because it's going to rain. We'll do it on Wednesday at 7:00 in the morning, same place.\n\nFor Thursday: don't eat anything heavy before training and bring water. We're going to do 4 sets of 10 pull-ups.\n\nYesterday you lost your towel in the park. I have it, I'll give it to you on Wednesday.\n\nNovember costs $900. If you pay before the 5th, it comes to $800.\n\nSee you!\nBeto",
+      "sender_en": "Beto (coach)",
+      "time": "21:40"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "Why is there no class on Tuesday?",
+        "options": [
+          "It is going to rain",
+          "It is a holiday",
+          "The park is closed",
+          "The coach is sick"
+        ],
+        "answer": "It is going to rain",
+        "hint_en": "Look for 'porque…'.",
+        "explanation_en": "'Porque va a llover' = because it's going to rain."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "What time is Wednesday's class? (type it like 9:15)",
+        "answer": "7:00",
+        "accepted_answers": [
+          "7:00",
+          "7",
+          "07:00",
+          "7 00",
+          "7:00 am",
+          "7 am"
+        ],
+        "hint_en": "Look for 'el miércoles a las…'.",
+        "explanation_en": "'A las 7:00 de la mañana' = 7:00 a.m."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What should you NOT do before Thursday’s training?",
+        "options": [
+          "Eat something heavy",
+          "Warm up",
+          "Sleep late",
+          "Drink water"
+        ],
+        "answer": "Eat something heavy",
+        "hint_en": "Look for the negative command 'no…'.",
+        "explanation_en": "'No comas nada pesado' = don't eat anything heavy (negative tú command)."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "What did you lose yesterday?",
+        "options": [
+          "Your towel",
+          "Your phone",
+          "Your gloves",
+          "Your water bottle"
+        ],
+        "answer": "Your towel",
+        "hint_en": "Look for 'perdiste'.",
+        "explanation_en": "'Ayer perdiste tu toalla' = yesterday you lost your towel (perder, not pedir)."
+      },
+      {
+        "id": "q5",
+        "kind": "type",
+        "prompt_en": "How much is November if you pay before the 5th? Type the number.",
+        "answer": "800",
+        "accepted_answers": [
+          "800",
+          "$800",
+          "ochocientos"
+        ],
+        "hint_en": "Look for 'Si pagas antes del día 5'.",
+        "explanation_en": "'Te queda en $800' = it comes to $800 (otherwise $900)."
+      }
+    ],
+    "region_note": "'Dominadas' = pull-ups. 'Te queda en…' = it comes to (a price), common in Mexico.",
+    "added": "2026-10-29",
+    "folder": "fitness_health"
   }
 ]

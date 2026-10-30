@@ -2223,6 +2223,137 @@
    "normal": "audio/576ae3702cb0e6e7.mp3",
    "slow": "audio/4d125c3e9caf0f30.mp3",
    "voice": "female"
+  },
+  "Hola, ¿cuándo me puedes mandar el primer boceto? Te lo mando el jueves en la mañana.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Clienta",
+     "voice": "female",
+     "es": "Hola, ¿cuándo me puedes mandar el primer boceto?"
+    },
+    {
+     "speaker": "Diseñador",
+     "voice": "male",
+     "es": "Te lo mando el jueves en la mañana."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "af2770251621c008.mp3",
+     "4fd61ecc56873a88.mp3"
+    ],
+    "slow": [
+     "c94f012326723abb.mp3",
+     "c645a34540b6b123.mp3"
+    ]
+   },
+   "normal": "audio/00ff16dce16528ad.mp3",
+   "slow": "audio/4c8d7b9fcf35291a.mp3"
+  },
+  "El presupuesto total es de doce mil quinientos pesos.": {
+   "normal": "audio/92cc2ef7b640688a.mp3",
+   "slow": "audio/a92256dc9c11a100.mp3",
+   "voice": "male"
+  },
+  "¿Me puede mandar la factura hoy?": {
+   "normal": "audio/566a19510d2ad63a.mp3",
+   "slow": "audio/2421193dda846133.mp3",
+   "voice": "female"
+  },
+  "La reunión con la clienta es el martes a las once y media de la mañana.": {
+   "normal": "audio/a9a455b32d944e1b.mp3",
+   "slow": "audio/e98669bfca4aa14d.mp3",
+   "voice": "male"
+  },
+  "El anticipo es la mitad del presupuesto: seis mil doscientos pesos.": {
+   "normal": "audio/57e8eae05ec076e0.mp3",
+   "slow": "audio/a5ab2cb4cd38c990.mp3",
+   "voice": "male"
+  },
+  "Me gusta mucho, pero las letras están muy pequeñas. Va, las hago más grandes y le mando otra versión.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Me gusta mucho, pero las letras están muy pequeñas."
+    },
+    {
+     "speaker": "Diseñadora",
+     "voice": "female",
+     "es": "Va, las hago más grandes y le mando otra versión."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "3a8900128511f08c.mp3",
+     "76955ea7389f151b.mp3"
+    ],
+    "slow": [
+     "2aacc61f5ee18bfb.mp3",
+     "dd836e87eba98134.mp3"
+    ]
+   },
+   "normal": "audio/de48e92c407f0330.mp3",
+   "slow": "audio/9403d0062b2be13c.mp3"
+  },
+  "¿Qué tal estuvo la reunión con el cliente?": {
+   "normal": "audio/2dc99b0e8514324d.mp3",
+   "slow": "audio/e8249aae1645ddb1.mp3",
+   "voice": "male"
+  },
+  "Perdí el archivo, pero por suerte tengo una copia en la nube.": {
+   "normal": "audio/65a40c7a4992eabb.mp3",
+   "slow": "audio/13a9248d1c964db0.mp3",
+   "voice": "male"
+  },
+  "¿Cuándo podemos ver la primera versión?": {
+   "normal": "audio/bad890d544f3d502.mp3",
+   "slow": "audio/91a4f53c25ada5dc.mp3",
+   "voice": "male"
+  },
+  "Le mandé tres propuestas de logo y eligió la segunda.": {
+   "normal": "audio/fdb866c43b51dd09.mp3",
+   "slow": "audio/07f179db6824d667.mp3",
+   "voice": "male"
+  },
+  "La entrega final es el quince de noviembre.": {
+   "normal": "audio/e8c77dd3d3ada17f.mp3",
+   "slow": "audio/d613674023583b6b.mp3",
+   "voice": "male"
+  },
+  "¿Trabaja con un equipo o por su cuenta?": {
+   "normal": "audio/3fac4616adb780af.mp3",
+   "slow": "audio/94762973a4bb8b03.mp3",
+   "voice": "female"
+  },
+  "¿Podría hacer también la versión para redes sociales? Claro. Eso costaría dos mil pesos más y estaría lista el lunes.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Clienta",
+     "voice": "female",
+     "es": "¿Podría hacer también la versión para redes sociales?"
+    },
+    {
+     "speaker": "Diseñador",
+     "voice": "male",
+     "es": "Claro. Eso costaría dos mil pesos más y estaría lista el lunes."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "fb4259cafd928e1e.mp3",
+     "6742eacef97b9490.mp3"
+    ],
+    "slow": [
+     "3fbd5d6b71215126.mp3",
+     "558101b201e07aa5.mp3"
+    ]
+   },
+   "normal": "audio/f55621fdadc34385.mp3",
+   "slow": "audio/d1f4460287865bcc.mp3"
   }
  },
  "lines": {
@@ -2636,6 +2767,30 @@
   },
   "male|No, no tiene ningún golpe. Solo le falta la caja.": {
    "normal": "audio/ddbd7cf45ac1f609.mp3",
+   "voice": "male"
+  },
+  "female|Hola, ¿cuándo me puedes mandar el primer boceto?": {
+   "normal": "audio/af2770251621c008.mp3",
+   "voice": "female"
+  },
+  "male|Te lo mando el jueves en la mañana.": {
+   "normal": "audio/4fd61ecc56873a88.mp3",
+   "voice": "male"
+  },
+  "male|Me gusta mucho, pero las letras están muy pequeñas.": {
+   "normal": "audio/3a8900128511f08c.mp3",
+   "voice": "male"
+  },
+  "female|Va, las hago más grandes y le mando otra versión.": {
+   "normal": "audio/76955ea7389f151b.mp3",
+   "voice": "female"
+  },
+  "female|¿Podría hacer también la versión para redes sociales?": {
+   "normal": "audio/fb4259cafd928e1e.mp3",
+   "voice": "female"
+  },
+  "male|Claro. Eso costaría dos mil pesos más y estaría lista el lunes.": {
+   "normal": "audio/6742eacef97b9490.mp3",
    "voice": "male"
   },
   "male|Próxima estación: Bellas Artes.": {
@@ -3556,6 +3711,178 @@
   },
   "male|¡No! Mejor ahorra un poco.": {
    "normal": "audio/354537f9e0defc06.mp3",
+   "voice": "male"
+  },
+  "female|Escuela de Música Sonido Norte, buenas tardes. ¿En qué le puedo ayudar?": {
+   "normal": "audio/aa2bcfe0c6ac1bbe.mp3",
+   "voice": "female"
+  },
+  "male|Buenas tardes. Quería información sobre el curso de producción de música electrónica.": {
+   "normal": "audio/57a1fb0937ade2f4.mp3",
+   "voice": "male"
+  },
+  "female|Claro. El curso empieza el doce de noviembre y dura ocho semanas.": {
+   "normal": "audio/6ea03bf8d0acb5fc.mp3",
+   "voice": "female"
+  },
+  "male|¿Qué días son las clases?": {
+   "normal": "audio/2c2f672d9059a5e9.mp3",
+   "voice": "male"
+  },
+  "female|Los martes y los jueves, de siete a nueve de la noche.": {
+   "normal": "audio/4b2370be19127254.mp3",
+   "voice": "female"
+  },
+  "male|¿Y cuánto cuesta?": {
+   "normal": "audio/7fcf06c2e2425fce.mp3",
+   "voice": "male"
+  },
+  "female|Cuesta cuatro mil ochocientos pesos. Si paga antes del viernes, le hacemos un descuento de quinientos pesos.": {
+   "normal": "audio/32e2d4f37bb2f627.mp3",
+   "voice": "female"
+  },
+  "male|¿Tengo que llevar mi computadora?": {
+   "normal": "audio/03b1c1ce0d120cf5.mp3",
+   "voice": "male"
+  },
+  "female|Sí, traiga su computadora y unos audífonos. El programa se lo damos nosotros.": {
+   "normal": "audio/49d83b3a5cd216e1.mp3",
+   "voice": "female"
+  },
+  "male|Perfecto. ¿Puedo inscribirme por teléfono?": {
+   "normal": "audio/57699309ef6a9561.mp3",
+   "voice": "male"
+  },
+  "female|Sí, cómo no. ¿Me da su nombre completo, por favor?": {
+   "normal": "audio/fc95f94df5aec7e1.mp3",
+   "voice": "female"
+  },
+  "female|Hola, buenas noches. ¿Es usted el chofer que me llevó al centro hace una hora? Pedí el viaje en la aplicación.": {
+   "normal": "audio/08628c328786100c.mp3",
+   "voice": "female"
+  },
+  "male|Sí, señorita, soy yo. ¿Qué pasó?": {
+   "normal": "audio/2ed05d3b8669d3b3.mp3",
+   "voice": "male"
+  },
+  "female|Creo que perdí mi mochila. La puse en el asiento de atrás y se me olvidó.": {
+   "normal": "audio/7a92b5ebf9163e38.mp3",
+   "voice": "female"
+  },
+  "male|Déjeme ver. Sí, aquí está. Es una mochila negra, ¿verdad?": {
+   "normal": "audio/7124a0716d3b67b5.mp3",
+   "voice": "male"
+  },
+  "female|¡Sí! Adentro tiene mi computadora y unos dibujos para un cliente.": {
+   "normal": "audio/ba854b5bec949bef.mp3",
+   "voice": "female"
+  },
+  "male|No se preocupe. ¿Dónde está ahora?": {
+   "normal": "audio/bf8e125171bf70c7.mp3",
+   "voice": "male"
+  },
+  "female|Estoy en casa de una amiga, enfrente de una estación del Metrobús.": {
+   "normal": "audio/68ec96157712bfd4.mp3",
+   "voice": "female"
+  },
+  "male|Ahorita estoy en otro viaje. Puedo pasar en cuarenta minutos, a las diez y cuarto.": {
+   "normal": "audio/3418a7aa00c7081b.mp3",
+   "voice": "male"
+  },
+  "female|Perfecto. ¿Le tengo que pagar algo?": {
+   "normal": "audio/cefc20a4206e3da9.mp3",
+   "voice": "female"
+  },
+  "male|La aplicación le cobra ciento cincuenta pesos por la devolución.": {
+   "normal": "audio/ca3fd5fdd3dfe0f8.mp3",
+   "voice": "male"
+  },
+  "female|Está bien. Muchas gracias, de verdad.": {
+   "normal": "audio/ad29266b58d955f9.mp3",
+   "voice": "female"
+  },
+  "female|Buenos días. ¿A dónde viaja hoy?": {
+   "normal": "audio/6d81c9fa5a8f2f3c.mp3",
+   "voice": "female"
+  },
+  "male|A Tokio, con escala en Los Ángeles.": {
+   "normal": "audio/bbac0144bab51990.mp3",
+   "voice": "male"
+  },
+  "female|Su pasaporte, por favor. ¿Va a documentar maleta?": {
+   "normal": "audio/2d6a5b40469186ea.mp3",
+   "voice": "female"
+  },
+  "male|Sí, una maleta grande. La mochila la llevo conmigo.": {
+   "normal": "audio/45b93d526544de20.mp3",
+   "voice": "male"
+  },
+  "female|Ponga la maleta aquí, por favor. Pesa veintiséis kilos y el límite es de veintitrés.": {
+   "normal": "audio/7945f50c2e1b6357.mp3",
+   "voice": "female"
+  },
+  "male|¿Y cuánto tengo que pagar por los kilos extra?": {
+   "normal": "audio/4ad31faa4ba9b1bb.mp3",
+   "voice": "male"
+  },
+  "female|Son mil cien pesos. O puede sacar algunas cosas y ponerlas en la mochila.": {
+   "normal": "audio/789073f4f17f3ee9.mp3",
+   "voice": "female"
+  },
+  "male|Mejor saco los tenis y unos libros. Ya está. ¿Cuánto pesa ahora?": {
+   "normal": "audio/02537f5f26f4c29d.mp3",
+   "voice": "male"
+  },
+  "female|Veintitrés exactos. Aquí tiene su pase de abordar. Su sala es la treinta y ocho, y el abordaje empieza a las once y cuarto de la mañana.": {
+   "normal": "audio/27dae0d66f6b78a4.mp3",
+   "voice": "female"
+  },
+  "male|¿El vuelo sale a tiempo?": {
+   "normal": "audio/de5f150f6376bef4.mp3",
+   "voice": "male"
+  },
+  "female|Sí, sale a las doce menos diez. Le recomiendo pasar a la sala temprano.": {
+   "normal": "audio/3d54ba4f15c50f03.mp3",
+   "voice": "female"
+  },
+  "female|Oye, ¿fuiste al show de drag del sábado en el centro cultural?": {
+   "normal": "audio/3d7ecbd2e317237a.mp3",
+   "voice": "female"
+  },
+  "male|Sí, fui con mi novio. Estuvo increíble. La presentadora hizo un número con música de los años ochenta y todo el público cantó.": {
+   "normal": "audio/c34cc49713433145.mp3",
+   "voice": "male"
+  },
+  "female|¡Qué envidia! Yo no pude ir porque tuve que trabajar. ¿Hay otro show pronto?": {
+   "normal": "audio/9c82d2d7e3f67557.mp3",
+   "voice": "female"
+  },
+  "male|Sí, el próximo es el viernes veinte. Empieza a las diez de la noche, pero las puertas abren a las nueve.": {
+   "normal": "audio/c0b04d60e3644cad.mp3",
+   "voice": "male"
+  },
+  "female|¿Cuánto cuestan los boletos?": {
+   "normal": "audio/9fe129a0656dc877.mp3",
+   "voice": "female"
+  },
+  "male|Doscientos cincuenta pesos en preventa y trescientos cincuenta en la taquilla.": {
+   "normal": "audio/3974b5c443a44793.mp3",
+   "voice": "male"
+  },
+  "female|Entonces los compro hoy. ¿Me acompañarías? Podríamos cenar antes.": {
+   "normal": "audio/af8632811acd2315.mp3",
+   "voice": "female"
+  },
+  "male|Me encantaría. Conozco una taquería buenísima a dos cuadras.": {
+   "normal": "audio/dfa1a4bc233f1d8d.mp3",
+   "voice": "male"
+  },
+  "female|Va. Y esta vez me pongo la chamarra brillante que me regalaste.": {
+   "normal": "audio/1f18365b54f2dd2a.mp3",
+   "voice": "female"
+  },
+  "male|¡Perfecto! Te va a quedar increíble.": {
+   "normal": "audio/8a0033610d946994.mp3",
    "voice": "male"
   }
  },
@@ -5575,6 +5902,363 @@
    "slow": "audio/74d52b4efb464410.mp3",
    "duration": 42.5,
    "slow_duration": 55.18
+  },
+  "m-curso-produccion-llamada-01": {
+   "lines": [
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Escuela de Música Sonido Norte, buenas tardes. ¿En qué le puedo ayudar?"
+    },
+    {
+     "speaker": "Interesado",
+     "voice": "male",
+     "es": "Buenas tardes. Quería información sobre el curso de producción de música electrónica."
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Claro. El curso empieza el doce de noviembre y dura ocho semanas."
+    },
+    {
+     "speaker": "Interesado",
+     "voice": "male",
+     "es": "¿Qué días son las clases?"
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Los martes y los jueves, de siete a nueve de la noche."
+    },
+    {
+     "speaker": "Interesado",
+     "voice": "male",
+     "es": "¿Y cuánto cuesta?"
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Cuesta cuatro mil ochocientos pesos. Si paga antes del viernes, le hacemos un descuento de quinientos pesos."
+    },
+    {
+     "speaker": "Interesado",
+     "voice": "male",
+     "es": "¿Tengo que llevar mi computadora?"
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Sí, traiga su computadora y unos audífonos. El programa se lo damos nosotros."
+    },
+    {
+     "speaker": "Interesado",
+     "voice": "male",
+     "es": "Perfecto. ¿Puedo inscribirme por teléfono?"
+    },
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Sí, cómo no. ¿Me da su nombre completo, por favor?"
+    }
+   ],
+   "parts": {
+    "normal": [
+     "aa2bcfe0c6ac1bbe.mp3",
+     "57a1fb0937ade2f4.mp3",
+     "6ea03bf8d0acb5fc.mp3",
+     "2c2f672d9059a5e9.mp3",
+     "4b2370be19127254.mp3",
+     "7fcf06c2e2425fce.mp3",
+     "32e2d4f37bb2f627.mp3",
+     "03b1c1ce0d120cf5.mp3",
+     "49d83b3a5cd216e1.mp3",
+     "57699309ef6a9561.mp3",
+     "fc95f94df5aec7e1.mp3"
+    ],
+    "slow": [
+     "cfcca8ab77cd6e78.mp3",
+     "f1fa228ca725e6bb.mp3",
+     "d1b7e6fb6363828b.mp3",
+     "b1901f6acb5b0866.mp3",
+     "5c4ce0621a1bbe4e.mp3",
+     "6046b58c418234f2.mp3",
+     "09f6e4099c0fc9d9.mp3",
+     "a23a3e1c032d541d.mp3",
+     "fc17b55adc9edeb4.mp3",
+     "dec6fdf792109724.mp3",
+     "5523eb384dbfe7c8.mp3"
+    ]
+   },
+   "normal": "audio/1203e02ebe9ba41d.mp3",
+   "slow": "audio/a8432f7753b62c5e.mp3",
+   "duration": 42.86,
+   "slow_duration": 55.54
+  },
+  "m-mochila-chofer-01": {
+   "lines": [
+    {
+     "speaker": "Pasajera",
+     "voice": "female",
+     "es": "Hola, buenas noches. ¿Es usted el chofer que me llevó al centro hace una hora? Pedí el viaje en la aplicación."
+    },
+    {
+     "speaker": "Chofer",
+     "voice": "male",
+     "es": "Sí, señorita, soy yo. ¿Qué pasó?"
+    },
+    {
+     "speaker": "Pasajera",
+     "voice": "female",
+     "es": "Creo que perdí mi mochila. La puse en el asiento de atrás y se me olvidó."
+    },
+    {
+     "speaker": "Chofer",
+     "voice": "male",
+     "es": "Déjeme ver. Sí, aquí está. Es una mochila negra, ¿verdad?"
+    },
+    {
+     "speaker": "Pasajera",
+     "voice": "female",
+     "es": "¡Sí! Adentro tiene mi computadora y unos dibujos para un cliente."
+    },
+    {
+     "speaker": "Chofer",
+     "voice": "male",
+     "es": "No se preocupe. ¿Dónde está ahora?"
+    },
+    {
+     "speaker": "Pasajera",
+     "voice": "female",
+     "es": "Estoy en casa de una amiga, enfrente de una estación del Metrobús."
+    },
+    {
+     "speaker": "Chofer",
+     "voice": "male",
+     "es": "Ahorita estoy en otro viaje. Puedo pasar en cuarenta minutos, a las diez y cuarto."
+    },
+    {
+     "speaker": "Pasajera",
+     "voice": "female",
+     "es": "Perfecto. ¿Le tengo que pagar algo?"
+    },
+    {
+     "speaker": "Chofer",
+     "voice": "male",
+     "es": "La aplicación le cobra ciento cincuenta pesos por la devolución."
+    },
+    {
+     "speaker": "Pasajera",
+     "voice": "female",
+     "es": "Está bien. Muchas gracias, de verdad."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "08628c328786100c.mp3",
+     "2ed05d3b8669d3b3.mp3",
+     "7a92b5ebf9163e38.mp3",
+     "7124a0716d3b67b5.mp3",
+     "ba854b5bec949bef.mp3",
+     "bf8e125171bf70c7.mp3",
+     "68ec96157712bfd4.mp3",
+     "3418a7aa00c7081b.mp3",
+     "cefc20a4206e3da9.mp3",
+     "ca3fd5fdd3dfe0f8.mp3",
+     "ad29266b58d955f9.mp3"
+    ],
+    "slow": [
+     "4297c4a1069707b0.mp3",
+     "54436f4d93252b29.mp3",
+     "b85ab1c2bbd378f6.mp3",
+     "ea23aac64156e863.mp3",
+     "02d2bf0080eac90f.mp3",
+     "f531e02127f2cfd4.mp3",
+     "f0d6e81eeddc17a6.mp3",
+     "a227ab3abc3ffb8b.mp3",
+     "1e502ce786c108d0.mp3",
+     "708928706e31c2a8.mp3",
+     "5c4cdd9a144cd7d4.mp3"
+    ]
+   },
+   "normal": "audio/75a15b9a3301f87c.mp3",
+   "slow": "audio/36f6dfa58b118df0.mp3",
+   "duration": 45.38,
+   "slow_duration": 58.85
+  },
+  "m-aeropuerto-tokio-01": {
+   "lines": [
+    {
+     "speaker": "Empleada",
+     "voice": "female",
+     "es": "Buenos días. ¿A dónde viaja hoy?"
+    },
+    {
+     "speaker": "Pasajero",
+     "voice": "male",
+     "es": "A Tokio, con escala en Los Ángeles."
+    },
+    {
+     "speaker": "Empleada",
+     "voice": "female",
+     "es": "Su pasaporte, por favor. ¿Va a documentar maleta?"
+    },
+    {
+     "speaker": "Pasajero",
+     "voice": "male",
+     "es": "Sí, una maleta grande. La mochila la llevo conmigo."
+    },
+    {
+     "speaker": "Empleada",
+     "voice": "female",
+     "es": "Ponga la maleta aquí, por favor. Pesa veintiséis kilos y el límite es de veintitrés."
+    },
+    {
+     "speaker": "Pasajero",
+     "voice": "male",
+     "es": "¿Y cuánto tengo que pagar por los kilos extra?"
+    },
+    {
+     "speaker": "Empleada",
+     "voice": "female",
+     "es": "Son mil cien pesos. O puede sacar algunas cosas y ponerlas en la mochila."
+    },
+    {
+     "speaker": "Pasajero",
+     "voice": "male",
+     "es": "Mejor saco los tenis y unos libros. Ya está. ¿Cuánto pesa ahora?"
+    },
+    {
+     "speaker": "Empleada",
+     "voice": "female",
+     "es": "Veintitrés exactos. Aquí tiene su pase de abordar. Su sala es la treinta y ocho, y el abordaje empieza a las once y cuarto de la mañana."
+    },
+    {
+     "speaker": "Pasajero",
+     "voice": "male",
+     "es": "¿El vuelo sale a tiempo?"
+    },
+    {
+     "speaker": "Empleada",
+     "voice": "female",
+     "es": "Sí, sale a las doce menos diez. Le recomiendo pasar a la sala temprano."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "6d81c9fa5a8f2f3c.mp3",
+     "bbac0144bab51990.mp3",
+     "2d6a5b40469186ea.mp3",
+     "45b93d526544de20.mp3",
+     "7945f50c2e1b6357.mp3",
+     "4ad31faa4ba9b1bb.mp3",
+     "789073f4f17f3ee9.mp3",
+     "02537f5f26f4c29d.mp3",
+     "27dae0d66f6b78a4.mp3",
+     "de5f150f6376bef4.mp3",
+     "3d54ba4f15c50f03.mp3"
+    ],
+    "slow": [
+     "5662b859112794da.mp3",
+     "12c859724382c006.mp3",
+     "b26bc206c03ca7b9.mp3",
+     "7aeecf7b1d085397.mp3",
+     "73e3094ef7383900.mp3",
+     "a29f22ce940b77be.mp3",
+     "3deb244b46f83fd1.mp3",
+     "c3f3d81ab4a7f241.mp3",
+     "6cce14773a867ae9.mp3",
+     "9130f2f75ed36aeb.mp3",
+     "4b3a06bfc0e73e24.mp3"
+    ]
+   },
+   "normal": "audio/62fb34d53d51fbea.mp3",
+   "slow": "audio/24c5f3830ebe739c.mp3",
+   "duration": 45.89,
+   "slow_duration": 59.57
+  },
+  "m-show-drag-01": {
+   "lines": [
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "Oye, ¿fuiste al show de drag del sábado en el centro cultural?"
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "Sí, fui con mi novio. Estuvo increíble. La presentadora hizo un número con música de los años ochenta y todo el público cantó."
+    },
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "¡Qué envidia! Yo no pude ir porque tuve que trabajar. ¿Hay otro show pronto?"
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "Sí, el próximo es el viernes veinte. Empieza a las diez de la noche, pero las puertas abren a las nueve."
+    },
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "¿Cuánto cuestan los boletos?"
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "Doscientos cincuenta pesos en preventa y trescientos cincuenta en la taquilla."
+    },
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "Entonces los compro hoy. ¿Me acompañarías? Podríamos cenar antes."
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "Me encantaría. Conozco una taquería buenísima a dos cuadras."
+    },
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "Va. Y esta vez me pongo la chamarra brillante que me regalaste."
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "¡Perfecto! Te va a quedar increíble."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "3d7ecbd2e317237a.mp3",
+     "c34cc49713433145.mp3",
+     "9c82d2d7e3f67557.mp3",
+     "c0b04d60e3644cad.mp3",
+     "9fe129a0656dc877.mp3",
+     "3974b5c443a44793.mp3",
+     "af8632811acd2315.mp3",
+     "dfa1a4bc233f1d8d.mp3",
+     "1f18365b54f2dd2a.mp3",
+     "8a0033610d946994.mp3"
+    ],
+    "slow": [
+     "9173e07f4cb8d5b6.mp3",
+     "0c7de1c7ea1ca7e0.mp3",
+     "2c63021b1e124bae.mp3",
+     "97219ce17fec5a2d.mp3",
+     "b22fd17435eddc0a.mp3",
+     "ad91cdbfff08fbff.mp3",
+     "ba69683cd797de50.mp3",
+     "f306a44f86a425fb.mp3",
+     "f0ebd4108d7c5af8.mp3",
+     "99419ee6b213c567.mp3"
+    ]
+   },
+   "normal": "audio/09b50c961b342b04.mp3",
+   "slow": "audio/01ddcba0202d6375.mp3",
+   "duration": 48.14,
+   "slow_duration": 62.69
   }
  }
 }

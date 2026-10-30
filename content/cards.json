@@ -18195,5 +18195,703 @@
     "level": "medium",
     "topic": "second_hand",
     "voice": "female"
+  },
+  {
+    "id": "c-0904",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "grammar_tags": [
+      "time",
+      "question_words"
+    ],
+    "vocab_ids": [
+      "v-boceto"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Hola, ¿cuándo me puedes mandar el primer boceto? Te lo mando el jueves en la mañana.",
+    "prompt_en": "When will he send the first sketch?",
+    "sentence": null,
+    "options": [
+      "Today",
+      "Thursday evening",
+      "Thursday morning",
+      "Tuesday morning"
+    ],
+    "answer": "Thursday morning",
+    "accepted_answers": [],
+    "explanation_en": "'El jueves en la mañana' = Thursday morning. 'Boceto' = sketch or first draft.",
+    "transcript": "Clienta: Hola, ¿cuándo me puedes mandar el primer boceto?\nDiseñador: Te lo mando el jueves en la mañana.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "client_work",
+    "audio_lines": [
+      {
+        "speaker": "Clienta",
+        "voice": "female",
+        "es": "Hola, ¿cuándo me puedes mandar el primer boceto?"
+      },
+      {
+        "speaker": "Diseñador",
+        "voice": "male",
+        "es": "Te lo mando el jueves en la mañana."
+      }
+    ]
+  },
+  {
+    "id": "c-0905",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-presupuesto",
+      "v-mil"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "El presupuesto total es de doce mil quinientos pesos.",
+    "prompt_en": "How much is the quote? Type the number.",
+    "sentence": null,
+    "options": [],
+    "answer": "12500",
+    "accepted_answers": [
+      "12500",
+      "$12500",
+      "12,500",
+      "$12,500",
+      "doce mil quinientos"
+    ],
+    "explanation_en": "Doce mil quinientos = 12,500.",
+    "transcript": "El presupuesto total es de doce mil quinientos pesos.",
+    "region_note": null,
+    "hint_en": "A price in the thousands; type digits.",
+    "level": "medium",
+    "topic": "client_work"
+  },
+  {
+    "id": "c-0906",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20",
+      "A1-L32"
+    ],
+    "grammar_tags": [
+      "participle_irregular",
+      "present_perfect"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "hacer, yo, present perfect (I have done)",
+    "sentence": "Ya ___ los cambios que me pidió la clienta.",
+    "options": [],
+    "answer": "he hecho",
+    "accepted_answers": [
+      "he hecho"
+    ],
+    "explanation_en": "Hacer has the irregular participle hecho: he hecho (not he hacido).",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "haber in the yo form + an irregular participle.",
+    "level": "medium",
+    "topic": "client_work"
+  },
+  {
+    "id": "c-0907",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "grammar_tags": [
+      "future"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "estar, él (el diseño), future",
+    "sentence": "¿Para cuándo ___ listo el diseño?",
+    "options": [],
+    "answer": "estará",
+    "accepted_answers": [
+      "estará",
+      "estara"
+    ],
+    "explanation_en": "Estar has a regular future stem: estar- + á = estará.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "estar, third person singular, future.",
+    "level": "medium",
+    "topic": "client_work"
+  },
+  {
+    "id": "c-0908",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "grammar_tags": [
+      "future",
+      "future_irregular"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "tener, yo, future",
+    "sentence": "El viernes ___ la versión final, se lo prometo.",
+    "options": [],
+    "answer": "tendré",
+    "accepted_answers": [
+      "tendré",
+      "tendre"
+    ],
+    "explanation_en": "Tener uses the stem tendr-: tendré (not teneré).",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Irregular future stem; yo ending -é.",
+    "level": "medium",
+    "topic": "client_work"
+  },
+  {
+    "id": "c-0909",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "grammar_tags": [
+      "conditional",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "poder, usted, conditional (could you…?)",
+    "sentence": "¿___ cambiar el color del fondo, por favor?",
+    "options": [],
+    "answer": "Podría",
+    "accepted_answers": [
+      "Podría",
+      "podría",
+      "Podria",
+      "podria"
+    ],
+    "explanation_en": "Poder drops the e: podr- + ía = podría. Usted takes the él/ella form.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Irregular conditional stem; usted uses the él/ella ending.",
+    "level": "medium",
+    "topic": "client_work"
+  },
+  {
+    "id": "c-0910",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "grammar_tags": [
+      "time",
+      "articles",
+      "pronoun_pairs"
+    ],
+    "vocab_ids": [
+      "v-factura"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Me puede mandar la factura hoy?",
+    "prompt_en": "Say yes, you will send it to her this afternoon.",
+    "sentence": null,
+    "options": [
+      "Sí, se la mando este tarde.",
+      "Sí, se la mando en tarde.",
+      "Sí, me la manda esta tarde.",
+      "Sí, se la mando esta tarde."
+    ],
+    "answer": "Sí, se la mando esta tarde.",
+    "accepted_answers": [],
+    "explanation_en": "'Tarde' is feminine: esta tarde. 'Se la mando' = I'll send it to you.",
+    "transcript": "¿Me puede mandar la factura hoy?",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "client_work",
+    "voice": "female"
+  },
+  {
+    "id": "c-0911",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "grammar_tags": [
+      "time"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "La reunión con la clienta es el martes a las once y media de la mañana.",
+    "prompt_en": "When is the meeting?",
+    "sentence": null,
+    "options": [
+      "Thursday, 11:30 a.m.",
+      "Tuesday, 11:15 a.m.",
+      "Tuesday, 11:30 a.m.",
+      "Tuesday, 12:30 p.m."
+    ],
+    "answer": "Tuesday, 11:30 a.m.",
+    "accepted_answers": [],
+    "explanation_en": "'Once y media de la mañana' = 11:30 a.m. 'Y cuarto' would be 11:15.",
+    "transcript": "La reunión con la clienta es el martes a las once y media de la mañana.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "client_work"
+  },
+  {
+    "id": "c-0912",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-anticipo",
+      "v-presupuesto",
+      "v-mil"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "El anticipo es la mitad del presupuesto: seis mil doscientos pesos.",
+    "prompt_en": "How much is the deposit? Type the number.",
+    "sentence": null,
+    "options": [],
+    "answer": "6200",
+    "accepted_answers": [
+      "6200",
+      "$6200",
+      "6,200",
+      "$6,200",
+      "seis mil doscientos"
+    ],
+    "explanation_en": "Seis mil doscientos = 6,200 (not seiscientos, which is 600).",
+    "transcript": "El anticipo es la mitad del presupuesto: seis mil doscientos pesos.",
+    "region_note": null,
+    "hint_en": "A price in the thousands; type digits.",
+    "level": "medium",
+    "topic": "client_work"
+  },
+  {
+    "id": "c-0913",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "grammar_tags": [
+      "tu_vs_usted",
+      "agreement"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Me gusta mucho, pero las letras están muy pequeñas. Va, las hago más grandes y le mando otra versión.",
+    "prompt_en": "What does the client want changed?",
+    "sentence": null,
+    "options": [
+      "Darker colors",
+      "Bigger letters",
+      "Nothing at all",
+      "A smaller logo"
+    ],
+    "answer": "Bigger letters",
+    "accepted_answers": [],
+    "explanation_en": "'Las letras están muy pequeñas' = the letters are too small. She uses usted with him: le mando.",
+    "transcript": "Cliente: Me gusta mucho, pero las letras están muy pequeñas.\nDiseñadora: Va, las hago más grandes y le mando otra versión.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "client_work",
+    "audio_lines": [
+      {
+        "speaker": "Cliente",
+        "voice": "male",
+        "es": "Me gusta mucho, pero las letras están muy pequeñas."
+      },
+      {
+        "speaker": "Diseñadora",
+        "voice": "female",
+        "es": "Va, las hago más grandes y le mando otra versión."
+      }
+    ]
+  },
+  {
+    "id": "c-0914",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20",
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite",
+      "gustar"
+    ],
+    "vocab_ids": [
+      "v-boceto"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Qué tal estuvo la reunión con el cliente?",
+    "prompt_en": "Say it went well and the client liked the sketches.",
+    "sentence": null,
+    "options": [
+      "Estuvo bien; le gustó los bocetos.",
+      "Estuvo bien; me gustaron los bocetos.",
+      "Estuvo bien; le gustaron los bocetos.",
+      "Estuve bien; le gustaron los bocetos."
+    ],
+    "answer": "Estuvo bien; le gustaron los bocetos.",
+    "accepted_answers": [],
+    "explanation_en": "Plural thing liked, so gustaron; 'le' = to him. The meeting 'estuvo' (él form, not estuve).",
+    "transcript": "¿Qué tal estuvo la reunión con el cliente?",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "client_work"
+  },
+  {
+    "id": "c-0915",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20",
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite",
+      "stem_change",
+      "perder_pedir"
+    ],
+    "vocab_ids": [
+      "v-pedir"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "pedir, ella, preterite (asked for)",
+    "sentence": "La clienta me ___ tres cambios más en el logo.",
+    "options": [],
+    "answer": "pidió",
+    "accepted_answers": [
+      "pidió",
+      "pidio"
+    ],
+    "explanation_en": "Pedir changes e→i in the él/ella preterite: pidió. Perdió is from perder (lost).",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Stem-changing -ir verb, él/ella, preterite.",
+    "level": "medium",
+    "topic": "client_work"
+  },
+  {
+    "id": "c-0916",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20",
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite",
+      "perder_pedir"
+    ],
+    "vocab_ids": [
+      "v-perder"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Perdí el archivo, pero por suerte tengo una copia en la nube.",
+    "prompt_en": "What happened to the file?",
+    "sentence": null,
+    "options": [
+      "He printed it",
+      "He lost it",
+      "He sold it",
+      "He asked for it"
+    ],
+    "answer": "He lost it",
+    "accepted_answers": [],
+    "explanation_en": "'Perdí' = I lost (perder). 'Pedí' would be 'I asked for'.",
+    "transcript": "Perdí el archivo, pero por suerte tengo una copia en la nube.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "client_work"
+  },
+  {
+    "id": "c-0917",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "grammar_tags": [
+      "question_words"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Ask the price: fill in the question word.",
+    "sentence": "¿___ cuesta la versión con animación?",
+    "options": [],
+    "answer": "Cuánto",
+    "accepted_answers": [
+      "Cuánto",
+      "cuánto",
+      "Cuanto",
+      "cuanto"
+    ],
+    "explanation_en": "¿Cuánto cuesta? asks a price; ¿cuándo? asks 'when'.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Question word for a price.",
+    "level": "medium",
+    "topic": "client_work"
+  },
+  {
+    "id": "c-0918",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "grammar_tags": [
+      "question_words",
+      "time",
+      "articles"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Cuándo podemos ver la primera versión?",
+    "prompt_en": "Say on Friday, before noon.",
+    "sentence": null,
+    "options": [
+      "Los viernes, después del mediodía.",
+      "El viernes, antes de la mediodía.",
+      "El viernes, antes de la medianoche.",
+      "El viernes, antes del mediodía."
+    ],
+    "answer": "El viernes, antes del mediodía.",
+    "accepted_answers": [],
+    "explanation_en": "'Mediodía' is masculine: antes del mediodía. 'Medianoche' is midnight.",
+    "transcript": "¿Cuándo podemos ver la primera versión?",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "client_work"
+  },
+  {
+    "id": "c-0919",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20",
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite",
+      "stem_change"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Le mandé tres propuestas de logo y eligió la segunda.",
+    "prompt_en": "Which proposal did the client choose?",
+    "sentence": null,
+    "options": [
+      "None of them",
+      "The second one",
+      "The third one",
+      "The first one"
+    ],
+    "answer": "The second one",
+    "accepted_answers": [],
+    "explanation_en": "'Eligió la segunda' = chose the second one. Elegir changes e→i: eligió.",
+    "transcript": "Le mandé tres propuestas de logo y eligió la segunda.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "client_work"
+  },
+  {
+    "id": "c-0920",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "dates"
+    ],
+    "vocab_ids": [
+      "v-entrega"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "La entrega final es el quince de noviembre.",
+    "prompt_en": "What day of November is the final hand-off? Type the number.",
+    "sentence": null,
+    "options": [],
+    "answer": "15",
+    "accepted_answers": [
+      "15",
+      "quince",
+      "15 de noviembre",
+      "November 15"
+    ],
+    "explanation_en": "Quince = 15. 'La entrega' = the delivery or hand-off.",
+    "transcript": "La entrega final es el quince de noviembre.",
+    "region_note": null,
+    "hint_en": "A day of the month; type digits.",
+    "level": "medium",
+    "topic": "client_work"
+  },
+  {
+    "id": "c-0921",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "grammar_tags": [
+      "por_para"
+    ],
+    "vocab_ids": [
+      "v-entrega"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": null,
+    "prompt_en": "Fill with 'by' (a deadline).",
+    "sentence": "Necesito el diseño ___ el viernes, porque el lunes abrimos la tienda.",
+    "options": [],
+    "answer": "para",
+    "accepted_answers": [
+      "para"
+    ],
+    "explanation_en": "'Para el viernes' = by Friday (a deadline), so para, not por.",
+    "transcript": null,
+    "region_note": null,
+    "hint_en": "Preposition for a deadline.",
+    "level": "medium",
+    "topic": "client_work"
+  },
+  {
+    "id": "c-0922",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "grammar_tags": [
+      "tu_vs_usted",
+      "articles"
+    ],
+    "vocab_ids": [
+      "v-por-mi-cuenta"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Trabaja con un equipo o por su cuenta?",
+    "prompt_en": "Say you work on your own, but sometimes with an illustrator (a woman).",
+    "sentence": null,
+    "options": [
+      "Por su cuenta, pero a veces con una ilustradora.",
+      "Por mi cuenta, pero a veces con una ilustradora.",
+      "Para mi cuenta, pero a veces con una ilustradora.",
+      "Por mi cuenta, pero a veces con un ilustradora."
+    ],
+    "answer": "Por mi cuenta, pero a veces con una ilustradora.",
+    "accepted_answers": [],
+    "explanation_en": "About yourself it is 'por mi cuenta' (su = your, usted). 'Ilustradora' is feminine: una ilustradora.",
+    "transcript": "¿Trabaja con un equipo o por su cuenta?",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "client_work",
+    "voice": "female"
+  },
+  {
+    "id": "c-0923",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A2-L20"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices",
+      "conditional"
+    ],
+    "vocab_ids": [
+      "v-mil"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Podría hacer también la versión para redes sociales? Claro. Eso costaría dos mil pesos más y estaría lista el lunes.",
+    "prompt_en": "How much extra would it cost?",
+    "sentence": null,
+    "options": [
+      "$12,000 more",
+      "$200 more",
+      "Nothing extra",
+      "$2,000 more"
+    ],
+    "answer": "$2,000 more",
+    "accepted_answers": [],
+    "explanation_en": "'Costaría dos mil pesos más' = it would cost 2,000 more (conditional).",
+    "transcript": "Clienta: ¿Podría hacer también la versión para redes sociales?\nDiseñador: Claro. Eso costaría dos mil pesos más y estaría lista el lunes.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "client_work",
+    "audio_lines": [
+      {
+        "speaker": "Clienta",
+        "voice": "female",
+        "es": "¿Podría hacer también la versión para redes sociales?"
+      },
+      {
+        "speaker": "Diseñador",
+        "voice": "male",
+        "es": "Claro. Eso costaría dos mil pesos más y estaría lista el lunes."
+      }
+    ]
   }
 ]
