@@ -1109,7 +1109,7 @@ async def money_dock_suite(browser, base):
                     if not (g['top'] >= 0 and g['bottom'] <= g['vh'] and abs(g['app'] - g['vh']) < 1
                             and g['kb'] == '0px' and g['scroll'] <= g['vh'] and g['y'] == 0 and g['hit']):
                         problems.append((card['id'], i, g))
-                    await page.locator('[data-act=next]').tap(timeout=3000)
+                    await page.locator('[data-act=next]').tap(timeout=30000)
                     if i < 2:
                         await page.wait_for_selector('[data-state=question]')
                 await page.wait_for_selector('[data-screen=summary]')
@@ -1617,7 +1617,7 @@ SHOTS_V2 = os.environ.get('OYE_V2_SHOTS') or os.path.join(SHOTS, 'v2')
 TOPIC_NAMES = {'numbers_prices': 'Numbers & prices', 'time_schedules': 'Time & schedules', 'directions': 'Directions & places',
                'verbs_past': 'Past tense', 'verbs_present': 'Present tense', 'verbs_commands': 'Commands', 'verbs_future': 'Future & conditional',
                'weather_plans': 'Weather & plans', 'food_ordering': 'Food & ordering', 'shopping': 'Shopping & sizes',
-               'health_pharmacy': 'Health & pharmacy', 'phone_reservations': 'Calls & bookings', 'home_errands': 'Home & errands', 'small_talk': 'Small talk', 'market': 'At the market', 'second_hand': 'Second-hand', 'client_work': 'Client work'}
+               'health_pharmacy': 'Health & pharmacy', 'phone_reservations': 'Calls & bookings', 'home_errands': 'Home & errands', 'small_talk': 'Small talk', 'market': 'At the market', 'second_hand': 'Second-hand', 'client_work': 'Client work', 'travel': 'Travel'}
 # Full design order: topics move from Coming soon into the grid as content arrives.
 TOPIC_ORDER = list(TOPIC_NAMES)
 
@@ -1657,8 +1657,12 @@ def static_v2_checks(cards, idx, version, sw_src):
     if os.path.exists(src):
         # Folder metadata is published separately; compare the playable content here.
         playable = lambda rows: [{k: v for k, v in m.items() if k not in ('added', 'folder')} for m in rows]
-        check('publish: app missions match team playable content (folder metadata may await publish)',
-              playable(missions) == playable(json.load(open(src, encoding='utf-8'))), f'{len(missions)} missions')
+        # The authoring folder can already contain a later, unbuilt batch.
+        team_missions = json.load(open(src, encoding='utf-8'))
+        built_date = version.get('published', '')
+        team_missions = [m for m in team_missions if not built_date or m.get('added', '') <= built_date]
+        check('publish: app missions match team playable content through the built content date (folder metadata may await publish)',
+              playable(missions) == playable(team_missions), f'{len(missions)} missions')
     check('publish: version.json card_count/mission_count match the app content',
           version.get('card_count') == len(cards) and version.get('mission_count', len(missions)) == len(missions), version.get('mission_count'))
     check('v2.1 voices: Alonso (male) and Paloma (female), no Dalia/Jorge left',

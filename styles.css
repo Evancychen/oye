@@ -536,6 +536,8 @@ hr, .hairline { border: 0; border-top: 1px solid var(--hairline); margin: 0; }
   .card-screen .card-inner > .eyebrow:first-child { margin-top: 8px; }
   .card-screen .sentence { font-size: 22px; line-height: 28px; margin-top: 6px; }
   .card-screen .instruction { font-size: 15px; line-height: 20px; margin-top: 6px; }
+  .card-screen:has(.fix-dock):has(.audio-row) .hint-box { padding: 4px 12px; margin-top: 4px; }
+  .card-screen:has(.fix-dock):has(.hint-box:not([hidden])) .audio-row { margin-top: 6px; }
 }
 
 /* Verb drill v2: a single flowing block below a non-scrolling header. */

@@ -2354,6 +2354,172 @@
    },
    "normal": "audio/f55621fdadc34385.mp3",
    "slow": "audio/d1f4460287865bcc.mp3"
+  },
+  "Buenas noches, ¿tiene una reservación? Sí, a nombre de Daniel Ruiz, por tres noches.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Recepcionista",
+     "voice": "female",
+     "es": "Buenas noches, ¿tiene una reservación?"
+    },
+    {
+     "speaker": "Huésped",
+     "voice": "male",
+     "es": "Sí, a nombre de Daniel Ruiz, por tres noches."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "6916ec5c0795239c.mp3",
+     "c52af5ee26e21f4f.mp3"
+    ],
+    "slow": [
+     "c69b835e8f3e154f.mp3",
+     "eb951066dd1d9525.mp3"
+    ]
+   },
+   "normal": "audio/3d21321a5fd51eaa.mp3",
+   "slow": "audio/b010f4af93b90297.mp3"
+  },
+  "La habitación cuesta mil ochocientos cincuenta pesos por noche.": {
+   "normal": "audio/b93a3e35dd3dd50e.mp3",
+   "slow": "audio/00a8d1261c7fea57.mp3",
+   "voice": "male"
+  },
+  "¿El desayuno va incluido?": {
+   "normal": "audio/0017e12506a900fa.mp3",
+   "slow": "audio/aac8b70e929eca76.mp3",
+   "voice": "male"
+  },
+  "El desayuno es de siete a diez y media de la mañana, en el restaurante de la planta baja.": {
+   "normal": "audio/63041177e4b7e653.mp3",
+   "slow": "audio/f500eeff5e3244ab.mp3",
+   "voice": "male"
+  },
+  "¿Me permite una identificación, por favor?": {
+   "normal": "audio/96f0465b463492a4.mp3",
+   "slow": "audio/88db6ad7ce0b1924.mp3",
+   "voice": "female"
+  },
+  "Perdón, ¿me puede ayudar con las maletas? Están muy pesadas.": {
+   "normal": "audio/2bd29d0adb966e21.mp3",
+   "slow": "audio/ddae1190cd335810.mp3",
+   "voice": "male"
+  },
+  "¿Cuántas maletas va a documentar? Solo una, la más grande. La mochila va conmigo.": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Agente",
+     "voice": "female",
+     "es": "¿Cuántas maletas va a documentar?"
+    },
+    {
+     "speaker": "Pasajero",
+     "voice": "male",
+     "es": "Solo una, la más grande. La mochila va conmigo."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "053b00d541a2b915.mp3",
+     "193ee1467bcb9a84.mp3"
+    ],
+    "slow": [
+     "e6bc9e1461c7fc4b.mp3",
+     "5217d54140981bef.mp3"
+    ]
+   },
+   "normal": "audio/4cded3072049c522.mp3",
+   "slow": "audio/dcab4a1943a52096.mp3"
+  },
+  "Su maleta pesa veintiocho kilos, y el máximo es veinticinco.": {
+   "normal": "audio/94565fd583a865af.mp3",
+   "slow": "audio/d1a4c745ac94b1c6.mp3",
+   "voice": "male"
+  },
+  "Este equipaje es mío, y esa mochila también.": {
+   "normal": "audio/792df8e6e4076c9e.mp3",
+   "slow": "audio/3527afe38b64b654.mp3",
+   "voice": "male"
+  },
+  "¿Trae algo que declarar?": {
+   "normal": "audio/de2fb6c75996e052.mp3",
+   "slow": "audio/9f1b3324838256b5.mp3",
+   "voice": "male"
+  },
+  "Su vuelo sale de la sala cuarenta y dos.": {
+   "normal": "audio/ce34dd0be8c6bb18.mp3",
+   "slow": "audio/bb79c61785dd7f81.mp3",
+   "voice": "male"
+  },
+  "El vuelo a Cancún sale a las seis y cuarto de la tarde.": {
+   "normal": "audio/a2f589d576a58490.mp3",
+   "slow": "audio/cf41d077896f3feb.mp3",
+   "voice": "male"
+  },
+  "Ayer llegué al hotel muy tarde porque el vuelo se retrasó.": {
+   "normal": "audio/44cc8ee30d6c31b7.mp3",
+   "slow": "audio/7e106bab16d30742.mp3",
+   "voice": "male"
+  },
+  "Mañana saldremos muy temprano para no perder el vuelo.": {
+   "normal": "audio/618275047b3f9454.mp3",
+   "slow": "audio/0a3d27f92b254da5.mp3",
+   "voice": "male"
+  },
+  "¿A qué hora quiere su taxi al aeropuerto?": {
+   "normal": "audio/fe28098a0854c233.mp3",
+   "slow": "audio/d67c3f4588662f36.mp3",
+   "voice": "female"
+  },
+  "Se me olvidó el cargador en la habitación trescientos quince.": {
+   "normal": "audio/4b01ef6c40df674a.mp3",
+   "slow": "audio/0f16ddbb5facfbea.mp3",
+   "voice": "male"
+  },
+  "Voy a recoger mi maleta en la banda tres.": {
+   "normal": "audio/baa280cc78fa758c.mp3",
+   "slow": "audio/b2edf8ec6944a498.mp3",
+   "voice": "male"
+  },
+  "Al aeropuerto son trescientos cincuenta pesos. ¿Me hace un mejor precio? ¿Trescientos?": {
+   "voice": "dialogue",
+   "lines": [
+    {
+     "speaker": "Taxista",
+     "voice": "male",
+     "es": "Al aeropuerto son trescientos cincuenta pesos."
+    },
+    {
+     "speaker": "Pasajera",
+     "voice": "female",
+     "es": "¿Me hace un mejor precio? ¿Trescientos?"
+    }
+   ],
+   "parts": {
+    "normal": [
+     "4cc1b0ef12d9b0e5.mp3",
+     "52f41e8b2b4b2d83.mp3"
+    ],
+    "slow": [
+     "19139d856ac70913.mp3",
+     "0a0952045ef20bd9.mp3"
+    ]
+   },
+   "normal": "audio/2649b8e897370ffc.mp3",
+   "slow": "audio/4022743ec1411663.mp3"
+  },
+  "Me gusta el hotel, pero la habitación es un poco cara.": {
+   "normal": "audio/428aa7611558c7ed.mp3",
+   "slow": "audio/7f3d5220cf37558e.mp3",
+   "voice": "male"
+  },
+  "¿Es su primera vez en Japón?": {
+   "normal": "audio/cd0aa958e9ebbdc6.mp3",
+   "slow": "audio/5b783b98e8879b01.mp3",
+   "voice": "female"
   }
  },
  "lines": {
@@ -2793,6 +2959,30 @@
    "normal": "audio/6742eacef97b9490.mp3",
    "voice": "male"
   },
+  "female|Buenas noches, ¿tiene una reservación?": {
+   "normal": "audio/6916ec5c0795239c.mp3",
+   "voice": "female"
+  },
+  "male|Sí, a nombre de Daniel Ruiz, por tres noches.": {
+   "normal": "audio/c52af5ee26e21f4f.mp3",
+   "voice": "male"
+  },
+  "female|¿Cuántas maletas va a documentar?": {
+   "normal": "audio/053b00d541a2b915.mp3",
+   "voice": "female"
+  },
+  "male|Solo una, la más grande. La mochila va conmigo.": {
+   "normal": "audio/193ee1467bcb9a84.mp3",
+   "voice": "male"
+  },
+  "male|Al aeropuerto son trescientos cincuenta pesos.": {
+   "normal": "audio/4cc1b0ef12d9b0e5.mp3",
+   "voice": "male"
+  },
+  "female|¿Me hace un mejor precio? ¿Trescientos?": {
+   "normal": "audio/52f41e8b2b4b2d83.mp3",
+   "voice": "female"
+  },
   "male|Próxima estación: Bellas Artes.": {
    "normal": "audio/25404699261bfa84.mp3",
    "voice": "male"
@@ -3160,10 +3350,6 @@
   "female|Buenas tardes, bienvenido. ¿Tiene una reservación?": {
    "normal": "audio/215105c2ef16e01c.mp3",
    "voice": "female"
-  },
-  "male|Sí, a nombre de Daniel Ruiz, por tres noches.": {
-   "normal": "audio/c52af5ee26e21f4f.mp3",
-   "voice": "male"
   },
   "female|Aquí está. Es una habitación doble con vista al jardín. La noche está en mil trescientos cuarenta pesos, con el desayuno incluido.": {
    "normal": "audio/32f8d7b569761243.mp3",
@@ -3883,6 +4069,154 @@
   },
   "male|¡Perfecto! Te va a quedar increíble.": {
    "normal": "audio/8a0033610d946994.mp3",
+   "voice": "male"
+  },
+  "female|¿Bueno? ¿Dónde estás? ¿Ya viste el mensaje del festival?": {
+   "normal": "audio/def4839827956b3e.mp3",
+   "voice": "female"
+  },
+  "male|No, ¿qué pasó? Estoy en la fila de las bebidas.": {
+   "normal": "audio/86a3c9c450a6e48e.mp3",
+   "voice": "male"
+  },
+  "female|Cambiaron el set. Ya no es en el escenario principal, ahora es en el escenario Bosque.": {
+   "normal": "audio/03688036cc7fe5ac.mp3",
+   "voice": "female"
+  },
+  "male|¿Y a qué hora empieza? ¿Todavía a las once?": {
+   "normal": "audio/64bfb27c67b1b381.mp3",
+   "voice": "male"
+  },
+  "female|No, empieza más tarde, a las doce menos cuarto. Tenemos tiempo.": {
+   "normal": "audio/b0c7bb1409cb9bc6.mp3",
+   "voice": "female"
+  },
+  "male|Perfecto. Oye, perdí mi pulsera de las bebidas. ¿Tú todavía tienes la tuya?": {
+   "normal": "audio/991403265c5c3b2d.mp3",
+   "voice": "male"
+  },
+  "female|Sí, no te preocupes. Pide dos aguas y yo las pago. Cuestan cuarenta pesos cada una.": {
+   "normal": "audio/60028af42c8b97a8.mp3",
+   "voice": "female"
+  },
+  "male|Va. ¿Dónde nos vemos?": {
+   "normal": "audio/74c4eaa49cdf8d14.mp3",
+   "voice": "male"
+  },
+  "female|En el punto de encuentro, junto a la rueda de la fortuna, en diez minutos.": {
+   "normal": "audio/fc17652cb276ca9d.mp3",
+   "voice": "female"
+  },
+  "male|Buenas tardes, ¿qué le sirvo?": {
+   "normal": "audio/df4a06e2d0a9ae48.mp3",
+   "voice": "male"
+  },
+  "female|Hola. ¿Me da un matcha grande, por favor?": {
+   "normal": "audio/7493adcaf7e06828.mp3",
+   "voice": "female"
+  },
+  "male|Claro. ¿Caliente o frío? ¿Y con qué leche?": {
+   "normal": "audio/e934568a0fa33b4b.mp3",
+   "voice": "male"
+  },
+  "female|Frío, con leche de avena. ¿Cuánto cuesta?": {
+   "normal": "audio/622ca0ad0a72570a.mp3",
+   "voice": "female"
+  },
+  "male|El matcha grande cuesta ochenta y cinco pesos, y la leche de avena son quince más.": {
+   "normal": "audio/332342905905f4c3.mp3",
+   "voice": "male"
+  },
+  "female|Está bien. También quiero un pan de plátano, el que está junto a las galletas.": {
+   "normal": "audio/003d498c45a19cb6.mp3",
+   "voice": "female"
+  },
+  "male|Muy bien. ¿Es para aquí o para llevar?": {
+   "normal": "audio/126fcb9beae3dc51.mp3",
+   "voice": "male"
+  },
+  "female|Para aquí. Me siento en la mesa junto a la ventana.": {
+   "normal": "audio/c3df4f2f003eab1f.mp3",
+   "voice": "female"
+  },
+  "male|Perfecto. El pan está en cuarenta y cinco, entonces son ciento cuarenta y cinco pesos en total. ¿Paga con tarjeta?": {
+   "normal": "audio/958508e5477d08f2.mp3",
+   "voice": "male"
+  },
+  "female|Sí, con tarjeta, por favor.": {
+   "normal": "audio/38ecda6350e4d942.mp3",
+   "voice": "female"
+  },
+  "male|Buenas noches. ¿Me da dos boletos para la película nueva de Marvel?": {
+   "normal": "audio/7d6f31ef54473231.mp3",
+   "voice": "male"
+  },
+  "female|Para la función de las nueve ya no hay ningún lugar, lo siento. ¿Le doy la de las diez y cuarenta?": {
+   "normal": "audio/ec749081c9b06794.mp3",
+   "voice": "female"
+  },
+  "male|Sí, está bien. ¿Hay lugares juntos?": {
+   "normal": "audio/91cd3389169e437d.mp3",
+   "voice": "male"
+  },
+  "female|Sí, en la fila doce, en medio. Pero en la primera fila no queda nada.": {
+   "normal": "audio/f557b0f3d99a20cc.mp3",
+   "voice": "female"
+  },
+  "male|Fila doce es perfecto. ¿Cuánto es?": {
+   "normal": "audio/7ffb7a8377ade663.mp3",
+   "voice": "male"
+  },
+  "female|Son ciento veinte pesos cada boleto, doscientos cuarenta en total. ¿Quiere algo de la dulcería?": {
+   "normal": "audio/3ad008a7b0b1b74f.mp3",
+   "voice": "female"
+  },
+  "male|Sí, unas palomitas grandes y dos refrescos.": {
+   "normal": "audio/69e700493eeada93.mp3",
+   "voice": "male"
+  },
+  "female|El combo cuesta ciento ochenta. Ojo, la película dura casi tres horas.": {
+   "normal": "audio/a6de89459ddbce45.mp3",
+   "voice": "female"
+  },
+  "male|¡Tres horas! Entonces sí necesito las palomitas.": {
+   "normal": "audio/e875ba8de6da114e.mp3",
+   "voice": "male"
+  },
+  "male|Buenas tardes. La semana pasada compré esta sudadera, pero me queda chica.": {
+   "normal": "audio/f8586798bf404e86.mp3",
+   "voice": "male"
+  },
+  "female|No se preocupe, se la cambiamos. ¿Trae su ticket?": {
+   "normal": "audio/877b0ec2ec4b34fd.mp3",
+   "voice": "female"
+  },
+  "male|Sí, aquí tiene. Y todavía tiene la etiqueta. Es talla mediana y quiero una grande.": {
+   "normal": "audio/d253c5c8c006daae.mp3",
+   "voice": "male"
+  },
+  "female|Déjeme ver. En gris ya no tenemos grande, solo en negro o en verde.": {
+   "normal": "audio/591bd9be757b4d51.mp3",
+   "voice": "female"
+  },
+  "male|Mmm. ¿Y cuándo llegan más grises?": {
+   "normal": "audio/77283311e030c29f.mp3",
+   "voice": "male"
+  },
+  "female|El jueves, pero no sabemos cuántas. Si quiere, le aparto una.": {
+   "normal": "audio/e6b43da8990612f3.mp3",
+   "voice": "female"
+  },
+  "male|Mejor me llevo la negra hoy. ¿Cuesta lo mismo?": {
+   "normal": "audio/878802065c267a7c.mp3",
+   "voice": "male"
+  },
+  "female|La negra cuesta cincuenta pesos más, porque es de la colección nueva. Son seiscientos cincuenta.": {
+   "normal": "audio/163e06b115fa591b.mp3",
+   "voice": "female"
+  },
+  "male|Va, está bien. Pago la diferencia con tarjeta.": {
+   "normal": "audio/82d9039babdca921.mp3",
    "voice": "male"
   }
  },
@@ -6259,6 +6593,321 @@
    "slow": "audio/01ddcba0202d6375.mp3",
    "duration": 48.14,
    "slow_duration": 62.69
+  },
+  "m-set-cambio-escenario-01": {
+   "lines": [
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "¿Bueno? ¿Dónde estás? ¿Ya viste el mensaje del festival?"
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "No, ¿qué pasó? Estoy en la fila de las bebidas."
+    },
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "Cambiaron el set. Ya no es en el escenario principal, ahora es en el escenario Bosque."
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "¿Y a qué hora empieza? ¿Todavía a las once?"
+    },
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "No, empieza más tarde, a las doce menos cuarto. Tenemos tiempo."
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "Perfecto. Oye, perdí mi pulsera de las bebidas. ¿Tú todavía tienes la tuya?"
+    },
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "Sí, no te preocupes. Pide dos aguas y yo las pago. Cuestan cuarenta pesos cada una."
+    },
+    {
+     "speaker": "Amigo",
+     "voice": "male",
+     "es": "Va. ¿Dónde nos vemos?"
+    },
+    {
+     "speaker": "Amiga",
+     "voice": "female",
+     "es": "En el punto de encuentro, junto a la rueda de la fortuna, en diez minutos."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "def4839827956b3e.mp3",
+     "86a3c9c450a6e48e.mp3",
+     "03688036cc7fe5ac.mp3",
+     "64bfb27c67b1b381.mp3",
+     "b0c7bb1409cb9bc6.mp3",
+     "991403265c5c3b2d.mp3",
+     "60028af42c8b97a8.mp3",
+     "74c4eaa49cdf8d14.mp3",
+     "fc17652cb276ca9d.mp3"
+    ],
+    "slow": [
+     "f629c92c567d2397.mp3",
+     "2275e35e22b56da3.mp3",
+     "3fcbfeee2f816662.mp3",
+     "6461d28024b8294a.mp3",
+     "34e7ceb051a55a52.mp3",
+     "39c7b1faa3495c69.mp3",
+     "88b4c7d476adf552.mp3",
+     "77839c4d92e9bab2.mp3",
+     "72eaf9d377ce82b7.mp3"
+    ]
+   },
+   "normal": "audio/6717c4bab9c216cb.mp3",
+   "slow": "audio/97b4d64aeb81e080.mp3",
+   "duration": 38.45,
+   "slow_duration": 49.92
+  },
+  "m-matcha-avena-01": {
+   "lines": [
+    {
+     "speaker": "Barista",
+     "voice": "male",
+     "es": "Buenas tardes, ¿qué le sirvo?"
+    },
+    {
+     "speaker": "Clienta",
+     "voice": "female",
+     "es": "Hola. ¿Me da un matcha grande, por favor?"
+    },
+    {
+     "speaker": "Barista",
+     "voice": "male",
+     "es": "Claro. ¿Caliente o frío? ¿Y con qué leche?"
+    },
+    {
+     "speaker": "Clienta",
+     "voice": "female",
+     "es": "Frío, con leche de avena. ¿Cuánto cuesta?"
+    },
+    {
+     "speaker": "Barista",
+     "voice": "male",
+     "es": "El matcha grande cuesta ochenta y cinco pesos, y la leche de avena son quince más."
+    },
+    {
+     "speaker": "Clienta",
+     "voice": "female",
+     "es": "Está bien. También quiero un pan de plátano, el que está junto a las galletas."
+    },
+    {
+     "speaker": "Barista",
+     "voice": "male",
+     "es": "Muy bien. ¿Es para aquí o para llevar?"
+    },
+    {
+     "speaker": "Clienta",
+     "voice": "female",
+     "es": "Para aquí. Me siento en la mesa junto a la ventana."
+    },
+    {
+     "speaker": "Barista",
+     "voice": "male",
+     "es": "Perfecto. El pan está en cuarenta y cinco, entonces son ciento cuarenta y cinco pesos en total. ¿Paga con tarjeta?"
+    },
+    {
+     "speaker": "Clienta",
+     "voice": "female",
+     "es": "Sí, con tarjeta, por favor."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "df4a06e2d0a9ae48.mp3",
+     "7493adcaf7e06828.mp3",
+     "e934568a0fa33b4b.mp3",
+     "622ca0ad0a72570a.mp3",
+     "332342905905f4c3.mp3",
+     "003d498c45a19cb6.mp3",
+     "126fcb9beae3dc51.mp3",
+     "c3df4f2f003eab1f.mp3",
+     "958508e5477d08f2.mp3",
+     "38ecda6350e4d942.mp3"
+    ],
+    "slow": [
+     "18d84928a4424541.mp3",
+     "c8ab0369d1087b59.mp3",
+     "6a2dd534270a67af.mp3",
+     "04ff9d6c244c86bd.mp3",
+     "5aecc3936dab5fa8.mp3",
+     "78c588e26f9394f9.mp3",
+     "2395eb2440524d10.mp3",
+     "ddcee2f9d3313e92.mp3",
+     "1778f9a27978c3d2.mp3",
+     "37657f4f377ed44f.mp3"
+    ]
+   },
+   "normal": "audio/ab110b45f7d0a2f5.mp3",
+   "slow": "audio/e26474f9141ccf08.mp3",
+   "duration": 37.22,
+   "slow_duration": 48.12
+  },
+  "m-estreno-marvel-taquilla-01": {
+   "lines": [
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Buenas noches. ¿Me da dos boletos para la película nueva de Marvel?"
+    },
+    {
+     "speaker": "Taquillera",
+     "voice": "female",
+     "es": "Para la función de las nueve ya no hay ningún lugar, lo siento. ¿Le doy la de las diez y cuarenta?"
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Sí, está bien. ¿Hay lugares juntos?"
+    },
+    {
+     "speaker": "Taquillera",
+     "voice": "female",
+     "es": "Sí, en la fila doce, en medio. Pero en la primera fila no queda nada."
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Fila doce es perfecto. ¿Cuánto es?"
+    },
+    {
+     "speaker": "Taquillera",
+     "voice": "female",
+     "es": "Son ciento veinte pesos cada boleto, doscientos cuarenta en total. ¿Quiere algo de la dulcería?"
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Sí, unas palomitas grandes y dos refrescos."
+    },
+    {
+     "speaker": "Taquillera",
+     "voice": "female",
+     "es": "El combo cuesta ciento ochenta. Ojo, la película dura casi tres horas."
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "¡Tres horas! Entonces sí necesito las palomitas."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "7d6f31ef54473231.mp3",
+     "ec749081c9b06794.mp3",
+     "91cd3389169e437d.mp3",
+     "f557b0f3d99a20cc.mp3",
+     "7ffb7a8377ade663.mp3",
+     "3ad008a7b0b1b74f.mp3",
+     "69e700493eeada93.mp3",
+     "a6de89459ddbce45.mp3",
+     "e875ba8de6da114e.mp3"
+    ],
+    "slow": [
+     "7be537292aa86f8e.mp3",
+     "6e84aabae750b801.mp3",
+     "249e3f7871680c0e.mp3",
+     "3733419b13f73978.mp3",
+     "fb158cc840719d38.mp3",
+     "0b90b5a84f0b0ff1.mp3",
+     "b55ee2b7804c985e.mp3",
+     "d8d06af5b4aee59e.mp3",
+     "6af6ce1442abdfb0.mp3"
+    ]
+   },
+   "normal": "audio/c41f0035b3274700.mp3",
+   "slow": "audio/a65cb749cfbcffed.mp3",
+   "duration": 40.3,
+   "slow_duration": 52.42
+  },
+  "m-cambio-sudadera-01": {
+   "lines": [
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Buenas tardes. La semana pasada compré esta sudadera, pero me queda chica."
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "No se preocupe, se la cambiamos. ¿Trae su ticket?"
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Sí, aquí tiene. Y todavía tiene la etiqueta. Es talla mediana y quiero una grande."
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "Déjeme ver. En gris ya no tenemos grande, solo en negro o en verde."
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Mmm. ¿Y cuándo llegan más grises?"
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "El jueves, pero no sabemos cuántas. Si quiere, le aparto una."
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Mejor me llevo la negra hoy. ¿Cuesta lo mismo?"
+    },
+    {
+     "speaker": "Vendedora",
+     "voice": "female",
+     "es": "La negra cuesta cincuenta pesos más, porque es de la colección nueva. Son seiscientos cincuenta."
+    },
+    {
+     "speaker": "Cliente",
+     "voice": "male",
+     "es": "Va, está bien. Pago la diferencia con tarjeta."
+    }
+   ],
+   "parts": {
+    "normal": [
+     "f8586798bf404e86.mp3",
+     "877b0ec2ec4b34fd.mp3",
+     "d253c5c8c006daae.mp3",
+     "591bd9be757b4d51.mp3",
+     "77283311e030c29f.mp3",
+     "e6b43da8990612f3.mp3",
+     "878802065c267a7c.mp3",
+     "163e06b115fa591b.mp3",
+     "82d9039babdca921.mp3"
+    ],
+    "slow": [
+     "1785154bd1e83d93.mp3",
+     "077c2f1286f9263c.mp3",
+     "9e1b588b93fa1149.mp3",
+     "f90a590c6507c358.mp3",
+     "26a38e6d37bb827d.mp3",
+     "08d8e56c35e4cfb7.mp3",
+     "49127d1228e2c492.mp3",
+     "8aa0a127d114cb96.mp3",
+     "fdc9e4b96393cdd2.mp3"
+    ]
+   },
+   "normal": "audio/c1dbb12ac6efe9bc.mp3",
+   "slow": "audio/57ea33227661a293.mp3",
+   "duration": 39.05,
+   "slow_duration": 50.76
   }
  }
 }

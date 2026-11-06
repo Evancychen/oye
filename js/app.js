@@ -829,11 +829,13 @@ function renderFixIt(card, fb) {
     return { body: feedbackBody(card, fb, `${head}${sentenceHtml(card, fill, 'ok')}`), dock: chosen ? optionsDock(card, fb, grid) : btnNext(), dockClass: chosen ? 'opts-dock' : '' };
   }
   const hint = hasHint(card) ? `<div class="hint-slot">${hintPill(card)}${hintBox(card)}</div>` : '';
+  // Share the audio row with Hint so typed cards fit above the phone keyboard.
+  const tools = card.audio_text ? `${audioRow(card, { right: hintPill(card) })}${hintBox(card)}` : hint;
   if (chosen) {
-    return { body: `${head}${sentenceHtml(card, '')}${instruction}${audioRow(card)}${hint}`, dock: optionsDock(card, null, grid), dockClass: `opts-dock${drill ? ' drill-dock' : ''}`, bind: () => bindOptions(card) };
+    return { body: `${head}${sentenceHtml(card, '')}${instruction}${tools}`, dock: optionsDock(card, null, grid), dockClass: `opts-dock${drill ? ' drill-dock' : ''}`, bind: () => bindOptions(card) };
   }
   return {
-    body: `${head}${sentenceHtml(card, '')}${instruction}${audioRow(card)}${hint}`,
+    body: `${head}${sentenceHtml(card, '')}${instruction}${tools}`,
     dockClass: 'fix-dock',
     dock: textInputRow(),
     bind: () => bindTextInput(card, (v) => answer(card, isCorrect(card, v), v)),

@@ -18893,5 +18893,691 @@
         "es": "Claro. Eso costaría dos mil pesos más y estaría lista el lunes."
       }
     ]
+  },
+  {
+    "id": "c-0924",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "por_para"
+    ],
+    "vocab_ids": [
+      "v-reservacion",
+      "v-a-nombre-de"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Buenas noches, ¿tiene una reservación? Sí, a nombre de Daniel Ruiz, por tres noches.",
+    "prompt_en": "How many nights is the booking for?",
+    "sentence": null,
+    "options": [
+      "One week",
+      "Four nights",
+      "Three nights",
+      "Two nights"
+    ],
+    "answer": "Three nights",
+    "accepted_answers": [],
+    "explanation_en": "'A nombre de…' = under the name of. 'Por tres noches' = for three nights.",
+    "transcript": "Recepcionista: Buenas noches, ¿tiene una reservación?\nHuésped: Sí, a nombre de Daniel Ruiz, por tres noches.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "travel",
+    "audio_lines": [
+      {
+        "speaker": "Recepcionista",
+        "voice": "female",
+        "es": "Buenas noches, ¿tiene una reservación?"
+      },
+      {
+        "speaker": "Huésped",
+        "voice": "male",
+        "es": "Sí, a nombre de Daniel Ruiz, por tres noches."
+      }
+    ]
+  },
+  {
+    "id": "c-0925",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38",
+      "A2-L07"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices"
+    ],
+    "vocab_ids": [
+      "v-mil"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "La habitación cuesta mil ochocientos cincuenta pesos por noche.",
+    "prompt_en": "How much is the room per night? Type the number.",
+    "sentence": null,
+    "options": [],
+    "answer": "1850",
+    "accepted_answers": [
+      "1850",
+      "$1850",
+      "1,850",
+      "$1,850",
+      "mil ochocientos cincuenta"
+    ],
+    "explanation_en": "Mil ochocientos cincuenta = 1,850. Say 'mil', never 'un mil'.",
+    "transcript": "La habitación cuesta mil ochocientos cincuenta pesos por noche.",
+    "region_note": null,
+    "hint_en": "A price in the thousands; type digits.",
+    "level": "medium",
+    "topic": "travel"
+  },
+  {
+    "id": "c-0926",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38"
+    ],
+    "grammar_tags": [
+      "present",
+      "irregular"
+    ],
+    "vocab_ids": [
+      "v-va-incluido"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿El desayuno va incluido?",
+    "prompt_en": "ir, él (el desayuno), present: is breakfast included?",
+    "sentence": "¿El desayuno ___ incluido?",
+    "options": [],
+    "answer": "va",
+    "accepted_answers": [
+      "va",
+      "Va"
+    ],
+    "explanation_en": "In Mexico '¿Va incluido?' = is it included? Ir is irregular: voy, vas, va.",
+    "transcript": "¿El desayuno va incluido?",
+    "region_note": null,
+    "hint_en": "ir, third person singular, present.",
+    "level": "medium",
+    "topic": "travel"
+  },
+  {
+    "id": "c-0927",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38"
+    ],
+    "grammar_tags": [
+      "time"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "El desayuno es de siete a diez y media de la mañana, en el restaurante de la planta baja.",
+    "prompt_en": "Until what time is breakfast?",
+    "sentence": null,
+    "options": [
+      "Until 7:30 a.m.",
+      "Until 10:30 a.m.",
+      "Until 10:00 a.m.",
+      "Until 12:30 p.m."
+    ],
+    "answer": "Until 10:30 a.m.",
+    "accepted_answers": [],
+    "explanation_en": "'De siete a diez y media de la mañana' = from 7 to 10:30 in the morning. 'Planta baja' = ground floor.",
+    "transcript": "El desayuno es de siete a diez y media de la mañana, en el restaurante de la planta baja.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "travel"
+  },
+  {
+    "id": "c-0928",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38",
+      "A1-L24"
+    ],
+    "grammar_tags": [
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [
+      "v-aqui-tiene",
+      "v-identificacion"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Me permite una identificación, por favor?",
+    "prompt_en": "Hand over your passport and say \"here you go\".",
+    "sentence": null,
+    "options": [
+      "Sí, claro, aquí tiene mi pasaporte.",
+      "Sí, claro, aquí tienes mi pasaporte.",
+      "Sí, claro, aquí tiene su pasaporte.",
+      "Sí, claro, aquí tengo tu pasaporte."
+    ],
+    "answer": "Sí, claro, aquí tiene mi pasaporte.",
+    "accepted_answers": [],
+    "explanation_en": "With a receptionist use usted: aquí tiene (here you go). 'Mi pasaporte' = my passport.",
+    "transcript": "¿Me permite una identificación, por favor?",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "travel",
+    "voice": "female"
+  },
+  {
+    "id": "c-0929",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38"
+    ],
+    "grammar_tags": [
+      "tu_vs_usted",
+      "stem_change"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Perdón, ¿me puede ayudar con las maletas? Están muy pesadas.",
+    "prompt_en": "poder, usted, present (can you…?)",
+    "sentence": "Perdón, ¿me ___ ayudar con las maletas? Están muy pesadas.",
+    "options": [],
+    "answer": "puede",
+    "accepted_answers": [
+      "puede",
+      "Puede"
+    ],
+    "explanation_en": "Poder changes o→ue: usted puede. 'Pesadas' agrees with las maletas.",
+    "transcript": "Perdón, ¿me puede ayudar con las maletas? Están muy pesadas.",
+    "region_note": null,
+    "hint_en": "Stem-changing verb, usted form.",
+    "level": "medium",
+    "topic": "travel"
+  },
+  {
+    "id": "c-0930",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38"
+    ],
+    "grammar_tags": [
+      "question_words"
+    ],
+    "vocab_ids": [
+      "v-documentar"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Cuántas maletas va a documentar? Solo una, la más grande. La mochila va conmigo.",
+    "prompt_en": "Which bag will he check?",
+    "sentence": null,
+    "options": [
+      "His backpack",
+      "Both suitcases",
+      "The smallest suitcase",
+      "The biggest suitcase"
+    ],
+    "answer": "The biggest suitcase",
+    "accepted_answers": [],
+    "explanation_en": "'La más grande' = the biggest one. 'Documentar' = to check a bag (Spain: facturar).",
+    "transcript": "Agente: ¿Cuántas maletas va a documentar?\nPasajero: Solo una, la más grande. La mochila va conmigo.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "travel",
+    "audio_lines": [
+      {
+        "speaker": "Agente",
+        "voice": "female",
+        "es": "¿Cuántas maletas va a documentar?"
+      },
+      {
+        "speaker": "Pasajero",
+        "voice": "male",
+        "es": "Solo una, la más grande. La mochila va conmigo."
+      }
+    ]
+  },
+  {
+    "id": "c-0931",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38"
+    ],
+    "grammar_tags": [
+      "numbers"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Su maleta pesa veintiocho kilos, y el máximo es veinticinco.",
+    "prompt_en": "How much does the suitcase weigh? Type the kilos.",
+    "sentence": null,
+    "options": [],
+    "answer": "28",
+    "accepted_answers": [
+      "28",
+      "veintiocho",
+      "28 kilos",
+      "28 kg"
+    ],
+    "explanation_en": "Veintiocho = 28; the limit is veinticinco (25). 'Pesa' = it weighs.",
+    "transcript": "Su maleta pesa veintiocho kilos, y el máximo es veinticinco.",
+    "region_note": null,
+    "hint_en": "A number between twenty and thirty; type digits.",
+    "level": "medium",
+    "topic": "travel"
+  },
+  {
+    "id": "c-0932",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38"
+    ],
+    "grammar_tags": [
+      "articles",
+      "agreement"
+    ],
+    "vocab_ids": [
+      "v-equipaje"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Este equipaje es mío, y esa mochila también.",
+    "prompt_en": "Fill in 'this' for equipaje.",
+    "sentence": "___ equipaje es mío, y esa mochila también.",
+    "options": [],
+    "answer": "Este",
+    "accepted_answers": [
+      "Este",
+      "este"
+    ],
+    "explanation_en": "Equipaje is masculine: este equipaje. Mochila is feminine: esa mochila.",
+    "transcript": "Este equipaje es mío, y esa mochila también.",
+    "region_note": null,
+    "hint_en": "A demonstrative: check the gender of equipaje.",
+    "level": "medium",
+    "topic": "travel"
+  },
+  {
+    "id": "c-0933",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38",
+      "A2-L21"
+    ],
+    "grammar_tags": [
+      "negatives"
+    ],
+    "vocab_ids": [
+      "v-algo-que-declarar",
+      "v-aduana"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Trae algo que declarar?",
+    "prompt_en": "Say no, you have nothing to declare.",
+    "sentence": null,
+    "options": [
+      "No, no traigo nada que declarar.",
+      "No, traigo nada que declarar.",
+      "Sí, no traigo nada que declarar.",
+      "No, no traigo algo que declarar."
+    ],
+    "answer": "No, no traigo nada que declarar.",
+    "accepted_answers": [],
+    "explanation_en": "Spanish uses a double negative: no traigo nada. 'Algo' is only for the question.",
+    "transcript": "¿Trae algo que declarar?",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "travel"
+  },
+  {
+    "id": "c-0934",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38"
+    ],
+    "grammar_tags": [
+      "numbers"
+    ],
+    "vocab_ids": [
+      "v-pase-de-abordar"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Su vuelo sale de la sala cuarenta y dos.",
+    "prompt_en": "Which gate does the flight leave from?",
+    "sentence": null,
+    "options": [
+      "Gate 52",
+      "Gate 32",
+      "Gate 42",
+      "Gate 24"
+    ],
+    "answer": "Gate 42",
+    "accepted_answers": [],
+    "explanation_en": "Cuarenta y dos = 42. In Mexico the gate is 'la sala' (Spain: puerta).",
+    "transcript": "Su vuelo sale de la sala cuarenta y dos.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "travel"
+  },
+  {
+    "id": "c-0935",
+    "type": "listen_type",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38"
+    ],
+    "grammar_tags": [
+      "time"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "El vuelo a Cancún sale a las seis y cuarto de la tarde.",
+    "prompt_en": "What time does the flight leave? (type it like 9:15)",
+    "sentence": null,
+    "options": [],
+    "answer": "6:15",
+    "accepted_answers": [
+      "6:15",
+      "18:15",
+      "6 15",
+      "18:15",
+      "6:15 pm"
+    ],
+    "explanation_en": "'Seis y cuarto de la tarde' = 6:15 in the evening. 'Cuarto' = a quarter, not cuatro.",
+    "transcript": "El vuelo a Cancún sale a las seis y cuarto de la tarde.",
+    "region_note": null,
+    "hint_en": "A clock time; type it like 9:15.",
+    "level": "medium",
+    "topic": "travel"
+  },
+  {
+    "id": "c-0936",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38",
+      "A1-L26"
+    ],
+    "grammar_tags": [
+      "preterite"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Ayer llegué al hotel muy tarde porque el vuelo se retrasó.",
+    "prompt_en": "llegar, yo, preterite",
+    "sentence": "Ayer ___ al hotel muy tarde porque el vuelo se retrasó.",
+    "options": [],
+    "answer": "llegué",
+    "accepted_answers": [
+      "llegué",
+      "llegue"
+    ],
+    "explanation_en": "Llegar in the yo preterite is llegué: the g becomes gu before e.",
+    "transcript": "Ayer llegué al hotel muy tarde porque el vuelo se retrasó.",
+    "region_note": null,
+    "hint_en": "Regular -ar verb, yo, preterite; watch the spelling.",
+    "level": "medium",
+    "topic": "travel"
+  },
+  {
+    "id": "c-0937",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38"
+    ],
+    "grammar_tags": [
+      "future",
+      "future_irregular",
+      "perder_pedir"
+    ],
+    "vocab_ids": [
+      "v-perder"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Mañana saldremos muy temprano para no perder el vuelo.",
+    "prompt_en": "salir, nosotros, future",
+    "sentence": "Mañana ___ muy temprano para no perder el vuelo.",
+    "options": [],
+    "answer": "saldremos",
+    "accepted_answers": [
+      "saldremos"
+    ],
+    "explanation_en": "Salir uses the stem saldr-: saldremos (not saliremos). 'Perder el vuelo' = to miss the flight.",
+    "transcript": "Mañana saldremos muy temprano para no perder el vuelo.",
+    "region_note": null,
+    "hint_en": "Irregular future stem; nosotros ending -emos.",
+    "level": "medium",
+    "topic": "travel"
+  },
+  {
+    "id": "c-0938",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38"
+    ],
+    "grammar_tags": [
+      "time",
+      "articles"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿A qué hora quiere su taxi al aeropuerto?",
+    "prompt_en": "Say at five in the morning.",
+    "sentence": null,
+    "options": [
+      "A las cinco de la tarde.",
+      "A las cinco de la mañana.",
+      "A las quince de la mañana.",
+      "A la cinco de la mañana."
+    ],
+    "answer": "A las cinco de la mañana.",
+    "accepted_answers": [],
+    "explanation_en": "Clock times use 'a las' + the hour. 'De la mañana' = in the morning.",
+    "transcript": "¿A qué hora quiere su taxi al aeropuerto?",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "travel",
+    "voice": "female"
+  },
+  {
+    "id": "c-0939",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38"
+    ],
+    "grammar_tags": [
+      "numbers"
+    ],
+    "vocab_ids": [
+      "v-se-me-olvido"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Se me olvidó el cargador en la habitación trescientos quince.",
+    "prompt_en": "Which room did he leave the charger in?",
+    "sentence": null,
+    "options": [
+      "Room 350",
+      "Room 215",
+      "Room 315",
+      "Room 305"
+    ],
+    "answer": "Room 315",
+    "accepted_answers": [],
+    "explanation_en": "Trescientos quince = 315 (trescientos cinco would be 305). 'Se me olvidó' = I forgot.",
+    "transcript": "Se me olvidó el cargador en la habitación trescientos quince.",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "travel"
+  },
+  {
+    "id": "c-0940",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38"
+    ],
+    "grammar_tags": [
+      "mexico_words"
+    ],
+    "vocab_ids": [
+      "v-recoger"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Voy a recoger mi maleta en la banda tres.",
+    "prompt_en": "Fill with 'pick up' (Mexican Spanish).",
+    "sentence": "Voy a ___ mi maleta en la banda tres.",
+    "options": [],
+    "answer": "recoger",
+    "accepted_answers": [
+      "recoger"
+    ],
+    "explanation_en": "In Mexico say recoger (pick up). Avoid coger, which is vulgar there.",
+    "transcript": "Voy a recoger mi maleta en la banda tres.",
+    "region_note": null,
+    "hint_en": "An infinitive after voy a: the Mexican verb for pick up.",
+    "level": "medium",
+    "topic": "travel"
+  },
+  {
+    "id": "c-0941",
+    "type": "listen_pick",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38"
+    ],
+    "grammar_tags": [
+      "numbers",
+      "prices",
+      "tu_vs_usted"
+    ],
+    "vocab_ids": [
+      "v-me-hace"
+    ],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Al aeropuerto son trescientos cincuenta pesos. ¿Me hace un mejor precio? ¿Trescientos?",
+    "prompt_en": "What price does she offer?",
+    "sentence": null,
+    "options": [
+      "$250",
+      "$330",
+      "$300",
+      "$350"
+    ],
+    "answer": "$300",
+    "accepted_answers": [],
+    "explanation_en": "She offers trescientos (300); he asked for trescientos cincuenta (350). '¿Me hace…?' uses usted.",
+    "transcript": "Taxista: Al aeropuerto son trescientos cincuenta pesos.\nPasajera: ¿Me hace un mejor precio? ¿Trescientos?",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "travel",
+    "audio_lines": [
+      {
+        "speaker": "Taxista",
+        "voice": "male",
+        "es": "Al aeropuerto son trescientos cincuenta pesos."
+      },
+      {
+        "speaker": "Pasajera",
+        "voice": "female",
+        "es": "¿Me hace un mejor precio? ¿Trescientos?"
+      }
+    ]
+  },
+  {
+    "id": "c-0942",
+    "type": "fix_it",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38"
+    ],
+    "grammar_tags": [
+      "agreement"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "Me gusta el hotel, pero la habitación es un poco cara.",
+    "prompt_en": "caro: make it agree with 'la habitación' (expensive).",
+    "sentence": "Me gusta el hotel, pero la habitación es un poco ___.",
+    "options": [],
+    "answer": "cara",
+    "accepted_answers": [
+      "cara"
+    ],
+    "explanation_en": "Habitación is feminine, so cara (not caro).",
+    "transcript": "Me gusta el hotel, pero la habitación es un poco cara.",
+    "region_note": null,
+    "hint_en": "An adjective: match the gender of habitación.",
+    "level": "medium",
+    "topic": "travel"
+  },
+  {
+    "id": "c-0943",
+    "type": "reply",
+    "scene_id": null,
+    "lesson_tags": [
+      "A1-L38",
+      "A1-L32"
+    ],
+    "grammar_tags": [
+      "present_perfect"
+    ],
+    "vocab_ids": [],
+    "source": "original",
+    "difficulty": 2,
+    "audio_text": "¿Es su primera vez en Japón?",
+    "prompt_en": "Say no, you have already been there twice.",
+    "sentence": null,
+    "options": [
+      "No, ya fui dos vez.",
+      "No, ya he ido dos tiempos.",
+      "No, ya he ido segunda vez.",
+      "No, ya he ido dos veces."
+    ],
+    "answer": "No, ya he ido dos veces.",
+    "accepted_answers": [],
+    "explanation_en": "'He ido' = I have been (present perfect of ir). Plural of vez is veces; tiempo means time as duration.",
+    "transcript": "¿Es su primera vez en Japón?",
+    "region_note": null,
+    "hint_en": null,
+    "level": "medium",
+    "topic": "travel",
+    "voice": "female"
   }
 ]

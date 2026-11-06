@@ -6569,5 +6569,829 @@
     "region_note": "'Dominadas' = pull-ups. 'Te queda en…' = it comes to (a price), common in Mexico.",
     "added": "2026-10-29",
     "folder": "fitness_health"
+  },
+  {
+    "id": "m-set-cambio-escenario-01",
+    "title_en": "Festival call: the set moved to another stage",
+    "situation_en": "At an electronic music festival, a friend calls you because the set you both want to see has changed. Listen to the call.",
+    "topic": "time_schedules",
+    "lesson_tags": [
+      "A1-L35",
+      "A1-L26",
+      "A2-L21"
+    ],
+    "vocab_ids": [
+      "v-escenario",
+      "v-punto-de-encuentro",
+      "v-rueda-de-la-fortuna",
+      "v-perder"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "¿Bueno? ¿Dónde estás? ¿Ya viste el mensaje del festival?",
+          "en": "Hello? Where are you? Did you see the festival message yet?"
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "No, ¿qué pasó? Estoy en la fila de las bebidas.",
+          "en": "No, what happened? I'm in the line for drinks."
+        },
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "Cambiaron el set. Ya no es en el escenario principal, ahora es en el escenario Bosque.",
+          "en": "They changed the set. It's not on the main stage anymore, now it's on the Forest stage."
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "¿Y a qué hora empieza? ¿Todavía a las once?",
+          "en": "And what time does it start? Still at eleven?"
+        },
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "No, empieza más tarde, a las doce menos cuarto. Tenemos tiempo.",
+          "en": "No, it starts later, at a quarter to twelve. We have time."
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "Perfecto. Oye, perdí mi pulsera de las bebidas. ¿Tú todavía tienes la tuya?",
+          "en": "Perfect. Hey, I lost my drinks wristband. Do you still have yours?"
+        },
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "Sí, no te preocupes. Pide dos aguas y yo las pago. Cuestan cuarenta pesos cada una.",
+          "en": "Yes, don't worry. Order two waters and I'll pay for them. They cost forty pesos each."
+        },
+        {
+          "speaker": "Amigo",
+          "voice": "male",
+          "es": "Va. ¿Dónde nos vemos?",
+          "en": "OK. Where do we meet?"
+        },
+        {
+          "speaker": "Amiga",
+          "voice": "female",
+          "es": "En el punto de encuentro, junto a la rueda de la fortuna, en diez minutos.",
+          "en": "At the meeting point, next to the Ferris wheel, in ten minutes."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "What changed about the set?",
+        "options": [
+          "The DJ",
+          "The ticket price",
+          "The stage",
+          "Nothing"
+        ],
+        "answer": "The stage",
+        "hint_en": "Listen for 'Ya no es en…'.",
+        "explanation_en": "'Ya no es en el escenario principal, ahora es en el escenario Bosque' = it moved stages."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "What time does the set start now? (type it like 9:15)",
+        "answer": "11:45",
+        "accepted_answers": [
+          "11:45",
+          "23:45",
+          "11 45",
+          "11:45 pm"
+        ],
+        "hint_en": "Listen for 'a las doce menos…'.",
+        "explanation_en": "'Las doce menos cuarto' = a quarter to twelve, so 11:45."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What did he lose?",
+        "options": [
+          "His friend",
+          "His ticket",
+          "His drinks wristband",
+          "His phone"
+        ],
+        "answer": "His drinks wristband",
+        "hint_en": "Listen for 'perdí'.",
+        "explanation_en": "'Perdí mi pulsera' = I lost my wristband (perder). 'Pide' later means 'order' (pedir)."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "How much does one water cost? Type the number.",
+        "answer": "40",
+        "accepted_answers": [
+          "40",
+          "$40",
+          "cuarenta"
+        ],
+        "hint_en": "Listen for 'cada una'.",
+        "explanation_en": "'Cuarenta pesos cada una' = 40 pesos each."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "Where will they meet?",
+        "options": [
+          "Next to the Ferris wheel",
+          "At the entrance",
+          "In the drinks line",
+          "At the main stage"
+        ],
+        "answer": "Next to the Ferris wheel",
+        "hint_en": "Listen for 'junto a…'.",
+        "explanation_en": "'En el punto de encuentro, junto a la rueda de la fortuna' = next to the Ferris wheel."
+      }
+    ],
+    "region_note": "'Va' = OK (Mexico). 'No te preocupes' is a negative tú command.",
+    "added": "2026-11-02",
+    "folder": "music"
+  },
+  {
+    "id": "m-matcha-avena-01",
+    "title_en": "Café: a matcha with oat milk",
+    "situation_en": "A woman orders at a small matcha café. Listen to the order.",
+    "topic": "food_ordering",
+    "lesson_tags": [
+      "A1-L22",
+      "A2-L07",
+      "A1-L24"
+    ],
+    "vocab_ids": [
+      "v-leche-de-avena",
+      "v-para-aqui",
+      "v-me-da",
+      "v-pagar-con-tarjeta"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Barista",
+          "voice": "male",
+          "es": "Buenas tardes, ¿qué le sirvo?",
+          "en": "Good afternoon, what can I get you?"
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "Hola. ¿Me da un matcha grande, por favor?",
+          "en": "Hi. Could I have a large matcha, please?"
+        },
+        {
+          "speaker": "Barista",
+          "voice": "male",
+          "es": "Claro. ¿Caliente o frío? ¿Y con qué leche?",
+          "en": "Sure. Hot or iced? And with which milk?"
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "Frío, con leche de avena. ¿Cuánto cuesta?",
+          "en": "Iced, with oat milk. How much is it?"
+        },
+        {
+          "speaker": "Barista",
+          "voice": "male",
+          "es": "El matcha grande cuesta ochenta y cinco pesos, y la leche de avena son quince más.",
+          "en": "The large matcha costs eighty-five pesos, and the oat milk is fifteen more."
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "Está bien. También quiero un pan de plátano, el que está junto a las galletas.",
+          "en": "That's fine. I'd also like a banana bread, the one next to the cookies."
+        },
+        {
+          "speaker": "Barista",
+          "voice": "male",
+          "es": "Muy bien. ¿Es para aquí o para llevar?",
+          "en": "Very good. Is it for here or to go?"
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "Para aquí. Me siento en la mesa junto a la ventana.",
+          "en": "For here. I'll sit at the table by the window."
+        },
+        {
+          "speaker": "Barista",
+          "voice": "male",
+          "es": "Perfecto. El pan está en cuarenta y cinco, entonces son ciento cuarenta y cinco pesos en total. ¿Paga con tarjeta?",
+          "en": "Perfect. The bread is forty-five, so it's a hundred forty-five pesos in total. Are you paying by card?"
+        },
+        {
+          "speaker": "Clienta",
+          "voice": "female",
+          "es": "Sí, con tarjeta, por favor.",
+          "en": "Yes, by card, please."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "How does she want her matcha?",
+        "options": [
+          "Hot, with oat milk",
+          "Iced, with regular milk",
+          "Hot, with no milk",
+          "Iced, with oat milk"
+        ],
+        "answer": "Iced, with oat milk",
+        "hint_en": "Listen for '¿Caliente o frío?'.",
+        "explanation_en": "'Frío, con leche de avena' = iced, with oat milk."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "How much extra is the oat milk? Type the number.",
+        "answer": "15",
+        "accepted_answers": [
+          "15",
+          "$15",
+          "quince"
+        ],
+        "hint_en": "Listen for '…son … más'.",
+        "explanation_en": "'La leche de avena son quince más' = 15 pesos more."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What else does she order?",
+        "options": [
+          "Another matcha",
+          "A concha",
+          "Banana bread",
+          "A croissant"
+        ],
+        "answer": "Banana bread",
+        "hint_en": "Listen for 'También quiero…'.",
+        "explanation_en": "'Un pan de plátano' = banana bread."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "What is the total? Type the number.",
+        "answer": "145",
+        "accepted_answers": [
+          "145",
+          "$145",
+          "ciento cuarenta y cinco"
+        ],
+        "hint_en": "Listen for 'en total'.",
+        "explanation_en": "'Ciento cuarenta y cinco' = 145 (85 + 15 + 45)."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "Where will she sit?",
+        "options": [
+          "Outside",
+          "She takes it to go",
+          "By the window",
+          "At the bar"
+        ],
+        "answer": "By the window",
+        "hint_en": "Listen for 'Me siento…'.",
+        "explanation_en": "'Me siento en la mesa junto a la ventana' = I'll sit at the table by the window."
+      }
+    ],
+    "region_note": "'Está en…' for a price (el pan está en cuarenta y cinco) is very common in Mexico.",
+    "added": "2026-11-02",
+    "folder": "cafes_food"
+  },
+  {
+    "id": "m-estreno-marvel-taquilla-01",
+    "title_en": "Cinema box office: a Marvel premiere",
+    "situation_en": "A man buys tickets for the new Marvel movie on opening night. Listen at the box office.",
+    "topic": "shopping",
+    "lesson_tags": [
+      "A2-L07",
+      "A1-L35",
+      "A2-L21"
+    ],
+    "vocab_ids": [
+      "v-funcion",
+      "v-palomitas",
+      "v-taquilla",
+      "v-me-da"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Buenas noches. ¿Me da dos boletos para la película nueva de Marvel?",
+          "en": "Good evening. Could I have two tickets for the new Marvel movie?"
+        },
+        {
+          "speaker": "Taquillera",
+          "voice": "female",
+          "es": "Para la función de las nueve ya no hay ningún lugar, lo siento. ¿Le doy la de las diez y cuarenta?",
+          "en": "For the nine o'clock showing there are no seats left, sorry. Shall I give you the ten forty?"
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Sí, está bien. ¿Hay lugares juntos?",
+          "en": "Yes, fine. Are there seats together?"
+        },
+        {
+          "speaker": "Taquillera",
+          "voice": "female",
+          "es": "Sí, en la fila doce, en medio. Pero en la primera fila no queda nada.",
+          "en": "Yes, in row twelve, in the middle. But there is nothing left in the first row."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Fila doce es perfecto. ¿Cuánto es?",
+          "en": "Row twelve is perfect. How much is it?"
+        },
+        {
+          "speaker": "Taquillera",
+          "voice": "female",
+          "es": "Son ciento veinte pesos cada boleto, doscientos cuarenta en total. ¿Quiere algo de la dulcería?",
+          "en": "It's a hundred twenty pesos per ticket, two hundred forty in total. Do you want anything from the snack bar?"
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Sí, unas palomitas grandes y dos refrescos.",
+          "en": "Yes, a large popcorn and two sodas."
+        },
+        {
+          "speaker": "Taquillera",
+          "voice": "female",
+          "es": "El combo cuesta ciento ochenta. Ojo, la película dura casi tres horas.",
+          "en": "The combo costs a hundred eighty. Heads up, the movie lasts almost three hours."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "¡Tres horas! Entonces sí necesito las palomitas.",
+          "en": "Three hours! Then I really need the popcorn."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "Why can he not see the nine o’clock showing?",
+        "options": [
+          "It is too expensive",
+          "It was cancelled",
+          "It already started",
+          "It is full"
+        ],
+        "answer": "It is full",
+        "hint_en": "Listen for 'ya no hay ningún…'.",
+        "explanation_en": "'Ya no hay ningún lugar' = there are no seats left (double negative)."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "What time is the showing he buys? (type it like 9:15)",
+        "answer": "10:40",
+        "accepted_answers": [
+          "10:40",
+          "22:40",
+          "10 40",
+          "10:40 pm"
+        ],
+        "hint_en": "Listen for 'la de las diez y…'.",
+        "explanation_en": "'Las diez y cuarenta' = 10:40."
+      },
+      {
+        "id": "q3",
+        "kind": "type",
+        "prompt_en": "Which row are the seats in? Type the number.",
+        "answer": "12",
+        "accepted_answers": [
+          "12",
+          "doce",
+          "fila 12",
+          "row 12"
+        ],
+        "hint_en": "Listen for 'en la fila…'.",
+        "explanation_en": "'En la fila doce, en medio' = row 12, in the middle."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "How much are the two tickets in total? Type the number.",
+        "answer": "240",
+        "accepted_answers": [
+          "240",
+          "$240",
+          "doscientos cuarenta"
+        ],
+        "hint_en": "Listen for 'en total'.",
+        "explanation_en": "'Doscientos cuarenta' = 240 (120 each)."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "How long is the movie?",
+        "options": [
+          "About two hours",
+          "Almost three hours",
+          "More than four hours",
+          "Exactly three hours"
+        ],
+        "answer": "Almost three hours",
+        "hint_en": "Listen for 'dura casi…'.",
+        "explanation_en": "'Dura casi tres horas' = it lasts almost three hours."
+      }
+    ],
+    "region_note": "'La dulcería' = the cinema snack bar (Mexico). 'Ojo' = heads up, careful.",
+    "added": "2026-11-02",
+    "folder": "scifi_tech"
+  },
+  {
+    "id": "m-cambio-sudadera-01",
+    "title_en": "Streetwear shop: exchanging a hoodie",
+    "situation_en": "A man goes back to a streetwear shop to exchange a hoodie he bought. Listen to the conversation.",
+    "topic": "shopping",
+    "lesson_tags": [
+      "A1-L26",
+      "A1-L24",
+      "A1-L32"
+    ],
+    "vocab_ids": [
+      "v-sudadera",
+      "v-talla",
+      "v-cambio-ropa",
+      "v-etiqueta"
+    ],
+    "media": {
+      "kind": "audio",
+      "text_format": null,
+      "text_es": null,
+      "text_en": null,
+      "lines": [
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Buenas tardes. La semana pasada compré esta sudadera, pero me queda chica.",
+          "en": "Good afternoon. Last week I bought this hoodie, but it's too small for me."
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "No se preocupe, se la cambiamos. ¿Trae su ticket?",
+          "en": "Don't worry, we'll exchange it for you. Do you have your receipt?"
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Sí, aquí tiene. Y todavía tiene la etiqueta. Es talla mediana y quiero una grande.",
+          "en": "Yes, here you go. And it still has the tag. It is a medium and I want a large."
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "Déjeme ver. En gris ya no tenemos grande, solo en negro o en verde.",
+          "en": "Let me see. In grey we have no large left, only in black or green."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Mmm. ¿Y cuándo llegan más grises?",
+          "en": "Hmm. And when do more grey ones arrive?"
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "El jueves, pero no sabemos cuántas. Si quiere, le aparto una.",
+          "en": "On Thursday, but we don't know how many. If you want, I'll put one aside for you."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Mejor me llevo la negra hoy. ¿Cuesta lo mismo?",
+          "en": "I'd rather take the black one today. Does it cost the same?"
+        },
+        {
+          "speaker": "Vendedora",
+          "voice": "female",
+          "es": "La negra cuesta cincuenta pesos más, porque es de la colección nueva. Son seiscientos cincuenta.",
+          "en": "The black one costs fifty pesos more, because it's from the new collection. It's six hundred fifty."
+        },
+        {
+          "speaker": "Cliente",
+          "voice": "male",
+          "es": "Va, está bien. Pago la diferencia con tarjeta.",
+          "en": "OK, that's fine. I'll pay the difference by card."
+        }
+      ]
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "What is the problem with the hoodie?",
+        "options": [
+          "It is too small",
+          "He does not like the color",
+          "It is broken",
+          "It is too big"
+        ],
+        "answer": "It is too small",
+        "hint_en": "Listen for 'me queda…'.",
+        "explanation_en": "'Me queda chica' = it's too small for me (quedar agrees with la sudadera)."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "Which size does he want?",
+        "options": [
+          "Small",
+          "Medium",
+          "Large",
+          "Extra large"
+        ],
+        "answer": "Large",
+        "hint_en": "Listen for 'quiero una…'.",
+        "explanation_en": "'Es talla mediana y quiero una grande' = it's a medium and I want a large."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "When do more grey hoodies arrive?",
+        "options": [
+          "Next week",
+          "On Thursday",
+          "On Tuesday",
+          "Tomorrow"
+        ],
+        "answer": "On Thursday",
+        "hint_en": "Listen for '¿Y cuándo…?'.",
+        "explanation_en": "'El jueves' = on Thursday. ¿Cuándo? asks when (not ¿cuánto?)."
+      },
+      {
+        "id": "q4",
+        "kind": "pick",
+        "prompt_en": "Which hoodie does he take?",
+        "options": [
+          "None, he gets his money back",
+          "The green one",
+          "The black one",
+          "The grey one"
+        ],
+        "answer": "The black one",
+        "hint_en": "Listen for 'me llevo…'.",
+        "explanation_en": "'Me llevo la negra' = I'll take the black one (llevarse, not llamarse)."
+      },
+      {
+        "id": "q5",
+        "kind": "type",
+        "prompt_en": "How much does the black hoodie cost? Type the number.",
+        "answer": "650",
+        "accepted_answers": [
+          "650",
+          "$650",
+          "seiscientos cincuenta"
+        ],
+        "hint_en": "Listen for 'Son…'.",
+        "explanation_en": "'Seiscientos cincuenta' = 650, fifty more than the grey one."
+      }
+    ],
+    "region_note": "'Ticket' = receipt in Mexico. 'Le aparto una' = I'll put one aside for you.",
+    "added": "2026-11-02",
+    "folder": "fashion"
+  },
+  {
+    "id": "m-hotel-oaxaca-email-01",
+    "title_en": "Email: your hotel booking in Oaxaca",
+    "situation_en": "You booked a weekend in Oaxaca. The hotel emails you to confirm the details.",
+    "topic": "phone_reservations",
+    "lesson_tags": [
+      "A1-L38",
+      "A1-L24",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-reservacion",
+      "v-va-incluido",
+      "v-anticipo",
+      "v-identificacion",
+      "v-avisar"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "email",
+      "text_es": "Asunto: Confirmación de su reservación\n\nEstimado huésped:\n\nGracias por su reservación en Hotel Casa Jade, en el centro de Oaxaca. Estos son los datos:\n\nLlegada: viernes 20 de noviembre, a partir de las 15:00.\nSalida: domingo 22 de noviembre, antes de las 12:00.\nHabitación doble, 2 noches: $3,700 en total. El desayuno va incluido, de 7:00 a 10:30.\n\nYa recibimos su anticipo de $1,000. El resto lo paga al llegar, en efectivo o con tarjeta.\n\nSi llega en avión, le podemos mandar un taxi al aeropuerto por $250. Solo avísenos con un día de anticipación.\n\nPor favor, traiga una identificación para el registro. Si necesita algo, llámenos o escríbanos por WhatsApp.\n\nAtentamente,\nRecepción, Hotel Casa Jade",
+      "text_en": "Subject: Confirmation of your booking\n\nDear guest,\n\nThank you for your booking at Hotel Casa Jade, in the center of Oaxaca. Here are the details:\n\nCheck-in: Friday, November 20, from 3:00 p.m.\nCheck-out: Sunday, November 22, before 12:00 noon.\nDouble room, 2 nights: $3,700 in total. Breakfast is included, from 7:00 to 10:30.\n\nWe have already received your $1,000 deposit. You pay the rest when you arrive, in cash or by card.\n\nIf you arrive by plane, we can send a taxi to the airport for $250. Just let us know one day in advance.\n\nPlease bring an ID for check-in. If you need anything, call us or write to us on WhatsApp.\n\nSincerely,\nFront desk, Hotel Casa Jade",
+      "sender_en": "Hotel Casa Jade (front desk)",
+      "time": "11:20"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "How many nights is the booking?",
+        "options": [
+          "One night",
+          "Two nights",
+          "Three nights",
+          "A week"
+        ],
+        "answer": "Two nights",
+        "hint_en": "Look for 'Habitación doble…'.",
+        "explanation_en": "'2 noches' = two nights, Friday to Sunday."
+      },
+      {
+        "id": "q2",
+        "kind": "type",
+        "prompt_en": "From what time can you check in? (type it like 9:15)",
+        "answer": "15:00",
+        "accepted_answers": [
+          "15:00",
+          "3:00",
+          "3",
+          "3 pm",
+          "3:00 pm",
+          "15"
+        ],
+        "hint_en": "Look for 'Llegada… a partir de'.",
+        "explanation_en": "'A partir de las 15:00' = from 3:00 p.m."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "Is breakfast included?",
+        "options": [
+          "Yes, from 7:00 to 10:30",
+          "Yes, until noon",
+          "No, it costs extra",
+          "Only on Sunday"
+        ],
+        "answer": "Yes, from 7:00 to 10:30",
+        "hint_en": "Look for 'va incluido'.",
+        "explanation_en": "'El desayuno va incluido, de 7:00 a 10:30' = breakfast is included."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "How much do you still have to pay when you arrive? Type the number.",
+        "answer": "2700",
+        "accepted_answers": [
+          "2700",
+          "$2700",
+          "2,700",
+          "$2,700",
+          "dos mil setecientos"
+        ],
+        "hint_en": "Total minus the deposit (anticipo).",
+        "explanation_en": "$3,700 in total minus the $1,000 deposit = $2,700."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What must you do to get the airport taxi?",
+        "options": [
+          "Pay $1,000 more",
+          "Call from the airport",
+          "Tell them one day before",
+          "Nothing, it is automatic"
+        ],
+        "answer": "Tell them one day before",
+        "hint_en": "Look for 'avísenos'.",
+        "explanation_en": "'Avísenos con un día de anticipación' = let us know one day in advance (usted command)."
+      }
+    ],
+    "region_note": "'Reservación' is the Mexican word (Spain: 'reserva'). 'Registro' = check-in at the front desk.",
+    "added": "2026-11-02",
+    "folder": "travel"
+  },
+  {
+    "id": "m-conserje-paquete-whatsapp-01",
+    "title_en": "WhatsApp from your building's caretaker",
+    "situation_en": "Your building's caretaker sends you a WhatsApp message with a few updates.",
+    "topic": "home_errands",
+    "lesson_tags": [
+      "A1-L24",
+      "A2-L21",
+      "A2-L07"
+    ],
+    "vocab_ids": [
+      "v-conserje",
+      "v-recoger",
+      "v-mantenimiento",
+      "v-cubeta",
+      "v-estacionamiento",
+      "v-alguien-nadie"
+    ],
+    "media": {
+      "kind": "text",
+      "lines": [],
+      "text_format": "whatsapp",
+      "text_es": "Buenas tardes 👋 Le escribe Don Chucho, el conserje.\n\nHoy llegó un paquete para usted. Lo tengo en la caseta de la entrada, puede recogerlo de 8:00 a 20:00.\n\nOtra cosa: el jueves no va a haber agua de 9:00 a 14:00 por mantenimiento. Llene una cubeta el miércoles en la noche, por si acaso.\n\nTambién le recuerdo la cuota de noviembre: $450. Me la puede dar a mí o hacer una transferencia antes del día 10.\n\nAh, y alguien dejó una bici en el pasillo del tercer nivel. ¿Es suya? Si no es de nadie, la bajo al estacionamiento.\n\nGracias y buen día.",
+      "text_en": "Good afternoon 👋 This is Don Chucho, the caretaker.\n\nA package arrived for you today. I have it at the booth by the entrance; you can pick it up from 8:00 a.m. to 8:00 p.m.\n\nAnother thing: on Thursday there won't be water from 9:00 to 2:00 because of maintenance. Fill a bucket on Wednesday night, just in case.\n\nI also remind you about the November fee: $450. You can give it to me or make a transfer before the 10th.\n\nOh, and someone left a bike in the third-level hallway. Is it yours? If it belongs to nobody, I'll take it down to the parking lot.\n\nThanks, have a good day.",
+      "sender_en": "Don Chucho (building caretaker)",
+      "time": "16:35"
+    },
+    "questions": [
+      {
+        "id": "q1",
+        "kind": "pick",
+        "prompt_en": "Where is your package?",
+        "options": [
+          "At the post office",
+          "At the entrance booth",
+          "In your mailbox",
+          "In the parking lot"
+        ],
+        "answer": "At the entrance booth",
+        "hint_en": "Look for 'Lo tengo en…'.",
+        "explanation_en": "'Lo tengo en la caseta de la entrada' = I have it at the entrance booth."
+      },
+      {
+        "id": "q2",
+        "kind": "pick",
+        "prompt_en": "Which day will there be no water?",
+        "options": [
+          "Wednesday",
+          "Tomorrow",
+          "Thursday",
+          "Friday"
+        ],
+        "answer": "Thursday",
+        "hint_en": "Look for 'no va a haber agua'.",
+        "explanation_en": "'El jueves no va a haber agua' = there won't be water on Thursday (ir a + haber)."
+      },
+      {
+        "id": "q3",
+        "kind": "pick",
+        "prompt_en": "What does he tell you to do on Wednesday night?",
+        "options": [
+          "Move your bike",
+          "Close the main valve",
+          "Call the plumber",
+          "Fill a bucket with water"
+        ],
+        "answer": "Fill a bucket with water",
+        "hint_en": "Look for the command 'Llene…'.",
+        "explanation_en": "'Llene una cubeta' = fill a bucket (usted command of llenar)."
+      },
+      {
+        "id": "q4",
+        "kind": "type",
+        "prompt_en": "How much is the November fee? Type the number.",
+        "answer": "450",
+        "accepted_answers": [
+          "450",
+          "$450",
+          "cuatrocientos cincuenta"
+        ],
+        "hint_en": "Look for 'la cuota de noviembre'.",
+        "explanation_en": "'$450' = cuatrocientos cincuenta (not cuatrociento y cincuenta)."
+      },
+      {
+        "id": "q5",
+        "kind": "pick",
+        "prompt_en": "What will he do with the bike if it is nobody’s?",
+        "options": [
+          "Give it to you",
+          "Throw it away",
+          "Leave it in the hallway",
+          "Take it to the parking lot"
+        ],
+        "answer": "Take it to the parking lot",
+        "hint_en": "Look for 'Si no es de nadie…'.",
+        "explanation_en": "'Si no es de nadie, la bajo al estacionamiento' = if it's nobody's, I'll take it down to the parking lot."
+      }
+    ],
+    "region_note": "'Caseta' = guard booth. 'Cuota' = the monthly building fee.",
+    "added": "2026-11-02",
+    "folder": "home_errands"
   }
 ]
